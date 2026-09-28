@@ -1,0 +1,167 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://agentskills.local/shared/audit-report.schema.json",
+	"title": "Audit Report Schema",
+	"description": "Schema for structured audit/review reports following the AUDIT OUTPUT PROTOCOL",
+	"type": "object",
+	"required": [
+		"tool",
+		"summary",
+		"violations",
+		"standards"
+	],
+	"properties": {
+		"tool": {
+			"type": "object",
+			"required": [
+				"agent",
+				"skills"
+			],
+			"properties": {
+				"agent": {
+					"type": "string",
+					"description": "The agent that performed the audit (e.g., wordpress-expert, woocommerce-expert)"
+				},
+				"skills": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "Skills consulted during the audit"
+				},
+				"timestamp": {
+					"type": "string",
+					"format": "date-time"
+				}
+			}
+		},
+		"summary": {
+			"type": "object",
+			"required": [
+				"critical",
+				"high",
+				"medium",
+				"low",
+				"verdict"
+			],
+			"properties": {
+				"critical": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"high": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"medium": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"low": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"total": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"verdict": {
+					"type": "string",
+					"enum": [
+						"PASS",
+						"CONDITIONAL",
+						"BLOCKED"
+					],
+					"description": "BLOCKED if any CRITICAL, CONDITIONAL if any HIGH, PASS otherwise"
+				}
+			}
+		},
+		"violations": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"severity",
+					"file",
+					"line",
+					"standard",
+					"issue",
+					"fix"
+				],
+				"properties": {
+					"severity": {
+						"type": "string",
+						"enum": [
+							"CRITICAL",
+							"HIGH",
+							"MEDIUM",
+							"LOW"
+						]
+					},
+					"file": {
+						"type": "string",
+						"description": "Relative path to the file with the violation"
+					},
+					"line": {
+						"type": "integer",
+						"minimum": 1,
+						"description": "Line number where the violation occurs"
+					},
+					"standard": {
+						"type": "string",
+						"description": "Reference to the skill/reference file defining the standard (e.g., [security.md])"
+					},
+					"issue": {
+						"type": "string",
+						"description": "Brief description of the violation"
+					},
+					"fix": {
+						"type": "string",
+						"description": "Recommended fix or remediation"
+					},
+					"category": {
+						"type": "string",
+						"enum": [
+							"security",
+							"architecture",
+							"naming",
+							"documentation",
+							"testing",
+							"ui-copy",
+							"performance",
+							"data-integrity",
+							"other"
+						],
+						"description": "Category of the violation for grouping"
+					}
+				}
+			}
+		},
+		"standards": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"description": "List of skill/reference files consulted during the audit"
+		},
+		"recommendations": {
+			"type": "object",
+			"properties": {
+				"priority_order": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "Recommended order to fix violations"
+				},
+				"notes": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "Additional notes or context"
+				}
+			}
+		}
+	}
+}
