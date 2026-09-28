@@ -1,68 +1,55 @@
-# Project Memory — WK Marketplace Plugin
+# Project Memory — Bulk COGS Editor for WooCommerce
 <!-- Claude CLI persistent context — keep this file accurate and current -->
-<!-- lwdt: 202604170000 -->
+<!-- lwdt: 202609282135 -->
 
 ## Identity
-- **Plugin:** WK Marketplace (`wk-marketplace`)
-- **Version:** `(update after analysis)` ← update on every release
-- **Stack:** PHP 7.4+, WordPress 6.7+, WooCommerce (latest compatible)
+- **Plugin:** Bulk COGS Editor for WooCommerce `bulk-cogs-editor-for-woocommerce`
+- **Version:** `1.0.0` (update this on every release)
+- **Stack:** PHP 7.4+, WordPress 6.5+, WooCommerce 7.0+ (HPOS compatible)
 - **Repo root:** `./`
-- **Main file:** `./wk-marketplace.php` (or check root for `Plugin Name:` header)
+- **Main file:** `./bulk-cogs-editor-for-woocommerce.php`
 
 ## Coding Rules (non-negotiable)
-1. All PHP must pass `./vendor/bin/phpcs --standard=phpcs.xml` with **0 errors**.
-2. Run `./vendor/bin/phpcbf --standard=phpcs.xml` before presenting any PHP code.
-3. **Prefixes:** `wk_`, `wk_marketplace`, `wkpu_`, `wk_caching` — use consistently for all globals.
-4. **Text domains:** `wk-marketplace`, `wkpu_updates`, `wk_caching` — no other domains.
-5. **PHP 7.4 minimum** — no PHP 8.0+ syntax (`str_contains`, `match`, named args, enums) without compat shim.
+1. All PHP must pass `phpcs --standard=phpcs.xml` with **0 errors**.
+2. Run `phpcbf --standard=phpcs.xml` before presenting any PHP code.
+3. Prefixes: `dkbce_`, `DKBCE_` — use consistently for functions, classes, constants, hooks, and options.
+4. Text domain: `bulk-cogs-editor-for-woocommerce` exclusively.
+5. PHP 7.4 minimum — no PHP 8.0+ syntax without a compatibility shim.
 6. Yoda conditions (`'value' === $var`), tabs (width 4), spaces inside `( )`.
-7. Always `wp_unslash()` + sanitize `$_POST`/`$_GET`. Always `esc_*()` before echoing.
-8. `$wpdb->prepare()` for **every** query containing dynamic data.
-9. Verify nonce (`wp_verify_nonce`) before processing any form or AJAX input.
-10. No `eval`, `goto`, `@` suppression, short open tags (`<?=`), or debug output in committed code.
-11. No `var_dump()`, `print_r()`, `die()` — use `wp_die()` and proper logging.
-12. DocBlocks on all functions, classes, and hooks (`@param`, `@return`, `@since`).
-
-## PHPCS Excluded Paths (do not check these)
-- `tests/`, `assets/`, `node_modules/`, `vendor/`, `build/`
-- `modules/wk-plugin-updates/`, `wk_caching/`, `playwright-report/`
+7. Always `wp_unslash()` + sanitize `$_POST`/`$_GET` (or `wc_clean()`). Always `esc_*()` on output.
+8. `$wpdb->prepare()` for every query with dynamic data.
+9. Verify nonce (`wp_verify_nonce` or `check_ajax_referer`) before processing any form or AJAX request.
+10. Check capabilities (`current_user_can( 'manage_woocommerce' )`).
+11. No `eval`, `goto`, `@` suppression, short open tags, or debug output (`var_dump`, `print_r`) in committed code.
 
 ## Key Paths
 | Path | Purpose |
 |---|---|
-| `includes/` | Core plugin classes |
-| `admin/` | WP-Admin screens and settings |
-| `public/` | Front-end / storefront logic |
-| `templates/` | Overridable template files |
-| `modules/` | Bundled sub-plugins (e.g. wk-plugin-updates) |
-| `tests/` | PHPUnit unit tests |
-| `assets/` | JS / CSS (excluded from PHPCS) |
-| `build/` | Compiled assets (excluded from PHPCS) |
-| `.agent/` | Project memory, features registry, plans |
+| `admin/` | Admin classes, hooks, UI rendering, and AJAX controllers |
+| `languages/` | POT localization catalog and translation files |
+| `bulk-cogs-editor-for-woocommerce.php` | Main entry point, bootstrap, constants, and HPOS declaration |
+| `tests/` | PHPUnit unit and integration tests |
+| `.agents/` | Agent rules, memory, features registry, and plans |
 
 ## Active Hooks (summary)
-<!-- Keep this updated — full registry in .agent/features.md -->
-- See `.agent/features.md` for the complete hook, REST, and AJAX registry.
+- `plugins_loaded` -> `dkbce_load_plugin_files()`
+- `before_woocommerce_init` -> `dkbce_declare_hpos_compatibility()`
+- `admin_menu` -> `DKBCE_Admin_Functions::register_submenu_page()`
+- See `.agents/features.md` for full registry.
 
 ## Current Update Cycle
-- **Plan:** `.agent/plans/plan.md`
-- **Target version:** `(update after analysis)`
+- **Plan:** `.agents/plans/plan.md`
+- **Target version:** `1.1.0`
 - **Status:** Planning
 
-## Capabilities
-Custom capabilities used in this project:
-- `wk_marketplace_seller`
-- `manage_woocommerce`
-- `delete_published_products`
-
 ## Decisions & Context
-<!-- Append timestamped decisions here so future sessions retain context -->
+<!-- Append decisions here so future sessions have context -->
 - 2026-04-17: Memory initialised via Claude CLI update-initiation prompt.
+- 2026-09-28: Reconciled memory from template to actual `bulk-cogs-editor-for-woocommerce` specifications; established features registry and update plan.
 
 ## Do NOT
 - Do not modify files under `vendor/`, `node_modules/`, `build/`.
 - Do not commit debug output (`var_dump`, `print_r`, `error_log` with secrets).
-- Do not introduce PHP 8.0+ syntax without a compatibility shim.
-- Do not rename or remove existing public hooks/filters without a `_doing_it_wrong()` deprecation notice.
-- Do not use text domains other than those listed in Rule 4 above.
-- Do not write raw SQL — always use `$wpdb->prepare()`.
+- Do not introduce PHP 8.0+ syntax without polyfill.
+- Do not rename existing public hooks without a deprecation notice.
+- Do not use text domains other than `bulk-cogs-editor-for-woocommerce`.
