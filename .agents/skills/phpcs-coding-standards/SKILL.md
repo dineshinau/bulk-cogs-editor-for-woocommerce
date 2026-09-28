@@ -21,7 +21,7 @@ Derived directly from `phpcs.xml` (ruleset: `WordPress + WooCommerce Coding Stan
 
 ## Excluded Paths — Never apply standards checking to:
 - `tests/`, `assets/`, `node_modules/`, `vendor/`, `build/`
-- `modules/wk-plugin-updates/`, `wk_caching/`, `playwright-report/`
+- `playwright-report/`
 
 ---
 
@@ -31,14 +31,14 @@ Use **tabs**, not spaces. Tab width = 4.
 
 ```php
 // ✅ Correct
-function wk_my_function() {
+function dkwc_my_function() {
 	if ( $condition ) {
 		do_something();
 	}
 }
 
 // ❌ Wrong — spaces
-function wk_my_function() {
+function dkwc_my_function() {
     if ( $condition ) {
 ```
 
@@ -47,24 +47,24 @@ function wk_my_function() {
 ## Rule 2 — Naming Conventions & Prefixes
 
 All globals (functions, classes, hooks, options, constants) **must be prefixed**.
-Allowed prefixes from this project: `wk_`, `wk_marketplace`, `wkpu_`, `wk_caching`.
+Allowed prefixes from this project: `dkwc_`, `dkwc_addons_`.
 
 ```php
 // ✅ Functions
-function wk_marketplace_get_seller_data( $user_id ) {}
+function dkwc_marketplace_get_user_data( $user_id ) {}
 
 // ✅ Classes
-class WK_Marketplace_Seller {}
+class DKWC_Admin {}
 
 // ✅ Constants
-define( 'WK_MARKETPLACE_VERSION', '1.0.0' );
+define( 'DKWC_MARKETPLACE_VERSION', '1.0.0' );
 
 // ✅ Hooks
-add_action( 'wk_marketplace_before_seller_register', $callback );
+add_action( 'dkwc_addons_before_register', $callback );
 
 // ❌ Missing prefix
-function get_seller_data() {}
-class Seller {}
+function get_user_data() {}
+class Admin {}
 ```
 
 Use `snake_case` for functions/variables, `PascalCase` for classes.
@@ -74,7 +74,7 @@ Use `snake_case` for functions/variables, `PascalCase` for classes.
 ## Rule 3 — File Naming
 
 Filenames must follow WordPress conventions:
-- Class files: `class-{descriptor}.php` → e.g. `class-wk-marketplace-seller.php`
+- Class files: `class-{descriptor}.php` → e.g. `class-dkwc-admin.php`
 - All lowercase, hyphens as separators (not underscores)
 
 ---
@@ -82,15 +82,13 @@ Filenames must follow WordPress conventions:
 ## Rule 4 — Internationalization (i18n)
 
 All user-facing strings must be wrapped. **Allowed text domains:**
-- `wk-marketplace`
-- `wkpu_updates`
-- `wk_caching`
+- `bulk-cogs-editor-for-woocommerce`
 
 ```php
 // ✅ Correct
-__( 'Add to cart', 'wk-marketplace' );
-esc_html__( 'Seller dashboard', 'wk-marketplace' );
-_n( '%s item', '%s items', $count, 'wk-marketplace' );
+__( 'Add to cart', 'bulk-cogs-editor-for-woocommerce' );
+esc_html__( 'Admin Settings', 'bulk-cogs-editor-for-woocommerce' );
+_n( '%s item', '%s items', $count, 'bulk-cogs-editor-for-woocommerce' );
 
 // ❌ Wrong domain
 __( 'Hello', 'my-plugin' );
@@ -134,8 +132,8 @@ $name = $_POST['name'];
 ### 5c. Nonce Verification — verify before processing any form/AJAX input
 ```php
 // ✅ Correct
-if ( ! isset( $_POST['wk_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['wk_nonce'] ), 'wk_marketplace_action' ) ) {
-	wp_die( esc_html__( 'Security check failed.', 'wk-marketplace' ) );
+if ( ! isset( $_POST['dkwc_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['dkwc_nonce'] ), 'dkwc_action' ) ) {
+	wp_die( esc_html__( 'Security check failed.', 'dkwc_addons' ) );
 }
 ```
 
@@ -178,14 +176,14 @@ Placeholders: `%d` integers, `%s` strings, `%f` floats.
 ## Rule 7 — Capabilities
 
 Use proper capability checks. Custom capabilities allowed in this project:
-- `wk_marketplace_seller`
+- `dkwc_addons_user`
 - `manage_woocommerce`
 - `delete_published_products`
 
 ```php
 // ✅ Correct
-if ( ! current_user_can( 'wk_marketplace_seller' ) ) {
-	wp_die( esc_html__( 'Access denied.', 'wk-marketplace' ) );
+if ( ! current_user_can( 'dkwc_addons_user' ) ) {
+	wp_die( esc_html__( 'Access denied.', 'bulk-cogs-editor-for-woocommerce' ) );
 }
 ```
 
@@ -251,19 +249,19 @@ All functions, classes, and hooks need DocBlocks:
 
 ```php
 /**
- * Retrieves seller data for a given user.
+ * Retrieves user data for a given user.
  *
  * @param int $user_id The WordPress user ID.
- * @return array|false Seller data array or false if not found.
+ * @return array|false User data array or false if not found.
  */
-function wk_marketplace_get_seller( int $user_id ) {}
+function dkwc_get_user( int $user_id ) {}
 
 /**
- * Fires before a seller is registered.
+ * Fires before a user is registered.
  *
- * @param int $user_id The user ID being registered as seller.
+ * @param int $user_id The user ID being registered as user.
  */
-do_action( 'wk_marketplace_before_seller_register', $user_id );
+do_action( 'dkwc_addons_before_register', $user_id );
 ```
 
 Hook comment is **not** required (excluded: `WooCommerce.Commenting.CommentHooks.MissingHookComment`).
@@ -306,9 +304,9 @@ After generating PHP files, always run:
 | Concern | Rule |
 |---|---|
 | Indentation | Tabs (width 4) |
-| Naming | `snake_case` functions, `PascalCase` classes, prefixed globals (`wk_`) |
-| File names | `class-wk-descriptor.php` (lowercase, hyphens) |
-| Text domains | `wk-marketplace`, `wkpu_updates`, `wk_caching` |
+| Naming | `snake_case` functions, `PascalCase` classes, prefixed globals (`dkwc_`) |
+| File names | `class-dkwc-descriptor.php` (lowercase, hyphens) |
+| Text domains | `bulk-cogs-editor-for-woocommerce` |
 | Escaping | `esc_html()`, `esc_attr()`, `esc_url()`, `wp_kses_post()` |
 | Sanitizing | `sanitize_text_field(wp_unslash(...))`, `wc_clean()` allowed |
 | SQL | `$wpdb->prepare()` always |

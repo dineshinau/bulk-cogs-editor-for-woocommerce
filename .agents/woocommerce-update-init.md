@@ -74,7 +74,7 @@ Create `.agents/features.md` with this exact structure:
 | Min WP | {version} |
 | Min PHP | {version} |
 | Text Domain | {slug} |
-| Prefixes | {wk_, wkpu_, etc.} |
+| Prefixes | {dkwc_, dkwc_addons_, etc.} |
 
 ## Feature Map
 
@@ -145,7 +145,7 @@ Create `.agents/plans/plan.md` with this structure:
 ### 1. Code Changes
 <!-- One task per logical change. Group by area. -->
 
-#### 1.1 {Area — e.g., Seller Dashboard}
+#### 1.1 {Area — e.g., Admin Settings}
 - [ ] **T-001** {Description} — `{file path}` — Priority: {High|Med|Low}
 - [ ] **T-002** ...
 
@@ -208,8 +208,8 @@ Create `CLAUDE.md` — this is the persistent memory file Claude CLI reads autom
 ## Coding Rules (non-negotiable)
 1. All PHP must pass `./vendor/bin/phpcs --standard=phpcs.xml` with **0 errors**.
 2. Run `phpcbf` before presenting any PHP code.
-3. Prefixes: `wk_`, `wk_marketplace`, `wkpu_`, `wk_caching` — use consistently.
-4. Text domains: `wk-marketplace`, `wkpu_updates`, `wk_caching`.
+3. Prefixes: `dkwc_`, `dkwc_addons_` — use consistently.
+4. Text domains: `dkwc_addons_cogs`.
 5. PHP 7.4 minimum — no PHP 8.0+ syntax without compat shim.
 6. Yoda conditions, tabs (width 4), spaces inside `( )`.
 7. Always `wp_unslash()` + sanitize `$_POST`/`$_GET`. Always `esc_*()` on output.
