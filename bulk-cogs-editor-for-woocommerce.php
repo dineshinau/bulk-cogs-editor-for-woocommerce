@@ -5,6 +5,7 @@
  * Description:       Allow bulk Cost of Goods Editing for products in WooCommerce.
  * Version:           1.0.0
  * Requires at least: 6.0
+ * Tested up to:      7.1
  * Requires PHP:      8.0
  * Author:            Dinesh Yadav
  * Author URI:        https://dineshinaublog.wordpress.com/
@@ -19,6 +20,8 @@
  *
  * @package BulkCOGSEditor
  */
+
+declare( strict_types=1 );
 
 // Prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -51,61 +54,17 @@ define( 'DKBCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DKBCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
- * Minimum WooCommerce version required.
- */
-define( 'DKBCE_MIN_WC_VERSION', '7.0' );
-
-/**
- * Display an admin notice when WooCommerce is not active or the version is too low.
+ * Load plugin classes and initialize after all plugins are loaded.
  *
  * @return void
  */
-function dkbce_woocommerce_missing_notice(): void {
-	$message = sprintf(
-		/* translators: 1: Plugin name, 2: WooCommerce, 3: Minimum WooCommerce version. */
-		esc_html__(
-			'%1$s requires %2$s version %3$s or higher to be installed and active.',
-			'bulk-cogs-editor-for-woocommerce'
-		),
-		'<strong>Bulk COGS Editor for WooCommerce</strong>',
-		'<strong>WooCommerce</strong>',
-		DKBCE_MIN_WC_VERSION
-	);
-
-	printf( '<div class="notice notice-error"><p>%s</p></div>', wp_kses_post( $message ) );
+function dkbce_load_plugin_files(): void {
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-functions.php';
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-hooks.php';
+	DKBCE_Admin_Hooks::get_instance();
 }
+add_action( 'plugins_loaded', 'dkbce_load_plugin_files' );
 
-/**
- * Check plugin requirements and initialise.
- *
- * Hooked on `plugins_loaded` so WooCommerce (if active) is already available.
- *
- * @return void
- */
-function dkbce_init(): void {
-
-	// Verify WooCommerce is active.
-	if ( ! class_exists( 'WooCommerce' ) ) {
-		add_action( 'admin_notices', 'dkbce_woocommerce_missing_notice' );
-		return;
-	}
-
-	// Verify minimum WooCommerce version.
-	if ( version_compare( WC_VERSION, DKBCE_MIN_WC_VERSION, '<' ) ) {
-		add_action( 'admin_notices', 'dkbce_woocommerce_missing_notice' );
-		return;
-	}
-
-	// Load plugin text domain for translations.
-	load_plugin_textdomain(
-		'bulk-cogs-editor-for-woocommerce',
-		false,
-		dirname( DKBCE_PLUGIN_BASENAME ) . '/languages'
-	);
-
-	// TODO: Load core plugin classes and hooks here.
-}
-add_action( 'plugins_loaded', 'dkbce_init' );
 
 /**
  * Declare compatibility with WooCommerce HPOS (High-Performance Order Storage).
@@ -122,23 +81,3 @@ function dkbce_declare_hpos_compatibility(): void {
 	}
 }
 add_action( 'before_woocommerce_init', 'dkbce_declare_hpos_compatibility' );
-
-/**
- * Run on plugin activation.
- *
- * @return void
- */
-function dkbce_activate(): void {
-	// TODO: Add activation tasks (e.g. default options, capability grants).
-}
-register_activation_hook( DKBCE_PLUGIN_FILE, 'dkbce_activate' );
-
-/**
- * Run on plugin deactivation.
- *
- * @return void
- */
-function dkbce_deactivate(): void {
-	// TODO: Add deactivation cleanup tasks.
-}
-register_deactivation_hook( DKBCE_PLUGIN_FILE, 'dkbce_deactivate' );
