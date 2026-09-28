@@ -1,0 +1,152 @@
+{
+  ".agents/shared/references/audit-report.schema.json": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.3960006,
+    "ast_hash": "4ac8ba1702fb619e34ddbc43e7174103",
+    "semantic_hash": "4ac8ba1702fb619e34ddbc43e7174103"
+  },
+  ".agents/shared/references/gutenberg-releases.json": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.396011,
+    "ast_hash": "dca6f07d0c31a59c527e59fd6176b6c6",
+    "semantic_hash": "dca6f07d0c31a59c527e59fd6176b6c6"
+  },
+  ".agents/shared/references/wordpress-core-versions.json": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.396016,
+    "ast_hash": "6c5bb7c291fb961ae62a05a2e9724a8b",
+    "semantic_hash": "6c5bb7c291fb961ae62a05a2e9724a8b"
+  },
+  ".agents/shared/references/wp-gutenberg-version-map.json": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.3960187,
+    "ast_hash": "2c566ed6091916ff7e36a0152c394a44",
+    "semantic_hash": "2c566ed6091916ff7e36a0152c394a44"
+  },
+  ".agents/shared/scripts/ai-generate-updates.mjs": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.396021,
+    "ast_hash": "209715bba80c014ed541b1d157e0248a",
+    "semantic_hash": "209715bba80c014ed541b1d157e0248a"
+  },
+  ".agents/shared/scripts/scaffold-skill.mjs": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.3960233,
+    "ast_hash": "2743f0d254474b86fc3119089d1e1cc0",
+    "semantic_hash": "2743f0d254474b86fc3119089d1e1cc0"
+  },
+  ".agents/shared/scripts/skillpack-build.mjs": {
+    "mtime": 1776669848.0,
+    "seen": 1790631578.3960261,
+    "ast_hash": "7ad1b048b6f2cec65d479513818df214",
+    "semantic_hash": "7ad1b048b6f2cec65d479513818df214"
+  },
+  ".agents/shared/scripts/skillpack-install.mjs": {
+    "mtime": 1776669843.0,
+    "seen": 1790631578.3960288,
+    "ast_hash": "25f319b7fc2e03337a88b5ea9ec12ca1",
+    "semantic_hash": "25f319b7fc2e03337a88b5ea9ec12ca1"
+  },
+  ".agents/shared/scripts/update-upstream-indices.mjs": {
+    "mtime": 1774968137.0,
+    "seen": 1790631578.396031,
+    "ast_hash": "375a7596ac0269221b3d4e20e2ab27a9",
+    "semantic_hash": "375a7596ac0269221b3d4e20e2ab27a9"
+  },
+  ".agents/skills/wp-block-development/scripts/list_blocks.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.396033,
+    "ast_hash": "2dc43c5dc704441db70f6d3180feab0b",
+    "semantic_hash": "2dc43c5dc704441db70f6d3180feab0b"
+  },
+  ".agents/skills/wp-block-themes/scripts/detect_block_themes.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960357,
+    "ast_hash": "91f5cdaf20ecd6c12ac16a598dcde594",
+    "semantic_hash": "91f5cdaf20ecd6c12ac16a598dcde594"
+  },
+  ".agents/skills/wp-performance/scripts/perf_inspect.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960383,
+    "ast_hash": "8f0cffc5d2a01151d8e9eea44886d050",
+    "semantic_hash": "8f0cffc5d2a01151d8e9eea44886d050"
+  },
+  ".agents/skills/wp-phpstan/scripts/phpstan_inspect.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960404,
+    "ast_hash": "38622af8ffb5834ea1d40f16f8e9bf04",
+    "semantic_hash": "38622af8ffb5834ea1d40f16f8e9bf04"
+  },
+  ".agents/skills/wp-plugin-development/scripts/detect_plugins.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960433,
+    "ast_hash": "f376b48b24d0c8cc8108009ef3b3fbec",
+    "semantic_hash": "f376b48b24d0c8cc8108009ef3b3fbec"
+  },
+  ".agents/skills/wp-project-triage/references/triage.schema.json": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960457,
+    "ast_hash": "e377f9abf95c4d859bd5e01645a64067",
+    "semantic_hash": "e377f9abf95c4d859bd5e01645a64067"
+  },
+  ".agents/skills/wp-project-triage/scripts/detect_wp_project.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960476,
+    "ast_hash": "51dc41fc666655c2f67675bd2bf75b17",
+    "semantic_hash": "51dc41fc666655c2f67675bd2bf75b17"
+  },
+  ".agents/skills/wp-wpcli-and-ops/scripts/wpcli_inspect.mjs": {
+    "mtime": 1774968138.0,
+    "seen": 1790631578.3960497,
+    "ast_hash": "88ed5400dabcfca4bcbbf90644e3fcf5",
+    "semantic_hash": "88ed5400dabcfca4bcbbf90644e3fcf5"
+  },
+  "admin/class-dkbce-admin-functions.php": {
+    "mtime": 1790622524.4545116,
+    "seen": 1790631578.3960516,
+    "ast_hash": "2d6319be90a1cb9c73adc0bec6e2a176",
+    "semantic_hash": "2d6319be90a1cb9c73adc0bec6e2a176"
+  },
+  "admin/class-dkbce-admin-hooks.php": {
+    "mtime": 1790622190.570512,
+    "seen": 1790631578.3960543,
+    "ast_hash": "5d394d6c4433256557a5e7f2cd1ba2ac",
+    "semantic_hash": "5d394d6c4433256557a5e7f2cd1ba2ac"
+  },
+  "admin/index.php": {
+    "mtime": 1790619603.8359783,
+    "seen": 1790631578.3960564,
+    "ast_hash": "02cfd086392eb3d5db8889957f322baa",
+    "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
+  },
+  "bulk-cogs-editor-for-woocommerce.php": {
+    "mtime": 1790622632.6688762,
+    "seen": 1790631578.3960583,
+    "ast_hash": "a039a495357f88ba770e078a830c0281",
+    "semantic_hash": "a039a495357f88ba770e078a830c0281"
+  },
+  "index.php": {
+    "mtime": 1790619609.1385808,
+    "seen": 1790631578.3960605,
+    "ast_hash": "02cfd086392eb3d5db8889957f322baa",
+    "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
+  },
+  "languages/index.php": {
+    "mtime": 1790623058.910509,
+    "seen": 1790631578.3961146,
+    "ast_hash": "02cfd086392eb3d5db8889957f322baa",
+    "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
+  },
+  "package.json": {
+    "mtime": 1790622950.537905,
+    "seen": 1790631578.3961189,
+    "ast_hash": "a0419c682bca0b3358b2bf7b95b87f08",
+    "semantic_hash": "a0419c682bca0b3358b2bf7b95b87f08"
+  },
+  "skills-lock.json": {
+    "mtime": 1790626962.4802387,
+    "seen": 1790631578.396121,
+    "ast_hash": "89a2d97ae04fc486d74450bbaeebaea5",
+    "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
+  }
+}
