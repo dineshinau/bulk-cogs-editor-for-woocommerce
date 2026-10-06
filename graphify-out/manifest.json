@@ -148,5 +148,1043 @@
     "seen": 1790631578.396121,
     "ast_hash": "89a2d97ae04fc486d74450bbaeebaea5",
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
+  },
+  ".agents/agents/woocommerce-expert.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235382,
+    "ast_hash": "20bbbd73bb289363c9519ca6163c3cf4",
+    "semantic_hash": ""
+  },
+  ".agents/agents/wordpress-expert.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235415,
+    "ast_hash": "deda3f1a62c6d04262bc700ed9c86ed9",
+    "semantic_hash": ""
+  },
+  ".agents/agents/wp-frontend-expert.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223544,
+    "ast_hash": "0ca967dc4fd74832773dcdd66164bc39",
+    "semantic_hash": ""
+  },
+  ".agents/copilot-instructions.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235458,
+    "ast_hash": "1bf392b7ac96fe088c9c9f5318286837",
+    "semantic_hash": ""
+  },
+  ".agents/features.md": {
+    "mtime": 1790631341.948233,
+    "seen": 1791323394.2235477,
+    "ast_hash": "1bed840f2b14fc71156c61d67f5230f6",
+    "semantic_hash": ""
+  },
+  ".agents/plans/plan.md": {
+    "mtime": 1790631352.5082324,
+    "seen": 1791323394.2235494,
+    "ast_hash": "6df084a72f1c66e0f900ebb9dcc6162a",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/SKILL.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223551,
+    "ast_hash": "bd87af47ae79fe80afe614d41ed2f44c",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/request-mocking.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235527,
+    "ast_hash": "3b74af1fc908062c9c7f2cef04be6a24",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/running-code.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235544,
+    "ast_hash": "ded48ff35f0cc633919185fc57a2231d",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/session-management.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223556,
+    "ast_hash": "34271bfd23891bc3da1f6ecb5fada160",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/storage-state.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223558,
+    "ast_hash": "074c38cbac4b12b82e97241ac549b449",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/test-generation.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235594,
+    "ast_hash": "61d791d657a6a7898872bce91e37e497",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/tracing.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235618,
+    "ast_hash": "2ecb8b98a4fa4e2d481e3de623072559",
+    "semantic_hash": ""
+  },
+  ".agents/playwright-cli/references/video-recording.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235632,
+    "ast_hash": "3d4dd44bab1ef8322f65267a95351149",
+    "semantic_hash": ""
+  },
+  ".agents/rules/GEMINI.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223565,
+    "ast_hash": "c6b4c08972e3c06164678fca034264d4",
+    "semantic_hash": ""
+  },
+  ".agents/skills.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2235668,
+    "ast_hash": "1bf392b7ac96fe088c9c9f5318286837",
+    "semantic_hash": ""
+  },
+  ".agents/skills/accessibility/SKILL.md": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2235687,
+    "ast_hash": "8b501fd5421c176e106af8891dc3d502",
+    "semantic_hash": ""
+  },
+  ".agents/skills/accessibility/references/A11Y-PATTERNS.md": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2235703,
+    "ast_hash": "2995457ea35b394cc9665fa502d66e85",
+    "semantic_hash": ""
+  },
+  ".agents/skills/accessibility/references/WCAG.md": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2235768,
+    "ast_hash": "1aeaf4a30d2ceb69edec5a62bfb084ee",
+    "semantic_hash": ""
+  },
+  ".agents/skills/frontend-design/LICENSE.txt": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2235785,
+    "ast_hash": "2ee41112a44fe7014dce33e26468ba93",
+    "semantic_hash": ""
+  },
+  ".agents/skills/frontend-design/SKILL.md": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2235801,
+    "ast_hash": "06a0520e81f698334258c73ff0de533b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/SKILL.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.223582,
+    "ast_hash": "345bbbef6a0a21b38a58d9ee39d036f0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/references/async-patterns.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.2235835,
+    "ast_hash": "02afb53333a457c11f32369a806e7650",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/references/laravel-patterns.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.2235854,
+    "ast_hash": "d3ff8118650401c88695d373dc958707",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/references/modern-php-features.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.223587,
+    "ast_hash": "ab5cb7ff0cf9e8668a09e4e252624938",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/references/symfony-patterns.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.223589,
+    "ast_hash": "583a4850a6f2eac8ff92e615cab500f3",
+    "semantic_hash": ""
+  },
+  ".agents/skills/php-pro/references/testing-quality.md": {
+    "mtime": 1777015868.0,
+    "seen": 1791323394.2235906,
+    "ast_hash": "78b63a5ad09051b36910bf49ee112a10",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpcs-coding-standards/SKILL.md": {
+    "mtime": 1790633602.5246634,
+    "seen": 1791323394.2235923,
+    "ast_hash": "ab039c59657d06c657d2c291ee0aad88",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpcs-coding-standards/references/common-rulesets.md": {
+    "mtime": 1775049737.0,
+    "seen": 1791323394.2235942,
+    "ast_hash": "2ef7437cef80792b16d40e913fbb1723",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/README.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235959,
+    "ast_hash": "6a3cf0d75b59b0a6b45697a840660cde",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/SKILL.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235978,
+    "ast_hash": "b16daea8ecc09c4ccaf76f35467160d4",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-covers-class.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2235997,
+    "ast_hash": "81b4602c2c4566094f6705c13b3c7685",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-group.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236013,
+    "ast_hash": "3b69c0f190725f0c996efa5633192108",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-no-annotations.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236035,
+    "ast_hash": "9c33cdefefc23419bac5cb965345a455",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-size-categories.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236052,
+    "ast_hash": "624b0d9884bfa99edee60663a1cca847",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-test-attribute.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223607,
+    "ast_hash": "65366e31291bd6db5315eb5126510d05",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/attr-uses-class.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236085,
+    "ast_hash": "0b8c8237806a0b2e64070ac16e94d47f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-cache.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236104,
+    "ast_hash": "ce3d34d651c15950c0707a7cecf39c45",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-order-by.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223612,
+    "ast_hash": "d1de4f99b5c9317ed73de48ce54dc1b8",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-source-coverage.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236137,
+    "ast_hash": "9c9fa125b700f78a60e0e96643403769",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-stop-on-failure.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236154,
+    "ast_hash": "55a10bf174e8fd86c218ec4e51638f38",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-strictness.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236173,
+    "ast_hash": "421dd676a45318382742a6be6fc1872d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/config-testsuites.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236187,
+    "ast_hash": "3eaa80921df6d514e48091692f197a1d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/data-direct-instantiation.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236207,
+    "ast_hash": "20707c8ccc8275783cad35fa78ebb297",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/data-factory-method.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236223,
+    "ast_hash": "de3bbdd2449aac5bcd172d705608a85d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/data-provider-external.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236242,
+    "ast_hash": "5e9653a4c5b8e7de17bcfc29f61b799d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/data-provider.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223626,
+    "ast_hash": "95dd2dbdc720ae0b606063a3f32e85b2",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/data-test-with.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236278,
+    "ast_hash": "2ec31a7e6a6e15a1bb29d0ee35af2613",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/doc-readable-names.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236295,
+    "ast_hash": "0f74524e2d20bf786c44121ee3045c26",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/doc-testdox-attribute.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236314,
+    "ast_hash": "35f58928634e29427daac026000a4cb7",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/doc-testdox.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223633,
+    "ast_hash": "fd380f273c9e7ec8b74bb9e1fa6b5075",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/integration-performance.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223635,
+    "ast_hash": "efed217d90b1c382a51fb9ed224478f9",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/integration-singleton.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236373,
+    "ast_hash": "500646a10aa3cbd2d539143e3d527078",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/integration-smoke-cli.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223639,
+    "ast_hash": "9b95b57f3462e64231706c1449d34113",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/integration-smoke-http.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236407,
+    "ast_hash": "c14518703fca0fbba7abf4064f1830e6",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/integration-transactions.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.2236426,
+    "ast_hash": "f8bf19afeea569ebe7e15b224d41171f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/mock-avoid-over-mocking.md": {
+    "mtime": 1774968137.0,
+    "seen": 1791323394.223645,
+    "ast_hash": "beb4ab6399cb075d9fad989310b9a35e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/mock-chicago-vs-london.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236464,
+    "ast_hash": "48b3c9cab5af1c5ccd9f04290076e877",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/mock-prophecy.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236483,
+    "ast_hash": "e76cab7837bc58f39e7819b7960df8b5",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-aaa-pattern.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.22365,
+    "ast_hash": "40eb2199c18ae5ceda3159013d1c4685",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-dry-vs-damp.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223652,
+    "ast_hash": "c08ca77afb38e544d8b8a3aad416451b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-first-fast.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236555,
+    "ast_hash": "cfb4af76169eae172be09b21006c82dc",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-first-isolated.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236571,
+    "ast_hash": "d5909a18646a1bde6e144387d4d93757",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-first-repeatable.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223659,
+    "ast_hash": "5fc0e269684066632006d8911bb12391",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-first-self-validating.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236607,
+    "ast_hash": "35ab445f9e5dc606114191726ad892d3",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/principle-first-timely.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236626,
+    "ast_hash": "e6fc11d04e3fe8d75a11f2e07ad6891b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-final-classes.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236643,
+    "ast_hash": "1471d2a7cfd5d1cb8fbde58417312c54",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-psr12-formatting.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236664,
+    "ast_hash": "e5565eb5d6d8cbcd818287691b5e2c8d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-psr4-naming.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236683,
+    "ast_hash": "93db99bc3d74335dbf436d224064566d",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-snake-case-methods.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.22367,
+    "ast_hash": "dbf5cf73165b5a08535973def646e5df",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-strict-types.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236714,
+    "ast_hash": "67f4e2a8c7d2d1c9f4b05847caed5776",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-this-over-self.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236733,
+    "ast_hash": "0adf83d5e8c3c6e5941b305f12f202ec",
+    "semantic_hash": ""
+  },
+  ".agents/skills/phpunit-best-practices/rules/standard-visibility-type-hints.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236748,
+    "ast_hash": "dee4a68f967b6c6315308c0a7a0c12d4",
+    "semantic_hash": ""
+  },
+  ".agents/skills/seo/SKILL.md": {
+    "mtime": 1777015865.0,
+    "seen": 1791323394.2236767,
+    "ast_hash": "51a3d2c0e33d8303d0377802e565f54c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236784,
+    "ast_hash": "dc77cde8a7e41ed329475967ed976031",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/backend-dev-guide.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236803,
+    "ast_hash": "9a6a210e5e03c9ea7cfa93eb25725a52",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/code-entities.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236822,
+    "ast_hash": "e29ce55b94026fae48c9167fedfc1102",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/code-quality.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236838,
+    "ast_hash": "3572776531e96bbfdbc6f8d3d4332ec1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/code-review-guide.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236853,
+    "ast_hash": "01e4cdbdfaca03a8d695da912040e7d1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/coding-conventions.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236872,
+    "ast_hash": "359478b6e73f91afad46fc8663a9ce76",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/copy-guidelines-guide.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236886,
+    "ast_hash": "5c2d54e891988f5c7a2810668ded8cf1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/data-integrity.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236905,
+    "ast_hash": "efe85a6553aa592c713968e135432ac8",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/dependency-injection.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236927,
+    "ast_hash": "10fc5c641b146875d3f2508c17567001",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/dev-cycle-guide.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223694,
+    "ast_hash": "8ee3d1178e7d4c06b01907e0664aa73c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/file-entities.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236958,
+    "ast_hash": "aa9dcee4152e40eaf94663625f3a6aa4",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/hooks.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2236977,
+    "ast_hash": "104833f401de7f382b82d79def9cb0d0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/js-i18n-patterns.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223699,
+    "ast_hash": "3a51581d33cd5bf88d1e510da7c38875",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/markdown-guide.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223701,
+    "ast_hash": "430459d98da1e706ac2b832d34d134a1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/markdown-linting.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237027,
+    "ast_hash": "7b07f0ab2484a9a6fb4b18e202c9bc2f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/php-i18n-patterns.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237043,
+    "ast_hash": "6eafa432e755cb7691f7d29b99e2fdfd",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/php-linting-patterns.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237058,
+    "ast_hash": "4806aa2974077193c9f402c223c4f212",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/running-tests.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237077,
+    "ast_hash": "c42207d202d8b3cad195fe8225c32f61",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/security-patterns.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237093,
+    "ast_hash": "e11925336212ca64204d25a8ed064ffa",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/sentence-case.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223711,
+    "ast_hash": "ba45920f5b5120f68e2d72d64c6e9f0c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/type-annotations.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237127,
+    "ast_hash": "17f7991728cb11238ba7cf29cce01786",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/unit-tests.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237146,
+    "ast_hash": "83ce12465f323a1cdb97389afd8ea8c0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/woocommerce/references/woocommerce-global-objects.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237163,
+    "ast_hash": "f5d936a22c58faca528025561e36e49a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wordpress-router/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223718,
+    "ast_hash": "d02a9179108c211cd462bf853c4cda2f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wordpress-router/references/decision-tree.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237196,
+    "ast_hash": "695b319718b8a6d40b1dd59fca270bf1",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-abilities-api/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237215,
+    "ast_hash": "2513f3324affe7799ba34e6af6db8aed",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-abilities-api/references/php-registration.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237232,
+    "ast_hash": "9cebb1f5e976811c3973ab122c2ac9e0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-abilities-api/references/rest-api.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237253,
+    "ast_hash": "acaa76a98f56338068239d9bbe98632e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237267,
+    "ast_hash": "2aa4a645ca635200deaabcb80369c2f2",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/attributes-and-serialization.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223729,
+    "ast_hash": "471fd7c066e519f37f5cc37a4adfd2de",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/block-json.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237313,
+    "ast_hash": "efb35c56498faec79988e7d04424aff9",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/creating-new-blocks.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237332,
+    "ast_hash": "d77a5250cba484fac5a2eb17b989bfc9",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237349,
+    "ast_hash": "5f7e76b7e1a9a9023d13ad3b967c459b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/deprecations.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237365,
+    "ast_hash": "79292eaa80e220166144748b9e318a3f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/dynamic-rendering.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237384,
+    "ast_hash": "9291b2df890c00ff074fe0cfd6533821",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/inner-blocks.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237399,
+    "ast_hash": "7695befd04dfa0dab42a13baf82faf7a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/registration.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223742,
+    "ast_hash": "928966ed87024cc2a403ec799d9b1ea6",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/supports-and-wrappers.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237434,
+    "ast_hash": "1a14a6a79a6c0b1abfa365f55f4020be",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-development/references/tooling-and-testing.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237453,
+    "ast_hash": "db2dd017c083e078a41125022d040491",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223747,
+    "ast_hash": "1481ba43c7a6759a3cb891313c2bb618",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/creating-new-block-theme.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223749,
+    "ast_hash": "4967dd780e29d90f3c0af2db287cd93a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237506,
+    "ast_hash": "0049327debd453dd6f95026a038e00d2",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/patterns.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237523,
+    "ast_hash": "7e4ad3e619f5745fe8d44000cceca27c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/style-variations.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237544,
+    "ast_hash": "d3fcf19a4522b749144749af104066ce",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/templates-and-parts.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223756,
+    "ast_hash": "b3adfb1fb2f4419e01e7b0da63d6a22c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-block-themes/references/theme-json.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237577,
+    "ast_hash": "1af7eef8b77c8d8f54c312f0244590ec",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-interactivity-api/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237594,
+    "ast_hash": "ac9563af8aaefe6e88b4994d0e08ddd0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-interactivity-api/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237613,
+    "ast_hash": "40f0e06057fd721d87694eca3c72585f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-interactivity-api/references/directives-quickref.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223763,
+    "ast_hash": "c63be4eeeb25d5046e08c3ee5379d6cf",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-interactivity-api/references/server-side-rendering.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237647,
+    "ast_hash": "5f5c06d02c75bc3f0bed43d510ca0c70",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237666,
+    "ast_hash": "fce321e98271614709b0a99acaa55175",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/autoload-options.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237682,
+    "ast_hash": "52e8f4fe7238f5e8dde82d4fb1f99c71",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/cron.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.22377,
+    "ast_hash": "bb5f37d6260ae0b00c495a7505396fc0",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/database.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237716,
+    "ast_hash": "5061fc619fd08255f645ecdad0d297dd",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/http-api.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237735,
+    "ast_hash": "564155a982a946b8809434274123f3ac",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/measurement.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237751,
+    "ast_hash": "93b9cb62673bcd890963713779d7e3f4",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/object-cache.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223777,
+    "ast_hash": "37c55b4dd13c3768459bce9b21fa5b6f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/query-monitor-headless.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223779,
+    "ast_hash": "dedf73bc39616659fb09b0592c2afdce",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/server-timing.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237809,
+    "ast_hash": "a039e01c7945e00f10bbc1f9a6ea012a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/wp-cli-doctor.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237825,
+    "ast_hash": "32c88d114a0832e0e276057c57680de3",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-performance/references/wp-cli-profile.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237844,
+    "ast_hash": "4d987f0ee80857bebd046914a7eaf045",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-phpstan/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237859,
+    "ast_hash": "0ea08093f5c5f4932f54cd1e0001e915",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-phpstan/references/configuration.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237878,
+    "ast_hash": "cbf1a5bf06c1ce08a7786af2fd60bf03",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-phpstan/references/third-party-classes.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237895,
+    "ast_hash": "2c5baaf55340c7d7b2248b25ab82aeeb",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-phpstan/references/wordpress-annotations.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237914,
+    "ast_hash": "7b7302042eae84ee8619e17ea204fe09",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-playground/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237933,
+    "ast_hash": "5a7c3ba2255b867b6c0b3c05d081ffba",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-playground/references/blueprints.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223795,
+    "ast_hash": "f5afaff89620de79526dca3ffc852a0f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-playground/references/cli-commands.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237968,
+    "ast_hash": "c895f68ed61027815a471f86fc768cb6",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-playground/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2237983,
+    "ast_hash": "882f029a60c630a699c27022707a1813",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238002,
+    "ast_hash": "25a5ad3460f8561edd70ba16d71d68f9",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/data-and-cron.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238019,
+    "ast_hash": "df9ed34e0bad566f29b6774e211a4b56",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238038,
+    "ast_hash": "14170816f3cdb680a395901a913af07e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/lifecycle.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223808,
+    "ast_hash": "3c63d282a27dc16e17b24210aa04803e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/security.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238097,
+    "ast_hash": "3cfa349d662a47623a7b5532bc16477b",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/settings-api.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238116,
+    "ast_hash": "07dc63d3e069d382ebe7c980aa691e0e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-plugin-development/references/structure.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238133,
+    "ast_hash": "071a10008b28b53cf07220d7287705d2",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-project-triage/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223815,
+    "ast_hash": "5a3409f7ae62cb96429581f3590f7968",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238169,
+    "ast_hash": "3158fef2db477bde1b3acccff948b2c7",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/authentication.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238188,
+    "ast_hash": "1834632c392dc7796ae49e4838b3a02e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/custom-content-types.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238202,
+    "ast_hash": "da56bd225e7eb43aeb79bda830759bfc",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/discovery-and-params.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223822,
+    "ast_hash": "b530bb6bd5af4f6ca39b035a3cccf0fd",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/responses-and-fields.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238238,
+    "ast_hash": "d14e6fd25356dee23c101ffaae108166",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/routes-and-endpoints.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238255,
+    "ast_hash": "2ffd355102801c72cb9eac1f18941e65",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-rest-api/references/schema.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238271,
+    "ast_hash": "fab1df764eb8ab8ff0862722818cee7c",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223829,
+    "ast_hash": "095e560cb26992c8ef047e2f56320e1e",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/automation.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238307,
+    "ast_hash": "0ba7705a1a707f7a1d2c3d57b898f8c4",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/cron-and-cache.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238326,
+    "ast_hash": "7a61fdb4b841961dc8527b7d85155860",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/debugging.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238343,
+    "ast_hash": "01498ab7898e6fafdb1767a7053de238",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/multisite.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238362,
+    "ast_hash": "b546758c233fe2559d4798401407a224",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/packages-and-updates.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238379,
+    "ast_hash": "1057ba34cfc69047c64971149e2a5256",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/safety.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.22384,
+    "ast_hash": "dfe00171249c7b77cad09955946a75ff",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wp-wpcli-and-ops/references/search-replace.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.223842,
+    "ast_hash": "9f957cad50e4db497824d2f767bb3688",
+    "semantic_hash": ""
+  },
+  ".agents/skills/wpds/SKILL.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238433,
+    "ast_hash": "a8a93937add1840dddbb19d6032365d5",
+    "semantic_hash": ""
+  },
+  ".agents/woocommerce-update-init.md": {
+    "mtime": 1790633557.824984,
+    "seen": 1791323394.223845,
+    "ast_hash": "723458170fa8ba51dbd3ed77776da9a0",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/create-block.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238467,
+    "ast_hash": "60cd375fc8f82a1c52c36e2ad58c1d6d",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/wp-lint.md": {
+    "mtime": 1774968138.0,
+    "seen": 1791323394.2238483,
+    "ast_hash": "050096af95e558b0ddd4804413aad446",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1790631380.0362313,
+    "seen": 1791323394.22385,
+    "ast_hash": "0c67c572cae85dee9b80a76fac398143",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-28-bulk-cogs-editor-update.md": {
+    "mtime": 1790631368.7602317,
+    "seen": 1791323394.2238517,
+    "ast_hash": "4317df3e882cf47b385f13ae4beb979a",
+    "semantic_hash": ""
+  },
+  "readme.txt": {
+    "mtime": 1790603354.0743856,
+    "seen": 1791323394.2238536,
+    "ast_hash": "189f6c389ef702b380671892b9382118",
+    "semantic_hash": ""
   }
 }
