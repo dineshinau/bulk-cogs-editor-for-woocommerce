@@ -91,8 +91,13 @@ class DKBCE_Admin_Functions {
 			return;
 		}
 
-		wp_enqueue_style( 'dkbce-admin', DKBCE_PLUGIN_URL . 'admin/assets/css/bulk-cogs-editor.css', array(), DKBCE_VERSION );
-		wp_enqueue_script( 'dkbce-admin', DKBCE_PLUGIN_URL . 'admin/assets/js/bulk-cogs-editor.js', array(), DKBCE_VERSION, true );
+		$script_asset_path   = DKBCE_PLUGIN_DIR . 'assets/js/bulk-cogs-editor.min.asset.php';
+		$script_asset        = file_exists( $script_asset_path ) ? require $script_asset_path : array();
+		$script_version      = isset( $script_asset['version'] ) ? $script_asset['version'] : DKBCE_VERSION;
+		$script_dependencies = isset( $script_asset['dependencies'] ) ? $script_asset['dependencies'] : array();
+
+		wp_enqueue_style( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/css/bulk-cogs-editor.min.css', array(), DKBCE_VERSION );
+		wp_enqueue_script( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/js/bulk-cogs-editor.min.js', $script_dependencies, $script_version, true );
 
 		$operation_id = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
 		$operation    = $operation_id ? $this->store->get( $operation_id ) : false;
