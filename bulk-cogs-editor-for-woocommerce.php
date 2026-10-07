@@ -59,6 +59,9 @@ define( 'DKBCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
  * @return void
  */
 function dkbce_load_plugin_files(): void {
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-cogs-service.php';
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-operation-store.php';
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-bulk-processor.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-functions.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-hooks.php';
 	DKBCE_Admin_Hooks::get_instance();
