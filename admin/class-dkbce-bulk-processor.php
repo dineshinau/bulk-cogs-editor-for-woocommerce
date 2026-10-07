@@ -50,8 +50,7 @@ class DKBCE_Bulk_Processor {
 			return false;
 		}
 
-		as_enqueue_async_action( self::HOOK, array( $operation_id ), self::GROUP, true );
-		return true;
+		return (bool) as_enqueue_async_action( self::HOOK, array( $operation_id ), self::GROUP, false );
 	}
 
 	/**
@@ -166,11 +165,12 @@ class DKBCE_Bulk_Processor {
 				continue;
 			}
 
-			$outcome                  = $this->process_product( $product_id, $state );
+			$outcome = $this->process_product( $product_id, $state );
 			if ( 'deferred' === $outcome['status'] ) {
-				if ( function_exists( 'as_schedule_single_action' ) ) {
-					as_schedule_single_action( time() + 5, self::HOOK, array( $state['operation_id'] ), self::GROUP, false );
-				} else {
+				$retry_action = function_exists( 'as_schedule_single_action' )
+					? as_schedule_single_action( time() + 5, self::HOOK, array( $state['operation_id'] ), self::GROUP, false )
+					: 0;
+				if ( ! $retry_action ) {
 					$state['error_summary'] = __( 'The background queue became unavailable. Some changes may already have been applied.', 'bulk-cogs-editor-for-woocommerce' );
 					$this->finish_operation( $state, 'failed' );
 				}
@@ -213,7 +213,7 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	private function apply_summary( &$state ) {
-		$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
+		$summary            = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
 		$state['processed'] = $summary['processed'];
 		$state['succeeded'] = $summary['succeeded'];
 		$state['skipped']   = $summary['skipped'];
@@ -258,13 +258,16 @@ class DKBCE_Bulk_Processor {
 	/**
 	 * Acquire a short-lived per-product lock to serialize concurrent operations.
 	 *
-	 * @param int $product_id Product ID.
+	 * @param int    $product_id Product ID.
 	 * @param string $operation_id Operation UUID.
 	 * @return bool
 	 */
 	private function acquire_product_lock( $product_id, $operation_id ) {
-		$key = 'dkbce_product_lock_' . absint( $product_id );
-		$lock = array( 'operation_id' => $operation_id, 'created_at' => time() );
+		$key  = 'dkbce_product_lock_' . absint( $product_id );
+		$lock = array(
+			'operation_id' => $operation_id,
+			'created_at'   => time(),
+		);
 		if ( add_option( $key, $lock, '', false ) ) {
 			return true;
 		}
@@ -287,7 +290,10 @@ class DKBCE_Bulk_Processor {
 	 */
 	private function process_product( $product_id, $state ) {
 		if ( ! $this->acquire_product_lock( $product_id, $state['operation_id'] ) ) {
-			return array( 'status' => 'deferred', 'message' => '' );
+			return array(
+				'status'  => 'deferred',
+				'message' => '',
+			);
 		}
 
 		try {

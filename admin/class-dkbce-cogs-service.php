@@ -368,16 +368,16 @@ class DKBCE_COGS_Service {
 
 		$types = $this->get_product_types();
 		return array(
-			'id'      => $product->get_id(),
-			'name'    => $product->get_name(),
-			'sku'     => $product->get_sku(),
-			'type'    => $product->get_type(),
+			'id'         => $product->get_id(),
+			'name'       => $product->get_name(),
+			'sku'        => $product->get_sku(),
+			'type'       => $product->get_type(),
 			'type_label' => isset( $types[ $product->get_type() ] ) ? $types[ $product->get_type() ] : $product->get_type(),
-			'current' => $result['current'],
-			'new'     => $result['new'],
-			'change'  => $change,
-			'status'  => $result['status'],
-			'reason'  => isset( $result['reason'] ) ? $result['reason'] : '',
+			'current'    => $result['current'],
+			'new'        => $result['new'],
+			'change'     => $change,
+			'status'     => $result['status'],
+			'reason'     => isset( $result['reason'] ) ? $result['reason'] : '',
 		);
 	}
 

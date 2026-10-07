@@ -73,4 +73,6 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 = 1.0.0 (2026-09-28) =
 * Initial release.
-* Added: Bulk COGS editing for WooCommerce products.
+* Added: Admin-only product filters, COGS preview, and six bulk update actions.
+* Added: Action Scheduler batches, progress reporting, error summaries, and cancellation.
+* Added: Conditional brand taxonomy detection and separate variation handling.

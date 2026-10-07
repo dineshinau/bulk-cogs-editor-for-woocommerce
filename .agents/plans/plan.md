@@ -1,5 +1,7 @@
-# Update Plan — v1.0.0 → v1.1.0
+# Archived Pre-Implementation Plan — v1.0.0 → v1.1.0
 <!-- lwdt: 202609282135 -->
+
+> This checklist describes an earlier design draft and is superseded by the V1 implementation. In particular, its proposed fallback COGS meta keys and direct meta-key handling were not used; the editor now requires WooCommerce's supported product COGS API. See `readme.txt`, `AGENTS.md`, and `.agents/features.md` for current behavior.
 
 ## Objective
 Transition Bulk COGS Editor for WooCommerce from its initial scaffolding state to a fully operational, production-grade bulk Cost of Goods Sold (COGS) editor. This update builds out the admin product list view under Products > Bulk COGS Editor, provides robust COGS meta key handling across standard WooCommerce inventory plugins (`_cogs_cost`, `_wc_cog_cost`, `_cost_of_goods`), implements an AJAX batch-saving engine with nonce and capability verification, and establishes PHPUnit test coverage.

@@ -145,6 +145,7 @@ class DKBCE_Admin_Functions {
 					'ariaSelect'       => __( 'Select product %d', 'bulk-cogs-editor-for-woocommerce' ),
 					'progressLabel'    => __( 'COGS update progress', 'bulk-cogs-editor-for-woocommerce' ),
 					'snapshotting'     => __( 'Collecting matching products…', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %1$d: product ID, %2$s: safe error summary. */
 					'productError'     => __( 'Product %1$d: %2$s', 'bulk-cogs-editor-for-woocommerce' ),
 					'emptyValue'       => __( 'Empty', 'bulk-cogs-editor-for-woocommerce' ),
 					'amountLabel'      => __( 'Amount', 'bulk-cogs-editor-for-woocommerce' ),
@@ -382,6 +383,7 @@ endif;
 				'filters'   => $request['filters'],
 				'operation' => $request['operation'],
 				'total'     => $result['count'],
+				'row_ids'   => array_map( 'absint', wp_list_pluck( $result['rows'], 'id' ) ),
 			),
 			10 * MINUTE_IN_SECONDS
 		);
@@ -422,8 +424,11 @@ endif;
 			wp_send_json_error( array( 'message' => __( 'The selected product scope is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 		$selected_only_value = isset( $_POST['selected_only'] ) && is_string( $_POST['selected_only'] ) ? sanitize_text_field( wp_unslash( $_POST['selected_only'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$selected_only       = '1' === $selected_only_value;
-		$state               = array(
+		if ( '' !== $selected_only_value && ! in_array( $selected_only_value, array( '0', '1' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'The selected product scope is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		$selected_only = '1' === $selected_only_value;
+		$state         = array(
 			'operation_id'     => $operation_id,
 			'user_id'          => get_current_user_id(),
 			'created_at'       => time(),
@@ -464,6 +469,9 @@ endif;
 			$selected_ids = array_values( array_unique( $selected_ids ) );
 			if ( ! $selected_ids ) {
 				wp_send_json_error( array( 'message' => __( 'Select at least one product in the preview table.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			if ( array_diff( $selected_ids, $preview['row_ids'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'The selected products do not match the preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 			foreach ( $selected_ids as $product_id ) {
 				$product = wc_get_product( $product_id );
