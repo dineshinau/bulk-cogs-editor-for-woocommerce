@@ -202,10 +202,18 @@ $wp-blue: #2271b1;
 	gap: 5px;
 	padding: 3px 7px;
 	border-radius: 3px;
-	background: #fcf0f1;
-	color: #b32d2e;
 	font-weight: 600;
 	white-space: nowrap;
+
+	&.is-increase {
+		background: #edfaef;
+		color: #008a20;
+	}
+
+	&.is-decrease {
+		background: #fcf0f1;
+		color: #b32d2e;
+	}
 }
 
 .dkbce-change-arrow {

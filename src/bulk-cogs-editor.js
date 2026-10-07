@@ -221,9 +221,7 @@
 		const badge = document.createElement( 'span' );
 		badge.className =
 			'dkbce-change-badge ' +
-			( 'up' === item.change_direction
-				? 'is-increase'
-				: 'is-decrease' );
+			( 'up' === item.change_direction ? 'is-increase' : 'is-decrease' );
 		const arrow = document.createElement( 'span' );
 		arrow.className = 'dkbce-change-arrow';
 		arrow.setAttribute( 'aria-hidden', 'true' );
