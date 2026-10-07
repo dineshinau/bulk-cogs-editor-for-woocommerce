@@ -6,6 +6,8 @@
 # Node artifact files
 node_modules/
 phpcs-results/
+test-results/
+playwright-report/
 
 # Log files
 *.log

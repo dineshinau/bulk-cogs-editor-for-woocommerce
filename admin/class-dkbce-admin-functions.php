@@ -267,7 +267,7 @@ endif;
 						<label class="dkbce-action-card"><input type="radio" name="dkbce-action" value="<?php echo esc_attr( $action ); ?>" <?php checked( 'set', $action ); ?>><span><strong><?php echo esc_html( $label ); ?></strong><small><?php echo esc_html( $this->get_action_description( $action ) ); ?></small></span></label><?php endforeach; ?>
 				</div>
 				<p id="dkbce-value-wrap"><label for="dkbce-value" id="dkbce-value-label"><?php esc_html_e( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-value" type="number" min="0" step="any" inputmode="decimal"><span id="dkbce-value-suffix"></span></p>
-				<p class="description"><?php esc_html_e( 'Variations are treated as separate products and their own COGS values are changed. Relative actions skip products whose COGS is empty; a stored zero remains a real value.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Variations are treated as separate products and their own COGS values are changed. WooCommerce stores a COGS value of zero as empty, so relative actions skip it.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 			</section>
 
 			<section class="dkbce-section" aria-labelledby="dkbce-preview-title">
