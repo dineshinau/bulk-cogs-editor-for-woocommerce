@@ -19,12 +19,6 @@ class DKBCE_Admin_Functions {
 	private static $ins = null;
 
 	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Register submenu page under Products.
 	 *
 	 * @return void
