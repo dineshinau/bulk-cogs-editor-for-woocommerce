@@ -1,24 +1,40 @@
-const path = require( 'path' );
-const wordpressConfig = require( '@wordpress/scripts/config/webpack.config' );
+/** @format */
+/**
+ * External dependencies
+ */
+const path = require('path');
 
-const cssPlugin = wordpressConfig.plugins.find(
-	( plugin ) => 'MiniCssExtractPlugin' === plugin.constructor.name
-);
+// Import the original config from the @wordpress/scripts package.
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const WooCommerceDependencyExtractionWebpackPlugin = require('@woocommerce/dependency-extraction-webpack-plugin');
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-if ( cssPlugin ) {
-	cssPlugin.options.filename = 'css/[name].min.css';
-}
-
-module.exports = {
-	...wordpressConfig,
-	entry: {
-		'bulk-cogs-editor': path.resolve( __dirname, 'src/index.js' ),
-	},
-	output: {
-		...wordpressConfig.output,
+// Export configuration.
+const webpackConfig = {
+    ...defaultConfig,
+    mode: NODE_ENV,
+    devtool: NODE_ENV != 'production' ? 'inline-source-map' : false,
+    entry: {
+		'bulk-cogs-editor': [ './src/bulk-cogs-editor.js', './src/bulk-cogs-editor.scss' ],
+    },
+    output: {
+		filename: '[name].js',
 		path: path.resolve( __dirname, 'assets' ),
-		filename: 'js/[name].min.js',
-		chunkFilename: 'js/[name].min.js',
-		clean: false,
 	},
+    watchOptions: {
+      ignored: /node_modules/,
+    },
+    plugins: [
+        ...defaultConfig.plugins, // Preserve any existing plugins from the default config.
+        new WooCommerceDependencyExtractionWebpackPlugin(),
+        new MiniCssExtractPlugin( {
+			filename: `[name].css`,
+		} ),
+     ],
 };
+
+if (webpackConfig.mode !== 'production') {
+	webpackConfig.devtool = 'inline-source-map';
+}
+module.exports = webpackConfig;

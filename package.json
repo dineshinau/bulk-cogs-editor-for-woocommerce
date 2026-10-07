@@ -4,9 +4,8 @@
       "scripts": {
          "update": "npx npm-check-updates -u",
          "npm_install": "rm -rf package-lock.json && npm i --force",
-         "start": "wp-scripts start --config webpack.config.js",
-         "build": "wp-scripts build --config webpack.config.js",
-         "build:assets": "npm run build",
+         "start": "wp-scripts start",
+		   "build": "wp-scripts build",
          "check-engines": "wp-scripts check-engines",
          "packages-update": "wp-scripts packages-update",
          "phpcbf": "cd $VAR && $PWD/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=$INIT_CWD/phpcs.xml --severity=1 --ignore-annotations --extensions=php,html $INIT_CWD/",
