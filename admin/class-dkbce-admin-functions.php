@@ -311,9 +311,6 @@ endif;
 	 * @return void
 	 */
 	private function authorize_ajax() {
-		if ( ! isset( $_REQUEST['nonce'] ) || ! is_string( $_REQUEST['nonce'] ) || ! check_ajax_referer( self::NONCE, 'nonce', false ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
-		}
 		if ( ! current_user_can( 'edit_others_products' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission to manage product COGS.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
 		}
@@ -323,19 +320,28 @@ endif;
 	}
 
 	/**
+	 * Return a safe JSON response when an AJAX nonce is invalid.
+	 *
+	 * @return void
+	 */
+	private function send_nonce_error() {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
+	}
+
+	/**
 	 * Get validated filter and action data from the request.
 	 *
+	 * @param mixed $raw_filters Raw product filters.
+	 * @param mixed $action Raw COGS action.
+	 * @param mixed $value Raw action value.
 	 * @return array|WP_Error
 	 */
-	private function get_validated_request() {
-		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service unslashes, sanitizes, and validates every field.
-		$filters     = $this->service->validate_filters( $raw_filters );
+	private function get_validated_request( $raw_filters, $action, $value ) {
+		$filters = $this->service->validate_filters( $raw_filters );
 		if ( is_wp_error( $filters ) ) {
 			return $filters;
 		}
 
-		$action    = isset( $_POST['action_type'] ) ? $_POST['action_type'] : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the action.
-		$value     = isset( $_POST['action_value'] ) ? $_POST['action_value'] : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the numeric value.
 		$operation = $this->service->validate_action( $action, $value );
 		if ( is_wp_error( $operation ) ) {
 			return $operation;
@@ -353,8 +359,11 @@ endif;
 	 * @return void
 	 */
 	public function ajax_get_products() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
 		$this->authorize_ajax();
-		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The service unslashes, validates, and sanitizes each field.
+		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The service unslashes, validates, and sanitizes each field.
 		$filters     = $this->service->validate_filters( $raw_filters );
 		if ( is_wp_error( $filters ) ) {
 			wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
@@ -375,8 +384,14 @@ endif;
 	 * @return void
 	 */
 	public function ajax_preview() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
 		$this->authorize_ajax();
-		$request = $this->get_validated_request();
+		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service unslashes, sanitizes, and validates each field.
+		$action      = isset( $_POST['action_type'] ) ? $_POST['action_type'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the action.
+		$value       = isset( $_POST['action_value'] ) ? $_POST['action_value'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the numeric value.
+		$request     = $this->get_validated_request( $raw_filters, $action, $value );
 		if ( is_wp_error( $request ) ) {
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
@@ -411,12 +426,15 @@ endif;
 	 * @return void
 	 */
 	public function ajax_apply() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
 		$this->authorize_ajax();
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Background processing is unavailable. No products were changed.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
 		}
 
-		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
 		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
@@ -427,10 +445,10 @@ endif;
 		delete_transient( 'dkbce_preview_' . $token );
 
 		$operation_id = wp_generate_uuid4();
-		if ( isset( $_POST['selected_only'] ) && ! is_string( $_POST['selected_only'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['selected_only'] ) && ! is_string( $_POST['selected_only'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'The selected product scope is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
-		$selected_only_value = isset( $_POST['selected_only'] ) && is_string( $_POST['selected_only'] ) ? sanitize_text_field( wp_unslash( $_POST['selected_only'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$selected_only_value = isset( $_POST['selected_only'] ) && is_string( $_POST['selected_only'] ) ? sanitize_text_field( wp_unslash( $_POST['selected_only'] ) ) : '';
 		if ( '' !== $selected_only_value && ! in_array( $selected_only_value, array( '0', '1' ), true ) ) {
 			wp_send_json_error( array( 'message' => __( 'The selected product scope is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
@@ -462,7 +480,7 @@ endif;
 		);
 
 		if ( $selected_only ) {
-			$raw_selected_ids = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each selected ID is validated as digits and converted with absint below.
+			$raw_selected_ids = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each selected ID is validated as digits and converted with absint below.
 			if ( count( $raw_selected_ids ) > DKBCE_COGS_Service::PREVIEW_LIMIT ) {
 				wp_send_json_error( array( 'message' => __( 'The selected product list is too large. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
@@ -515,8 +533,11 @@ endif;
 	 * @return void
 	 */
 	public function ajax_progress() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
 		$this->authorize_ajax();
-		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ) {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
@@ -533,8 +554,11 @@ endif;
 	 * @return void
 	 */
 	public function ajax_cancel() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
 		$this->authorize_ajax();
-		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ) {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}

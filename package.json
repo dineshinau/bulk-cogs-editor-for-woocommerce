@@ -2,19 +2,23 @@
       "name": "bulk-cogs-editor-for-woocommerce",
       "version": "1.0.0",
       "scripts": {
-         "update": "npx npm-check-updates -u",
-         "npm_install": "rm -rf package-lock.json && npm i --force",
-         "start": "wp-scripts start",
-		   "build": "wp-scripts build",
-         "check-engines": "wp-scripts check-engines",
-         "packages-update": "wp-scripts packages-update",
-         "phpcbf": "cd $VAR && $PWD/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=$INIT_CWD/phpcs.xml --severity=1 --extensions=php,html $INIT_CWD/",
-         "phpcs": "mkdir -p phpcs-results && cd $VAR && $PWD/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcs --standard=$INIT_CWD/phpcs.xml --severity=1 --report-source --report-xml=$INIT_CWD/phpcs-results/report-$(TZ=\"${PHPCS_TIMEZONE:-Asia/Kolkata}\" date \"+%Y-%m-%dT%H:%M:%S%z\").xml --extensions=php,html $INIT_CWD/",
-         "make-pot": "php -d xdebug.max_nesting_level=512 $(which wp) i18n make-pot --exclude=\"node_modules/,languages/,.gitignore,.gitmodules,.gulpfile.js,.git,.webpack.config.js,package,json,package-lock.json,phpcs.xml,phpmd.xml,license.txt,readme.txt,assets/\" --headers='{\"Report-Msgid-Bugs-To\":\"https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/\", \"language-team\":\"LANGUAGE <EMAIL@ADDRESS>\"}' . languages/bulk-cogs-editor-for-woocommerce.pot",
-         "zip": "rm -f $npm_package_name.zip && npm run make-pot && mkdir -p $npm_package_name && cp -r admin/ languages/ index.php readme.txt $npm_package_name.php $npm_package_name && zip -r $npm_package_name.zip $npm_package_name && rm -r $npm_package_name"
+            "update": "npx npm-check-updates -u",
+            "npm_install": "rm -rf package-lock.json && npm i --force",
+            "start": "wp-scripts start",
+            "build": "wp-scripts build",
+            "check-engines": "wp-scripts check-engines",
+            "packages-update": "wp-scripts packages-update",
+            "phpcbf": "cd $VAR && $PWD/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=$INIT_CWD/phpcs.xml --severity=1 --extensions=php,html $INIT_CWD/",
+            "phpcs": "mkdir -p phpcs-results && cd $VAR && $PWD/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcs --standard=$INIT_CWD/phpcs.xml --severity=1 --report-source --report-xml=$INIT_CWD/phpcs-results/report-$(TZ=\"${PHPCS_TIMEZONE:-Asia/Kolkata}\" date \"+%Y-%m-%dT%H:%M:%S%z\").xml --extensions=php,html $INIT_CWD/",
+            "make-pot": "php -d xdebug.max_nesting_level=512 $(which wp) i18n make-pot --exclude=\"node_modules/,languages/,.gitignore,.gitmodules,.gulpfile.js,.git,.webpack.config.js,package,json,package-lock.json,phpcs.xml,phpmd.xml,license.txt,readme.txt,assets/\" --headers='{\"Report-Msgid-Bugs-To\":\"https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/\", \"language-team\":\"LANGUAGE <EMAIL@ADDRESS>\"}' . languages/bulk-cogs-editor-for-woocommerce.pot",
+            "zip": "rm -f $npm_package_name.zip && npm run make-pot && mkdir -p $npm_package_name && cp -r admin/ assets/ languages/ src/ index.php package.json readme.txt webpack.config.js $npm_package_name.php $npm_package_name && zip -r $npm_package_name.zip $npm_package_name && rm -r $npm_package_name"
       },
       "dependencies": {
-         "@woocommerce/dependency-extraction-webpack-plugin": "^5.1.0",
-		   "@wordpress/scripts": "^36.1.0"
+            "@woocommerce/dependency-extraction-webpack-plugin": "^5.1.0",
+            "@wordpress/scripts": "^36.1.0"
+      },
+      "devDependencies": {
+            "@playwright/cli": "^0.1.22",
+            "@playwright/test": "^1.64.0"
       }
-   }
+}
