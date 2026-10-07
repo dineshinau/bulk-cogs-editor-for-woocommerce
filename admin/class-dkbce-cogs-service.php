@@ -366,9 +366,12 @@ class DKBCE_COGS_Service {
 			$change = $result['new'] - $result['current'];
 		}
 
-		$types = $this->get_product_types();
+		$types    = $this->get_product_types();
+		$edit_url = get_edit_post_link( $product->get_id(), 'raw' );
+
 		return array(
 			'id'         => $product->get_id(),
+			'edit_url'   => $edit_url ? esc_url_raw( $edit_url ) : '',
 			'name'       => $product->get_name(),
 			'sku'        => $product->get_sku(),
 			'type'       => $product->get_type(),

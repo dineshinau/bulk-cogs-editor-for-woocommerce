@@ -165,6 +165,19 @@
 		return cell;
 	}
 
+	function appendProductLinkCell( row, value, url ) {
+		const cell = document.createElement( 'td' );
+		if ( url ) {
+			const link = document.createElement( 'a' );
+			link.href = url;
+			link.textContent = value;
+			cell.appendChild( link );
+		} else {
+			cell.textContent = value;
+		}
+		row.appendChild( cell );
+	}
+
 	function renderPreview( data ) {
 		state.previewId = data.preview_id;
 		state.count = data.count;
@@ -217,8 +230,12 @@
 			);
 			selectCell.appendChild( checkbox );
 			row.appendChild( selectCell );
-			appendCell( row, String( item.id ) );
-			appendCell( row, item.name || DKBCE.i18n.noName );
+			appendProductLinkCell( row, String( item.id ), item.edit_url );
+			appendProductLinkCell(
+				row,
+				item.name || DKBCE.i18n.noName,
+				item.edit_url
+			);
 			appendCell( row, item.sku || DKBCE.i18n.noSku );
 			appendCell( row, item.type_label || item.type || '—' );
 			appendCell(
