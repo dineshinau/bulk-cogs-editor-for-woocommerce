@@ -11,8 +11,7 @@ defined( 'ABSPATH' ) || exit; // Prevent direct file access.
  * Admin functions.
  */
 class DKBCE_Admin_Functions {
-	const CAPABILITY = 'edit_others_products';
-	const NONCE      = 'dkbce_bulk_cogs';
+	const NONCE = 'dkbce_bulk_cogs';
 
 	/** COGS filtering and calculations.
 	 *
@@ -54,7 +53,7 @@ class DKBCE_Admin_Functions {
 			'edit.php?post_type=product',
 			__( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ),
 			__( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ),
-			self::CAPABILITY,
+			'edit_others_products',
 			'bulk-cogs-editor',
 			array( $this, 'render_bulk_cogs_editor_page' ),
 			2
@@ -181,7 +180,7 @@ class DKBCE_Admin_Functions {
 	 * @return void
 	 */
 	public function render_bulk_cogs_editor_page(): void {
-		if ( ! current_user_can( self::CAPABILITY ) ) {
+		if ( ! current_user_can( 'edit_others_products' ) ) {
 			wp_die( esc_html__( 'You are not allowed to manage product costs.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
@@ -315,7 +314,7 @@ endif;
 		if ( ! isset( $_REQUEST['nonce'] ) || ! is_string( $_REQUEST['nonce'] ) || ! check_ajax_referer( self::NONCE, 'nonce', false ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
 		}
-		if ( ! current_user_can( self::CAPABILITY ) ) {
+		if ( ! current_user_can( 'edit_others_products' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission to manage product COGS.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
 		}
 		if ( ! $this->service->is_cogs_available() ) {
