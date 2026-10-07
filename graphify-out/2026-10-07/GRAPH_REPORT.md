@@ -1,42 +1,42 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-07)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-06)
 
 ## Corpus Check
-- 206 files · ~145,986 words
+- 196 files · ~74,029 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 11 file(s) not represented in the graph (top: (none) 5, .xml 2, .css 2)
+- Unclassified: 8 file(s) not represented in the graph (top: (none) 5, .xml 2, .pot 1)
 
 ## Summary
-- 1841 nodes · 1982 edges · 212 communities (150 shown, 62 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.9)
+- 1753 nodes · 1807 edges · 187 communities (128 shown, 59 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.92)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `30e1b63c`
+- Built from commit: `2e6d63e1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- skills
-- project
+- audit-report.schema.json
+- triage.schema.json
 - detect_wp_project.mjs
 - tooling
 - properties
 - properties
 - properties
-- gutenberg
+- core
 - Cookies
 - ai-generate-updates.mjs
 - scripts
 - skillpack-install.mjs
-- DKBCE_Admin_Functions
+- Project Memory — Bulk COGS Editor for WooCommerce
 - update-upstream-indices.mjs
 - Accessibility (a11y)
 - SEO optimization
 - skillpack-build.mjs
-- src/bulk-cogs-editor.js
+- perf_inspect.mjs
 - GEMINI.md - Antigravity Kit
 - Markdown Writing Guidelines
-- WCAG 2.2 Quick Reference
+- Accessibility Code Patterns
 - Running Tests
 - Code Quality Commands
 - PHP Linting Patterns and Common Issues
@@ -48,7 +48,7 @@
 - Sentence Case for UI Text
 - Procedure
 - Markdown Linting
-- Archived Pre-Implementation Plan — v1.0.0 → v1.1.0
+- Update Plan — v1.0.0 → v1.1.0
 - Type Annotations for Static Analysis
 - Procedure
 - Procedure
@@ -63,7 +63,7 @@
 - Running Custom Playwright Code
 - Quick Reference
 - GitHub Copilot Instructions - Antigravity Kit (WordPress Edition)
-- Plugin feature registry
+- Feature Map
 - Tracing
 - GitHub Copilot Instructions - Antigravity Kit (WordPress Edition)
 - Async PHP Patterns
@@ -72,7 +72,7 @@
 - Modern PHP 8.3+ Features
 - Testing & Quality Assurance
 - phpunit-best-practices/SKILL.md
-- Working with Hooks
+- backend-dev-guide.md
 - Security Patterns for WooCommerce
 - WooCommerce Global Objects and Functions
 - Rules
@@ -93,7 +93,7 @@
 - WordPress Router
 - Playground CLI command cheatsheet
 - Routes and Endpoints (summary)
-- playwright-cli/SKILL.md
+- Video Recording
 - Preventing Accidental Data Loss
 - PHP registration quick guide
 - Debugging quick routes
@@ -127,12 +127,11 @@
 - Safety rules (WP-CLI)
 - WooCommerce Expert Agent
 - WordPress Expert Agent
-- assets/bulk-cogs-editor.js
 - Common Patterns
-- DKBCE_COGS_Service
+- Use Cases
 - WooCommerce Development Cycle
 - Attributes and serialization
-- .save
+- Deprecations and migrations
 - Tooling and testing
 - Patterns (filesystem patterns)
 - Directives quick reference (high level)
@@ -147,7 +146,7 @@
 - WordPress Frontend Expert
 - frontend-design/SKILL.md
 - WooCommerce Copy Guidelines
-- DKBCE_Bulk_Processor
+- Supports and wrapper attributes
 - Templates and template parts
 - Debugging checklist
 - Plugin structure and loading
@@ -199,78 +198,55 @@
 - settings-api.md
 - create-block.md
 - wp-lint.md
-- phpstan_inspect.mjs
-- DKBCE_Operation_Store
-- Commands
-- notes
-- tool
-- properties
-- Accessibility Code Patterns
-- Operable
-- type
-- Common ARIA patterns
-- Understandable
-- notes
-- core
-- properties
-- Codex project instructions
-- audit-report.schema.json
-- WP Block Development
-- triage.schema.json
-- category
-- Perceivable
-- Common issues by impact
-- fix
-- standard
 
 ## God Nodes (most connected - your core abstractions)
-1. `DKBCE_Admin_Functions` - 18 edges
-2. `main()` - 15 edges
-3. `PHP Coding Standards — WordPress + WooCommerce Plugin` - 15 edges
-4. `DKBCE_COGS_Service` - 14 edges
-5. `Running Custom Playwright Code` - 13 edges
-6. `Code Quality Commands` - 13 edges
-7. `PHP Linting Patterns and Common Issues` - 13 edges
-8. `main()` - 12 edges
-9. `DKBCE_Bulk_Processor` - 12 edges
-10. `Procedure` - 12 edges
+1. `main()` - 15 edges
+2. `PHP Coding Standards — WordPress + WooCommerce Plugin` - 15 edges
+3. `Running Custom Playwright Code` - 13 edges
+4. `Code Quality Commands` - 13 edges
+5. `PHP Linting Patterns and Common Issues` - 13 edges
+6. `main()` - 12 edges
+7. `Procedure` - 12 edges
+8. `scripts` - 11 edges
+9. `Browser Automation with playwright-cli` - 11 edges
+10. `Async PHP Patterns` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Task 5: AJAX Batch Saving & Security Hardening` --references--> `DKBCE_Admin_Hooks`  [INFERRED]
   docs/superpowers/plans/2026-09-28-bulk-cogs-editor-update.md → admin/class-dkbce-admin-hooks.php
-- `Task 3: Admin Product Query & Filtering` --references--> `s()`  [INFERRED]
-  docs/superpowers/plans/2026-09-28-bulk-cogs-editor-update.md → assets/bulk-cogs-editor.js
 - `Bulk COGS Editor Implementation Plan` --references--> `DKBCE_Admin_Functions`  [INFERRED]
   docs/superpowers/plans/2026-09-28-bulk-cogs-editor-update.md → admin/class-dkbce-admin-functions.php
 - `Bulk COGS Editor Implementation Plan` --references--> `DKBCE_Admin_Hooks`  [INFERRED]
   docs/superpowers/plans/2026-09-28-bulk-cogs-editor-update.md → admin/class-dkbce-admin-hooks.php
-- `dkbce_load_plugin_files()` --calls--> `DKBCE_Admin_Hooks`  [INFERRED]
-  bulk-cogs-editor-for-woocommerce.php → admin/class-dkbce-admin-hooks.php
+- `Active Hooks (summary)` --references--> `dkbce_load_plugin_files()`  [INFERRED]
+  CLAUDE.md → bulk-cogs-editor-for-woocommerce.php
+- `Active Hooks (summary)` --references--> `dkbce_declare_hpos_compatibility()`  [INFERRED]
+  CLAUDE.md → bulk-cogs-editor-for-woocommerce.php
 
 ## Import Cycles
 - None detected.
 
-## Communities (212 total, 62 thin omitted)
+## Communities (187 total, 59 thin omitted)
 
-### Community 0 - "skills"
-Cohesion: 0.18
-Nodes (11): description, type, agent, skills, timestamp, description, items, type (+3 more)
+### Community 0 - "audit-report.schema.json"
+Cohesion: 0.05
+Nodes (44): description, type, description, $id, required, type, description, items (+36 more)
 
-### Community 1 - "project"
-Cohesion: 0.18
-Nodes (11): enum, items, type, type, additionalProperties, properties, required, type (+3 more)
+### Community 1 - "triage.schema.json"
+Cohesion: 0.05
+Nodes (43): additionalProperties, items, type, $id, enum, type, items, type (+35 more)
 
 ### Community 2 - "detect_wp_project.mjs"
-Cohesion: 0.06
-Nodes (53): assert(), main(), usage(), validateSkillName(), DEFAULT_IGNORES, existsDir(), findFilesRecursive(), main() (+45 more)
+Cohesion: 0.07
+Nodes (54): assert(), main(), usage(), validateSkillName(), DEFAULT_IGNORES, existsDir(), findFilesRecursive(), main() (+46 more)
 
 ### Community 3 - "tooling"
 Cohesion: 0.05
 Nodes (39): type, type, type, type, type, type, type, additionalProperties (+31 more)
 
 ### Community 4 - "properties"
-Cohesion: 0.14
-Nodes (14): description, type, description, type, properties, description, minimum, type (+6 more)
+Cohesion: 0.08
+Nodes (24): description, enum, type, description, type, description, type, description (+16 more)
 
 ### Community 5 - "properties"
 Cohesion: 0.06
@@ -280,9 +256,9 @@ Nodes (36): additionalProperties, type, additionalProperties, type, additionalPr
 Cohesion: 0.10
 Nodes (20): minimum, type, minimum, type, minimum, type, minimum, type (+12 more)
 
-### Community 7 - "gutenberg"
-Cohesion: 0.17
-Nodes (12): additionalProperties, properties, type, gutenberg, source, value, versions, type (+4 more)
+### Community 7 - "core"
+Cohesion: 0.10
+Nodes (20): additionalProperties, properties, type, additionalProperties, properties, type, core, gutenberg (+12 more)
 
 ### Community 8 - "Cookies"
 Cohesion: 0.06
@@ -293,24 +269,24 @@ Cohesion: 0.19
 Nodes (18): buildAnalysisPrompt(), buildUpdatePrompt(), callClaude(), detectChanges(), getUpstreamStateHash(), loadJson(), loadLastSyncState(), loadSkillContent() (+10 more)
 
 ### Community 10 - "scripts"
-Cohesion: 0.08
-Nodes (25): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, name, scripts, build, check-engines, make-pot (+17 more)
+Cohesion: 0.11
+Nodes (18): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, name, scripts, build, check-engines, make-pot (+10 more)
 
 ### Community 11 - "skillpack-install.mjs"
 Cohesion: 0.27
 Nodes (14): assert(), copyDir(), copyFileSyncPreserveMode(), getDestDir(), getSourceDir(), installTarget(), isSymlink(), listAvailableSkills() (+6 more)
 
-### Community 12 - "DKBCE_Admin_Functions"
-Cohesion: 0.09
-Nodes (12): DKBCE_Admin_Functions, DKBCE_Admin_Hooks, dkbce_load_plugin_files(), Bulk COGS Editor Implementation Plan, Global Constraints, Review Focus, Task 1: Environment & Requirements Harmonization, Task 2: COGS Metadata Helper Methods (+4 more)
+### Community 12 - "Project Memory — Bulk COGS Editor for WooCommerce"
+Cohesion: 0.07
+Nodes (21): DKBCE_Admin_Functions, DKBCE_Admin_Hooks, dkbce_declare_hpos_compatibility(), dkbce_load_plugin_files(), Active Hooks (summary), Coding Rules (non-negotiable), Current Update Cycle, Decisions & Context (+13 more)
 
 ### Community 13 - "update-upstream-indices.mjs"
 Cohesion: 0.32
 Nodes (11): decodeHtml(), fetchJson(), fetchText(), main(), mkdirp(), normalizeGutenbergReleases(), normalizeWpVersionCheckPayload(), parseWpGutenbergMapFromHtml() (+3 more)
 
 ### Community 14 - "Accessibility (a11y)"
-Cohesion: 0.20
-Nodes (10): Accessibility (a11y), ARIA usage (4.1.2), Automated testing, Conformance levels, Live regions (4.1.3), Manual testing, References, Robust (+2 more)
+Cohesion: 0.06
+Nodes (35): Accessibility (a11y), Accessible authentication (3.3.8) — new in 2.2, ARIA usage (4.1.2), Automated testing, Color contrast (1.4.3, 1.4.6), Common issues by impact, Conformance levels, Consistent help (3.2.6) — new in 2.2 (+27 more)
 
 ### Community 15 - "SEO optimization"
 Cohesion: 0.06
@@ -320,9 +296,9 @@ Nodes (34): Article, Breadcrumbs, Crawlability, Critical, FAQ, Font sizes, Headi
 Cohesion: 0.38
 Nodes (10): assert(), buildTarget(), copyDir(), copyFileSyncPreserveMode(), isSymlink(), listSkillDirs(), main(), parseArgs() (+2 more)
 
-### Community 17 - "src/bulk-cogs-editor.js"
-Cohesion: 0.23
-Nodes (20): ref_bulk_cogs_editor_css, actionLabel(), appendCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), filters(), getProducts() (+12 more)
+### Community 17 - "perf_inspect.mjs"
+Cohesion: 0.29
+Nodes (9): canRun(), existsFile(), main(), parseArgs(), runWp(), main(), parseArgs(), runWp() (+1 more)
 
 ### Community 18 - "GEMINI.md - Antigravity Kit"
 Cohesion: 0.06
@@ -332,9 +308,9 @@ Nodes (30): 1. Modular Skill Loading Protocol, 2. Enforcement Protocol, ⚠️ A
 Cohesion: 0.06
 Nodes (30): Auto-fix Doesn't Work, Changelog Files, CLAUDE.md Files, Code Blocks, Common Linting Errors and Fixes, Critical Rules, Directory Trees, Disabled Rules (+22 more)
 
-### Community 23 - "WCAG 2.2 Quick Reference"
-Cohesion: 0.18
-Nodes (8): Level A (minimum), Level AA (standard), Level AAA (enhanced), Sources, Success criteria by level, Testing tools, WCAG 2.2 Quick Reference, What changed from 2.1 to 2.2
+### Community 23 - "Accessibility Code Patterns"
+Cohesion: 0.07
+Nodes (25): Accessibility Code Patterns, ARIA tabs, Dragging movements, Error handling, Form labels, Live regions and notifications, Modal focus trap, Screen reader commands (+17 more)
 
 ### Community 24 - "Running Tests"
 Cohesion: 0.07
@@ -357,8 +333,8 @@ Cohesion: 0.08
 Nodes (23): 1. Enable Server Directive Processing, 2. Initialize Global State with `wp_interactivity_state()`, 3. Initialize Local Context with `wp_interactivity_data_wp_context()`, Ajax URLs and Nonces, Client Usage, Common Pitfalls, Complete Example: List with Server Rendering, Derived State Missing on Server (+15 more)
 
 ### Community 29 - "Browser Automation with playwright-cli"
-Cohesion: 0.20
-Nodes (10): Browser Automation with playwright-cli, Browser Sessions, Example: Debugging with DevTools, Example: Form submission, Example: Multi-tab workflow, Local installation, Open parameters, Quick start (+2 more)
+Cohesion: 0.10
+Nodes (20): Browser Automation with playwright-cli, Browser Sessions, Commands, Core, DevTools, Example: Debugging with DevTools, Example: Form submission, Example: Multi-tab workflow (+12 more)
 
 ### Community 30 - "PHP Coding Standards — WordPress + WooCommerce Plugin"
 Cohesion: 0.10
@@ -373,14 +349,14 @@ Cohesion: 0.11
 Nodes (19): 1. Proper Nouns, 2. Acronyms, 3. Brand Names, Buttons, Common UI Elements, Correct - Sentence Case, Examples, Exceptions (+11 more)
 
 ### Community 33 - "Procedure"
-Cohesion: 0.20
-Nodes (10): 0) Triage and locate blocks, 10) Tooling and verification commands, 1) Create a new block (if needed), 2) Ensure apiVersion 3 (WordPress 6.9+), 4) Update `block.json` safely, 5) Register the block (server-side preferred), 6) Implement edit/save/render patterns, 7) Inner blocks (block composition) (+2 more)
+Cohesion: 0.11
+Nodes (18): 0) Triage and locate blocks, 10) Tooling and verification commands, 1) Create a new block (if needed), 2) Ensure apiVersion 3 (WordPress 6.9+), 3) Pick the right block model, 4) Update `block.json` safely, 5) Register the block (server-side preferred), 6) Implement edit/save/render patterns (+10 more)
 
 ### Community 34 - "Markdown Linting"
 Cohesion: 0.11
 Nodes (18): Adding Language Specs to Code Blocks, Avoiding File Corruption, Basic Commands, Blank Lines Around Code Blocks, Breaking Long Lines, Character Encoding in Markdown Files, Common Markdown Linting Issues, Critical Rule (+10 more)
 
-### Community 35 - "Archived Pre-Implementation Plan — v1.0.0 → v1.1.0"
+### Community 35 - "Update Plan — v1.0.0 → v1.1.0"
 Cohesion: 0.12
 Nodes (16): 1.1 Plugin Metadata & Compatibility, 1.2 Admin UI & Table View, 1.3 AJAX & Batch Operations, 1. Code Changes, 2. Database / Migration, 3. Security Hardening, 4. Test Updates, 5. Documentation (+8 more)
 
@@ -440,13 +416,13 @@ Nodes (13): 1. Principles & Patterns (CRITICAL), 2. Coding Standards (CRITICAL),
 Cohesion: 0.17
 Nodes (11): 1. Modern Standards (Block-First), 1. The Socratic Gate (MANDATORY), 2. Knowledge Base & Syntax (MANDATORY), 2. Performance First, 3. Architecture, 3. Clean Code & Security Standards, 🛑 CORE PROTOCOL (ALWAYS ACTIVE), 🚦 FINAL CHECKLIST (+3 more)
 
-### Community 50 - "Plugin feature registry"
-Cohesion: 0.29
-Nodes (6): AJAX actions, Features, Persistence and testing, Plugin feature registry, Product behavior, Project metadata
+### Community 50 - "Feature Map"
+Cohesion: 0.17
+Nodes (11): Admin Features, AJAX Handlers, Bundled Modules / Sub-plugins, Core Features, Database, Feature Map, Known Issues / TODOs, Meta (+3 more)
 
 ### Community 51 - "Tracing"
-Cohesion: 0.12
-Nodes (16): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+8 more)
+Cohesion: 0.17
+Nodes (12): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Basic Usage, Best Practices, Limitations, `resources/`, Trace Output Files, `trace-{timestamp}.network` (+4 more)
 
 ### Community 52 - "GitHub Copilot Instructions - Antigravity Kit (WordPress Edition)"
 Cohesion: 0.17
@@ -476,8 +452,8 @@ Nodes (10): Code Coverage, Data Providers, Laravel Feature Tests, Mockery (Advan
 Cohesion: 0.18
 Nodes (5): #[CoversClass] for Coverage Boundaries, Cache Directory for Performance, Stop on First Failure for Fast Feedback, HTTP Controller Smoke Tests, DRY vs DAMP Balance
 
-### Community 59 - "Working with Hooks"
-Cohesion: 0.50
+### Community 59 - "backend-dev-guide.md"
+Cohesion: 0.24
 Nodes (4): Hook Callback Naming Convention, Hook Docblocks, Hook Documentation Requirements, Working with Hooks
 
 ### Community 60 - "Security Patterns for WooCommerce"
@@ -560,8 +536,8 @@ Nodes (7): Build a snapshot, Debugging flags, Install / run server, Playground C
 Cohesion: 0.25
 Nodes (7): Arguments, Methods, Namespacing, permission_callback (required), Registering routes, Return values, Routes and Endpoints (summary)
 
-### Community 81 - "playwright-cli/SKILL.md"
-Cohesion: 0.20
+### Community 81 - "Video Recording"
+Cohesion: 0.29
 Nodes (6): 1. Use Descriptive Filenames, Basic Recording, Best Practices, Limitations, Tracing vs Video, Video Recording
 
 ### Community 82 - "Preventing Accidental Data Loss"
@@ -696,13 +672,13 @@ Nodes (3): Core Directives, Specialized Skills, WooCommerce Expert Agent
 Cohesion: 0.50
 Nodes (3): Core Directives, Specialized Skills, WordPress Expert Agent
 
-### Community 115 - "assets/bulk-cogs-editor.js"
-Cohesion: 0.23
-Nodes (8): C(), g(), h(), l(), p(), s(), v(), y()
-
 ### Community 116 - "Common Patterns"
 Cohesion: 0.50
 Nodes (4): A/B Testing Sessions, Common Patterns, Concurrent Scraping, Persistent Profile
+
+### Community 117 - "Use Cases"
+Cohesion: 0.50
+Nodes (4): Analyzing Performance, Capturing Evidence, Debugging Failed Actions, Use Cases
 
 ### Community 118 - "WooCommerce Development Cycle"
 Cohesion: 0.50
@@ -712,9 +688,9 @@ Nodes (4): Development Workflow, Instructions, Key Principles, WooCommerce Devel
 Cohesion: 0.50
 Nodes (3): Attributes and serialization, Common pitfalls, How attributes persist
 
-### Community 120 - ".save"
-Cohesion: 0.20
-Nodes (7): `deprecated` basics, Deprecations and migrations, Practical guardrails, Required patterns, Supports and wrapper attributes, 3) Pick the right block model, 9) Migrations and deprecations (avoid "Invalid block")
+### Community 120 - "Deprecations and migrations"
+Cohesion: 0.50
+Nodes (3): `deprecated` basics, Deprecations and migrations, Practical guardrails
 
 ### Community 121 - "Tooling and testing"
 Cohesion: 0.50
@@ -764,113 +740,25 @@ Nodes (3): Common commands, Guardrails, Plugin/theme operations
 Cohesion: 0.67
 Nodes (3): Instructions, Key Principles, WooCommerce Copy Guidelines
 
-### Community 187 - "phpstan_inspect.mjs"
-Cohesion: 0.35
-Nodes (10): buildConfigHints(), buildReport(), extractStubPackageReferences(), findPhpstanScripts(), isFile(), main(), normalizeComposerScript(), readJsonSafe() (+2 more)
-
-### Community 189 - "Commands"
-Cohesion: 0.20
-Nodes (10): Commands, Core, DevTools, Keyboard, Mouse, Navigation, Network, Save as (+2 more)
-
-### Community 190 - "notes"
-Cohesion: 0.20
-Nodes (10): description, type, description, items, type, notes, priority_order, recommendations (+2 more)
-
-### Community 191 - "tool"
-Cohesion: 0.20
-Nodes (10): const, type, name, tool, version, additionalProperties, properties, required (+2 more)
-
-### Community 192 - "properties"
-Cohesion: 0.22
-Nodes (9): properties, summary, tool, violations, required, type, required, type (+1 more)
-
-### Community 193 - "Accessibility Code Patterns"
-Cohesion: 0.22
-Nodes (9): Accessibility Code Patterns, ARIA tabs, Dragging movements, Error handling, Form labels, Live regions and notifications, Modal focus trap, Screen reader commands (+1 more)
-
-### Community 194 - "Operable"
-Cohesion: 0.22
-Nodes (9): Dragging movements (2.5.7) — new in 2.2, Focus not obscured (2.4.11) — new in 2.2, Focus visible (2.4.7), Keyboard accessible (2.1), Motion (2.3), Operable, Skip links (2.4.1), Target size (2.5.8) — new in 2.2 (+1 more)
-
-### Community 195 - "type"
-Cohesion: 0.25
-Nodes (8): required, type, items, standards, description, items, type, items
-
-### Community 196 - "Common ARIA patterns"
-Cohesion: 0.25
-Nodes (8): Buttons, Common ARIA patterns, Error states, Form fields, Links, Live regions, Modals, Navigation
-
-### Community 197 - "Understandable"
-Cohesion: 0.25
-Nodes (8): Accessible authentication (3.3.8) — new in 2.2, Consistent help (3.2.6) — new in 2.2, Consistent navigation (3.2.3), Error handling (3.3.1, 3.3.3), Form labels (3.3.2), Page language (3.1.1), Redundant entry (3.3.7) — new in 2.2, Understandable
-
-### Community 198 - "notes"
-Cohesion: 0.29
-Nodes (8): items, type, type, items, type, commands, notes, properties
-
-### Community 199 - "core"
-Cohesion: 0.25
-Nodes (8): additionalProperties, properties, type, core, wordpress, additionalProperties, properties, type
-
-### Community 200 - "properties"
-Cohesion: 0.25
-Nodes (8): properties, recommendations, signals, additionalProperties, type, additionalProperties, required, type
-
-### Community 201 - "Codex project instructions"
-Cohesion: 0.29
-Nodes (5): Codex project instructions, Project, Repository notes, Rules for changes, Agent instructions
-
-### Community 202 - "audit-report.schema.json"
-Cohesion: 0.29
-Nodes (6): description, $id, required, $schema, title, type
-
-### Community 203 - "WP Block Development"
-Cohesion: 0.29
-Nodes (6): Escalation, Failure modes / debugging, Inputs required, Verification, When to use, WP Block Development
-
-### Community 204 - "triage.schema.json"
-Cohesion: 0.29
-Nodes (6): additionalProperties, $id, required, $schema, title, type
-
-### Community 205 - "category"
-Cohesion: 0.50
-Nodes (4): description, enum, type, category
-
-### Community 206 - "Perceivable"
-Cohesion: 0.50
-Nodes (4): Color contrast (1.4.3, 1.4.6), Media alternatives (1.2), Perceivable, Text alternatives (1.1)
-
-### Community 207 - "Common issues by impact"
-Cohesion: 0.50
-Nodes (4): Common issues by impact, Critical (fix immediately), Moderate (fix soon), Serious (fix before launch)
-
-### Community 208 - "fix"
-Cohesion: 0.67
-Nodes (3): description, type, fix
-
-### Community 209 - "standard"
-Cohesion: 0.67
-Nodes (3): standard, description, type
-
 ## Knowledge Gaps
-- **1097 isolated node(s):** `$schema`, `$id`, `title`, `description`, `type` (+1092 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1221 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **62 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1107 isolated node(s):** `$schema`, `$id`, `title`, `description`, `type` (+1102 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1215 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **59 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Setting Data` connect `WooCommerce Global Objects and Functions` to `.save`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `Bulk COGS Editor Implementation Plan`) actually correct?**
-  _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `properties` connect `triage.schema.json` to `tooling`, `core`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `Unit Testing Conventions` connect `Unit Testing Conventions` to `backend-dev-guide.md`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `$schema`, `$id`, `title` to the rest of the system?**
-  _1097 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1107 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `audit-report.schema.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.048484848484848485 - nodes in this community are weakly interconnected._
+- **Should `triage.schema.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.048625792811839326 - nodes in this community are weakly interconnected._
 - **Should `detect_wp_project.mjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.06393442622950819 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06557377049180328 - nodes in this community are weakly interconnected._
 - **Should `tooling` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
-- **Should `properties` be split into smaller, more focused modules?**
-  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
-- **Should `properties` be split into smaller, more focused modules?**
-  _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
