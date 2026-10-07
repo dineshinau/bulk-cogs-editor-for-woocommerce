@@ -178,6 +178,87 @@
 		row.appendChild( cell );
 	}
 
+	function appendProductCell( row, item ) {
+		const cell = document.createElement( 'td' );
+		const product = document.createElement( 'div' );
+		product.className = 'dkbce-product-cell';
+		if ( item.image_url ) {
+			const image = document.createElement( 'img' );
+			image.src = item.image_url;
+			image.alt = '';
+			image.setAttribute( 'aria-hidden', 'true' );
+			image.width = 40;
+			image.height = 40;
+			image.loading = 'lazy';
+			product.appendChild( image );
+		}
+		const name = item.name || DKBCE.i18n.noName;
+		if ( item.edit_url ) {
+			const link = document.createElement( 'a' );
+			link.href = item.edit_url;
+			link.textContent = name;
+			product.appendChild( link );
+		} else {
+			product.appendChild( document.createTextNode( name ) );
+		}
+		cell.appendChild( product );
+		row.appendChild( cell );
+	}
+
+	function appendChangeCell( row, item ) {
+		const cell = document.createElement( 'td' );
+		if ( 'skipped' === item.status || 'failed' === item.status ) {
+			cell.textContent = item.reason || DKBCE.i18n.skipped;
+			row.appendChild( cell );
+			return;
+		}
+		if ( ! item.change_direction ) {
+			cell.textContent = '—';
+			row.appendChild( cell );
+			return;
+		}
+
+		const badge = document.createElement( 'span' );
+		badge.className =
+			'dkbce-change-badge ' +
+			( 'up' === item.change_direction
+				? 'is-increase'
+				: 'is-decrease' );
+		const arrow = document.createElement( 'span' );
+		arrow.className = 'dkbce-change-arrow';
+		arrow.setAttribute( 'aria-hidden', 'true' );
+		arrow.textContent = 'up' === item.change_direction ? '↑' : '↓';
+		badge.appendChild( arrow );
+
+		if ( null !== item.change ) {
+			const amount = document.createElement( 'span' );
+			amount.textContent =
+				item.change < 0
+					? '-' + money( Math.abs( item.change ) )
+					: DKBCE.i18n.deltaPositive.replace(
+							'%s',
+							money( item.change )
+						);
+			badge.appendChild( amount );
+
+			if ( null !== item.change_percent ) {
+				const percentage = document.createElement( 'span' );
+				percentage.textContent = DKBCE.i18n.deltaPercent.replace(
+					'%s',
+					new Intl.NumberFormat( undefined, {
+						maximumFractionDigits: 2,
+					} ).format( Math.abs( item.change_percent ) )
+				);
+				badge.appendChild( percentage );
+			}
+		} else {
+			badge.setAttribute( 'aria-label', DKBCE.i18n.clearedChange );
+		}
+
+		cell.appendChild( badge );
+		row.appendChild( cell );
+	}
+
 	function renderPreview( data ) {
 		state.previewId = data.preview_id;
 		state.count = data.count;
@@ -231,11 +312,7 @@
 			selectCell.appendChild( checkbox );
 			row.appendChild( selectCell );
 			appendProductLinkCell( row, String( item.id ), item.edit_url );
-			appendProductLinkCell(
-				row,
-				item.name || DKBCE.i18n.noName,
-				item.edit_url
-			);
+			appendProductCell( row, item );
 			appendCell( row, item.sku || DKBCE.i18n.noSku );
 			appendCell( row, item.type_label || item.type || '—' );
 			appendCell(
@@ -252,20 +329,7 @@
 				newValue = '—';
 			}
 			appendCell( row, newValue );
-			let change = '—';
-			if ( null !== item.change ) {
-				change =
-					item.change > 0
-						? DKBCE.i18n.deltaPositive.replace(
-								'%s',
-								money( item.change )
-							)
-						: money( item.change );
-			}
-			if ( 'skipped' === item.status || 'failed' === item.status ) {
-				change = item.reason || DKBCE.i18n.skipped;
-			}
-			appendCell( row, change );
+			appendChangeCell( row, item );
 			tbody.appendChild( row );
 		} );
 		table.appendChild( tbody );

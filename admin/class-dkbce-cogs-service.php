@@ -366,21 +366,43 @@ class DKBCE_COGS_Service {
 			$change = $result['new'] - $result['current'];
 		}
 
-		$types    = $this->get_product_types();
-		$edit_url = get_edit_post_link( $product->get_id(), 'raw' );
+		$types     = $this->get_product_types();
+		$edit_url  = get_edit_post_link( $product->get_id(), 'raw' );
+		$image_url = $product->get_image_id()
+			? wp_get_attachment_image_url( $product->get_image_id(), 'woocommerce_thumbnail' )
+			: '';
+		if ( ! $image_url && function_exists( 'wc_placeholder_img_src' ) ) {
+			$image_url = wc_placeholder_img_src( 'woocommerce_thumbnail' );
+		}
+
+		$change_percent   = null;
+		$change_direction = '';
+		if ( 'success' === $result['status'] && null !== $result['current'] ) {
+			if ( null !== $result['new'] ) {
+				$change_direction = $result['new'] > $result['current'] ? 'up' : ( $result['new'] < $result['current'] ? 'down' : '' );
+				if ( 0 !== (float) $result['current'] ) {
+					$change_percent = ( ( $result['new'] - $result['current'] ) / $result['current'] ) * 100;
+				}
+			} elseif ( $result['current'] > 0 ) {
+				$change_direction = 'down';
+			}
+		}
 
 		return array(
-			'id'         => $product->get_id(),
-			'edit_url'   => $edit_url ? esc_url_raw( $edit_url ) : '',
-			'name'       => $product->get_name(),
-			'sku'        => $product->get_sku(),
-			'type'       => $product->get_type(),
-			'type_label' => isset( $types[ $product->get_type() ] ) ? $types[ $product->get_type() ] : $product->get_type(),
-			'current'    => $result['current'],
-			'new'        => $result['new'],
-			'change'     => $change,
-			'status'     => $result['status'],
-			'reason'     => isset( $result['reason'] ) ? $result['reason'] : '',
+			'id'               => $product->get_id(),
+			'edit_url'         => $edit_url ? esc_url_raw( $edit_url ) : '',
+			'image_url'        => $image_url ? esc_url_raw( $image_url ) : '',
+			'name'             => $product->get_name(),
+			'sku'              => $product->get_sku(),
+			'type'             => $product->get_type(),
+			'type_label'       => isset( $types[ $product->get_type() ] ) ? $types[ $product->get_type() ] : $product->get_type(),
+			'current'          => $result['current'],
+			'new'              => $result['new'],
+			'change'           => $change,
+			'change_percent'   => $change_percent,
+			'change_direction' => $change_direction,
+			'status'           => $result['status'],
+			'reason'           => isset( $result['reason'] ) ? $result['reason'] : '',
 		);
 	}
 

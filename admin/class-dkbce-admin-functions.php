@@ -153,6 +153,9 @@ class DKBCE_Admin_Functions {
 					/* translators: %1$d: product ID, %2$s: safe error summary. */
 					'productError'     => __( 'Product %1$d: %2$s', 'bulk-cogs-editor-for-woocommerce' ),
 					'emptyValue'       => __( 'Empty', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %s: percentage change. */
+					'deltaPercent'     => __( '(%s%%)', 'bulk-cogs-editor-for-woocommerce' ),
+					'clearedChange'    => __( 'COGS cleared', 'bulk-cogs-editor-for-woocommerce' ),
 					'amountLabel'      => __( 'Amount', 'bulk-cogs-editor-for-woocommerce' ),
 					'percentageLabel'  => __( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ),
 					'cogsLabel'        => __( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ),

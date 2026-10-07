@@ -183,6 +183,37 @@ $wp-blue: #2271b1;
 	}
 }
 
+.dkbce-product-cell {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	img {
+		display: block;
+		width: 40px;
+		height: 40px;
+		object-fit: contain;
+	}
+}
+
+.dkbce-change-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 7px;
+	border-radius: 3px;
+	background: #fcf0f1;
+	color: #b32d2e;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.dkbce-change-arrow {
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1;
+}
+
 .dkbce-preview-summary {
 	font-weight: 600;
 }
