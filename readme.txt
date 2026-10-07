@@ -1,7 +1,7 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
 Donate link: https://dineshinaublog.wordpress.com/
-Tags: bulk edit, WooCommerce COGS, cost of goods sold
+Tags: woocommerce COGS, bulk cogs edit, cost of goods, product cogs management, product cogs editor
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 8.0
@@ -17,21 +17,15 @@ The editor uses WooCommerce's product COGS API. Cost of Goods Sold must be suppo
 
 == Features ==
 
-= Features =
-
-* Filter by product name or SKU, category, product type, stock status, detected brand taxonomy, current price, and current COGS.
-* Preview up to 50 matching products before any changes are made.
-* Set exact COGS, increase or decrease by percentage or fixed amount, or clear COGS.
-* Process changes in Action Scheduler batches with progress, skipped and failed product counts, and cooperative cancellation.
-* Update products and variations as separate records through WooCommerce CRUD APIs.
-
-== Product types and calculations ==
-
-Simple, variable, grouped, external, custom WooCommerce product types, and variations are included. A variable product and each of its variations are separate records; the variable parent is not changed when only variations are selected.
-
-Price filters use the current WooCommerce product price. COGS filters use the supported product COGS getter. Currency values are rounded to the store's configured decimal precision using half-up rounding. Decreases are clamped at zero. Relative actions skip products with an unset COGS value; a stored zero is treated as a real value. Clear removes the value using WooCommerce's null COGS API.
-
-Brand filtering appears only when a public brand taxonomy is registered for products. Product matching is performed in bounded ID batches; preview output is limited to 50 rows.
+* Filter products by title or SKU, category, product type, stock status, detected brand taxonomy, current price, and current COGS. Filters are combined to narrow the matching products.
+* Select matching products, choose an action, preview the proposed changes, then confirm before applying. Previewing never changes product data.
+* Set exact COGS; increase or decrease by a percentage or fixed amount; or clear COGS.
+* Review up to 50 preview rows, including product images, edit links, current and calculated COGS, and the change.
+* Process updates in Action Scheduler batches. View progress and success, skipped, and failed counts; cancel cooperatively while preserving completed updates.
+* Use WooCommerce CRUD APIs for simple, variable, grouped, external, custom product types, and variations. Variations are treated as separate records, and variable parents are not changed when only variations are selected.
+* Use the current WooCommerce product price for price filters and the supported COGS API for COGS filters. Values use store decimal precision with half-up rounding; decreases stop at zero.
+* Relative actions skip products whose COGS is unset. WooCommerce's product COGS API converts a value of zero to empty; clearing uses the API's null value.
+* Show brand filtering only when a public brand taxonomy is registered for products. Product matching uses bounded ID batches to limit memory use.
 
 = Connect with me =
 
@@ -53,11 +47,10 @@ If you have any suggestion regarding the improvement of its feature, please leav
 
 == Use Cases ==
 
-Here are just a few use cases of Bulk COGS Editor for WooCommerce
-
+* Update costs after a supplier price change: filter affected products by category or brand, preview a percentage or fixed increase, then apply it to the matching products.
+* Correct costs for a specific group: find products by title or SKU, select the products to change, preview exact COGS values or clear them, then confirm the update.
 
 == Screenshots ==
-
 
 = Developer Resources =
 
@@ -65,14 +58,5 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 == Changelog ==
 
-= 1.0.0 (2026-10-07) =
-* Added: Filter, preview, and apply a bulk COGS operation from Products → Bulk COGS Editor.
-* Added: Six COGS actions, bounded Action Scheduler processing, progress reporting, and cancellation.
-* Added: Product type, category, stock, price, COGS, and conditional brand filters.
-* Added: WooCommerce COGS API and feature availability checks.
-
-= 1.0.0 (2026-09-28) =
+= 1.0.0 (2026-10-08) =
 * Initial release.
-* Added: Admin-only product filters, COGS preview, and six bulk update actions.
-* Added: Action Scheduler batches, progress reporting, error summaries, and cancellation.
-* Added: Conditional brand taxonomy detection and separate variation handling.
