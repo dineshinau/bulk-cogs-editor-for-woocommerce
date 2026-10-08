@@ -1,6 +1,6 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
-Tags: woocommerce COGS, bulk cogs edit, cost of goods, product cogs management, product cogs editor
+Tags: woocommerce cogs, bulk cogs, cost of goods, woocommerce bulk editor, product cost
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -63,8 +63,14 @@ Relative actions (percentage increase/decrease and fixed amount increase/decreas
 = Can I safely update large catalogs without timing out? =
 Yes. Updates are processed in background batches via Action Scheduler. You can monitor live progress, elapsed time, and estimated remaining time, and you can cooperatively cancel processing at any time without losing already completed updates.
 
+= Does this plugin modify product prices? =
+No. The plugin only modifies the WooCommerce Cost of Goods Sold value.
+
+= Does it use an external service? =
+No. The plugin processes product data on your WordPress/WooCommerce installation.
+
 = Where can I give feedback? =
-If you have any suggestion regarding the improvement of its feature, please leave a [Review](https://dineshinaublog.wordpress.com/bulk-cogs-editor-for-woocommerce/).
+If you have any suggestion regarding the improvement of its feature, please [open an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/) on GitHub.
 
 == Use Cases ==
 
@@ -77,6 +83,11 @@ If you have any suggestion regarding the improvement of its feature, please leav
 == Developer Resources ==
 
 Bulk COGS Editor for WooCommerce is open-source software and is made to be extended. Developers can find sources at our public ([github repository](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce)) here.
+
+== Privacy ==
+
+Bulk COGS Editor for WooCommerce does not send product, customer, order, or store data to external services.
+All COGS calculations and updates are performed locally on your WordPress/WooCommerce installation.
 
 == Changelog ==
 
