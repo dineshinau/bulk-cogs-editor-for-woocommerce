@@ -198,16 +198,32 @@ $wp-blue: #2271b1;
 		vertical-align: middle;
 	}
 
-	th:first-child input {
-		margin-right: 4px;
+	th:first-child {
+		text-align: left;
 	}
+
+	th:first-child input,
+	td:first-child input {
+		margin-left: 0;
+	}
+}
+
+.dkbce-table-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
 }
 
 .dkbce-select-all-bottom {
 	display: flex;
 	align-items: center;
 	gap: 6px;
+}
+
+.dkbce-page-summary {
 	margin: 8px 0;
+	text-align: right;
 }
 
 .dkbce-product-cell {
@@ -361,5 +377,13 @@ $wp-blue: #2271b1;
 	.dkbce-preview-controls {
 		flex-wrap: wrap;
 		justify-content: flex-end;
+	}
+
+	.dkbce-table-footer {
+		flex-wrap: wrap;
+	}
+
+	.dkbce-page-summary {
+		margin-left: auto;
 	}
 }

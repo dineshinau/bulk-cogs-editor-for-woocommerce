@@ -387,6 +387,8 @@
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
 		previewContent.appendChild( wrapper );
+		const footer = document.createElement( 'div' );
+		footer.className = 'dkbce-table-footer';
 		const bottomSelectAllLabel = document.createElement( 'label' );
 		bottomSelectAllLabel.className = 'dkbce-select-all-bottom';
 		const bottomSelectAll = document.createElement( 'input' );
@@ -394,8 +396,7 @@
 		bottomSelectAll.className = 'dkbce-select-page';
 		bottomSelectAll.setAttribute( 'aria-label', DKBCE.i18n.selectPageProducts );
 		bottomSelectAllLabel.append( bottomSelectAll, document.createTextNode( DKBCE.i18n.selectPageProducts ) );
-		previewContent.appendChild( bottomSelectAllLabel );
-		updatePageSelectionControls();
+		footer.appendChild( bottomSelectAllLabel );
 		const pageSummary = document.createElement( 'p' );
 		pageSummary.className = 'description dkbce-page-summary';
 		const firstProduct = ( data.page - 1 ) * data.page_size + 1;
@@ -404,7 +405,9 @@
 			.replace( '%1$d', String( firstProduct ) )
 			.replace( '%2$d', String( lastProduct ) )
 			.replace( '%3$d', String( data.count ) );
-		previewContent.appendChild( pageSummary );
+		footer.appendChild( pageSummary );
+		previewContent.appendChild( footer );
+		updatePageSelectionControls();
 
 		if ( data.total_pages > 1 ) {
 			const pagination = document.createElement( 'nav' );
