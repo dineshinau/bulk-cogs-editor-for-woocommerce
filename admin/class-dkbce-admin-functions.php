@@ -216,7 +216,22 @@ class DKBCE_Admin_Functions {
 		<div class="wrap dkbce-wrap">
 			<h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?> <span class="dkbce-version">v<?php echo esc_html( DKBCE_VERSION ); ?></span></h1>
 			<?php if ( ! $available ) : ?>
-				<div class="notice notice-error"><p><?php esc_html_e( 'WooCommerce Cost of Goods Sold is unavailable or disabled. Update WooCommerce to a version with the supported COGS product API and enable Cost of Goods Sold in WooCommerce settings before using this editor.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<div class="notice notice-error"><p>
+				<?php
+					printf(
+						wp_kses(
+							/* translators: %1$s: URL to the WooCommerce Features settings page. */
+							__( 'WooCommerce Cost of Goods Sold is unavailable or disabled. Update WooCommerce to a version with the supported COGS product API and enable Cost of Goods Sold in <a href="%1$s">WooCommerce Features settings</a> before using this editor.', 'bulk-cogs-editor-for-woocommerce' ),
+							array(
+								'a' => array(
+									'href' => array(),
+								),
+							)
+						),
+						esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=features' ) )
+					);
+				?>
+				</p></div>
 			<?php endif; ?>
 			<div id="dkbce-alert" class="notice" hidden role="status"><p></p></div>
 

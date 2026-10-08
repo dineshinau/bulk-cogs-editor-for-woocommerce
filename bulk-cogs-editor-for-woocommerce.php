@@ -1,27 +1,38 @@
 <?php
 /**
- * Plugin Name:       Bulk COGS Editor for WooCommerce
- * Plugin URI:        https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce
- * Description:       Allow bulk Cost of Goods Editing for products in WooCommerce.
- * Version:           1.0.0
- * Requires at least: 6.0
- * Tested up to:      7.1
- * Requires PHP:      8.0
- * Author:            Dinesh Yadav
- * Author URI:        https://dineshinaublog.wordpress.com/
- * License:           GPL v3 or later
- * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       bulk-cogs-editor-for-woocommerce
- * Domain Path:       /languages
- * Requires Plugins:  woocommerce
+ * Plugin Name: Bulk COGS Editor for WooCommerce
+ * Plugin URI: https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce
+ * Description: Allow bulk Cost of Goods Editing for products in WooCommerce.
+ * Version: 1.0.0
+ * Author: Dinesh Yadav
+ * Author URI: https://dineshinaublog.wordpress.com/
+ * Text Domain: bulk-cogs-editor-for-woocommerce
+ * Domain Path: /languages
+ * License: GPL v3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
+ * Requires at least: 6.0
+ * Tested up to: 7.1
+ * Requires PHP: 7.4
  * WC requires at least: 7.0
- * WC tested up to:      11.2
+ * WC tested up to: 11.2
+ * Requires Plugins: woocommerce
+ *
+ * Bulk COGS Editor for WooCommerce is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Bulk COGS Editor for WooCommerce is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Bulk COGS Editor for WooCommerce. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package BulkCOGSEditor
  */
-
-declare( strict_types=1 );
 
 // Prevent direct file access.
 if ( ! defined( 'ABSPATH' ) ) {
