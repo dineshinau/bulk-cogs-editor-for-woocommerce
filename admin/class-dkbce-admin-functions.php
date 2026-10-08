@@ -101,7 +101,8 @@ class DKBCE_Admin_Functions {
 
 		$operation_id = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
 		$operation    = $operation_id ? $this->store->get( $operation_id ) : false;
-		if ( $operation && get_current_user_id() !== (int) $operation['user_id'] ) {
+		$completed_statuses = array( 'completed', 'completed_with_errors' );
+		if ( $operation && ( get_current_user_id() !== (int) $operation['user_id'] || in_array( $operation['status'], $completed_statuses, true ) ) ) {
 			$operation = false;
 		}
 
@@ -147,7 +148,7 @@ class DKBCE_Admin_Functions {
 					/* translators: %s: current operation status. */
 					'operationStatus'  => __( 'COGS update %s', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: products processed, 2: total products, 3: percent complete, 4: successful updates, 5: skipped products, 6: failed products. */
-					'processed'        => __( 'Processed %1$d of %2$d (%3$d%%) · Success: %4$d · Skipped: %5$d · Failed: %6$d', 'bulk-cogs-editor-for-woocommerce' ),
+					'processed'        => __( 'Processed %1$d of %2$d (%3$d%) · Success: %4$d · Skipped: %5$d · Failed: %6$d', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelOperation'  => __( 'Cancel operation', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'       => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'         => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
