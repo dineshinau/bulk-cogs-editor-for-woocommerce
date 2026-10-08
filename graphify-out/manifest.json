@@ -1223,12 +1223,6 @@
     "ast_hash": "c317ab602c6d33a126a235ed9d3e35b4",
     "semantic_hash": ""
   },
-  "src/index.js": {
-    "mtime": 1791389786.3710465,
-    "seen": 1791409684.0322073,
-    "ast_hash": "6bdfae10f6010389a5b54b8de1348df4",
-    "semantic_hash": ""
-  },
   "src/index.php": {
     "mtime": 1791389593.2417517,
     "seen": 1791409684.032209,
