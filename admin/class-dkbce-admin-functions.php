@@ -180,6 +180,7 @@ class DKBCE_Admin_Functions {
 					'failedStatus'     => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'withErrorsStatus' => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'completedStatus'  => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshing'       => __( 'COGS update completed. This page will refresh in 5 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 			)
 		);

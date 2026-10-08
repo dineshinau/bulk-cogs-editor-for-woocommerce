@@ -15,6 +15,8 @@
 		selectedIds: new Set(),
 		loadedIds: new Set(),
 		busy: false,
+		previewTimer: null,
+		reloadTimer: null,
 		operationId: DKBCE.operationId || '',
 		pollTimer: null,
 	};
@@ -124,7 +126,12 @@
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( busy ) {
 			button.dataset.originalText = button.textContent;
-			button.textContent = label;
+			const spinner = document.createElement( 'span' );
+			spinner.className = 'dkbce-button-spinner';
+			spinner.setAttribute( 'aria-hidden', 'true' );
+			const buttonLabel = document.createElement( 'span' );
+			buttonLabel.textContent = label;
+			button.replaceChildren( spinner, buttonLabel );
 		} else if ( button.dataset.originalText ) {
 			button.textContent = button.dataset.originalText;
 			delete button.dataset.originalText;
@@ -589,6 +596,30 @@
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
 
+	function schedulePreviewRefresh() {
+		if ( state.previewTimer ) {
+			window.clearTimeout( state.previewTimer );
+		}
+		if ( ! state.hasQuery || ! state.count ) {
+			return;
+		}
+		const action = selectedAction();
+		const value = numericActionValue();
+		if (
+			'clear' !== action &&
+			( '' === value || ! Number.isFinite( Number( value ) ) || Number( value ) < 0 )
+		) {
+			return;
+		}
+		state.previewTimer = window.setTimeout( () => {
+			if ( state.busy ) {
+				schedulePreviewRefresh();
+				return;
+			}
+			preview();
+		}, 350 );
+	}
+
 	function applyChanges() {
 		if ( ! state.previewId || state.busy || state.loadingPage ) {
 			return;
@@ -716,6 +747,13 @@
 					? 'error'
 					: 'info'
 			);
+			if ( 'completed' === operation.status && ! state.reloadTimer ) {
+				setNotice( DKBCE.i18n.refreshing, 'info' );
+				state.reloadTimer = window.setTimeout(
+					() => window.location.reload(),
+					5000
+				);
+			}
 		}
 	}
 
@@ -840,7 +878,8 @@
 					);
 				actionLabel();
 				invalidatePreview( false );
-			} )
+				schedulePreviewRefresh();
+				} )
 		);
 	document
 		.querySelectorAll(
@@ -858,9 +897,11 @@
 				);
 			}
 		} );
-	$( '#dkbce-value' ).addEventListener( 'input', () =>
-		invalidatePreview( false )
-	);
+	$( '#dkbce-value' ).addEventListener( 'input', () => {
+		invalidatePreview( false );
+		schedulePreviewRefresh();
+	} );
+	$( '#dkbce-value' ).addEventListener( 'keyup', schedulePreviewRefresh );
 	actionLabel();
 	document
 		.querySelectorAll( '.dkbce-action-card' )
