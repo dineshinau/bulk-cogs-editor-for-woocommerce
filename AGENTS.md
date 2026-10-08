@@ -26,4 +26,4 @@
 - There is no `tests/` directory or Composer/PHPUnit configuration in the current repository.
 - `package.json` contains PHPCS scripts that rely on environment-specific `$VAR` and `.config/composer` paths. Inspect those prerequisites before using the scripts; do not assume a generic `npm test`, `npm run lint`, or PHPStan command exists.
 - `.agents/` contains shared skill-pack material and project planning/feature notes. Consult only relevant files, and prefer this file plus repository configuration when instructions conflict.
-
+- The bulk COGS processor uses Action Scheduler with batches of 50. The planned performance check is to create 50,000 products in WordPress Playground and measure the update speed; treat timeout resilience and throughput as unverified until that benchmark is run.
