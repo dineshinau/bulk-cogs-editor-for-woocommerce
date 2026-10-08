@@ -22,6 +22,7 @@
 	const notice = $( '#dkbce-alert' );
 	const getButton = $( '#dkbce-get-products' );
 	const previewButton = $( '#dkbce-preview' );
+	const pageSizeSelect = $( '#dkbce-page-size' );
 	const applyButton = $( '#dkbce-apply' );
 	const previewContent = $( '#dkbce-preview-content' );
 	const operationPanel = $( '#dkbce-operation' );
@@ -109,6 +110,7 @@
 		previewContent.hidden = true;
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
+		pageSizeSelect.disabled = state.busy;
 		if ( state.hasQuery && state.count > 0 ) {
 			$( '#dkbce-product-count' ).textContent =
 				DKBCE.i18n.previewRequired;
@@ -117,6 +119,7 @@
 
 	function setBusy( busy, button, label ) {
 		state.busy = busy;
+		pageSizeSelect.disabled = busy;
 		button.disabled = busy;
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( busy ) {
@@ -407,7 +410,12 @@
 		spinner.setAttribute( 'aria-hidden', 'true' );
 		loading.append( spinner, document.createTextNode( DKBCE.i18n.pageLoading ) );
 		previewContent.replaceChildren( loading );
-		request( 'preview_page', { preview_id: state.previewId, page } )
+		pageSizeSelect.disabled = true;
+		request( 'preview_page', {
+			preview_id: state.previewId,
+			page,
+			page_size: Number( pageSizeSelect.value ),
+		} )
 			.then( ( data ) => {
 				if ( requestId !== state.pageRequestId ) {
 					return;
@@ -422,6 +430,7 @@
 				state.loadingPage = false;
 				setNotice( error.message, 'error' );
 				if ( previousPage ) {
+					pageSizeSelect.value = String( previousPage.page_size );
 					renderPreview( previousPage );
 				}
 			} )
@@ -431,6 +440,7 @@
 				}
 				state.loadingPage = false;
 				previewContent.removeAttribute( 'aria-busy' );
+				pageSizeSelect.disabled = state.busy;
 				applyButton.disabled = ! state.previewId || state.busy;
 			} );
 	}
@@ -474,6 +484,7 @@
 		}
 		const action = selectedAction();
 		const value = numericActionValue();
+		const requestedPageSize = Number( pageSizeSelect.value );
 		if (
 			'clear' !== action &&
 			( '' === value ||
@@ -492,13 +503,15 @@
 			filters: requestedFilters,
 			action_type: action,
 			action_value: value,
+			page_size: requestedPageSize,
 		} )
 			.then( ( data ) => {
 				if (
 					JSON.stringify( requestedFilters ) !==
 						JSON.stringify( filters() ) ||
 					action !== selectedAction() ||
-					value !== numericActionValue()
+					value !== numericActionValue() ||
+					requestedPageSize !== Number( pageSizeSelect.value )
 				) {
 					return;
 				}
@@ -711,6 +724,11 @@
 			} else {
 				state.selectedIds.delete( event.target.value );
 			}
+		}
+	} );
+	pageSizeSelect.addEventListener( 'change', () => {
+		if ( state.previewId && ! state.busy && ! state.loadingPage ) {
+			fetchPreviewPage( 1 );
 		}
 	} );
 	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', () => {

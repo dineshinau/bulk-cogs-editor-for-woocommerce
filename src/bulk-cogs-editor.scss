@@ -58,6 +58,22 @@ $wp-blue: #2271b1;
 	}
 }
 
+.dkbce-preview-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+
+	label {
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	select {
+		min-height: 36px;
+	}
+}
+
 .dkbce-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(150px, 1fr));
@@ -329,5 +345,10 @@ $wp-blue: #2271b1;
 		> button {
 			margin: 0 0 0 auto;
 		}
+	}
+
+	.dkbce-preview-controls {
+		flex-wrap: wrap;
+		justify-content: flex-end;
 	}
 }

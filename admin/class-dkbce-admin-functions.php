@@ -280,7 +280,7 @@ endif;
 			</section>
 
 			<section class="dkbce-section" aria-labelledby="dkbce-preview-title">
-				<div class="dkbce-section-heading"><span aria-hidden="true">3</span><div><h2 id="dkbce-preview-title"><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review the products and calculated COGS changes before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><button type="button" class="button button-primary" id="dkbce-preview" disabled><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div>
+				<div class="dkbce-section-heading"><span aria-hidden="true">3</span><div><h2 id="dkbce-preview-title"><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review the products and calculated COGS changes before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-preview-controls"><button type="button" class="button button-primary" id="dkbce-preview" disabled><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button><label for="dkbce-page-size"><?php esc_html_e( 'Products per page', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-page-size"><?php foreach ( DKBCE_COGS_Service::PREVIEW_PAGE_SIZES as $page_size ) : ?><option value="<?php echo esc_attr( $page_size ); ?>" <?php selected( DKBCE_COGS_Service::PREVIEW_PAGE_SIZE, $page_size ); ?>><?php echo esc_html( $page_size ); ?></option><?php endforeach; ?></select></div></div>
 				<div id="dkbce-preview-content" hidden></div>
 			</section>
 
@@ -400,12 +400,16 @@ endif;
 		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service unslashes, sanitizes, and validates each field.
 		$action      = isset( $_POST['action_type'] ) ? $_POST['action_type'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the action.
 		$value       = isset( $_POST['action_value'] ) ? $_POST['action_value'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the numeric value.
+		$page_size   = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : DKBCE_COGS_Service::PREVIEW_PAGE_SIZE;
+		if ( ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
 		$request     = $this->get_validated_request( $raw_filters, $action, $value );
 		if ( is_wp_error( $request ) ) {
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $request['filters'], $request['operation'], 1 );
+		$result = $this->service->scan_matches( $request['filters'], $request['operation'], 1, $page_size );
 		$token  = wp_generate_uuid4();
 		set_transient(
 			'dkbce_preview_' . $token,
@@ -414,6 +418,7 @@ endif;
 				'filters'   => $request['filters'],
 				'operation' => $request['operation'],
 				'total'     => $result['count'],
+				'page_size' => $result['page_size'],
 				'row_ids'   => array_map( 'absint', wp_list_pluck( $result['rows'], 'id' ) ),
 			),
 			10 * MINUTE_IN_SECONDS
@@ -444,23 +449,31 @@ endif;
 
 		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
 		$page    = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$page_size = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
 		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
+		if ( ! $page_size ) {
+			$page_size = (int) $preview['page_size'];
+		}
+		if ( ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
 
-		$total_pages = max( 1, (int) ceil( $preview['total'] / DKBCE_COGS_Service::PREVIEW_PAGE_SIZE ) );
+		$total_pages = max( 1, (int) ceil( $preview['total'] / $page_size ) );
 		if ( $page < 1 || $page > $total_pages ) {
 			wp_send_json_error( array( 'message' => __( 'That preview page is unavailable. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $preview['filters'], $preview['operation'], $page );
+		$result = $this->service->scan_matches( $preview['filters'], $preview['operation'], $page, $page_size );
 		if ( $result['count'] !== (int) $preview['total'] ) {
 			delete_transient( 'dkbce_preview_' . $token );
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
 
-		$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], array_map( 'absint', wp_list_pluck( $result['rows'], 'id' ) ) ) ) );
+		$preview['page_size'] = $page_size;
+		$preview['row_ids']   = array_values( array_unique( array_merge( $preview['row_ids'], array_map( 'absint', wp_list_pluck( $result['rows'], 'id' ) ) ) ) );
 		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
 		wp_send_json_success(
 			array(
