@@ -99,8 +99,8 @@ class DKBCE_Admin_Functions {
 		wp_enqueue_style( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/bulk-cogs-editor.css', array(), DKBCE_VERSION );
 		wp_enqueue_script( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/bulk-cogs-editor.js', $script_dependencies, $script_version, true );
 
-		$operation_id = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
-		$operation    = $operation_id ? $this->store->get( $operation_id ) : false;
+		$operation_id       = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
+		$operation          = $operation_id ? $this->store->get( $operation_id ) : false;
 		$completed_statuses = array( 'completed', 'completed_with_errors' );
 		if ( $operation && ( get_current_user_id() !== (int) $operation['user_id'] || in_array( $operation['status'], $completed_statuses, true ) ) ) {
 			$operation = false;
@@ -119,69 +119,69 @@ class DKBCE_Admin_Functions {
 				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
 				'i18n'           => array(
 					/* translators: %d: number of products that will be changed. */
-					'confirmText'      => __( 'You are about to modify COGS for %d products. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
-					'loading'          => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
-					'previewLoading'   => __( 'Calculating preview…', 'bulk-cogs-editor-for-woocommerce' ),
-					'pageLoading'      => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
-					'previousPage'     => __( 'Previous', 'bulk-cogs-editor-for-woocommerce' ),
-					'nextPage'         => __( 'Next', 'bulk-cogs-editor-for-woocommerce' ),
-					'paginationLabel'  => __( 'Product preview pages', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmText'        => __( 'You are about to modify COGS for %d products. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
+					'loading'            => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
+					'previewLoading'     => __( 'Calculating preview…', 'bulk-cogs-editor-for-woocommerce' ),
+					'pageLoading'        => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
+					'previousPage'       => __( 'Previous', 'bulk-cogs-editor-for-woocommerce' ),
+					'nextPage'           => __( 'Next', 'bulk-cogs-editor-for-woocommerce' ),
+					'paginationLabel'    => __( 'Product preview pages', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: first product number, 2: last product number, 3: total products. */
-					'pageSummary'      => __( 'Showing %1$d–%2$d of %3$d products.', 'bulk-cogs-editor-for-woocommerce' ),
+					'pageSummary'        => __( 'Showing %1$d–%2$d of %3$d products.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: current page, 2: total pages. */
-					'pageNumber'       => __( 'Page %1$d of %2$d', 'bulk-cogs-editor-for-woocommerce' ),
-					'noProducts'       => __( 'No products match the selected filters.', 'bulk-cogs-editor-for-woocommerce' ),
-					'previewRequired'  => __( 'Get products and preview the changes before applying them.', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelled'        => __( 'Operation cancelled. Products already processed remain changed.', 'bulk-cogs-editor-for-woocommerce' ),
-					'columns'          => array( __( 'Select', 'bulk-cogs-editor-for-woocommerce' ), __( 'ID', 'bulk-cogs-editor-for-woocommerce' ), __( 'Product', 'bulk-cogs-editor-for-woocommerce' ), __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ), __( 'Type', 'bulk-cogs-editor-for-woocommerce' ), __( 'Current COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'New COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'Change', 'bulk-cogs-editor-for-woocommerce' ) ),
-					'productOne'       => __( 'product matches.', 'bulk-cogs-editor-for-woocommerce' ),
-					'productMany'      => __( 'products match.', 'bulk-cogs-editor-for-woocommerce' ),
+					'pageNumber'         => __( 'Page %1$d of %2$d', 'bulk-cogs-editor-for-woocommerce' ),
+					'noProducts'         => __( 'No products match the selected filters.', 'bulk-cogs-editor-for-woocommerce' ),
+					'previewRequired'    => __( 'Get products and preview the changes before applying them.', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelled'          => __( 'Operation cancelled. Products already processed remain changed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'columns'            => array( __( 'Select', 'bulk-cogs-editor-for-woocommerce' ), __( 'ID', 'bulk-cogs-editor-for-woocommerce' ), __( 'Product', 'bulk-cogs-editor-for-woocommerce' ), __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ), __( 'Type', 'bulk-cogs-editor-for-woocommerce' ), __( 'Current COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'New COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'Change', 'bulk-cogs-editor-for-woocommerce' ) ),
+					'productOne'         => __( 'product matches.', 'bulk-cogs-editor-for-woocommerce' ),
+					'productMany'        => __( 'products match.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: number of products. */
-					'matchCount'       => __( '%d matching products. Preview changes before applying.', 'bulk-cogs-editor-for-woocommerce' ),
+					'matchCount'         => __( '%d matching products. Preview changes before applying.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: number of preview rows, 2: total matching products. */
-					'showing'          => __( 'Showing first %1$d of %2$d matching products.', 'bulk-cogs-editor-for-woocommerce' ),
-					'allShown'         => __( 'All matching products are shown.', 'bulk-cogs-editor-for-woocommerce' ),
-					'noName'           => __( '(no name)', 'bulk-cogs-editor-for-woocommerce' ),
-					'skipped'          => __( 'Skipped', 'bulk-cogs-editor-for-woocommerce' ),
-					'processing'       => __( 'Processing COGS updates…', 'bulk-cogs-editor-for-woocommerce' ),
-					'complete'         => __( 'COGS update completed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'showing'            => __( 'Showing first %1$d of %2$d matching products.', 'bulk-cogs-editor-for-woocommerce' ),
+					'allShown'           => __( 'All matching products are shown.', 'bulk-cogs-editor-for-woocommerce' ),
+					'noName'             => __( '(no name)', 'bulk-cogs-editor-for-woocommerce' ),
+					'skipped'            => __( 'Skipped', 'bulk-cogs-editor-for-woocommerce' ),
+					'processing'         => __( 'Processing COGS updates…', 'bulk-cogs-editor-for-woocommerce' ),
+					'complete'           => __( 'COGS update completed.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: current operation status. */
-					'operationStatus'  => __( 'COGS update %s', 'bulk-cogs-editor-for-woocommerce' ),
+					'operationStatus'    => __( 'COGS update %s', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: products processed, 2: total products, 3: percent complete, 4: successful updates, 5: skipped products, 6: failed products. */
-					'processed'        => __( 'Processed %1$d of %2$d (%3$d%) · Success: %4$d · Skipped: %5$d · Failed: %6$d', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelOperation'  => __( 'Cancel operation', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelling'       => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
-					'starting'         => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
-					'noSelection'      => __( 'Select at least one product in the preview table.', 'bulk-cogs-editor-for-woocommerce' ),
+					'processed'          => __( 'Processed %1$d of %2$d (%3$d%) · Success: %4$d · Skipped: %5$d · Failed: %6$d', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelOperation'    => __( 'Cancel operation', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelling'         => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
+					'starting'           => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
+					'noSelection'        => __( 'Select at least one product in the preview table.', 'bulk-cogs-editor-for-woocommerce' ),
 					'selectPageProducts' => __( 'Select all products on this page', 'bulk-cogs-editor-for-woocommerce' ),
-					'badValue'         => __( 'Enter a valid non-negative value for this action.', 'bulk-cogs-editor-for-woocommerce' ),
-					'onlySelected'     => __( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
+					'badValue'           => __( 'Enter a valid non-negative value for this action.', 'bulk-cogs-editor-for-woocommerce' ),
+					'onlySelected'       => __( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: product ID. */
-					'ariaSelect'       => __( 'Select product %d', 'bulk-cogs-editor-for-woocommerce' ),
-					'progressLabel'    => __( 'COGS update progress', 'bulk-cogs-editor-for-woocommerce' ),
-					'snapshotting'     => __( 'Collecting matching products…', 'bulk-cogs-editor-for-woocommerce' ),
+					'ariaSelect'         => __( 'Select product %d', 'bulk-cogs-editor-for-woocommerce' ),
+					'progressLabel'      => __( 'COGS update progress', 'bulk-cogs-editor-for-woocommerce' ),
+					'snapshotting'       => __( 'Collecting matching products…', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %1$d: product ID, %2$s: safe error summary. */
-					'productError'     => __( 'Product %1$d: %2$s', 'bulk-cogs-editor-for-woocommerce' ),
-					'emptyValue'       => __( 'Empty', 'bulk-cogs-editor-for-woocommerce' ),
+					'productError'       => __( 'Product %1$d: %2$s', 'bulk-cogs-editor-for-woocommerce' ),
+					'emptyValue'         => __( 'Empty', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: percentage change. */
-					'deltaPercent'     => __( '(%s%)', 'bulk-cogs-editor-for-woocommerce' ),
-					'clearedChange'    => __( 'COGS cleared', 'bulk-cogs-editor-for-woocommerce' ),
-					'amountLabel'      => __( 'Amount', 'bulk-cogs-editor-for-woocommerce' ),
-					'percentageLabel'  => __( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ),
-					'cogsLabel'        => __( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ),
-					'noSku'            => __( '—', 'bulk-cogs-editor-for-woocommerce' ),
-					'filtersChanged'   => __( 'Filters changed. Get products again to refresh the matching set.', 'bulk-cogs-editor-for-woocommerce' ),
-					'getProducts'      => __( 'Get products', 'bulk-cogs-editor-for-woocommerce' ),
-					'previewChanges'   => __( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ),
-					'filtersReset'     => __( 'All filters reset.', 'bulk-cogs-editor-for-woocommerce' ),
+					'deltaPercent'       => __( '(%s%)', 'bulk-cogs-editor-for-woocommerce' ),
+					'clearedChange'      => __( 'COGS cleared', 'bulk-cogs-editor-for-woocommerce' ),
+					'amountLabel'        => __( 'Amount', 'bulk-cogs-editor-for-woocommerce' ),
+					'percentageLabel'    => __( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ),
+					'cogsLabel'          => __( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ),
+					'noSku'              => __( '—', 'bulk-cogs-editor-for-woocommerce' ),
+					'filtersChanged'     => __( 'Filters changed. Get products again to refresh the matching set.', 'bulk-cogs-editor-for-woocommerce' ),
+					'getProducts'        => __( 'Get products', 'bulk-cogs-editor-for-woocommerce' ),
+					'previewChanges'     => __( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ),
+					'filtersReset'       => __( 'All filters reset.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: positive formatted currency amount. */
-					'deltaPositive'    => __( '+%s', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelledStatus'  => __( 'Operation cancelled.', 'bulk-cogs-editor-for-woocommerce' ),
-					'failedStatus'     => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
-					'withErrorsStatus' => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
-					'completedStatus'  => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
-					'refreshing'       => __( 'COGS update completed. This page will refresh in 10 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
-					'refreshNow'       => __( 'Refresh now', 'bulk-cogs-editor-for-woocommerce' ),
+					'deltaPositive'      => __( '+%s', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelledStatus'    => __( 'Operation cancelled.', 'bulk-cogs-editor-for-woocommerce' ),
+					'failedStatus'       => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'withErrorsStatus'   => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
+					'completedStatus'    => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshing'         => __( 'COGS update completed. This page will refresh in 10 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshNow'         => __( 'Refresh now', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 			)
 		);
@@ -284,7 +284,11 @@ endif;
 			</section>
 
 			<section class="dkbce-section" aria-labelledby="dkbce-preview-title">
-				<div class="dkbce-section-heading"><span aria-hidden="true">3</span><div><h2 id="dkbce-preview-title"><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review the products and calculated COGS changes before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-preview-controls"><button type="button" class="button button-primary" id="dkbce-preview" disabled><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button><label for="dkbce-page-size"><?php esc_html_e( 'Products per page', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-page-size"><?php foreach ( DKBCE_COGS_Service::PREVIEW_PAGE_SIZES as $page_size ) : ?><option value="<?php echo esc_attr( $page_size ); ?>" <?php selected( DKBCE_COGS_Service::PREVIEW_PAGE_SIZE, $page_size ); ?>><?php echo esc_html( $page_size ); ?></option><?php endforeach; ?></select></div></div>
+				<div class="dkbce-section-heading"><span aria-hidden="true">3</span><div><h2 id="dkbce-preview-title"><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review the products and calculated COGS changes before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-preview-controls"><button type="button" class="button button-primary" id="dkbce-preview" disabled><?php esc_html_e( 'Preview changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button><label for="dkbce-page-size"><?php esc_html_e( 'Products per page', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-page-size">
+				<?php
+				foreach ( DKBCE_COGS_Service::PREVIEW_PAGE_SIZES as $page_size ) :
+					?>
+					<option value="<?php echo esc_attr( $page_size ); ?>" <?php selected( DKBCE_COGS_Service::PREVIEW_PAGE_SIZE, $page_size ); ?>><?php echo esc_html( $page_size ); ?></option><?php endforeach; ?></select></div></div>
 				<div id="dkbce-preview-content" hidden></div>
 			</section>
 
@@ -408,7 +412,7 @@ endif;
 		if ( ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
 			wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
-		$request     = $this->get_validated_request( $raw_filters, $action, $value );
+		$request = $this->get_validated_request( $raw_filters, $action, $value );
 		if ( is_wp_error( $request ) ) {
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
@@ -430,12 +434,12 @@ endif;
 
 		wp_send_json_success(
 			array(
-				'preview_id' => $token,
-				'count'      => $result['count'],
+				'preview_id'  => $token,
+				'count'       => $result['count'],
 				'page'        => $result['page'],
 				'page_size'   => $result['page_size'],
 				'total_pages' => $result['total_pages'],
-				'rows'       => $result['rows'],
+				'rows'        => $result['rows'],
 			)
 		);
 	}
@@ -451,10 +455,10 @@ endif;
 		}
 		$this->authorize_ajax();
 
-		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
-		$page    = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$token     = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$page      = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
 		$page_size = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
-		$preview = get_transient( 'dkbce_preview_' . $token );
+		$preview   = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
