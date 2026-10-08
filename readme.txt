@@ -3,7 +3,7 @@ Contributors: dineshinau
 Tags: woocommerce COGS, bulk cogs edit, cost of goods, product cogs management, product cogs editor
 Requires at least: 6.0
 Tested up to: 7.1
-Requires PHP: 8.0
+Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -52,7 +52,7 @@ If you have any suggestion regarding the improvement of its feature, please leav
 == Screenshots ==
 1. Display the settings page to filter and set the Cost of Goods price for multiple products in one go.
 
-= Developer Resources =
+== Developer Resources ==
 
 Bulk COGS Editor for WooCommerce is open-source software and is made to be extended. Developers can find sources at our public ([github repository](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce)) here.
 
