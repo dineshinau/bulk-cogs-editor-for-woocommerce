@@ -25,7 +25,6 @@
 
 	const notice = $( '#dkbce-alert' );
 	const getButton = $( '#dkbce-get-products' );
-	const previewButton = $( '#dkbce-preview' );
 	const pageSizeSelect = $( '#dkbce-page-size' );
 	const applyButton = $( '#dkbce-apply' );
 	const applySpinner = $( '#dkbce-apply-spinner' );
@@ -114,8 +113,6 @@
 			state.count = 0;
 			$( '#dkbce-product-count' ).textContent = DKBCE.i18n.filtersChanged;
 		}
-		previewButton.disabled =
-			state.busy || ! state.hasQuery || 0 === state.count;
 		applyButton.disabled = true;
 		previewContent.hidden = true;
 		previewContent.replaceChildren();
@@ -535,13 +532,17 @@
 							String( data.count )
 						)
 					: DKBCE.i18n.noProducts;
-				previewButton.disabled = 0 === data.count;
 				if ( 0 === data.count ) {
 					setNotice( DKBCE.i18n.noProducts, 'info' );
 				}
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
-			.finally( () => setBusy( false, getButton ) );
+			.finally( () => {
+				setBusy( false, getButton );
+				if ( state.hasQuery && state.count > 0 ) {
+					preview();
+				}
+			} );
 	}
 
 	function preview() {
@@ -563,7 +564,7 @@
 		}
 		setNotice( '', 'info' );
 		applyButton.disabled = true;
-		setBusy( true, previewButton, DKBCE.i18n.previewLoading );
+		setBusy( true, getButton, DKBCE.i18n.previewLoading );
 		const requestedFilters = filters();
 		request( 'preview', {
 			filters: requestedFilters,
@@ -587,8 +588,7 @@
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
 			.finally( () => {
-				setBusy( false, previewButton );
-				previewButton.disabled = ! state.hasQuery || 0 === state.count;
+				setBusy( false, getButton );
 				applyButton.disabled = ! state.previewId || ! state.count || state.loadingPage;
 			} );
 	}
@@ -881,7 +881,6 @@
 	}
 
 	getButton.addEventListener( 'click', getProducts );
-	previewButton.addEventListener( 'click', preview );
 	applyButton.addEventListener( 'click', openConfirm );
 	previewContent.addEventListener( 'change', ( event ) => {
 		if ( event.target.matches( '.dkbce-product-select' ) ) {
