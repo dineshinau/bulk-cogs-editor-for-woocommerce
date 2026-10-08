@@ -27,6 +27,13 @@ The editor uses WooCommerce's product COGS API. Cost of Goods Sold must be suppo
 * Relative actions skip products whose COGS is unset. WooCommerce's product COGS API converts a value of zero to empty; clearing uses the API's null value.
 * Show brand filtering only when a public brand taxonomy is registered for products. Product matching uses bounded ID batches to limit memory use.
 
+== Requirements ==
+
+* WordPress 6.7 or later
+* WooCommerce 10.3 or later
+* PHP 7.4 or later
+* WooCommerce Cost of Goods Sold feature enabled
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/bulk-cogs-editor-for-woocommerce` directory, or install the plugin through the WordPress plugins screen directly.
@@ -41,7 +48,22 @@ The editor uses WooCommerce's product COGS API. Cost of Goods Sold must be suppo
 
 == Frequently Asked Questions ==
 
-= Where can give feedback =
+= Does this plugin work with WooCommerce's native Cost of Goods Sold feature? =
+Yes. Bulk COGS Editor is designed specifically to work with WooCommerce's native Cost of Goods Sold (COGS) feature. Cost of Goods Sold must be supported by your installed WooCommerce version and enabled in WooCommerce settings. If it is disabled or unavailable, the editor explains what is required.
+
+= Can I preview changes before applying them? =
+Yes. You can preview all proposed cost changes in a paginated table showing product images, current COGS, calculated COGS, and the exact difference before confirming any update. Previewing never modifies your store data.
+
+= How does the plugin handle variable products and variations? =
+Variations are treated as individual product records. You can filter and update COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated.
+
+= What happens to products without a COGS value during relative adjustments? =
+Relative actions (percentage increase/decrease and fixed amount increase/decrease) automatically skip products that do not have an existing COGS value set. To assign cost values to those products, use the "Set exact" action.
+
+= Can I safely update large catalogs without timing out? =
+Yes. Updates are processed in background batches via Action Scheduler. You can monitor live progress, elapsed time, and estimated remaining time, and you can cooperatively cancel processing at any time without losing already completed updates.
+
+= Where can I give feedback? =
 If you have any suggestion regarding the improvement of its feature, please leave a [Review](https://dineshinaublog.wordpress.com/bulk-cogs-editor-for-woocommerce/).
 
 == Use Cases ==
