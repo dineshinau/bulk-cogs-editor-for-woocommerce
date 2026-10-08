@@ -439,7 +439,11 @@ class DKBCE_COGS_Service {
 					if ( $operation && $count > $offset && count( $rows ) < $page_size ) {
 						$rows[] = $this->preview_row( $product, $operation );
 					}
+					unset( $product );
 				}
+
+				$this->free_memory();
+
 				++$page;
 			} while ( self::QUERY_BATCH_SIZE === $id_count );
 		}
@@ -451,5 +455,16 @@ class DKBCE_COGS_Service {
 			'page_size'   => $page_size,
 			'total_pages' => max( 1, (int) ceil( $count / $page_size ) ),
 		);
+	}
+
+	/**
+	 * Free memory.
+	 */
+	private function free_memory() {
+		global $wpdb;
+		$wpdb->queries = array(); // Only grows if SAVEQUERIES is on.
+		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
+			wp_cache_flush_runtime(); // WP 6.0+, clears the non-persistent cache only.
+		}
 	}
 }

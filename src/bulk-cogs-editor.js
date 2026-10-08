@@ -25,7 +25,8 @@
 
 	const notice = $( '#dkbce-alert' );
 	const getButton = $( '#dkbce-get-products' );
-	const previewButton = $( '#dkbce-preview' );
+	const productsSpinner = $( '#dkbce-products-spinner' );
+	const previewSpinner = $( '#dkbce-preview-spinner' );
 	const pageSizeSelect = $( '#dkbce-page-size' );
 	const applyButton = $( '#dkbce-apply' );
 	const applySpinner = $( '#dkbce-apply-spinner' );
@@ -43,6 +44,11 @@
 	function setApplySpinner( active ) {
 		applySpinner.classList.toggle( 'is-active', active );
 		applySpinner.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
+	}
+
+	function toggleSpinner( spinner, active ) {
+		spinner.classList.toggle( 'is-active', active );
+		spinner.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
 	}
 
 	function request( action, values ) {
@@ -109,13 +115,12 @@
 		state.pageRequestId++;
 		state.selectedIds.clear();
 		state.loadedIds.clear();
+		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.hasQuery = false;
 			state.count = 0;
 			$( '#dkbce-product-count' ).textContent = DKBCE.i18n.filtersChanged;
 		}
-		previewButton.disabled =
-			state.busy || ! state.hasQuery || 0 === state.count;
 		applyButton.disabled = true;
 		previewContent.hidden = true;
 		previewContent.replaceChildren();
@@ -138,16 +143,7 @@
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( busy ) {
 			button.dataset.originalText = button.textContent;
-			if ( button === applyButton ) {
-				button.textContent = label;
-			} else {
-				const spinner = document.createElement( 'span' );
-				spinner.className = 'dkbce-button-spinner';
-				spinner.setAttribute( 'aria-hidden', 'true' );
-				const buttonLabel = document.createElement( 'span' );
-				buttonLabel.textContent = label;
-				button.replaceChildren( spinner, buttonLabel );
-			}
+			button.textContent = label;
 		} else if ( button.dataset.originalText ) {
 			button.textContent = button.dataset.originalText;
 			delete button.dataset.originalText;
@@ -160,6 +156,15 @@
 			return '';
 		}
 		return $( '#dkbce-value' ).value;
+	}
+
+	function hasValidActionValue() {
+		const action = selectedAction();
+		const value = numericActionValue();
+		return (
+			'clear' === action ||
+			( '' !== value && Number.isFinite( Number( value ) ) && Number( value ) >= 0 )
+		);
 	}
 
 	function actionLabel() {
@@ -466,6 +471,7 @@
 		const previousPage = state.pageData;
 		const requestId = ++state.pageRequestId;
 		state.loadingPage = true;
+		toggleSpinner( previewSpinner, true );
 		applyButton.disabled = true;
 		previewContent.setAttribute( 'aria-busy', 'true' );
 		const loading = document.createElement( 'p' );
@@ -505,6 +511,7 @@
 					return;
 				}
 				state.loadingPage = false;
+				toggleSpinner( previewSpinner, false );
 				previewContent.removeAttribute( 'aria-busy' );
 				pageSizeSelect.disabled = state.busy;
 				applyButton.disabled = ! state.previewId || state.busy;
@@ -519,6 +526,7 @@
 		setNotice( '', 'info' );
 		invalidatePreview();
 		setBusy( true, getButton, DKBCE.i18n.loading );
+		toggleSpinner( productsSpinner, true );
 		request( 'get_products', { filters: requestedFilters } )
 			.then( ( data ) => {
 				if (
@@ -535,13 +543,18 @@
 							String( data.count )
 						)
 					: DKBCE.i18n.noProducts;
-				previewButton.disabled = 0 === data.count;
 				if ( 0 === data.count ) {
 					setNotice( DKBCE.i18n.noProducts, 'info' );
 				}
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
-			.finally( () => setBusy( false, getButton ) );
+			.finally( () => {
+				toggleSpinner( productsSpinner, false );
+				setBusy( false, getButton );
+				if ( state.hasQuery && state.count > 0 && hasValidActionValue() ) {
+					preview();
+				}
+			} );
 	}
 
 	function preview() {
@@ -563,7 +576,8 @@
 		}
 		setNotice( '', 'info' );
 		applyButton.disabled = true;
-		setBusy( true, previewButton, DKBCE.i18n.previewLoading );
+		setBusy( true, getButton, DKBCE.i18n.previewLoading );
+		toggleSpinner( previewSpinner, true );
 		const requestedFilters = filters();
 		request( 'preview', {
 			filters: requestedFilters,
@@ -587,8 +601,8 @@
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
 			.finally( () => {
-				setBusy( false, previewButton );
-				previewButton.disabled = ! state.hasQuery || 0 === state.count;
+				toggleSpinner( previewSpinner, false );
+				setBusy( false, getButton );
 				applyButton.disabled = ! state.previewId || ! state.count || state.loadingPage;
 			} );
 	}
@@ -881,7 +895,6 @@
 	}
 
 	getButton.addEventListener( 'click', getProducts );
-	previewButton.addEventListener( 'click', preview );
 	applyButton.addEventListener( 'click', openConfirm );
 	previewContent.addEventListener( 'change', ( event ) => {
 		if ( event.target.matches( '.dkbce-product-select' ) ) {
