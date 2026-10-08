@@ -8,6 +8,12 @@
 		hasQuery: false,
 		previewId: '',
 		rows: [],
+		pageData: null,
+		page: 1,
+		loadingPage: false,
+		pageRequestId: 0,
+		selectedIds: new Set(),
+		loadedIds: new Set(),
 		busy: false,
 		operationId: DKBCE.operationId || '',
 		pollTimer: null,
@@ -86,6 +92,12 @@
 	function invalidatePreview( filtersChanged ) {
 		state.previewId = '';
 		state.rows = [];
+		state.pageData = null;
+		state.page = 1;
+		state.loadingPage = false;
+		state.pageRequestId++;
+		state.selectedIds.clear();
+		state.loadedIds.clear();
 		if ( filtersChanged ) {
 			state.hasQuery = false;
 			state.count = 0;
@@ -96,6 +108,7 @@
 		applyButton.disabled = true;
 		previewContent.hidden = true;
 		previewContent.replaceChildren();
+		previewContent.removeAttribute( 'aria-busy' );
 		if ( state.hasQuery && state.count > 0 ) {
 			$( '#dkbce-product-count' ).textContent =
 				DKBCE.i18n.previewRequired;
@@ -261,7 +274,10 @@
 		state.previewId = data.preview_id;
 		state.count = data.count;
 		state.rows = data.rows;
+		state.pageData = data;
+		state.page = data.page;
 		previewContent.replaceChildren();
+		previewContent.removeAttribute( 'aria-busy' );
 		const summary = document.createElement( 'p' );
 		summary.className = 'dkbce-preview-summary';
 		summary.textContent =
@@ -302,7 +318,11 @@
 			checkbox.type = 'checkbox';
 			checkbox.className = 'dkbce-product-select';
 			checkbox.value = String( item.id );
-			checkbox.checked = true;
+			if ( ! state.loadedIds.has( checkbox.value ) ) {
+				state.loadedIds.add( checkbox.value );
+				state.selectedIds.add( checkbox.value );
+			}
+			checkbox.checked = state.selectedIds.has( checkbox.value );
 			checkbox.setAttribute(
 				'aria-label',
 				DKBCE.i18n.ariaSelect.replace( '%d', String( item.id ) )
@@ -333,21 +353,90 @@
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
 		previewContent.appendChild( wrapper );
-		const note = document.createElement( 'p' );
-		note.className = 'description';
-		note.textContent =
-			data.count > data.rows.length
-				? DKBCE.i18n.showing
-						.replace( '%1$d', String( data.rows.length ) )
-						.replace( '%2$d', String( data.count ) )
-				: DKBCE.i18n.allShown;
-		previewContent.appendChild( note );
+		const pageSummary = document.createElement( 'p' );
+		pageSummary.className = 'description dkbce-page-summary';
+		const firstProduct = ( data.page - 1 ) * data.page_size + 1;
+		const lastProduct = Math.min( data.page * data.page_size, data.count );
+		pageSummary.textContent = DKBCE.i18n.pageSummary
+			.replace( '%1$d', String( firstProduct ) )
+			.replace( '%2$d', String( lastProduct ) )
+			.replace( '%3$d', String( data.count ) );
+		previewContent.appendChild( pageSummary );
+
+		if ( data.total_pages > 1 ) {
+			const pagination = document.createElement( 'nav' );
+			pagination.className = 'dkbce-pagination';
+			pagination.setAttribute( 'aria-label', DKBCE.i18n.paginationLabel );
+			const previous = document.createElement( 'button' );
+			previous.type = 'button';
+			previous.className = 'button';
+			previous.textContent = DKBCE.i18n.previousPage;
+			previous.disabled = 1 === data.page;
+			previous.addEventListener( 'click', () => fetchPreviewPage( data.page - 1 ) );
+			const pageNumber = document.createElement( 'span' );
+			pageNumber.textContent = DKBCE.i18n.pageNumber
+				.replace( '%1$d', String( data.page ) )
+				.replace( '%2$d', String( data.total_pages ) );
+			const next = document.createElement( 'button' );
+			next.type = 'button';
+			next.className = 'button';
+			next.textContent = DKBCE.i18n.nextPage;
+			next.disabled = data.page === data.total_pages;
+			next.addEventListener( 'click', () => fetchPreviewPage( data.page + 1 ) );
+			pagination.append( previous, pageNumber, next );
+			previewContent.appendChild( pagination );
+		}
 		previewContent.hidden = false;
-		applyButton.disabled = false;
+		applyButton.disabled = state.busy || state.loadingPage;
+	}
+
+	function fetchPreviewPage( page ) {
+		if ( state.busy || state.loadingPage || ! state.previewId ) {
+			return;
+		}
+		const previousPage = state.pageData;
+		const requestId = ++state.pageRequestId;
+		state.loadingPage = true;
+		applyButton.disabled = true;
+		previewContent.setAttribute( 'aria-busy', 'true' );
+		const loading = document.createElement( 'p' );
+		loading.className = 'dkbce-preview-loading';
+		loading.setAttribute( 'role', 'status' );
+		const spinner = document.createElement( 'span' );
+		spinner.className = 'dkbce-spinner';
+		spinner.setAttribute( 'aria-hidden', 'true' );
+		loading.append( spinner, document.createTextNode( DKBCE.i18n.pageLoading ) );
+		previewContent.replaceChildren( loading );
+		request( 'preview_page', { preview_id: state.previewId, page } )
+			.then( ( data ) => {
+				if ( requestId !== state.pageRequestId ) {
+					return;
+				}
+				state.loadingPage = false;
+				renderPreview( data );
+			} )
+			.catch( ( error ) => {
+				if ( requestId !== state.pageRequestId ) {
+					return;
+				}
+				state.loadingPage = false;
+				setNotice( error.message, 'error' );
+				if ( previousPage ) {
+					renderPreview( previousPage );
+				}
+			} )
+			.finally( () => {
+				if ( requestId !== state.pageRequestId ) {
+					return;
+				}
+				state.loadingPage = false;
+				previewContent.removeAttribute( 'aria-busy' );
+				applyButton.disabled = ! state.previewId || state.busy;
+			} );
 	}
 
 	function getProducts() {
-		if ( state.busy ) {
+		if ( state.busy || state.loadingPage ) {
 			return;
 		}
 		const requestedFilters = filters();
@@ -380,7 +469,7 @@
 	}
 
 	function preview() {
-		if ( state.busy || 0 === state.count ) {
+		if ( state.busy || state.loadingPage || 0 === state.count ) {
 			return;
 		}
 		const action = selectedAction();
@@ -413,6 +502,8 @@
 				) {
 					return;
 				}
+				state.selectedIds.clear();
+				state.loadedIds.clear();
 				renderPreview( data );
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
@@ -427,9 +518,7 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selected = Array.from(
-			document.querySelectorAll( '.dkbce-product-select:checked' )
-		).map( ( checkbox ) => checkbox.value );
+		const selected = Array.from( state.selectedIds );
 		if ( selectedOnly && ! selected.length ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
@@ -444,13 +533,11 @@
 	}
 
 	function applyChanges() {
-		if ( ! state.previewId || state.busy ) {
+		if ( ! state.previewId || state.busy || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedIds = Array.from(
-			document.querySelectorAll( '.dkbce-product-select:checked' )
-		).map( ( checkbox ) => checkbox.value );
+		const selectedIds = Array.from( state.selectedIds );
 		modal.hidden = true;
 		applyButton.disabled = true;
 		setNotice( '', 'info' );
@@ -617,6 +704,15 @@
 	getButton.addEventListener( 'click', getProducts );
 	previewButton.addEventListener( 'click', preview );
 	applyButton.addEventListener( 'click', openConfirm );
+	previewContent.addEventListener( 'change', ( event ) => {
+		if ( event.target.matches( '.dkbce-product-select' ) ) {
+			if ( event.target.checked ) {
+				state.selectedIds.add( event.target.value );
+			} else {
+				state.selectedIds.delete( event.target.value );
+			}
+		}
+	} );
 	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', () => {
 		modal.hidden = true;
 		applyButton.focus();

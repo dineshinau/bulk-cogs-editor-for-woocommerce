@@ -226,6 +226,41 @@ $wp-blue: #2271b1;
 	font-weight: 600;
 }
 
+.dkbce-page-summary {
+	margin-bottom: 8px;
+}
+
+.dkbce-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	margin: 12px 0;
+}
+
+.dkbce-preview-loading {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 72px;
+	margin: 0;
+}
+
+.dkbce-spinner {
+	width: 18px;
+	height: 18px;
+	border: 2px solid $border-color;
+	border-top-color: $wp-blue;
+	border-radius: 50%;
+	animation: dkbce-spin 0.7s linear infinite;
+}
+
+@keyframes dkbce-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .dkbce-operation {
 	margin: 12px 0;
 	padding: 14px;

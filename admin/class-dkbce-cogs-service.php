@@ -11,9 +11,11 @@ defined( 'ABSPATH' ) || exit;
  * Provides supported COGS access, product matching, validation, and calculations.
  */
 class DKBCE_COGS_Service {
-	const QUERY_BATCH_SIZE = 50;
-	const PREVIEW_LIMIT    = 50;
-	const MAX_AMOUNT       = '999999999999';
+	const QUERY_BATCH_SIZE      = 50;
+	const PREVIEW_LIMIT         = 50;
+	const PREVIEW_PAGE_SIZE     = 20;
+	const MAX_SELECTED_PRODUCTS = 500;
+	const MAX_AMOUNT            = '999999999999';
 
 	/**
 	 * Whether WooCommerce COGS is available and enabled.
@@ -411,11 +413,14 @@ class DKBCE_COGS_Service {
 	 *
 	 * @param array $filters Normalized filters.
 	 * @param array $operation Validated action or empty array.
+	 * @param int   $preview_page One-based preview page.
 	 * @return array
 	 */
-	public function scan_matches( $filters, $operation = array() ) {
-		$count = 0;
-		$rows  = array();
+	public function scan_matches( $filters, $operation = array(), $preview_page = 1 ) {
+		$count        = 0;
+		$rows         = array();
+		$preview_page = max( 1, absint( $preview_page ) );
+		$offset       = ( $preview_page - 1 ) * self::PREVIEW_PAGE_SIZE;
 
 		foreach ( $this->selected_types( $filters ) as $type ) {
 			$page = 1;
@@ -428,7 +433,7 @@ class DKBCE_COGS_Service {
 						continue;
 					}
 					++$count;
-					if ( $operation && count( $rows ) < self::PREVIEW_LIMIT ) {
+					if ( $operation && $count > $offset && count( $rows ) < self::PREVIEW_PAGE_SIZE ) {
 						$rows[] = $this->preview_row( $product, $operation );
 					}
 				}
@@ -437,8 +442,11 @@ class DKBCE_COGS_Service {
 		}
 
 		return array(
-			'count' => $count,
-			'rows'  => $rows,
+			'count'       => $count,
+			'rows'        => $rows,
+			'page'        => $preview_page,
+			'page_size'   => self::PREVIEW_PAGE_SIZE,
+			'total_pages' => max( 1, (int) ceil( $count / self::PREVIEW_PAGE_SIZE ) ),
 		);
 	}
 }

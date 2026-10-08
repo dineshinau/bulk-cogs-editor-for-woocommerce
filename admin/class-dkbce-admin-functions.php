@@ -74,6 +74,7 @@ class DKBCE_Admin_Functions {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'wp_ajax_dkbce_get_products', array( $this, 'ajax_get_products' ) );
 		add_action( 'wp_ajax_dkbce_preview', array( $this, 'ajax_preview' ) );
+		add_action( 'wp_ajax_dkbce_preview_page', array( $this, 'ajax_preview_page' ) );
 		add_action( 'wp_ajax_dkbce_apply', array( $this, 'ajax_apply' ) );
 		add_action( 'wp_ajax_dkbce_progress', array( $this, 'ajax_progress' ) );
 		add_action( 'wp_ajax_dkbce_cancel', array( $this, 'ajax_cancel' ) );
@@ -120,6 +121,14 @@ class DKBCE_Admin_Functions {
 					'confirmText'      => __( 'You are about to modify COGS for %d products. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
 					'loading'          => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
 					'previewLoading'   => __( 'Calculating preview…', 'bulk-cogs-editor-for-woocommerce' ),
+					'pageLoading'      => __( 'Loading products…', 'bulk-cogs-editor-for-woocommerce' ),
+					'previousPage'     => __( 'Previous', 'bulk-cogs-editor-for-woocommerce' ),
+					'nextPage'         => __( 'Next', 'bulk-cogs-editor-for-woocommerce' ),
+					'paginationLabel'  => __( 'Product preview pages', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: 1: first product number, 2: last product number, 3: total products. */
+					'pageSummary'      => __( 'Showing %1$d–%2$d of %3$d products.', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: 1: current page, 2: total pages. */
+					'pageNumber'       => __( 'Page %1$d of %2$d', 'bulk-cogs-editor-for-woocommerce' ),
 					'noProducts'       => __( 'No products match the selected filters.', 'bulk-cogs-editor-for-woocommerce' ),
 					'previewRequired'  => __( 'Get products and preview the changes before applying them.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelled'        => __( 'Operation cancelled. Products already processed remain changed.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -396,7 +405,7 @@ endif;
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $request['filters'], $request['operation'] );
+		$result = $this->service->scan_matches( $request['filters'], $request['operation'], 1 );
 		$token  = wp_generate_uuid4();
 		set_transient(
 			'dkbce_preview_' . $token,
@@ -414,8 +423,53 @@ endif;
 			array(
 				'preview_id' => $token,
 				'count'      => $result['count'],
-				'limit'      => DKBCE_COGS_Service::PREVIEW_LIMIT,
+				'page'        => $result['page'],
+				'page_size'   => $result['page_size'],
+				'total_pages' => $result['total_pages'],
 				'rows'       => $result['rows'],
+			)
+		);
+	}
+
+	/**
+	 * Load one page of rows for an authorized preview.
+	 *
+	 * @return void
+	 */
+	public function ajax_preview_page() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+
+		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$page    = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$preview = get_transient( 'dkbce_preview_' . $token );
+		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
+			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+
+		$total_pages = max( 1, (int) ceil( $preview['total'] / DKBCE_COGS_Service::PREVIEW_PAGE_SIZE ) );
+		if ( $page < 1 || $page > $total_pages ) {
+			wp_send_json_error( array( 'message' => __( 'That preview page is unavailable. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+
+		$result = $this->service->scan_matches( $preview['filters'], $preview['operation'], $page );
+		if ( $result['count'] !== (int) $preview['total'] ) {
+			delete_transient( 'dkbce_preview_' . $token );
+			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+
+		$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], array_map( 'absint', wp_list_pluck( $result['rows'], 'id' ) ) ) ) );
+		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
+		wp_send_json_success(
+			array(
+				'preview_id'  => $token,
+				'count'       => $result['count'],
+				'page'        => $result['page'],
+				'page_size'   => $result['page_size'],
+				'total_pages' => $result['total_pages'],
+				'rows'        => $result['rows'],
 			)
 		);
 	}
@@ -481,7 +535,7 @@ endif;
 
 		if ( $selected_only ) {
 			$raw_selected_ids = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each selected ID is validated as digits and converted with absint below.
-			if ( count( $raw_selected_ids ) > DKBCE_COGS_Service::PREVIEW_LIMIT ) {
+			if ( count( $raw_selected_ids ) > DKBCE_COGS_Service::MAX_SELECTED_PRODUCTS ) {
 				wp_send_json_error( array( 'message' => __( 'The selected product list is too large. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 			$selected_ids = array();
