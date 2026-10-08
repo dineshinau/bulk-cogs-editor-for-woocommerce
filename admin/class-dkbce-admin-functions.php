@@ -149,6 +149,11 @@ class DKBCE_Admin_Functions {
 					'operationStatus'    => __( 'COGS update %s', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: products processed, 2: total products, 3: percent complete, 4: successful updates, 5: skipped products, 6: failed products. */
 					'processed'          => __( 'Processed %1$d of %2$d (%3$d%) · Success: %4$d · Skipped: %5$d · Failed: %6$d', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %s: elapsed duration in hours, minutes, and seconds. */
+					'elapsedTime'        => __( 'Elapsed time: %s', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %s: approximate remaining duration or an estimating message. */
+					'remainingTime'      => __( 'Approx. time remaining: %s', 'bulk-cogs-editor-for-woocommerce' ),
+					'estimatingTime'     => __( 'Calculating…', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelOperation'    => __( 'Cancel operation', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'         => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'           => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
@@ -180,7 +185,7 @@ class DKBCE_Admin_Functions {
 					'failedStatus'       => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'withErrorsStatus'   => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'completedStatus'    => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
-					'refreshing'         => __( 'COGS update completed. This page will refresh in 10 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshing'         => __( 'COGS update completed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'refreshNow'         => __( 'Refresh now', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 			)
@@ -689,6 +694,10 @@ endif;
 			'succeeded'        => (int) $state['succeeded'],
 			'skipped'          => (int) $state['skipped'],
 			'failed'           => (int) $state['failed'],
+			'elapsed_seconds'  => max(
+				0,
+				(int) ( ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : time() ) - $state['created_at'] )
+			),
 			'errors'           => $state['errors'],
 			'error_summary'    => $state['error_summary'],
 			'cancel_requested' => (bool) $state['cancel_requested'],

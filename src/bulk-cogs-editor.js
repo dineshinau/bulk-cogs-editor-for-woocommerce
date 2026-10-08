@@ -16,9 +16,10 @@
 		loadedIds: new Set(),
 		busy: false,
 		previewTimer: null,
-		reloadTimer: null,
 		operationId: DKBCE.operationId || '',
 		operationStatus: '',
+		operationStartedAt: null,
+		operationTimer: null,
 		pollTimer: null,
 	};
 
@@ -644,6 +645,11 @@
 		modal.hidden = true;
 		applyButton.disabled = true;
 		setNotice( '', 'info' );
+		state.operationStartedAt = null;
+		if ( state.operationTimer ) {
+			window.clearInterval( state.operationTimer );
+			state.operationTimer = null;
+		}
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		request( 'apply', {
 			preview_id: state.previewId,
@@ -668,8 +674,51 @@
 			} );
 	}
 
+	function formatDuration( seconds ) {
+		const duration = Math.max( 0, Math.floor( seconds ) );
+		const hours = Math.floor( duration / 3600 );
+		const minutes = Math.floor( ( duration % 3600 ) / 60 );
+		const remainingSeconds = duration % 60;
+		return [ hours, minutes, remainingSeconds ]
+			.map( ( value ) => String( value ).padStart( 2, '0' ) )
+			.join( ':' );
+	}
+
+	function updateOperationTime( operation, timeElement ) {
+		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
+		const isTerminal = terminalStatuses.includes( operation.status );
+		const elapsedSeconds = isTerminal
+			? operation.elapsed_seconds
+			: Math.floor( ( window.performance.now() - state.operationStartedAt ) / 1000 );
+		let remaining = DKBCE.i18n.estimatingTime;
+
+		if ( isTerminal ) {
+			remaining = [ 'completed', 'completed_with_errors' ].includes(
+				operation.status
+			)
+				? formatDuration( 0 )
+				: '—';
+		} else if ( 'snapshot' !== operation.stage && operation.processed > 0 ) {
+			remaining = formatDuration(
+				( elapsedSeconds / operation.processed ) *
+					Math.max( 0, operation.total - operation.processed )
+			);
+		}
+
+		timeElement.textContent = DKBCE.i18n.elapsedTime.replace(
+			'%s',
+			formatDuration( elapsedSeconds )
+		) + ' · ' + DKBCE.i18n.remainingTime.replace( '%s', remaining );
+	}
+
 	function renderOperation( operation ) {
 		state.operationStatus = operation.status;
+		if ( null === state.operationStartedAt ) {
+			state.operationStartedAt = window.performance.now() - operation.elapsed_seconds * 1000;
+		}
+		if ( state.operationTimer ) {
+			window.clearInterval( state.operationTimer );
+		}
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
 		setApplySpinner( ! terminalStatuses.includes( operation.status ) );
 		operationPanel.replaceChildren();
@@ -710,6 +759,17 @@
 			.replace( '%5$d', operation.skipped )
 			.replace( '%6$d', operation.failed );
 		operationPanel.appendChild( text );
+		const time = document.createElement( 'p' );
+		time.className = 'dkbce-operation-time';
+		time.setAttribute( 'aria-live', 'off' );
+		operationPanel.appendChild( time );
+		updateOperationTime( operation, time );
+		if ( ! terminalStatuses.includes( operation.status ) ) {
+			state.operationTimer = window.setInterval(
+				() => updateOperationTime( operation, time ),
+				1000
+			);
+		}
 		if ( operation.error_summary ) {
 			const errorSummary = document.createElement( 'p' );
 			errorSummary.textContent = operation.error_summary;
@@ -766,12 +826,6 @@
 				refreshMessage.append( document.createTextNode( DKBCE.i18n.refreshing + ' ' ), refreshLink );
 				refreshNotice.appendChild( refreshMessage );
 				operationPanel.appendChild( refreshNotice );
-				if ( ! state.reloadTimer ) {
-					state.reloadTimer = window.setTimeout(
-						() => window.location.reload(),
-						10000
-					);
-				}
 			} else {
 				setNotice(
 					completionMessage[ operation.status ] ||
