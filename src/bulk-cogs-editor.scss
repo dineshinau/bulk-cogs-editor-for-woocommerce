@@ -219,7 +219,7 @@ $wp-blue: #2271b1;
 	display: flex;
 	align-items: center;
 	gap: 6px;
-	padding-left: 14px;
+	padding-left: 10px;
 }
 
 .dkbce-page-summary {
@@ -307,6 +307,16 @@ $wp-blue: #2271b1;
 	border-right-color: transparent;
 	border-radius: 50%;
 	animation: dkbce-spin 0.7s linear infinite;
+}
+
+#dkbce-apply-spinner {
+	float: none;
+	margin: 0 0 0 8px;
+	vertical-align: middle;
+}
+
+.dkbce-refresh-notice {
+	margin-top: 16px;
 }
 
 @keyframes dkbce-spin {

@@ -18,6 +18,7 @@
 		previewTimer: null,
 		reloadTimer: null,
 		operationId: DKBCE.operationId || '',
+		operationStatus: '',
 		pollTimer: null,
 	};
 
@@ -26,6 +27,7 @@
 	const previewButton = $( '#dkbce-preview' );
 	const pageSizeSelect = $( '#dkbce-page-size' );
 	const applyButton = $( '#dkbce-apply' );
+	const applySpinner = $( '#dkbce-apply-spinner' );
 	const previewContent = $( '#dkbce-preview-content' );
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
@@ -35,6 +37,11 @@
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
 		notice.querySelector( 'p' ).textContent = message;
 		notice.hidden = ! message;
+	}
+
+	function setApplySpinner( active ) {
+		applySpinner.classList.toggle( 'is-active', active );
+		applySpinner.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
 	}
 
 	function request( action, values ) {
@@ -122,16 +129,24 @@
 	function setBusy( busy, button, label ) {
 		state.busy = busy;
 		pageSizeSelect.disabled = busy;
+		if ( button === applyButton ) {
+			const terminal = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
+			setApplySpinner( busy || ( state.operationId && ! terminal.includes( state.operationStatus ) ) );
+		}
 		button.disabled = busy;
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( busy ) {
 			button.dataset.originalText = button.textContent;
-			const spinner = document.createElement( 'span' );
-			spinner.className = 'dkbce-button-spinner';
-			spinner.setAttribute( 'aria-hidden', 'true' );
-			const buttonLabel = document.createElement( 'span' );
-			buttonLabel.textContent = label;
-			button.replaceChildren( spinner, buttonLabel );
+			if ( button === applyButton ) {
+				button.textContent = label;
+			} else {
+				const spinner = document.createElement( 'span' );
+				spinner.className = 'dkbce-button-spinner';
+				spinner.setAttribute( 'aria-hidden', 'true' );
+				const buttonLabel = document.createElement( 'span' );
+				buttonLabel.textContent = label;
+				button.replaceChildren( spinner, buttonLabel );
+			}
 		} else if ( button.dataset.originalText ) {
 			button.textContent = button.dataset.originalText;
 			delete button.dataset.originalText;
@@ -654,6 +669,9 @@
 	}
 
 	function renderOperation( operation ) {
+		state.operationStatus = operation.status;
+		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
+		setApplySpinner( ! terminalStatuses.includes( operation.status ) );
 		operationPanel.replaceChildren();
 		const heading = document.createElement( 'h3' );
 		if ( 'snapshot' === operation.stage ) {
@@ -737,21 +755,33 @@
 				failed: DKBCE.i18n.failedStatus,
 				cancelled: DKBCE.i18n.cancelledStatus,
 			};
-			setNotice(
-				completionMessage[ operation.status ] ||
-					DKBCE.i18n.operationStatus.replace(
-						'%s',
-						operation.status.replace( /_/g, ' ' )
-					),
-				operation.failed || 'failed' === operation.status
-					? 'error'
-					: 'info'
-			);
-			if ( 'completed' === operation.status && ! state.reloadTimer ) {
-				setNotice( DKBCE.i18n.refreshing, 'info' );
-				state.reloadTimer = window.setTimeout(
-					() => window.location.reload(),
-					5000
+			if ( 'completed' === operation.status ) {
+				const refreshNotice = document.createElement( 'div' );
+				refreshNotice.className = 'notice notice-success inline dkbce-refresh-notice';
+				refreshNotice.setAttribute( 'role', 'status' );
+				const refreshMessage = document.createElement( 'p' );
+				const refreshLink = document.createElement( 'a' );
+				refreshLink.href = window.location.href;
+				refreshLink.textContent = DKBCE.i18n.refreshNow;
+				refreshMessage.append( document.createTextNode( DKBCE.i18n.refreshing + ' ' ), refreshLink );
+				refreshNotice.appendChild( refreshMessage );
+				operationPanel.appendChild( refreshNotice );
+				if ( ! state.reloadTimer ) {
+					state.reloadTimer = window.setTimeout(
+						() => window.location.reload(),
+						10000
+					);
+				}
+			} else {
+				setNotice(
+					completionMessage[ operation.status ] ||
+						DKBCE.i18n.operationStatus.replace(
+							'%s',
+							operation.status.replace( /_/g, ' ' )
+						),
+					operation.failed || 'failed' === operation.status
+						? 'error'
+						: 'info'
 				);
 			}
 		}

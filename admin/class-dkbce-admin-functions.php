@@ -164,7 +164,7 @@ class DKBCE_Admin_Functions {
 					'productError'     => __( 'Product %1$d: %2$s', 'bulk-cogs-editor-for-woocommerce' ),
 					'emptyValue'       => __( 'Empty', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: percentage change. */
-					'deltaPercent'     => __( '(%s%%)', 'bulk-cogs-editor-for-woocommerce' ),
+					'deltaPercent'     => __( '(%s%)', 'bulk-cogs-editor-for-woocommerce' ),
 					'clearedChange'    => __( 'COGS cleared', 'bulk-cogs-editor-for-woocommerce' ),
 					'amountLabel'      => __( 'Amount', 'bulk-cogs-editor-for-woocommerce' ),
 					'percentageLabel'  => __( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ),
@@ -180,7 +180,8 @@ class DKBCE_Admin_Functions {
 					'failedStatus'     => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'withErrorsStatus' => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'completedStatus'  => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
-					'refreshing'       => __( 'COGS update completed. This page will refresh in 5 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshing'       => __( 'COGS update completed. This page will refresh in 10 seconds.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refreshNow'       => __( 'Refresh now', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 			)
 		);
@@ -290,7 +291,7 @@ endif;
 			<section class="dkbce-section" aria-labelledby="dkbce-apply-title">
 				<div class="dkbce-section-heading"><span aria-hidden="true">4</span><div><h2 id="dkbce-apply-title"><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Apply the changes after reviewing the preview.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
 				<p><label><input type="checkbox" id="dkbce-selected-only"> <?php esc_html_e( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ); ?></label></p>
-				<p><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
+				<p><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span id="dkbce-apply-spinner" class="spinner" aria-hidden="true"></span></p>
 				<div id="dkbce-operation" class="dkbce-operation" hidden aria-live="polite"></div>
 			</section>
 
