@@ -197,6 +197,17 @@ $wp-blue: #2271b1;
 	th {
 		vertical-align: middle;
 	}
+
+	th:first-child input {
+		margin-right: 4px;
+	}
+}
+
+.dkbce-select-all-bottom {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 8px 0;
 }
 
 .dkbce-product-cell {

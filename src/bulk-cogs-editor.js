@@ -273,6 +273,29 @@
 		row.appendChild( cell );
 	}
 
+	function updatePageSelectionControls() {
+		const checkboxes = Array.from(
+			previewContent.querySelectorAll( '.dkbce-product-select' )
+		);
+		const selectedCount = checkboxes.filter( ( checkbox ) => checkbox.checked ).length;
+		previewContent.querySelectorAll( '.dkbce-select-page' ).forEach( ( checkbox ) => {
+			checkbox.checked = checkboxes.length > 0 && selectedCount === checkboxes.length;
+			checkbox.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
+		} );
+	}
+
+	function setPageSelection( selected ) {
+		previewContent.querySelectorAll( '.dkbce-product-select' ).forEach( ( checkbox ) => {
+			checkbox.checked = selected;
+			if ( selected ) {
+				state.selectedIds.add( checkbox.value );
+			} else {
+				state.selectedIds.delete( checkbox.value );
+			}
+		} );
+		updatePageSelectionControls();
+	}
+
 	function renderPreview( data ) {
 		state.previewId = data.preview_id;
 		state.count = data.count;
@@ -305,10 +328,18 @@
 		table.className = 'widefat striped dkbce-preview-table';
 		const thead = document.createElement( 'thead' );
 		const header = document.createElement( 'tr' );
-		DKBCE.i18n.columns.forEach( ( label ) => {
+		DKBCE.i18n.columns.forEach( ( label, index ) => {
 			const cell = document.createElement( 'th' );
 			cell.scope = 'col';
-			cell.textContent = label;
+			if ( 0 === index ) {
+				const selectAll = document.createElement( 'input' );
+				selectAll.type = 'checkbox';
+				selectAll.className = 'dkbce-select-page';
+				selectAll.setAttribute( 'aria-label', DKBCE.i18n.selectPageProducts );
+				cell.append( selectAll, document.createTextNode( ' ' + label ) );
+			} else {
+				cell.textContent = label;
+			}
 			header.appendChild( cell );
 		} );
 		thead.appendChild( header );
@@ -356,6 +387,15 @@
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
 		previewContent.appendChild( wrapper );
+		const bottomSelectAllLabel = document.createElement( 'label' );
+		bottomSelectAllLabel.className = 'dkbce-select-all-bottom';
+		const bottomSelectAll = document.createElement( 'input' );
+		bottomSelectAll.type = 'checkbox';
+		bottomSelectAll.className = 'dkbce-select-page';
+		bottomSelectAll.setAttribute( 'aria-label', DKBCE.i18n.selectPageProducts );
+		bottomSelectAllLabel.append( bottomSelectAll, document.createTextNode( DKBCE.i18n.selectPageProducts ) );
+		previewContent.appendChild( bottomSelectAllLabel );
+		updatePageSelectionControls();
 		const pageSummary = document.createElement( 'p' );
 		pageSummary.className = 'description dkbce-page-summary';
 		const firstProduct = ( data.page - 1 ) * data.page_size + 1;
@@ -390,7 +430,7 @@
 			previewContent.appendChild( pagination );
 		}
 		previewContent.hidden = false;
-		applyButton.disabled = state.busy || state.loadingPage;
+		applyButton.disabled = state.busy || state.loadingPage || ! data.rows.length;
 	}
 
 	function fetchPreviewPage( page ) {
@@ -523,6 +563,7 @@
 			.finally( () => {
 				setBusy( false, previewButton );
 				previewButton.disabled = ! state.hasQuery || 0 === state.count;
+				applyButton.disabled = ! state.previewId || ! state.count || state.loadingPage;
 			} );
 	}
 
@@ -724,6 +765,9 @@
 			} else {
 				state.selectedIds.delete( event.target.value );
 			}
+			updatePageSelectionControls();
+		} else if ( event.target.matches( '.dkbce-select-page' ) ) {
+			setPageSelection( event.target.checked );
 		}
 	} );
 	pageSizeSelect.addEventListener( 'change', () => {

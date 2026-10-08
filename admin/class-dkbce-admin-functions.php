@@ -153,6 +153,7 @@ class DKBCE_Admin_Functions {
 					'cancelling'       => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'         => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
 					'noSelection'      => __( 'Select at least one product in the preview table.', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectPageProducts' => __( 'Select all products on this page', 'bulk-cogs-editor-for-woocommerce' ),
 					'badValue'         => __( 'Enter a valid non-negative value for this action.', 'bulk-cogs-editor-for-woocommerce' ),
 					'onlySelected'     => __( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: product ID. */
