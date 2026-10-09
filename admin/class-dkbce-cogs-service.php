@@ -94,9 +94,11 @@ class DKBCE_COGS_Service {
 			return new WP_Error( 'invalid_search', __( 'Search must be 100 characters or fewer.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		$types = $this->get_product_types();
-		if ( 'any' !== $filters['type'] && ! isset( $types[ $filters['type'] ] ) ) {
-			return new WP_Error( 'invalid_type', __( 'Choose a supported product type.', 'bulk-cogs-editor-for-woocommerce' ) );
+		if ( 'any' !== $filters['type'] ) {
+			$types = $this->get_product_types();
+			if ( ! isset( $types[ $filters['type'] ] ) ) {
+				return new WP_Error( 'invalid_type', __( 'Choose a supported product type.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
 		}
 
 		$stock_statuses = array( 'any', 'instock', 'outofstock', 'onbackorder' );
@@ -198,12 +200,11 @@ class DKBCE_COGS_Service {
 	 * @return array
 	 */
 	public function selected_types( $filters ) {
-		$types = $this->get_product_types();
 		if ( 'any' !== $filters['type'] ) {
 			return array( $filters['type'] );
 		}
 
-		return array_keys( $types );
+		return array_keys( $this->get_product_types() );
 	}
 
 	/**
@@ -413,17 +414,128 @@ class DKBCE_COGS_Service {
 	 * Find matching IDs and count without retaining the full catalog in memory.
 	 *
 	 * @param array $filters Normalized filters.
-	 * @param array $operation Validated action or empty array.
-	 * @param int   $preview_page One-based preview page.
-	 * @param int   $page_size Number of preview rows per page.
+	 *
 	 * @return array
 	 */
-	public function scan_matches( $filters, $operation = array(), $preview_page = 1, $page_size = self::PREVIEW_PAGE_SIZE ) {
-		$count        = 0;
-		$rows         = array();
-		$preview_page = max( 1, absint( $preview_page ) );
-		$page_size    = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
-		$offset       = ( $preview_page - 1 ) * $page_size;
+	public function scan_matches_count( $filters ) {
+		$args = array(
+			'type'           => $this->selected_types( $filters ),
+			'return'         => 'ids',
+			'posts_per_page' => -1,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+			'paginate'       => false,
+		);
+
+		if ( ! empty( $filters['search'] ) ) {
+			$data_store      = WC_Data_Store::load( 'product' );
+			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Name + SKU, includes variation parents.
+			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+		}
+
+		if ( 'any' !== $filters['stock_status'] ) {
+			$args['stock_status'] = $filters['stock_status'];
+		}
+		if ( $filters['category'] && 'variation' !== $filters['type'] ) {
+			$args['product_category_id'] = $filters['category'];
+		}
+
+		if ( $filters['brand'] ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_brand',
+				'field'    => 'term_id',
+				'terms'    => $filters['brand'],
+			);
+		}
+
+		// Price and COGS ranges.
+		$meta_query = array();
+		foreach ( array(
+			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
+			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
+		) as $key => $range ) {
+			$clause = $this->range_clause( $key, $range[0], $range[1] );
+			if ( $clause ) {
+				$meta_query[] = $clause;
+			}
+		}
+
+		if ( $meta_query ) {
+			$args['dkbce_meta_query'] = $meta_query;
+		}
+
+		$ids = wc_get_products( $args );
+		return is_array( $ids ) ? count( $ids ) : 0;
+	}
+
+	/**
+	 * Find matching IDs and count without retaining the full catalog in memory.
+	 *
+	 * @param array $filters Normalized filters.
+	 *
+	 * @return array
+	 */
+	public function scan_matches( $filters ) {
+		$args = array(
+			'type'           => $this->selected_types( $filters ),
+			'return'         => 'ids',
+			'posts_per_page' => -1,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+			'paginate'       => false,
+		);
+
+		if ( ! empty( $filters['search'] ) ) {
+			$data_store      = WC_Data_Store::load( 'product' );
+			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Name + SKU, includes variation parents.
+			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+		}
+
+		if ( 'any' !== $filters['stock_status'] ) {
+			$args['stock_status'] = $filters['stock_status'];
+		}
+		if ( $filters['category'] && 'variation' !== $filters['type'] ) {
+			$args['product_category_id'] = $filters['category'];
+		}
+
+		if ( $filters['brand'] ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_brand',
+				'field'    => 'term_id',
+				'terms'    => $filters['brand'],
+			);
+		}
+
+		// Price and COGS ranges.
+		$meta_query = array();
+		foreach ( array(
+			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
+			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
+		) as $key => $range ) {
+			$clause = $this->range_clause( $key, $range[0], $range[1] );
+			if ( $clause ) {
+				$meta_query[] = $clause;
+			}
+		}
+
+		if ( $meta_query ) {
+			$args['dkbce_meta_query'] = $meta_query;
+		}
+
+		$ids = wc_get_products( $args );
+
+		if ( $filters['count'] ) {
+			return is_array( $ids ) ? count( $ids ) : 0;
+		}
+
+		$count     = 0;
+		$rows      = array();
+		$operation = $filters['operation'] ?? array();
+		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
+		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
+		$page_no   = max( 1, $page_no );
+		$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
+		$offset    = ( $page_no - 1 ) * $page_size;
 
 		foreach ( $this->selected_types( $filters ) as $type ) {
 			$page = 1;
@@ -451,7 +563,7 @@ class DKBCE_COGS_Service {
 		return array(
 			'count'       => $count,
 			'rows'        => $rows,
-			'page'        => $preview_page,
+			'page'        => $page_no,
 			'page_size'   => $page_size,
 			'total_pages' => max( 1, (int) ceil( $count / $page_size ) ),
 		);
@@ -466,5 +578,33 @@ class DKBCE_COGS_Service {
 		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
 			wp_cache_flush_runtime(); // WP 6.0+, clears the non-persistent cache only.
 		}
+	}
+
+	/**
+	 * Build range clause for meta query.
+	 *
+	 * @param string $key Meta key.
+	 * @param string $min Minimum value.
+	 * @param string $max Maximum value.
+	 * @return array|null
+	 */
+	private function range_clause( $key, $min, $max ) {
+		if ( '' === $min && '' === $max ) {
+			return null;
+		}
+		if ( '' !== $min && '' !== $max ) {
+			return array(
+				'key'     => $key,
+				'value'   => array( (float) $min, (float) $max ),
+				'compare' => 'BETWEEN',
+				'type'    => 'DECIMAL(20,6)',
+			);
+		}
+		return array(
+			'key'     => $key,
+			'value'   => (float) ( '' !== $min ? $min : $max ),
+			'compare' => '' !== $min ? '>=' : '<=',
+			'type'    => 'DECIMAL(20,6)',
+		);
 	}
 }

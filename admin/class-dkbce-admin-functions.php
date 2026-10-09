@@ -411,6 +411,8 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
 		}
 
+		$filters['count'] = true;
+
 		$products_started_at = microtime( true );
 		$result              = $this->service->scan_matches( $filters );
 		dkbce_wc_log(
@@ -419,12 +421,12 @@ class DKBCE_Admin_Functions {
 				microtime( true ) - $products_started_at,
 				DKBCE_COGS_Service::PREVIEW_LIMIT,
 				wp_json_encode( $filters ),
-				wp_json_encode( $result )
+				$result
 			)
 		);
 		wp_send_json_success(
 			array(
-				'count' => $result['count'],
+				'count' => $result,
 				'limit' => DKBCE_COGS_Service::PREVIEW_LIMIT,
 			)
 		);
@@ -455,7 +457,12 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $request['filters'], $request['operation'], 1, $page_size );
+		$filters              = $request['filters'] ?? array();
+		$filters['operation'] = $request['operation'] ?? array();
+		$filters['page_no']   = 1;
+		$filters['page_size'] = $page_size;
+
+		$result = $this->service->scan_matches( $filters );
 		$token  = wp_generate_uuid4();
 		set_transient(
 			'dkbce_preview_' . $token,
@@ -494,7 +501,7 @@ class DKBCE_Admin_Functions {
 		$this->authorize_ajax();
 
 		$token     = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
-		$page      = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$page_no   = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
 		$page_size = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
 		$preview   = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
@@ -508,11 +515,16 @@ class DKBCE_Admin_Functions {
 		}
 
 		$total_pages = max( 1, (int) ceil( $preview['total'] / $page_size ) );
-		if ( $page < 1 || $page > $total_pages ) {
+		if ( $page_no < 1 || $page_no > $total_pages ) {
 			wp_send_json_error( array( 'message' => __( 'That preview page is unavailable. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $preview['filters'], $preview['operation'], $page, $page_size );
+		$filters              = $preview['filters'] ?? array();
+		$filters['operation'] = $preview['operation'] ?? array();
+		$filters['page_no']   = $page_no;
+		$filters['page_size'] = $page_size;
+
+		$result = $this->service->scan_matches( $filters );
 		if ( $result['count'] !== (int) $preview['total'] ) {
 			delete_transient( 'dkbce_preview_' . $token );
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
@@ -733,6 +745,23 @@ class DKBCE_Admin_Functions {
 			'cancel_requested' => (bool) $state['cancel_requested'],
 			'cancelled_note'   => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
 		);
+	}
+
+	/**
+	 * Extend product query.
+	 *
+	 * @param array $wp_query_args Query args.
+	 * @param array $query_vars Query vars.
+	 * @return array
+	 */
+	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( ! empty( $query_vars['dkbce_meta_query'] ) ) {
+			$wp_query_args['meta_query'] = array_merge(
+				isset( $wp_query_args['meta_query'] ) ? $wp_query_args['meta_query'] : array(),
+				$query_vars['dkbce_meta_query']
+			);
+		}
+		return $wp_query_args;
 	}
 
 	/**
