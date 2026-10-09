@@ -73,11 +73,8 @@ class DKBCE_Bulk_Processor {
 
 		if ( ! $this->service->is_cogs_available() ) {
 			$state['status']        = 'failed';
-			$state['completed_at']  = time();
 			$state['error_summary'] = __( 'WooCommerce COGS is no longer available or enabled.', 'bulk-cogs-editor-for-woocommerce' );
-			$this->apply_summary( $state );
-			$this->store->save( $state );
-			$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'] );
+			$this->finish_operation( $state, 'failed' );
 			return;
 		}
 
@@ -118,7 +115,6 @@ class DKBCE_Bulk_Processor {
 					$matched_ids[] = $id;
 				}
 			}
-
 			if ( $matched_ids ) {
 				++$state['snapshot_chunks'];
 				$state['total'] += count( $matched_ids );
@@ -195,7 +191,6 @@ class DKBCE_Bulk_Processor {
 			}
 			$this->store->save( $state );
 		}
-
 		$state = $this->store->get( $state['operation_id'] );
 		++$state['processed_chunks'];
 		if ( $state['processed_chunks'] >= $state['snapshot_chunks'] ) {
@@ -240,7 +235,19 @@ class DKBCE_Bulk_Processor {
 
 		$this->store->save( $state );
 		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'] );
-		dkbce_wc_log( __FUNCTION__ . ' - Line: ' . __LINE__ . ', Result: ' . wp_json_encode( $state ) );
+		$duration = isset( $state['requested_at'] ) ? microtime( true ) - $state['requested_at'] : 0;
+		dkbce_wc_log(
+			sprintf(
+				'COGS update completed in %.4f seconds (operation: %s, status: %s, processed: %d, succeeded: %d, skipped: %d, failed: %d).',
+				$duration,
+				$state['operation_id'],
+				$status,
+				$state['processed'],
+				$state['succeeded'],
+				$state['skipped'],
+				$state['failed']
+			)
+		);
 	}
 
 	/**

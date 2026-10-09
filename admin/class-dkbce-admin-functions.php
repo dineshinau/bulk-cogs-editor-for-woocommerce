@@ -404,15 +404,24 @@ class DKBCE_Admin_Functions {
 			$this->send_nonce_error();
 		}
 		$this->authorize_ajax();
-		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The service unslashes, validates, and sanitizes each field.
+		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? wc_clean( wp_unslash( $_POST['filters'] ) ) : array();
 		$filters     = $this->service->validate_filters( $raw_filters );
 
 		if ( is_wp_error( $filters ) ) {
 			wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
 		}
 
-		$result = $this->service->scan_matches( $filters );
-		dkbce_wc_log( __FUNCTION__ . ' - Line: ' . __LINE__ . ', Limit: ' . DKBCE_COGS_Service::PREVIEW_LIMIT . ', Filters: ' . wp_json_encode( $filters ) . ', Result: ' . wp_json_encode( $result ) );
+		$products_started_at = microtime( true );
+		$result              = $this->service->scan_matches( $filters );
+		dkbce_wc_log(
+			sprintf(
+				'Get Products completed in %.4f seconds ( Limit: %d, Filters: %s, Results: %s).',
+				microtime( true ) - $products_started_at,
+				DKBCE_COGS_Service::PREVIEW_LIMIT,
+				wp_json_encode( $filters ),
+				wp_json_encode( $result )
+			)
+		);
 		wp_send_json_success(
 			array(
 				'count' => $result['count'],
@@ -431,14 +440,17 @@ class DKBCE_Admin_Functions {
 			$this->send_nonce_error();
 		}
 		$this->authorize_ajax();
-		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service unslashes, sanitizes, and validates each field.
-		$action      = isset( $_POST['action_type'] ) ? $_POST['action_type'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the action.
-		$value       = isset( $_POST['action_value'] ) ? $_POST['action_value'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The COGS service validates and sanitizes the numeric value.
+		$raw_filters = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? wc_clean( wp_unslash( $_POST['filters'] ) ) : array();
+		$action      = isset( $_POST['action_type'] ) ? wc_clean( wp_unslash( $_POST['action_type'] ) ) : '';
+		$value       = isset( $_POST['action_value'] ) ? wc_clean( wp_unslash( $_POST['action_value'] ) ) : '';
 		$page_size   = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : DKBCE_COGS_Service::PREVIEW_PAGE_SIZE;
+
 		if ( ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
 			wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
+
 		$request = $this->get_validated_request( $raw_filters, $action, $value );
+
 		if ( is_wp_error( $request ) ) {
 			wp_send_json_error( array( 'message' => $request->get_error_message() ), 400 );
 		}
@@ -532,6 +544,7 @@ class DKBCE_Admin_Functions {
 		}
 
 		$this->authorize_ajax();
+		$requested_at = microtime( true );
 
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Background processing is unavailable. No products were changed.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
@@ -567,6 +580,7 @@ class DKBCE_Admin_Functions {
 			'operation_id'     => $operation_id,
 			'user_id'          => get_current_user_id(),
 			'created_at'       => time(),
+			'requested_at'     => $requested_at,
 			'started_at'       => 0,
 			'completed_at'     => 0,
 			'total'            => 0,
