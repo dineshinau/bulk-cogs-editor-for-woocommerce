@@ -66,6 +66,7 @@ class DKBCE_Bulk_Processor {
 		}
 
 		if ( ! empty( $state['cancel_requested'] ) ) {
+			dkbce_wc_log( 'Update cancelled.' );
 			$this->finish_operation( $state, 'cancelled' );
 			return;
 		}
@@ -232,11 +233,14 @@ class DKBCE_Bulk_Processor {
 		$this->apply_summary( $state );
 		$state['status']       = $status;
 		$state['completed_at'] = time();
+
 		if ( 'cancelled' === $status ) {
 			$state['cancelled_note'] = __( 'Already processed products remain changed; no rollback was performed.', 'bulk-cogs-editor-for-woocommerce' );
 		}
+
 		$this->store->save( $state );
 		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'] );
+		dkbce_wc_log( __FUNCTION__ . ' - Line: ' . __LINE__ . ', Result: ' . wp_json_encode( $state ) );
 	}
 
 	/**
