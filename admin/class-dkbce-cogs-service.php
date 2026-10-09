@@ -467,7 +467,7 @@ class DKBCE_COGS_Service {
 		$ids         = wc_get_products( $args );
 		$total_count = is_array( $ids ) ? count( $ids ) : 0;
 
-		if ( $filters['count'] ) {
+		if ( $filters['count'] ?? false ) {
 			return $total_count;
 		}
 
@@ -480,6 +480,13 @@ class DKBCE_COGS_Service {
 		$args['page']  = $page_no;
 
 		$product_ids = wc_get_products( $args );
+
+		if ( $filters['get_ids'] ?? false ) {
+			return array(
+				'product_ids' => $product_ids,
+				'count'       => $total_count,
+			);
+		}
 
 		$rows      = array();
 		$operation = $filters['operation'] ?? array();

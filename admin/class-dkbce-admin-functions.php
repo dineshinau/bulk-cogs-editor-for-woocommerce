@@ -414,19 +414,19 @@ class DKBCE_Admin_Functions {
 		$filters['count'] = true;
 
 		$products_started_at = microtime( true );
-		$result              = $this->service->scan_matches( $filters );
+		$product_count       = $this->service->scan_matches( $filters );
 		dkbce_wc_log(
 			sprintf(
-				'Get Products completed in %.4f seconds ( Limit: %d, Filters: %s, Results: %s).',
+				'Get Products completed in %.4f seconds ( Limit: %d, Filters: %s, Product count: %s).',
 				microtime( true ) - $products_started_at,
 				DKBCE_COGS_Service::PREVIEW_LIMIT,
 				wp_json_encode( $filters ),
-				$result
+				$product_count
 			)
 		);
 		wp_send_json_success(
 			array(
-				'count' => $result,
+				'count' => $product_count,
 				'limit' => DKBCE_COGS_Service::PREVIEW_LIMIT,
 			)
 		);

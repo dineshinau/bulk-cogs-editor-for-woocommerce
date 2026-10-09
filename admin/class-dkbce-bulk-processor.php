@@ -36,7 +36,7 @@ class DKBCE_Bulk_Processor {
 	public function __construct( $store, $service ) {
 		$this->store   = $store;
 		$this->service = $service;
-		add_action( self::HOOK, array( $this, 'process_operation' ), 10, 1 );
+		add_action( self::HOOK, array( $this, 'process_operation' ) );
 	}
 
 	/**
@@ -97,37 +97,32 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	private function snapshot_batch( $state ) {
-		$types      = $this->service->selected_types( $state['filters'] );
-		$type_count = count( $types );
-		while ( $state['type_index'] < $type_count ) {
-			$type = $types[ $state['type_index'] ];
-			$ids  = $this->service->query_ids( $state['filters'], $type, $state['page'] );
-			if ( ! $ids ) {
-				++$state['type_index'];
-				$state['page'] = 1;
-				continue;
-			}
+		$filters              = $state['filters'] ?? array();
+		$filters['get_ids']   = true;
+		$filters['page_no']   = $state['page'] ?? 1;
+		$filters['page_size'] = self::BATCH_SIZE;
+		dkbce_wc_log( 'Filters: ' . wp_json_encode( $filters ) );
 
-			$matched_ids = array();
-			foreach ( $ids as $id ) {
-				$product = wc_get_product( $id );
-				if ( $product && $this->service->product_matches( $product, $state['filters'] ) ) {
-					$matched_ids[] = $id;
-				}
-			}
-			if ( $matched_ids ) {
-				++$state['snapshot_chunks'];
-				$state['total'] += count( $matched_ids );
-				$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $matched_ids );
-			}
-			++$state['page'];
-			$this->store->save( $state );
-			$this->queue_next( $state );
-			return;
+		$result      = $this->service->scan_matches( $filters );
+		$product_ids = $result['product_ids'] ?? array();
+		$total_count = $result['count'] ?? 0;
+
+		$state['total_count'] = $total_count;
+
+		dkbce_wc_log( 'Product ids result: ' . wp_json_encode( $result ) );
+
+		if ( $product_ids ) {
+			++$state['snapshot_chunks'];
+			$state['total'] += count( $product_ids );
+			$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
 		}
 
+		++$state['page'];
+		$this->store->save( $state );
+		$this->queue_next( $state );
+
 		$state['stage'] = 'processing';
-		if ( 0 === $state['total'] ) {
+		if ( 0 === count( $product_ids ) ) {
 			$this->finish_operation( $state, 'completed' );
 		} else {
 			$this->store->save( $state );
