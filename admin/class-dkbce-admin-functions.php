@@ -634,12 +634,7 @@ class DKBCE_Admin_Functions {
 			if ( array_diff( $selected_ids, $preview['row_ids'] ) ) {
 				wp_send_json_error( array( 'message' => __( 'The selected products do not match the preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
-			foreach ( $selected_ids as $product_id ) {
-				$product = wc_get_product( $product_id );
-				if ( ! $product || ! $this->service->product_matches( $product, $preview['filters'] ) ) {
-					wp_send_json_error( array( 'message' => __( 'A selected product no longer matches the preview filters. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
-				}
-			}
+
 			$state['total']           = count( $selected_ids );
 			$state['snapshot_chunks'] = 1;
 			$this->store->save_chunk( $operation_id, 1, $selected_ids );

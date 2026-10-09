@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-09T20:12:06+00:00\n"
+"POT-Creation-Date: 2026-10-09T23:18:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -577,47 +577,39 @@ msgstr ""
 msgid "The selected products do not match the preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:640
-msgid "A selected product no longer matches the preview filters. Run the preview again."
-msgstr ""
-
-#: admin/class-dkbce-admin-functions.php:654
+#: admin/class-dkbce-admin-functions.php:649
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:679
-#: admin/class-dkbce-admin-functions.php:683
-#: admin/class-dkbce-admin-functions.php:700
-#: admin/class-dkbce-admin-functions.php:704
+#: admin/class-dkbce-admin-functions.php:674
+#: admin/class-dkbce-admin-functions.php:678
+#: admin/class-dkbce-admin-functions.php:695
+#: admin/class-dkbce-admin-functions.php:699
 msgid "This operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:76
+#: admin/class-dkbce-bulk-processor.php:77
 msgid "WooCommerce COGS is no longer available or enabled."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:171
-#: admin/class-dkbce-bulk-processor.php:264
+#: admin/class-dkbce-bulk-processor.php:180
+#: admin/class-dkbce-bulk-processor.php:273
 msgid "The background queue became unavailable. Some changes may already have been applied."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:233
+#: admin/class-dkbce-bulk-processor.php:242
 msgid "Already processed products remain changed; no rollback was performed."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:315
+#: admin/class-dkbce-bulk-processor.php:326
 msgid "Product no longer exists."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:329
-msgid "Product no longer matches the selected filters."
-msgstr ""
-
-#: admin/class-dkbce-bulk-processor.php:337
+#: admin/class-dkbce-bulk-processor.php:343
 msgid "COGS could not be calculated."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:367
+#: admin/class-dkbce-bulk-processor.php:366
 msgid "Product could not be updated. Check the WooCommerce log for details."
 msgstr ""
 
@@ -670,15 +662,15 @@ msgstr ""
 msgid "The percentage cannot exceed 10,000%."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:313
+#: admin/class-dkbce-cogs-service.php:263
 msgid "Current COGS is not set."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:335
+#: admin/class-dkbce-cogs-service.php:285
 msgid "Choose a supported COGS action."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:340
+#: admin/class-dkbce-cogs-service.php:290
 msgid "The calculated value exceeds the supported monetary limit."
 msgstr ""
 

@@ -237,56 +237,6 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Test whether a loaded product matches the PHP-side price, brand, and COGS filters.
-	 *
-	 * @param WC_Product $product Product.
-	 * @param array      $filters Normalized filters.
-	 * @return bool
-	 */
-	public function product_matches( $product, $filters ) {
-		if ( ! ( $product instanceof WC_Product ) || ( 'any' !== $filters['type'] && $product->get_type() !== $filters['type'] ) ) {
-			return false;
-		}
-		if ( ! in_array( $product->get_status(), array( 'publish', 'private', 'draft', 'pending' ), true ) ) {
-			return false;
-		}
-		if ( '' !== $filters['search'] && false === stripos( $product->get_name(), $filters['search'] ) && false === stripos( (string) $product->get_sku(), $filters['search'] ) ) {
-			return false;
-		}
-		if ( 'any' !== $filters['stock_status'] && $product->get_stock_status() !== $filters['stock_status'] ) {
-			return false;
-		}
-
-		$taxonomy_target = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
-		if ( $filters['category'] && ! has_term( $filters['category'], 'product_cat', $taxonomy_target ) ) {
-			return false;
-		}
-
-		$brand_taxonomy = $this->get_brand_taxonomy();
-		if ( $filters['brand'] && ( ! $brand_taxonomy || ! has_term( $filters['brand'], $brand_taxonomy->name, $taxonomy_target ) ) ) {
-			return false;
-		}
-
-		$price = $product->get_price( 'edit' );
-		if ( '' !== $filters['price_min'] && ( '' === $price || null === $price || (float) $price < (float) $filters['price_min'] ) ) {
-			return false;
-		}
-		if ( '' !== $filters['price_max'] && ( '' === $price || null === $price || (float) $price > (float) $filters['price_max'] ) ) {
-			return false;
-		}
-
-		$cogs = $product->get_cogs_value();
-		if ( '' !== $filters['cogs_min'] && ( null === $cogs || $cogs < (float) $filters['cogs_min'] ) ) {
-			return false;
-		}
-		if ( '' !== $filters['cogs_max'] && ( null === $cogs || $cogs > (float) $filters['cogs_max'] ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Calculate a new COGS value. A null result means clear the COGS value.
 	 *
 	 * @param WC_Product $product Product.

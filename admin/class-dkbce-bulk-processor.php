@@ -61,6 +61,7 @@ class DKBCE_Bulk_Processor {
 	 */
 	public function process_operation( $operation_id ) {
 		$state = $this->store->get( $operation_id );
+		dkbce_wc_log( 'Operation id: ' . $operation_id . ' State: ' . wp_json_encode( $state ) );
 		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 			return;
 		}
@@ -101,28 +102,40 @@ class DKBCE_Bulk_Processor {
 		$filters['get_ids']   = true;
 		$filters['page_no']   = $state['page'] ?? 1;
 		$filters['page_size'] = self::BATCH_SIZE;
-		dkbce_wc_log( 'Filters: ' . wp_json_encode( $filters ) );
+		dkbce_wc_log( 'Filters: ' . wp_json_encode( $filters ) . ' ----- State: ' . wp_json_encode( $state ) );
 
-		$result      = $this->service->scan_matches( $filters );
-		$product_ids = $result['product_ids'] ?? array();
-		$total_count = $result['count'] ?? 0;
+		$product_ids         = array();
+		$total_count         = 0;
+		$processed_ids_count = $state['total'] ?? 0;
 
-		$state['total_count'] = $total_count;
+		do {
+			$result      = $this->service->scan_matches( $filters );
+			$product_ids = $result['product_ids'] ?? array();
+			$total_count = $result['count'] ?? 0;
+			dkbce_wc_log( ' Results: ' . wp_json_encode( $result ) . ' -- Filters: ' . wp_json_encode( $filters ) );
+			if ( ! $product_ids ) {
+				$filters['page_no'] = $state['page'] + 1;
+				continue;
+			}
+			$processed_ids_count += count( $product_ids );
+			$filters['page_no']   = $state['page'] + 1;
 
-		dkbce_wc_log( 'Product ids result: ' . wp_json_encode( $result ) );
-
-		if ( $product_ids ) {
-			++$state['snapshot_chunks'];
-			$state['total'] += count( $product_ids );
-			$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
-		}
-
-		++$state['page'];
-		$this->store->save( $state );
-		$this->queue_next( $state );
+			if ( count( $product_ids ) > 0 ) {
+				++$state['snapshot_chunks'];
+				$state['total'] += count( $product_ids );
+				$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
+			}
+			++$state['page'];
+			$this->store->save( $state );
+			$this->queue_next( $state );
+			return;
+		} while ( ! $product_ids && $processed_ids_count < $total_count );
 
 		$state['stage'] = 'processing';
-		if ( 0 === count( $product_ids ) ) {
+
+		dkbce_wc_log( 'Total IDs: ' . $total_count . ', Product IDs count: ' . count( $product_ids ) . ' --- State: ' . wp_json_encode( $state ) );
+
+		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
 		} else {
 			$this->store->save( $state );
@@ -139,6 +152,7 @@ class DKBCE_Bulk_Processor {
 	private function update_batch( $state ) {
 		$chunk_number = $state['processed_chunks'] + 1;
 		$chunk        = $this->store->get_chunk( $state['operation_id'], $chunk_number );
+		dkbce_wc_log( 'Chunk: ' . wp_json_encode( $chunk ) . ' ----- State: ' . wp_json_encode( $state ) );
 		if ( ! $chunk ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
 			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
@@ -296,6 +310,7 @@ class DKBCE_Bulk_Processor {
 	 */
 	private function process_product( $product_id, $state ) {
 		if ( ! $this->acquire_product_lock( $product_id, $state['operation_id'] ) ) {
+			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id );
 			return array(
 				'status'  => 'deferred',
 				'message' => '',
@@ -305,6 +320,7 @@ class DKBCE_Bulk_Processor {
 		try {
 			$product = wc_get_product( $product_id );
 			if ( ! $product ) {
+				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id );
 				return array(
 					'status'  => 'skipped',
 					'message' => __( 'Product no longer exists.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -312,27 +328,23 @@ class DKBCE_Bulk_Processor {
 			}
 
 			if ( $state['operation_id'] === $product->get_meta( '_dkbce_last_bulk_cogs_operation', true ) ) {
+				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id );
 				return array(
 					'status'  => 'success',
 					'message' => '',
 				);
 			}
 
-			if ( ! $this->service->product_matches( $product, $state['filters'] ) ) {
-				return array(
-					'status'  => 'skipped',
-					'message' => __( 'Product no longer matches the selected filters.', 'bulk-cogs-editor-for-woocommerce' ),
-				);
-			}
-
 			$result = $this->service->calculate( $product, $state['operation'] );
 			if ( is_wp_error( $result ) ) {
+				dkbce_wc_log( 'Product could not be calculated for product ID: ' . $product_id );
 				return array(
 					'status'  => 'failed',
 					'message' => __( 'COGS could not be calculated.', 'bulk-cogs-editor-for-woocommerce' ),
 				);
 			}
 			if ( 'skipped' === $result['status'] ) {
+				dkbce_wc_log( 'Product Skipped  for product ID: ' . $product_id );
 				return array(
 					'status'  => 'skipped',
 					'message' => $result['reason'],
@@ -347,16 +359,8 @@ class DKBCE_Bulk_Processor {
 				'message' => '',
 			);
 		} catch ( Throwable $exception ) {
-			if ( function_exists( 'wc_get_logger' ) ) {
-				wc_get_logger()->error(
-					$exception->getMessage(),
-					array(
-						'source'       => 'bulk-cogs-editor',
-						'product_id'   => $product_id,
-						'operation_id' => $state['operation_id'],
-					)
-				);
-			}
+			dkbce_wc_log( 'Operation id: ' . $state['operation_id'] . ', Product ID: ' . $product_id . ' Error: ' . $exception->getMessage() );
+
 			return array(
 				'status'  => 'failed',
 				'message' => __( 'Product could not be updated. Check the WooCommerce log for details.', 'bulk-cogs-editor-for-woocommerce' ),
