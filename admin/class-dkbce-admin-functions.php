@@ -71,13 +71,18 @@ class DKBCE_Admin_Functions {
 		$this->service   = $service;
 		$this->store     = $store;
 		$this->processor = $processor;
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-		add_action( 'wp_ajax_dkbce_get_products', array( $this, 'ajax_get_products' ) );
-		add_action( 'wp_ajax_dkbce_preview', array( $this, 'ajax_preview' ) );
-		add_action( 'wp_ajax_dkbce_preview_page', array( $this, 'ajax_preview_page' ) );
-		add_action( 'wp_ajax_dkbce_apply', array( $this, 'ajax_apply' ) );
-		add_action( 'wp_ajax_dkbce_progress', array( $this, 'ajax_progress' ) );
-		add_action( 'wp_ajax_dkbce_cancel', array( $this, 'ajax_cancel' ) );
+	}
+
+	/**
+	 * Add "Settings" link to plugin action row.
+	 *
+	 * @param array $links Existing links.
+	 * @return array
+	 */
+	public function plugin_action_links( array $links ): array {
+		$settings_link = '<a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor' ) ) . '">' . __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
+		array_unshift( $links, $settings_link );
+		return $links;
 	}
 
 	/**
