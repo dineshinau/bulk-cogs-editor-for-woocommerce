@@ -417,72 +417,14 @@ class DKBCE_COGS_Service {
 	 *
 	 * @return array
 	 */
-	public function scan_matches_count( $filters ) {
-		$args = array(
-			'type'           => $this->selected_types( $filters ),
-			'return'         => 'ids',
-			'posts_per_page' => -1,
-			'orderby'        => 'ID',
-			'order'          => 'ASC',
-			'paginate'       => false,
-		);
-
-		if ( ! empty( $filters['search'] ) ) {
-			$data_store      = WC_Data_Store::load( 'product' );
-			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Name + SKU, includes variation parents.
-			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
-		}
-
-		if ( 'any' !== $filters['stock_status'] ) {
-			$args['stock_status'] = $filters['stock_status'];
-		}
-		if ( $filters['category'] && 'variation' !== $filters['type'] ) {
-			$args['product_category_id'] = $filters['category'];
-		}
-
-		if ( $filters['brand'] ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'product_brand',
-				'field'    => 'term_id',
-				'terms'    => $filters['brand'],
-			);
-		}
-
-		// Price and COGS ranges.
-		$meta_query = array();
-		foreach ( array(
-			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
-			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
-		) as $key => $range ) {
-			$clause = $this->range_clause( $key, $range[0], $range[1] );
-			if ( $clause ) {
-				$meta_query[] = $clause;
-			}
-		}
-
-		if ( $meta_query ) {
-			$args['dkbce_meta_query'] = $meta_query;
-		}
-
-		$ids = wc_get_products( $args );
-		return is_array( $ids ) ? count( $ids ) : 0;
-	}
-
-	/**
-	 * Find matching IDs and count without retaining the full catalog in memory.
-	 *
-	 * @param array $filters Normalized filters.
-	 *
-	 * @return array
-	 */
 	public function scan_matches( $filters ) {
 		$args = array(
-			'type'           => $this->selected_types( $filters ),
-			'return'         => 'ids',
-			'posts_per_page' => -1,
-			'orderby'        => 'ID',
-			'order'          => 'ASC',
-			'paginate'       => false,
+			'type'     => $this->selected_types( $filters ),
+			'return'   => 'ids',
+			'limit'    => -1,
+			'orderby'  => 'ID',
+			'order'    => 'ASC',
+			'paginate' => false,
 		);
 
 		if ( ! empty( $filters['search'] ) ) {
@@ -522,50 +464,42 @@ class DKBCE_COGS_Service {
 			$args['dkbce_meta_query'] = $meta_query;
 		}
 
-		$ids = wc_get_products( $args );
+		$ids         = wc_get_products( $args );
+		$total_count = is_array( $ids ) ? count( $ids ) : 0;
 
 		if ( $filters['count'] ) {
-			return is_array( $ids ) ? count( $ids ) : 0;
+			return $total_count;
 		}
 
-		$count     = 0;
-		$rows      = array();
-		$operation = $filters['operation'] ?? array();
 		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
 		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
 		$page_no   = max( 1, $page_no );
 		$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
-		$offset    = ( $page_no - 1 ) * $page_size;
 
-		foreach ( $this->selected_types( $filters ) as $type ) {
-			$page = 1;
-			do {
-				$ids      = $this->query_ids( $filters, $type, $page );
-				$id_count = count( $ids );
-				foreach ( $ids as $id ) {
-					$product = wc_get_product( $id );
-					if ( ! $product || ! $this->product_matches( $product, $filters ) ) {
-						continue;
-					}
-					++$count;
-					if ( $operation && $count > $offset && count( $rows ) < $page_size ) {
-						$rows[] = $this->preview_row( $product, $operation );
-					}
-					unset( $product );
-				}
+		$args['limit'] = $page_size;
+		$args['page']  = $page_no;
 
-				$this->free_memory();
+		$product_ids = wc_get_products( $args );
 
-				++$page;
-			} while ( self::QUERY_BATCH_SIZE === $id_count );
+		$rows      = array();
+		$operation = $filters['operation'] ?? array();
+
+		foreach ( $product_ids as $product_id ) {
+			$product = wc_get_product( $product_id );
+			if ( ! ( $product instanceof WC_Product ) ) {
+				continue;
+			}
+			$rows[] = $this->preview_row( $product, $operation );
+			unset( $product );
+			$this->free_memory();
 		}
 
 		return array(
-			'count'       => $count,
+			'count'       => $total_count,
 			'rows'        => $rows,
 			'page'        => $page_no,
 			'page_size'   => $page_size,
-			'total_pages' => max( 1, (int) ceil( $count / $page_size ) ),
+			'total_pages' => max( 1, (int) ceil( $total_count / $page_size ) ),
 		);
 	}
 

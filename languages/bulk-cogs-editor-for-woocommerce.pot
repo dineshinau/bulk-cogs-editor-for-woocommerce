@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-09T08:48:21+00:00\n"
+"POT-Creation-Date: 2026-10-09T20:12:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -215,7 +215,7 @@ msgid "Starting…"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:165
-#: admin/class-dkbce-admin-functions.php:620
+#: admin/class-dkbce-admin-functions.php:632
 msgid "Select at least one product in the preview table."
 msgstr ""
 
@@ -534,61 +534,61 @@ msgstr ""
 msgid "Your session expired. Reload the page and try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:449
-#: admin/class-dkbce-admin-functions.php:507
+#: admin/class-dkbce-admin-functions.php:451
+#: admin/class-dkbce-admin-functions.php:514
 msgid "Choose a valid number of products per page."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:501
-#: admin/class-dkbce-admin-functions.php:557
+#: admin/class-dkbce-admin-functions.php:508
+#: admin/class-dkbce-admin-functions.php:569
 msgid "The preview expired. Run the preview again before applying changes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:512
+#: admin/class-dkbce-admin-functions.php:519
 msgid "That preview page is unavailable. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:518
+#: admin/class-dkbce-admin-functions.php:530
 msgid "Products changed after this preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:550
+#: admin/class-dkbce-admin-functions.php:562
 msgid "Background processing is unavailable. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:561
+#: admin/class-dkbce-admin-functions.php:573
 msgid "This preview has already been used. Run a new preview before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:569
-#: admin/class-dkbce-admin-functions.php:575
+#: admin/class-dkbce-admin-functions.php:581
+#: admin/class-dkbce-admin-functions.php:587
 msgid "The selected product scope is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:609
+#: admin/class-dkbce-admin-functions.php:621
 msgid "The selected product list is too large. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:614
+#: admin/class-dkbce-admin-functions.php:626
 msgid "The selected product list is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:635
 msgid "The selected products do not match the preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:628
+#: admin/class-dkbce-admin-functions.php:640
 msgid "A selected product no longer matches the preview filters. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:642
+#: admin/class-dkbce-admin-functions.php:654
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:667
-#: admin/class-dkbce-admin-functions.php:671
-#: admin/class-dkbce-admin-functions.php:688
-#: admin/class-dkbce-admin-functions.php:692
+#: admin/class-dkbce-admin-functions.php:679
+#: admin/class-dkbce-admin-functions.php:683
+#: admin/class-dkbce-admin-functions.php:700
+#: admin/class-dkbce-admin-functions.php:704
 msgid "This operation is unavailable."
 msgstr ""
 
@@ -634,51 +634,51 @@ msgstr ""
 msgid "Search must be 100 characters or fewer."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:99
+#: admin/class-dkbce-cogs-service.php:100
 msgid "Choose a supported product type."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:104
+#: admin/class-dkbce-cogs-service.php:106
 msgid "Choose a supported stock status."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:108
+#: admin/class-dkbce-cogs-service.php:110
 msgid "The selected product category no longer exists."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:113
+#: admin/class-dkbce-cogs-service.php:115
 msgid "The selected brand is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:120
+#: admin/class-dkbce-cogs-service.php:122
 msgid "Enter valid non-negative values for the price and COGS ranges."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:123
+#: admin/class-dkbce-cogs-service.php:125
 msgid "Each minimum must be less than or equal to its maximum."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:141
+#: admin/class-dkbce-cogs-service.php:143
 msgid "Choose one of the available COGS actions."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:153
+#: admin/class-dkbce-cogs-service.php:155
 msgid "Enter a valid non-negative number."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:157
+#: admin/class-dkbce-cogs-service.php:159
 msgid "The percentage cannot exceed 10,000%."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:312
+#: admin/class-dkbce-cogs-service.php:313
 msgid "Current COGS is not set."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:334
+#: admin/class-dkbce-cogs-service.php:335
 msgid "Choose a supported COGS action."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:339
+#: admin/class-dkbce-cogs-service.php:340
 msgid "The calculated value exceeds the supported monetary limit."
 msgstr ""
 
