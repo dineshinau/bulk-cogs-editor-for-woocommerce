@@ -27,6 +27,13 @@ The editor uses WooCommerce's product COGS API. Cost of Goods Sold must be suppo
 * Relative actions skip products whose COGS is unset. WooCommerce's product COGS API converts a value of zero to empty; clearing uses the API's null value.
 * Show brand filtering only when a public brand taxonomy is registered for products. Product matching uses bounded ID batches to limit memory use.
 
+= Connect with me =
+
+* **Website** - https://dineshinaublog.wordpress.com/
+* **Facebook** - https://www.facebook.com/dineshinau/
+* **X** - https://x.com/dineshinau/
+* **LinkedIn** - https://www.linkedin.com/in/dineshinau/
+
 == Requirements ==
 
 * WordPress 6.7 or later

@@ -61,7 +61,6 @@ class DKBCE_Bulk_Processor {
 	 */
 	public function process_operation( $operation_id ) {
 		$state = $this->store->get( $operation_id );
-		dkbce_wc_log( 'Operation id: ' . $operation_id . ' State: ' . wp_json_encode( $state ) );
 		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 			return;
 		}
@@ -102,7 +101,6 @@ class DKBCE_Bulk_Processor {
 		$filters['get_ids']   = true;
 		$filters['page_no']   = $state['page'] ?? 1;
 		$filters['page_size'] = self::BATCH_SIZE;
-		dkbce_wc_log( 'Filters: ' . wp_json_encode( $filters ) . ' ----- State: ' . wp_json_encode( $state ) );
 
 		$product_ids         = array();
 		$total_count         = 0;
@@ -112,11 +110,12 @@ class DKBCE_Bulk_Processor {
 			$result      = $this->service->scan_matches( $filters );
 			$product_ids = $result['product_ids'] ?? array();
 			$total_count = $result['count'] ?? 0;
-			dkbce_wc_log( ' Results: ' . wp_json_encode( $result ) . ' -- Filters: ' . wp_json_encode( $filters ) );
+
 			if ( ! $product_ids ) {
 				$filters['page_no'] = $state['page'] + 1;
 				continue;
 			}
+
 			$processed_ids_count += count( $product_ids );
 			$filters['page_no']   = $state['page'] + 1;
 
@@ -133,7 +132,7 @@ class DKBCE_Bulk_Processor {
 
 		$state['stage'] = 'processing';
 
-		dkbce_wc_log( 'Total IDs: ' . $total_count . ', Product IDs count: ' . count( $product_ids ) . ' --- State: ' . wp_json_encode( $state ) );
+		dkbce_wc_log( 'Total IDs: ' . $total_count . ', Product IDs count: ' . count( $product_ids ) );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
@@ -152,7 +151,7 @@ class DKBCE_Bulk_Processor {
 	private function update_batch( $state ) {
 		$chunk_number = $state['processed_chunks'] + 1;
 		$chunk        = $this->store->get_chunk( $state['operation_id'], $chunk_number );
-		dkbce_wc_log( 'Chunk: ' . wp_json_encode( $chunk ) . ' ----- State: ' . wp_json_encode( $state ) );
+
 		if ( ! $chunk ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
 			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
