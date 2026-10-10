@@ -91,5 +91,5 @@ All COGS calculations and updates are performed locally on your WordPress/WooCom
 
 == Changelog ==
 
-= 1.0.0 (2026-10-08) =
+= 1.0.0 (2026-10-10) =
 * Initial release.

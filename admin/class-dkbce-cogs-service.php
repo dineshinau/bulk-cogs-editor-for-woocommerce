@@ -94,9 +94,11 @@ class DKBCE_COGS_Service {
 			return new WP_Error( 'invalid_search', __( 'Search must be 100 characters or fewer.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		$types = $this->get_product_types();
-		if ( 'any' !== $filters['type'] && ! isset( $types[ $filters['type'] ] ) ) {
-			return new WP_Error( 'invalid_type', __( 'Choose a supported product type.', 'bulk-cogs-editor-for-woocommerce' ) );
+		if ( 'any' !== $filters['type'] ) {
+			$types = $this->get_product_types();
+			if ( ! isset( $types[ $filters['type'] ] ) ) {
+				return new WP_Error( 'invalid_type', __( 'Choose a supported product type.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
 		}
 
 		$stock_statuses = array( 'any', 'instock', 'outofstock', 'onbackorder' );
@@ -198,12 +200,11 @@ class DKBCE_COGS_Service {
 	 * @return array
 	 */
 	public function selected_types( $filters ) {
-		$types = $this->get_product_types();
 		if ( 'any' !== $filters['type'] ) {
 			return array( $filters['type'] );
 		}
 
-		return array_keys( $types );
+		return array_keys( $this->get_product_types() );
 	}
 
 	/**
@@ -233,56 +234,6 @@ class DKBCE_COGS_Service {
 
 		$ids = wc_get_products( $args );
 		return is_array( $ids ) ? array_map( 'absint', $ids ) : array();
-	}
-
-	/**
-	 * Test whether a loaded product matches the PHP-side price, brand, and COGS filters.
-	 *
-	 * @param WC_Product $product Product.
-	 * @param array      $filters Normalized filters.
-	 * @return bool
-	 */
-	public function product_matches( $product, $filters ) {
-		if ( ! ( $product instanceof WC_Product ) || ( 'any' !== $filters['type'] && $product->get_type() !== $filters['type'] ) ) {
-			return false;
-		}
-		if ( ! in_array( $product->get_status(), array( 'publish', 'private', 'draft', 'pending' ), true ) ) {
-			return false;
-		}
-		if ( '' !== $filters['search'] && false === stripos( $product->get_name(), $filters['search'] ) && false === stripos( (string) $product->get_sku(), $filters['search'] ) ) {
-			return false;
-		}
-		if ( 'any' !== $filters['stock_status'] && $product->get_stock_status() !== $filters['stock_status'] ) {
-			return false;
-		}
-
-		$taxonomy_target = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
-		if ( $filters['category'] && ! has_term( $filters['category'], 'product_cat', $taxonomy_target ) ) {
-			return false;
-		}
-
-		$brand_taxonomy = $this->get_brand_taxonomy();
-		if ( $filters['brand'] && ( ! $brand_taxonomy || ! has_term( $filters['brand'], $brand_taxonomy->name, $taxonomy_target ) ) ) {
-			return false;
-		}
-
-		$price = $product->get_price( 'edit' );
-		if ( '' !== $filters['price_min'] && ( '' === $price || null === $price || (float) $price < (float) $filters['price_min'] ) ) {
-			return false;
-		}
-		if ( '' !== $filters['price_max'] && ( '' === $price || null === $price || (float) $price > (float) $filters['price_max'] ) ) {
-			return false;
-		}
-
-		$cogs = $product->get_cogs_value();
-		if ( '' !== $filters['cogs_min'] && ( null === $cogs || $cogs < (float) $filters['cogs_min'] ) ) {
-			return false;
-		}
-		if ( '' !== $filters['cogs_max'] && ( null === $cogs || $cogs > (float) $filters['cogs_max'] ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -413,47 +364,99 @@ class DKBCE_COGS_Service {
 	 * Find matching IDs and count without retaining the full catalog in memory.
 	 *
 	 * @param array $filters Normalized filters.
-	 * @param array $operation Validated action or empty array.
-	 * @param int   $preview_page One-based preview page.
-	 * @param int   $page_size Number of preview rows per page.
+	 *
 	 * @return array
 	 */
-	public function scan_matches( $filters, $operation = array(), $preview_page = 1, $page_size = self::PREVIEW_PAGE_SIZE ) {
-		$count        = 0;
-		$rows         = array();
-		$preview_page = max( 1, absint( $preview_page ) );
-		$page_size    = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
-		$offset       = ( $preview_page - 1 ) * $page_size;
+	public function scan_matches( $filters ) {
+		$args = array(
+			'type'     => $this->selected_types( $filters ),
+			'return'   => 'ids',
+			'limit'    => -1,
+			'orderby'  => 'ID',
+			'order'    => 'ASC',
+			'paginate' => false,
+		);
 
-		foreach ( $this->selected_types( $filters ) as $type ) {
-			$page = 1;
-			do {
-				$ids      = $this->query_ids( $filters, $type, $page );
-				$id_count = count( $ids );
-				foreach ( $ids as $id ) {
-					$product = wc_get_product( $id );
-					if ( ! $product || ! $this->product_matches( $product, $filters ) ) {
-						continue;
-					}
-					++$count;
-					if ( $operation && $count > $offset && count( $rows ) < $page_size ) {
-						$rows[] = $this->preview_row( $product, $operation );
-					}
-					unset( $product );
-				}
+		if ( ! empty( $filters['search'] ) ) {
+			$data_store      = WC_Data_Store::load( 'product' );
+			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Name + SKU, includes variation parents.
+			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+		}
 
-				$this->free_memory();
+		if ( 'any' !== $filters['stock_status'] ) {
+			$args['stock_status'] = $filters['stock_status'];
+		}
+		if ( $filters['category'] && 'variation' !== $filters['type'] ) {
+			$args['product_category_id'] = $filters['category'];
+		}
 
-				++$page;
-			} while ( self::QUERY_BATCH_SIZE === $id_count );
+		if ( $filters['brand'] ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_brand',
+				'field'    => 'term_id',
+				'terms'    => $filters['brand'],
+			);
+		}
+
+		// Price and COGS ranges.
+		$meta_query = array();
+		foreach ( array(
+			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
+			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
+		) as $key => $range ) {
+			$clause = $this->range_clause( $key, $range[0], $range[1] );
+			if ( $clause ) {
+				$meta_query[] = $clause;
+			}
+		}
+
+		if ( $meta_query ) {
+			$args['dkbce_meta_query'] = $meta_query;
+		}
+
+		$ids         = wc_get_products( $args );
+		$total_count = is_array( $ids ) ? count( $ids ) : 0;
+
+		if ( $filters['count'] ?? false ) {
+			return $total_count;
+		}
+
+		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
+		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
+		$page_no   = max( 1, $page_no );
+		$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
+
+		$args['limit'] = $page_size;
+		$args['page']  = $page_no;
+
+		$product_ids = wc_get_products( $args );
+
+		if ( $filters['get_ids'] ?? false ) {
+			return array(
+				'product_ids' => $product_ids,
+				'count'       => $total_count,
+			);
+		}
+
+		$rows      = array();
+		$operation = $filters['operation'] ?? array();
+
+		foreach ( $product_ids as $product_id ) {
+			$product = wc_get_product( $product_id );
+			if ( ! ( $product instanceof WC_Product ) ) {
+				continue;
+			}
+			$rows[] = $this->preview_row( $product, $operation );
+			unset( $product );
+			$this->free_memory();
 		}
 
 		return array(
-			'count'       => $count,
+			'count'       => $total_count,
 			'rows'        => $rows,
-			'page'        => $preview_page,
+			'page'        => $page_no,
 			'page_size'   => $page_size,
-			'total_pages' => max( 1, (int) ceil( $count / $page_size ) ),
+			'total_pages' => max( 1, (int) ceil( $total_count / $page_size ) ),
 		);
 	}
 
@@ -466,5 +469,33 @@ class DKBCE_COGS_Service {
 		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
 			wp_cache_flush_runtime(); // WP 6.0+, clears the non-persistent cache only.
 		}
+	}
+
+	/**
+	 * Build range clause for meta query.
+	 *
+	 * @param string $key Meta key.
+	 * @param string $min Minimum value.
+	 * @param string $max Maximum value.
+	 * @return array|null
+	 */
+	private function range_clause( $key, $min, $max ) {
+		if ( '' === $min && '' === $max ) {
+			return null;
+		}
+		if ( '' !== $min && '' !== $max ) {
+			return array(
+				'key'     => $key,
+				'value'   => array( (float) $min, (float) $max ),
+				'compare' => 'BETWEEN',
+				'type'    => 'DECIMAL(20,6)',
+			);
+		}
+		return array(
+			'key'     => $key,
+			'value'   => (float) ( '' !== $min ? $min : $max ),
+			'compare' => '' !== $min ? '>=' : '<=',
+			'type'    => 'DECIMAL(20,6)',
+		);
 	}
 }

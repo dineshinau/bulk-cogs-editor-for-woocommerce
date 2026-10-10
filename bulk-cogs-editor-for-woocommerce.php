@@ -94,3 +94,25 @@ function dkbce_declare_hpos_compatibility(): void {
 	}
 }
 add_action( 'before_woocommerce_init', 'dkbce_declare_hpos_compatibility' );
+
+if ( ! function_exists( 'dkbce_wc_log' ) ) {
+	/**
+	 * Logger function for tracing and debugging.
+	 *
+	 * @param string $message Message.
+	 * @return void
+	 */
+	function dkbce_wc_log( $message ) {
+		if ( function_exists( 'wc_get_logger' ) ) {
+			$log_enabled = apply_filters( 'dkbce_is_log_enabled', true );
+
+			if ( $log_enabled ) {
+				$logger  = wc_get_logger();
+				$done_by = wp_sprintf( ( /* translators: %s current user id */ esc_html__( 'Done by user ID: %s', 'bulk-cogs-editor-for-woocommerce' ) ), get_current_user_id() );
+				$message = $done_by . ' -> ' . $message;
+
+				$logger->log( 'info', $message, array( 'source' => 'dkbce' ) );
+			}
+		}
+	}
+}

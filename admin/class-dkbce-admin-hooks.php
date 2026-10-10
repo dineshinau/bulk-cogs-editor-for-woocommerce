@@ -32,6 +32,7 @@ class DKBCE_Admin_Hooks {
 		add_action( 'wp_ajax_dkbce_apply', array( $admin_functions, 'ajax_apply' ) );
 		add_action( 'wp_ajax_dkbce_progress', array( $admin_functions, 'ajax_progress' ) );
 		add_action( 'wp_ajax_dkbce_cancel', array( $admin_functions, 'ajax_cancel' ) );
+		add_action( 'woocommerce_product_data_store_cpt_get_products_query', array( $admin_functions, 'extend_product_query' ), 10, 2 );
 	}
 
 	/**
