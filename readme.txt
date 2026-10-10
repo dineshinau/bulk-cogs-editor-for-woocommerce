@@ -146,7 +146,14 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Screenshots ==
 
-1. The Bulk COGS Editor screen: filter WooCommerce products, choose a COGS action, review the preview, and apply the update.
+1. **The Bulk COGS Editor screen:**  filter WooCommerce products, choose a COGS action, review the preview, and apply the update.
+2. **Filter products:** by title or SKU, category, brand, product type, stock status, price, and COGS range, then choose an action: set exact COGS, increase or decrease by a percentage or fixed amount, or clear COGS.
+3. **Preview every change:** before applying it. The paginated table shows each product's image, SKU, type, current COGS, new COGS, and the exact change, with 10, 20, 50, or 100 products per page.
+4. **Choose exactly which products to update:** Untick individual products or use "Select all products on this page", then apply the update only to the checked products.
+5. **A confirmation dialog shows** how many products will be changed before any COGS value is modified.
+6. **The update starts in the background:** The plugin collects the matching products and shows progress with a Cancel operation button.
+7. **Live progress:** while the batches are processed: products processed, success, skipped, and failed counts, elapsed time, and estimated time remaining.
+8. **Update completed:** final success, skipped, and failed counts, with a Refresh now link to reload the page.
 
 == Changelog ==
 

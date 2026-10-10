@@ -223,7 +223,7 @@ class DKBCE_Admin_Functions {
 		$types          = $this->service->get_product_types();
 		?>
 		<div class="wrap dkbce-wrap">
-			<h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?> <span class="dkbce-version">v<?php echo esc_html( DKBCE_VERSION ); ?></span></h1>
+			<h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1>
 			<?php if ( ! $available ) : ?>
 				<div class="notice notice-error"><p>
 				<?php
