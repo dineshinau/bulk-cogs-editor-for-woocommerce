@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-10T21:39:46+00:00\n"
+"POT-Creation-Date: 2026-10-11T12:59:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #: bulk-cogs-editor-for-woocommerce.php
-msgid "https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce"
+msgid "https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/"
 msgstr ""
 
 #. Description of the plugin
@@ -37,7 +37,7 @@ msgstr ""
 
 #. Author URI of the plugin
 #: bulk-cogs-editor-for-woocommerce.php
-msgid "https://dineshinaublog.wordpress.com/"
+msgid "https://github.com/dineshinau/"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:54
