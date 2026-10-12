@@ -12,6 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_COGS_Service {
 	const QUERY_BATCH_SIZE      = 50;
+	const MAX_QUERY_BATCH_SIZE  = 1000;
 	const PREVIEW_LIMIT         = 50;
 	const PREVIEW_PAGE_SIZE     = 20;
 	const PREVIEW_PAGE_SIZES    = array( 10, 20, 50, 100 );
@@ -399,7 +400,11 @@ class DKBCE_COGS_Service {
 		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
 		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
 		$page_no   = max( 1, $page_no );
-		$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
+		if ( ! empty( $filters['get_ids'] ) ) {
+			$page_size = max( 1, min( self::MAX_QUERY_BATCH_SIZE, absint( $page_size ) ) );
+		} else {
+			$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
+		}
 
 		$args['limit'] = $page_size;
 		$args['page']  = $page_no;

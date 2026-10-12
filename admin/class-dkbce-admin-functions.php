@@ -589,30 +589,32 @@ class DKBCE_Admin_Functions {
 
 		$selected_only = '1' === $selected_only_value;
 		$state         = array(
-			'operation_id'     => $operation_id,
-			'user_id'          => get_current_user_id(),
-			'created_at'       => time(),
-			'requested_at'     => $requested_at,
-			'started_at'       => 0,
-			'completed_at'     => 0,
-			'total'            => 0,
-			'processed'        => 0,
-			'succeeded'        => 0,
-			'skipped'          => 0,
-			'failed'           => 0,
-			'action'           => $preview['operation']['action'],
-			'value'            => $preview['operation']['value'],
-			'operation'        => $preview['operation'],
-			'filters'          => $preview['filters'],
-			'status'           => 'pending',
-			'stage'            => $selected_only ? 'processing' : 'snapshot',
-			'type_index'       => 0,
-			'page'             => 1,
-			'snapshot_chunks'  => 0,
-			'processed_chunks' => 0,
-			'cancel_requested' => false,
-			'errors'           => array(),
-			'error_summary'    => '',
+			'operation_id'          => $operation_id,
+			'user_id'               => get_current_user_id(),
+			'created_at'            => time(),
+			'requested_at'          => $requested_at,
+			'started_at'            => 0,
+			'completed_at'          => 0,
+			'total'                 => 0,
+			'processed'             => 0,
+			'succeeded'             => 0,
+			'skipped'               => 0,
+			'failed'                => 0,
+			'action'                => $preview['operation']['action'],
+			'value'                 => $preview['operation']['value'],
+			'operation'             => $preview['operation'],
+			'filters'               => $preview['filters'],
+			'status'                => 'pending',
+			'stage'                 => $selected_only ? 'processing' : 'snapshot',
+			'type_index'            => 0,
+			'page'                  => 1,
+			'snapshot_chunks'       => 0,
+			'processed_chunks'      => 0,
+			'counted_chunk_results' => 0,
+			'batch_size'            => $this->processor->get_batch_size(),
+			'cancel_requested'      => false,
+			'errors'                => array(),
+			'error_summary'         => '',
 		);
 
 		if ( $selected_only ) {
@@ -635,9 +637,11 @@ class DKBCE_Admin_Functions {
 				wp_send_json_error( array( 'message' => __( 'The selected products do not match the preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 
-			$state['total']           = count( $selected_ids );
-			$state['snapshot_chunks'] = 1;
-			$this->store->save_chunk( $operation_id, 1, $selected_ids );
+			$state['total'] = count( $selected_ids );
+			foreach ( array_chunk( $selected_ids, $state['batch_size'] ) as $ids ) {
+				++$state['snapshot_chunks'];
+				$this->store->save_chunk( $operation_id, $state['snapshot_chunks'], $ids );
+			}
 		}
 
 		$this->store->save( $state );
@@ -699,8 +703,8 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
 		if ( ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+			$this->store->request_cancellation( $operation_id );
 			$state['cancel_requested'] = true;
-			$this->store->save( $state );
 		}
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
 	}
