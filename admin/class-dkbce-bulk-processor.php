@@ -98,18 +98,23 @@ class DKBCE_Bulk_Processor {
 	 */
 	private function snapshot_batch( $state ) {
 		$filters              = $state['filters'] ?? array();
-		$filters['get_ids']   = true;
 		$filters['page_no']   = $state['page'] ?? 1;
 		$filters['page_size'] = self::BATCH_SIZE;
 
 		$product_ids         = array();
-		$total_count         = 0;
 		$processed_ids_count = $state['total'] ?? 0;
 
 		do {
-			$result      = $this->service->scan_matches( $filters );
-			$product_ids = $result['product_ids'] ?? array();
-			$total_count = $result['count'] ?? 0;
+			if ( empty( $state['total_count'] ) ) {
+				$filters['get_ids']   = false;
+				$filters['count']     = true;
+				$state['total_count'] = $this->service->scan_matches( $filters );
+			}
+
+			$filters['get_ids'] = true;
+			$filters['count']   = false;
+
+			$product_ids = $this->service->scan_matches( $filters );
 
 			if ( ! $product_ids ) {
 				$filters['page_no'] = $state['page'] + 1;
@@ -128,11 +133,11 @@ class DKBCE_Bulk_Processor {
 			$this->store->save( $state );
 			$this->queue_next( $state );
 			return;
-		} while ( ! $product_ids && $processed_ids_count < $total_count );
+		} while ( ! $product_ids && $processed_ids_count < $state['total_count'] );
 
 		$state['stage'] = 'processing';
 
-		dkbce_wc_log( 'Total IDs: ' . $total_count . ', Product IDs count: ' . count( $product_ids ) );
+		dkbce_wc_log( 'Total IDs: ' . $state['total_count'] . ', Product IDs count: ' . count( $product_ids ) );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );

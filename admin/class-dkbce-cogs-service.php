@@ -208,35 +208,6 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Get one bounded page of product IDs for one product type.
-	 *
-	 * @param array  $filters Normalized filters.
-	 * @param string $type Product type.
-	 * @param int    $page One-based page.
-	 * @return array
-	 */
-	public function query_ids( $filters, $type, $page ) {
-		$args = array(
-			'type'    => $type,
-			'limit'   => self::QUERY_BATCH_SIZE,
-			'page'    => absint( $page ),
-			'orderby' => 'ID',
-			'order'   => 'ASC',
-			'return'  => 'ids',
-		);
-
-		if ( 'any' !== $filters['stock_status'] ) {
-			$args['stock_status'] = $filters['stock_status'];
-		}
-		if ( $filters['category'] && 'variation' !== $type ) {
-			$args['product_category_id'] = $filters['category'];
-		}
-
-		$ids = wc_get_products( $args );
-		return is_array( $ids ) ? array_map( 'absint', $ids ) : array();
-	}
-
-	/**
 	 * Calculate a new COGS value. A null result means clear the COGS value.
 	 *
 	 * @param WC_Product $product Product.
@@ -414,8 +385,12 @@ class DKBCE_COGS_Service {
 			$args['dkbce_meta_query'] = $meta_query;
 		}
 
-		$ids         = wc_get_products( $args );
-		$total_count = is_array( $ids ) ? count( $ids ) : 0;
+		$total_count = 0;
+
+		if ( empty( $filters['get_ids'] ) ) {
+			$ids         = wc_get_products( $args );
+			$total_count = is_array( $ids ) ? count( $ids ) : 0;
+		}
 
 		if ( $filters['count'] ?? false ) {
 			return $total_count;
@@ -432,10 +407,7 @@ class DKBCE_COGS_Service {
 		$product_ids = wc_get_products( $args );
 
 		if ( $filters['get_ids'] ?? false ) {
-			return array(
-				'product_ids' => $product_ids,
-				'count'       => $total_count,
-			);
+			return $product_ids;
 		}
 
 		$rows      = array();
