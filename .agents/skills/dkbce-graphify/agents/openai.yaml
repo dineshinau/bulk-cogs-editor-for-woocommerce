@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bulk COGS Graphify"
+  short_description: "Find plugin relationships and refresh the code graph"
+  default_prompt: "Use $dkbce-graphify to find the relevant plugin code and refresh the graph after the completed task."

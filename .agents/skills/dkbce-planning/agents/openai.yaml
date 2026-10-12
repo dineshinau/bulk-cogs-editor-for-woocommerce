@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bulk COGS Planning"
+  short_description: "Concise Superpowers planning for plugin changes"
+  default_prompt: "Use $dkbce-planning to plan this plugin change with affected files, acceptance criteria, and supported checks."
