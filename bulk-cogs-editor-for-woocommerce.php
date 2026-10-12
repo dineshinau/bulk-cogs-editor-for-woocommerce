@@ -3,7 +3,7 @@
  * Plugin Name: Bulk COGS Editor for WooCommerce
  * Plugin URI: https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/
  * Description: Allow bulk Cost of Goods Editing for products in WooCommerce.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Dinesh Yadav
  * Author URI: https://github.com/dineshinau/
  * Text Domain: bulk-cogs-editor-for-woocommerce

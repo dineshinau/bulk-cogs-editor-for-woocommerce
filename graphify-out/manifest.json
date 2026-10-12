@@ -42,9 +42,9 @@
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
   },
   "admin/class-dkbce-bulk-processor.php": {
-    "mtime": 1791841006.3133526,
-    "seen": 1791841517.8181076,
-    "ast_hash": "670066430701a1232e20c413128d7407",
+    "mtime": 1791842571.2645297,
+    "seen": 1791842581.2751732,
+    "ast_hash": "249be9ad7bc8605ed2aaaedcbf590fca",
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {

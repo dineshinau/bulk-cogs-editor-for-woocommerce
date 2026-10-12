@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_Bulk_Processor {
 	const BATCH_SIZE        = 50;
-	const BATCH_TIME_LIMIT  = 10;
-	const PROGRESS_INTERVAL = 25;
+	const BATCH_TIME_LIMIT  = 20;
+	const PROGRESS_INTERVAL = 5;
 	const HOOK              = 'dkbce_process_operation';
 	const GROUP             = 'bulk-cogs-editor';
 
@@ -72,7 +72,7 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
-	 * Process one snapshot or update batch.
+	 * Process persisted chunks within a bounded worker request.
 	 *
 	 * @param string $operation_id Operation UUID.
 	 * @return void
@@ -101,21 +101,28 @@ class DKBCE_Bulk_Processor {
 		$state['started_at'] = $state['started_at'] ? $state['started_at'] : time();
 		$this->store->save( $state );
 
-		if ( 'snapshot' === $state['stage'] ) {
-			$this->snapshot_batch( $state );
-			return;
+		// Reuse the loaded WordPress request across chunks. Bound memory growth too.
+		$chunks = 0;
+		while ( $chunks < 10 && microtime( true ) < $deadline ) {
+			++$chunks;
+			$continue = 'snapshot' === $state['stage']
+				? $this->snapshot_batch( $state )
+				: $this->update_batch( $state, $deadline );
+			if ( ! $continue ) {
+				return;
+			}
 		}
 
-		$this->update_batch( $state, $deadline );
+		$this->queue_next( $state );
 	}
 
 	/**
 	 * Collect one bounded page of matching IDs before updates begin.
 	 *
 	 * @param array $state Operation state.
-	 * @return void
+	 * @return bool Whether another chunk may run in this request.
 	 */
-	private function snapshot_batch( $state ) {
+	private function snapshot_batch( &$state ) {
 		if ( ! isset( $state['batch_size'] ) ) {
 			// Keep the page width of operations created before it was persisted.
 			$first_chunk         = $state['snapshot_chunks'] ? $this->store->get_chunk( $state['operation_id'], 1 ) : false;
@@ -141,9 +148,7 @@ class DKBCE_Bulk_Processor {
 			$state['total'] += count( $product_ids );
 			$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
 			++$state['page'];
-			$this->store->save( $state );
-			$this->queue_next( $state );
-			return;
+			return $this->save_progress( $state );
 		}
 
 		// An empty page ends the scan even if products disappeared after counting.
@@ -153,10 +158,10 @@ class DKBCE_Bulk_Processor {
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
-		} else {
-			$this->store->save( $state );
-			$this->queue_next( $state );
+			return false;
 		}
+
+		return $this->save_progress( $state );
 	}
 
 	/**
@@ -164,16 +169,16 @@ class DKBCE_Bulk_Processor {
 	 *
 	 * @param array $state Operation state.
 	 * @param float $deadline Time after which another product must not be started.
-	 * @return void
+	 * @return bool Whether another chunk may run in this request.
 	 */
-	private function update_batch( $state, $deadline ) {
+	private function update_batch( &$state, $deadline ) {
 		$chunk_number = $state['processed_chunks'] + 1;
 		$chunk        = $this->store->get_chunk( $state['operation_id'], $chunk_number );
 
 		if ( ! $chunk ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
 			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
-			return;
+			return false;
 		}
 
 		if ( ! isset( $state['counted_chunk_results'] ) ) {
@@ -192,6 +197,22 @@ class DKBCE_Bulk_Processor {
 			}
 		}
 
+		$pending_ids = array_diff( $chunk['ids'], array_keys( $chunk['results'] ) );
+		if ( $pending_ids && microtime( true ) < $deadline ) {
+			// Batch post, term and metadata reads; WooCommerce still owns all writes.
+			_prime_post_caches( $pending_ids, true, true );
+			$parent_ids = array();
+			foreach ( $pending_ids as $product_id ) {
+				$parent_id = wp_get_post_parent_id( $product_id );
+				if ( $parent_id ) {
+					$parent_ids[] = $parent_id;
+				}
+			}
+			if ( $parent_ids ) {
+				_prime_post_caches( array_unique( $parent_ids ), true, true );
+			}
+		}
+
 		$since_checkpoint = 0;
 		foreach ( $chunk['ids'] as $product_id ) {
 			$key = (string) $product_id;
@@ -203,13 +224,13 @@ class DKBCE_Bulk_Processor {
 				if ( $this->save_progress( $state ) ) {
 					$this->queue_next( $state );
 				}
-				return;
+				return false;
 			}
 
 			$outcome = $this->process_product( $product_id, $state );
 			if ( 'deferred' === $outcome['status'] ) {
 				if ( ! $this->save_progress( $state ) ) {
-					return;
+					return false;
 				}
 				$retry_action = function_exists( 'as_schedule_single_action' )
 					? as_schedule_single_action( time() + 5, self::HOOK, array( $state['operation_id'] ), self::GROUP, false )
@@ -218,7 +239,7 @@ class DKBCE_Bulk_Processor {
 					$state['error_summary'] = __( 'The background queue became unavailable. Some changes may already have been applied.', 'bulk-cogs-editor-for-woocommerce' );
 					$this->finish_operation( $state, 'failed' );
 				}
-				return;
+				return false;
 			}
 			$chunk['results'][ $key ] = $outcome;
 			// Keep each outcome durable; only the aggregate counters are buffered.
@@ -227,7 +248,7 @@ class DKBCE_Bulk_Processor {
 			++$since_checkpoint;
 			if ( $since_checkpoint >= self::PROGRESS_INTERVAL ) {
 				if ( ! $this->save_progress( $state ) ) {
-					return;
+					return false;
 				}
 				$since_checkpoint = 0;
 			}
@@ -236,14 +257,14 @@ class DKBCE_Bulk_Processor {
 		++$state['processed_chunks'];
 		$state['counted_chunk_results'] = 0;
 		if ( ! $this->save_progress( $state ) ) {
-			return;
+			return false;
 		}
 		if ( $state['processed_chunks'] >= $state['snapshot_chunks'] ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
 			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
-			return;
+			return false;
 		}
-		$this->queue_next( $state );
+		return true;
 	}
 
 	/**

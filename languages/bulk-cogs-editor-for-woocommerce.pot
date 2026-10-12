@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bulk COGS Editor for WooCommerce 1.0.0\n"
+"Project-Id-Version: Bulk COGS Editor for WooCommerce 1.0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-11T12:59:55+00:00\n"
+"POT-Creation-Date: 2026-10-12T22:13:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -215,7 +215,7 @@ msgid "Starting…"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:165
-#: admin/class-dkbce-admin-functions.php:632
+#: admin/class-dkbce-admin-functions.php:634
 msgid "Select at least one product in the preview table."
 msgstr ""
 
@@ -565,112 +565,112 @@ msgstr ""
 msgid "The selected product scope is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:621
+#: admin/class-dkbce-admin-functions.php:623
 msgid "The selected product list is too large. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:626
+#: admin/class-dkbce-admin-functions.php:628
 msgid "The selected product list is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:635
+#: admin/class-dkbce-admin-functions.php:637
 msgid "The selected products do not match the preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:649
+#: admin/class-dkbce-admin-functions.php:653
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:674
 #: admin/class-dkbce-admin-functions.php:678
-#: admin/class-dkbce-admin-functions.php:695
+#: admin/class-dkbce-admin-functions.php:682
 #: admin/class-dkbce-admin-functions.php:699
+#: admin/class-dkbce-admin-functions.php:703
 msgid "This operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:76
+#: admin/class-dkbce-bulk-processor.php:95
 msgid "WooCommerce COGS is no longer available or enabled."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:179
-#: admin/class-dkbce-bulk-processor.php:272
+#: admin/class-dkbce-bulk-processor.php:239
+#: admin/class-dkbce-bulk-processor.php:371
 msgid "The background queue became unavailable. Some changes may already have been applied."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:241
+#: admin/class-dkbce-bulk-processor.php:340
 msgid "Already processed products remain changed; no rollback was performed."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:325
+#: admin/class-dkbce-bulk-processor.php:424
 msgid "Product no longer exists."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:342
+#: admin/class-dkbce-bulk-processor.php:441
 msgid "COGS could not be calculated."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:365
+#: admin/class-dkbce-bulk-processor.php:464
 msgid "Product could not be updated. Check the WooCommerce log for details."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:42
+#: admin/class-dkbce-cogs-service.php:43
 msgid "Variation"
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:73
-#: admin/class-dkbce-cogs-service.php:77
+#: admin/class-dkbce-cogs-service.php:74
+#: admin/class-dkbce-cogs-service.php:78
 msgid "The product filters are invalid."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:94
+#: admin/class-dkbce-cogs-service.php:95
 msgid "Search must be 100 characters or fewer."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:100
+#: admin/class-dkbce-cogs-service.php:101
 msgid "Choose a supported product type."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:106
+#: admin/class-dkbce-cogs-service.php:107
 msgid "Choose a supported stock status."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:110
+#: admin/class-dkbce-cogs-service.php:111
 msgid "The selected product category no longer exists."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:115
+#: admin/class-dkbce-cogs-service.php:116
 msgid "The selected brand is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:122
+#: admin/class-dkbce-cogs-service.php:123
 msgid "Enter valid non-negative values for the price and COGS ranges."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:125
+#: admin/class-dkbce-cogs-service.php:126
 msgid "Each minimum must be less than or equal to its maximum."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:143
+#: admin/class-dkbce-cogs-service.php:144
 msgid "Choose one of the available COGS actions."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:155
+#: admin/class-dkbce-cogs-service.php:156
 msgid "Enter a valid non-negative number."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:159
+#: admin/class-dkbce-cogs-service.php:160
 msgid "The percentage cannot exceed 10,000%."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:263
+#: admin/class-dkbce-cogs-service.php:235
 msgid "Current COGS is not set."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:285
+#: admin/class-dkbce-cogs-service.php:257
 msgid "Choose a supported COGS action."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:290
+#: admin/class-dkbce-cogs-service.php:262
 msgid "The calculated value exceeds the supported monetary limit."
 msgstr ""
 

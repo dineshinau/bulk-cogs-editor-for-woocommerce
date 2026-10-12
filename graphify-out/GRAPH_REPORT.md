@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-12)
 
 ## Corpus Check
-- 19 files · ~17,604 words
+- 19 files · ~17,736 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 204 nodes · 326 edges · 17 communities (7 shown, 10 thin omitted)
+- 204 nodes · 327 edges · 17 communities (7 shown, 10 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0b6ba5ee`
+- Built from commit: `0f1f8c26`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -79,7 +79,7 @@ Cohesion: 0.18
 Nodes (30): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+22 more)
 
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
@@ -92,10 +92,8 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `@playwright/test` connect `package.json` to `global-setup.cjs`, `bulk-cogs-editor.spec.cjs`?**
   _High betweenness centrality (0.073) - this node is a cross-community bridge._
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Admin_Hooks`?**
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Admin_Hooks`, `DKBCE_Operation_Store`?**
   _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_Admin_Functions`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
   _`DKBCE_Operation_Store` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `name`, `version`, `update` to the rest of the system?**
@@ -104,3 +102,5 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.08923076923076922 - nodes in this community are weakly interconnected._
 - **Should `scripts` be split into smaller, more focused modules?**
   _Cohesion score 0.125 - nodes in this community are weakly interconnected._
+- **Should `package.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
