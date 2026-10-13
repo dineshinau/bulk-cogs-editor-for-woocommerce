@@ -34,6 +34,57 @@
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
 
+	const hiddenColumns = new Set();
+	const columnControls = $( '.dkbce-columns' );
+
+	function updateColumnVisibility() {
+		previewContent.querySelectorAll( 'tr' ).forEach( ( row ) => {
+			Array.from( row.children ).forEach( ( cell, index ) => {
+				cell.hidden = hiddenColumns.has( index );
+			} );
+		} );
+		const options = $( '#dkbce-column-options' ).querySelectorAll( 'input' );
+		options.forEach( ( input ) => {
+			input.disabled = input.checked && hiddenColumns.size === options.length - 1;
+		} );
+	}
+
+	DKBCE.i18n.columns.forEach( ( name, index ) => {
+		const label = document.createElement( 'label' );
+		const input = document.createElement( 'input' );
+		input.type = 'checkbox';
+		input.checked = true;
+		input.addEventListener( 'change', () => {
+			if ( input.checked ) {
+				hiddenColumns.delete( index );
+			} else {
+				hiddenColumns.add( index );
+			}
+			updateColumnVisibility();
+		} );
+		label.append( input, document.createTextNode( name ) );
+		$( '#dkbce-column-options' ).appendChild( label );
+	} );
+	columnControls.querySelector( 'button' ).addEventListener( 'click', () => {
+		columnControls.open = false;
+		columnControls.querySelector( 'summary' ).focus();
+	} );
+	document.addEventListener( 'click', ( event ) => {
+		document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open]' ).forEach( ( details ) => {
+			if ( ! details.contains( event.target ) ) {
+				details.open = false;
+			}
+		} );
+	} );
+	document.addEventListener( 'keydown', ( event ) => {
+		if ( event.key === 'Escape' ) {
+			document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open]' ).forEach( ( details ) => {
+				details.open = false;
+				details.querySelector( 'summary' ).focus();
+			} );
+		}
+	} );
+
 	function setNotice( message, type ) {
 		notice.className =
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
@@ -441,25 +492,43 @@
 			const pagination = document.createElement( 'nav' );
 			pagination.className = 'dkbce-pagination';
 			pagination.setAttribute( 'aria-label', DKBCE.i18n.paginationLabel );
-			const previous = document.createElement( 'button' );
-			previous.type = 'button';
-			previous.className = 'button';
-			previous.textContent = DKBCE.i18n.previousPage;
-			previous.disabled = 1 === data.page;
-			previous.addEventListener( 'click', () => fetchPreviewPage( data.page - 1 ) );
-			const pageNumber = document.createElement( 'span' );
-			pageNumber.textContent = DKBCE.i18n.pageNumber
-				.replace( '%1$d', String( data.page ) )
-				.replace( '%2$d', String( data.total_pages ) );
-			const next = document.createElement( 'button' );
-			next.type = 'button';
-			next.className = 'button';
-			next.textContent = DKBCE.i18n.nextPage;
-			next.disabled = data.page === data.total_pages;
-			next.addEventListener( 'click', () => fetchPreviewPage( data.page + 1 ) );
-			pagination.append( previous, pageNumber, next );
-			previewContent.appendChild( pagination );
+			const addPageButton = ( label, page, disabled = false ) => {
+				const button = document.createElement( 'button' );
+				button.type = 'button';
+				button.className = 'button';
+				button.textContent = label;
+				button.disabled = disabled;
+				button.setAttribute( 'aria-label', DKBCE.i18n.pageNumber
+					.replace( '%1$d', String( page ) )
+					.replace( '%2$d', String( data.total_pages ) ) );
+				if ( String( page ) === label && page === data.page ) {
+					button.setAttribute( 'aria-current', 'page' );
+				}
+				button.addEventListener( 'click', () => fetchPreviewPage( page ) );
+				pagination.appendChild( button );
+			};
+			addPageButton( '«', 1, data.page === 1 );
+			addPageButton( '‹', Math.max( 1, data.page - 1 ), data.page === 1 );
+			const pages = new Set( [ 1, data.total_pages ] );
+			const start = Math.max( 1, Math.min( data.page - 2, data.total_pages - 4 ) );
+			for ( let page = start; page <= Math.min( data.total_pages, start + 4 ); page++ ) {
+				pages.add( page );
+			}
+			let previousPage = 0;
+			Array.from( pages ).sort( ( a, b ) => a - b ).forEach( ( page ) => {
+				if ( previousPage && page > previousPage + 1 ) {
+					const gap = document.createElement( 'span' );
+					gap.textContent = '…';
+					pagination.appendChild( gap );
+				}
+				addPageButton( String( page ), page );
+				previousPage = page;
+			} );
+			addPageButton( '›', Math.min( data.total_pages, data.page + 1 ), data.page === data.total_pages );
+			addPageButton( '»', data.total_pages, data.page === data.total_pages );
+			footer.insertBefore( pagination, pageSummary );
 		}
+		updateColumnVisibility();
 		previewContent.hidden = false;
 		applyButton.disabled = state.busy || state.loadingPage || ! data.rows.length;
 	}
@@ -719,10 +788,14 @@
 			);
 		}
 
-		timeElement.textContent = DKBCE.i18n.elapsedTime.replace(
+		const elapsed = document.createElement( 'span' );
+		elapsed.textContent = DKBCE.i18n.elapsedTime.replace(
 			'%s',
 			formatDuration( elapsedSeconds )
-		) + ' · ' + DKBCE.i18n.remainingTime.replace( '%s', remaining );
+		);
+		const estimate = document.createElement( 'span' );
+		estimate.textContent = DKBCE.i18n.remainingTime.replace( '%s', remaining );
+		timeElement.replaceChildren( elapsed, estimate );
 	}
 
 	function renderOperation( operation ) {
@@ -765,18 +838,36 @@
 				( operation.processed / operation.total ) * 100
 			);
 		}
-		text.textContent = DKBCE.i18n.processed
+		text.textContent = DKBCE.i18n.progressSummary
 			.replace( '%1$d', operation.processed )
 			.replace( '%2$d', operation.total )
 			.replace( '%3$d', percent )
-			.replace( '%4$d', operation.succeeded )
-			.replace( '%5$d', operation.skipped )
-			.replace( '%6$d', operation.failed );
+			.replace( '%%', '%' );
 		operationPanel.appendChild( text );
+		const stats = document.createElement( 'div' );
+		stats.className = 'dkbce-operation-stats';
+		[
+			[ 'succeeded', DKBCE.i18n.updatedLabel ],
+			[ 'skipped', DKBCE.i18n.skippedLabel ],
+			[ 'failed', DKBCE.i18n.failedLabel ],
+		].forEach( ( [ key, label ] ) => {
+			const card = document.createElement( 'div' );
+			card.className = 'dkbce-stat is-' + key;
+			const value = document.createElement( 'strong' );
+			value.textContent = Number( operation[ key ] ).toLocaleString();
+			const caption = document.createElement( 'span' );
+			caption.textContent = label;
+			card.append( value, caption );
+			stats.appendChild( card );
+		} );
+		const metrics = document.createElement( 'div' );
+		metrics.className = 'dkbce-operation-metrics';
+		metrics.appendChild( stats );
+		operationPanel.appendChild( metrics );
 		const time = document.createElement( 'p' );
 		time.className = 'dkbce-operation-time';
 		time.setAttribute( 'aria-live', 'off' );
-		operationPanel.appendChild( time );
+		metrics.appendChild( time );
 		updateOperationTime( operation, time );
 		if ( ! terminalStatuses.includes( operation.status ) ) {
 			state.operationTimer = window.setInterval(
