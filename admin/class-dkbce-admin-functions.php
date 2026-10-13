@@ -86,6 +86,22 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Add a review link to this plugin's metadata row.
+	 *
+	 * @param array  $links Existing metadata links.
+	 * @param string $file Plugin basename.
+	 * @return array
+	 */
+	public function plugin_row_meta( array $links, string $file ): array {
+		if ( DKBCE_PLUGIN_BASENAME !== $file ) {
+			return $links;
+		}
+
+		$links[] = '<a href="' . esc_url( 'https://wordpress.org/support/plugin/bulk-cogs-editor-for-woocommerce/reviews/?filter=5#new-post' ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr__( 'Leave a five-star review on WordPress.org (opens in a new tab)', 'bulk-cogs-editor-for-woocommerce' ) . '"><span aria-hidden="true" style="color: #996800; font-size: 18px;">★★★★★</span></a>';
+		return $links;
+	}
+
+	/**
 	 * Load assets only on this plugin page.
 	 *
 	 * @param string $hook_suffix Current admin page hook.
@@ -104,10 +120,9 @@ class DKBCE_Admin_Functions {
 		wp_enqueue_style( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/bulk-cogs-editor.css', array(), $script_version );
 		wp_enqueue_script( 'dkbce-admin', DKBCE_PLUGIN_URL . 'assets/bulk-cogs-editor.js', $script_dependencies, $script_version, true );
 
-		$operation_id       = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
-		$operation          = $operation_id ? $this->store->get( $operation_id ) : false;
-		$completed_statuses = array( 'completed', 'completed_with_errors' );
-		if ( $operation && ( get_current_user_id() !== (int) $operation['user_id'] || in_array( $operation['status'], $completed_statuses, true ) ) ) {
+		$operation_id = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) );
+		$operation    = $operation_id ? $this->store->get( $operation_id ) : false;
+		if ( $operation && get_current_user_id() !== (int) $operation['user_id'] ) {
 			$operation = false;
 		}
 
@@ -155,6 +170,7 @@ class DKBCE_Admin_Functions {
 					/* translators: 1: formatted processed product count, 2: formatted total product count. */
 					'progressSummary'    => __( '%1$s of %2$s products processed', 'bulk-cogs-editor-for-woocommerce' ),
 					'processing'         => __( 'Processing COGS updates…', 'bulk-cogs-editor-for-woocommerce' ),
+					'backgroundMessage'  => __( 'You can close this window or your browser. Updates will continue in the background. Return to this page later to view the results.', 'bulk-cogs-editor-for-woocommerce' ),
 					'complete'           => __( 'COGS update completed.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: current operation status. */
 					'operationStatus'    => __( 'COGS update %s', 'bulk-cogs-editor-for-woocommerce' ),

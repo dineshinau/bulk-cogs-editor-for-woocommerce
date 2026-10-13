@@ -930,6 +930,15 @@
 		percentage.setAttribute( 'aria-hidden', 'true' );
 		track.append( progress, highlight, percentage );
 		operationPanel.appendChild( track );
+		if (
+			'processing' === operation.stage &&
+			[ 'pending', 'processing' ].includes( operation.status ) &&
+			! operation.cancel_requested
+		) {
+			const backgroundMessage = document.createElement( 'p' );
+			backgroundMessage.textContent = DKBCE.i18n.backgroundMessage;
+			operationPanel.appendChild( backgroundMessage );
+		}
 		const stats = document.createElement( 'div' );
 		stats.className = 'dkbce-operation-stats';
 		[

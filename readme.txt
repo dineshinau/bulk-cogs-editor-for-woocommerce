@@ -5,7 +5,7 @@ Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -156,6 +156,15 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 8. **Update completed:** final success, skipped, and failed counts, with a Refresh now link to reload the page.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added a message during background updates explaining that you can close the browser and return later to view the results.
+* Keep the latest completed operation visible when returning to the editor.
+* Added a five-star WordPress.org review link to the plugin listing.
+* Improved progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
+* Fixed admin notices appearing between the page title and description.
+* Fixed alignment of the top and bottom select-all checkboxes with product row checkboxes.
+* Expanded the page title to clarify Cost of Goods Sold (COGS).
 
 = 1.0.0 (2026-10-10) =
 * Initial release.
