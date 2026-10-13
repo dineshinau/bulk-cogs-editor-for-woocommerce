@@ -850,14 +850,20 @@
 			);
 		}
 
-		const elapsed = document.createElement( 'span' );
-		elapsed.textContent = DKBCE.i18n.elapsedTime.replace(
-			'%s',
-			formatDuration( elapsedSeconds )
-		);
-		const estimate = document.createElement( 'span' );
-		estimate.textContent = DKBCE.i18n.remainingTime.replace( '%s', remaining );
-		timeElement.replaceChildren( elapsed, estimate );
+		timeElement.replaceChildren();
+		[
+			[ DKBCE.i18n.elapsedTime, formatDuration( elapsedSeconds ) ],
+			[ DKBCE.i18n.remainingTime, remaining ],
+		].forEach( ( [ template, duration ] ) => {
+			const card = document.createElement( 'span' );
+			const parts = template.split( '%s' );
+			const value = document.createElement( 'strong' );
+			value.className = 'dkbce-duration';
+			value.textContent = duration;
+			card.append( document.createTextNode( parts[ 0 ] ), value,
+				document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+			timeElement.appendChild( card );
+		} );
 	}
 
 	function renderOperation( operation ) {

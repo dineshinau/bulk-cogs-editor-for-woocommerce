@@ -339,7 +339,7 @@ class DKBCE_Admin_Functions {
 			<section class="dkbce-section dkbce-apply-section" aria-labelledby="dkbce-apply-title">
 				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-yes-alt" aria-hidden="true"></i><span aria-hidden="true">4</span><div><h2 id="dkbce-apply-title"><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review your preview, choose which products to include, then confirm your update.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
 				<p class="dkbce-selection-option"><label><input type="checkbox" id="dkbce-selected-only"> <?php esc_html_e( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ); ?></label></p>
-				<p><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span id="dkbce-apply-spinner" class="spinner" aria-hidden="true"></span></p>
+				<p><span id="dkbce-apply-spinner" class="spinner" aria-hidden="true"></span><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
 			</section>
 
 			<div id="dkbce-operation" class="dkbce-operation" hidden aria-live="polite"></div>
