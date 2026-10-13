@@ -119,6 +119,7 @@ class DKBCE_Admin_Functions {
 				'nonce'          => wp_create_nonce( self::NONCE ),
 				'cogsAvailable'  => $this->service->is_cogs_available(),
 				'operationId'    => $operation ? $operation_id : '',
+				'preferences'    => $this->get_preferences(),
 				'previewLimit'   => DKBCE_COGS_Service::PREVIEW_LIMIT,
 				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
 				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
@@ -370,6 +371,53 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Get the current user's validated display preferences.
+	 *
+	 * @return array
+	 */
+	private function get_preferences() {
+		$saved  = get_user_meta( get_current_user_id(), 'dkbce_display_preferences', true );
+		$saved  = is_array( $saved ) ? $saved : array();
+		$size   = isset( $saved['page_size'] ) ? absint( $saved['page_size'] ) : 0;
+		$hidden = isset( $saved['hidden_columns'] ) && is_array( $saved['hidden_columns'] ) ? array_values( array_intersect( range( 0, 7 ), $saved['hidden_columns'] ) ) : array();
+		return array(
+			'page_size'      => in_array( $size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ? $size : DKBCE_COGS_Service::PREVIEW_PAGE_SIZE,
+			'hidden_columns' => count( $hidden ) < 8 ? $hidden : array(),
+		);
+	}
+
+	/**
+	 * Save display preferences for the authenticated administrator.
+	 *
+	 * @return void
+	 */
+	public function ajax_preferences() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$size   = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
+		$hidden = isset( $_POST['hidden_columns'] ) && is_array( $_POST['hidden_columns'] ) ? wp_unslash( $_POST['hidden_columns'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each column is strictly validated below.
+		if ( ! in_array( $size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) || count( $hidden ) > 7 ) {
+			wp_send_json_error( array( 'message' => __( 'The display preferences are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		foreach ( $hidden as $column ) {
+			if ( ! is_scalar( $column ) || ! preg_match( '/\A[0-7]\z/', (string) $column ) ) {
+				wp_send_json_error( array( 'message' => __( 'The display preferences are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+		}
+		$preferences = array(
+			'page_size'      => $size,
+			'hidden_columns' => array_values( array_unique( array_map( 'absint', $hidden ) ) ),
+		);
+		$user_id     = get_current_user_id();
+		if ( ! update_user_meta( $user_id, 'dkbce_display_preferences', $preferences ) && get_user_meta( $user_id, 'dkbce_display_preferences', true ) !== $preferences ) {
+			wp_send_json_error( array( 'message' => __( 'Could not save display preferences. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
+		}
+		wp_send_json_success( $preferences );
+	}
+
+	/**
 	 * Validate nonce, capability, and COGS availability for privileged AJAX requests.
 	 *
 	 * @return void
@@ -611,7 +659,26 @@ class DKBCE_Admin_Functions {
 		}
 
 		$selected_only = '1' === $selected_only_value;
-		$state         = array(
+		$exclude_mode  = isset( $_POST['selection_mode'] ) && 'all_except' === $_POST['selection_mode'];
+		$excluded_ids  = array();
+		if ( $selected_only && $exclude_mode ) {
+			$raw_excluded = isset( $_POST['excluded_ids'] ) && is_string( $_POST['excluded_ids'] ) ? json_decode( wp_unslash( $_POST['excluded_ids'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON IDs are strictly validated below.
+			if ( ! is_array( $raw_excluded ) || count( $raw_excluded ) > count( $preview['row_ids'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			foreach ( $raw_excluded as $raw_id ) {
+				if ( ! is_scalar( $raw_id ) || ! preg_match( '/\A[1-9][0-9]*\z/', (string) $raw_id ) ) {
+					wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+				}
+				$excluded_ids[] = absint( $raw_id );
+			}
+			$excluded_ids = array_values( array_unique( $excluded_ids ) );
+			if ( array_diff( $excluded_ids, $preview['row_ids'] ) || count( $excluded_ids ) >= (int) $preview['total'] ) {
+				wp_send_json_error( array( 'message' => __( 'The selection is empty or no longer matches the preview.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+		}
+
+		$state = array(
 			'operation_id'          => $operation_id,
 			'user_id'               => get_current_user_id(),
 			'created_at'            => time(),
@@ -628,7 +695,7 @@ class DKBCE_Admin_Functions {
 			'operation'             => $preview['operation'],
 			'filters'               => $preview['filters'],
 			'status'                => 'pending',
-			'stage'                 => $selected_only ? 'processing' : 'snapshot',
+			'stage'                 => $selected_only && ! $exclude_mode ? 'processing' : 'snapshot',
 			'type_index'            => 0,
 			'page'                  => 1,
 			'snapshot_chunks'       => 0,
@@ -640,7 +707,11 @@ class DKBCE_Admin_Functions {
 			'error_summary'         => '',
 		);
 
-		if ( $selected_only ) {
+		if ( $selected_only && $exclude_mode ) {
+			$state['filters']['excluded_ids'] = $excluded_ids;
+		}
+
+		if ( $selected_only && ! $exclude_mode ) {
 			$raw_selected_ids = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each selected ID is validated as digits and converted with absint below.
 			if ( count( $raw_selected_ids ) > DKBCE_COGS_Service::MAX_SELECTED_PRODUCTS ) {
 				wp_send_json_error( array( 'message' => __( 'The selected product list is too large. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );

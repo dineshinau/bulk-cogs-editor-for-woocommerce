@@ -1,14 +1,14 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1791878400.7602673,
-    "seen": 1791878413.7614713,
-    "ast_hash": "60b98bd62a8f6d726be794c11f7d966a",
+    "mtime": 1791878998.3077164,
+    "seen": 1791879063.9779165,
+    "ast_hash": "cf1a052f59268b1cbd6e6b30919f1051",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
-    "mtime": 1791827828.5490959,
-    "seen": 1791841517.818103,
-    "ast_hash": "a39bdfade40400697854d2ae097421f5",
+    "mtime": 1791878959.6613371,
+    "seen": 1791879063.9779227,
+    "ast_hash": "be1d8c2c122c271ad945a66e006db2cc",
     "semantic_hash": ""
   },
   "admin/index.php": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {
-    "mtime": 1791877139.8469005,
-    "seen": 1791877165.774652,
-    "ast_hash": "0e9ee42f24c1f2b7698e7d17f151a1e4",
+    "mtime": 1791878959.6630974,
+    "seen": 1791879063.97793,
+    "ast_hash": "85865b9724188062ee897212fb1f67d9",
     "semantic_hash": ""
   },
   "admin/class-dkbce-operation-store.php": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1791878400.761635,
-    "seen": 1791878413.761527,
-    "ast_hash": "f2aaa81b3dd70396d2055a360227d07e",
+    "mtime": 1791879051.1674843,
+    "seen": 1791879063.9779449,
+    "ast_hash": "3ac09f8c110411063eac11c8ba25fba7",
     "semantic_hash": ""
   },
   "src/index.php": {

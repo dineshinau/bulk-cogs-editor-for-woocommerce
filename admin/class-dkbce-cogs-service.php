@@ -362,6 +362,11 @@ class DKBCE_COGS_Service {
 			'paginate' => false,
 		);
 
+		// Exclusions are validated against the user's preview before snapshotting.
+		if ( ! empty( $filters['excluded_ids'] ) ) {
+			$args['exclude'] = array_map( 'absint', $filters['excluded_ids'] );
+		}
+
 		if ( ! empty( $filters['search'] ) ) {
 			$data_store      = WC_Data_Store::load( 'product' );
 			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Matches product text, SKU and GTIN/ISBN/EAN/UPC, including variations and their parents.

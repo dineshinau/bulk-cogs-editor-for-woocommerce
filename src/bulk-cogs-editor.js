@@ -12,8 +12,7 @@
 		page: 1,
 		loadingPage: false,
 		pageRequestId: 0,
-		selectedIds: new Set(),
-		loadedIds: new Set(),
+		excludedIds: new Set(),
 		busy: false,
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
@@ -34,7 +33,16 @@
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
 
-	const hiddenColumns = new Set();
+	const preferences = DKBCE.preferences || {};
+	pageSizeSelect.value = String( preferences.page_size || pageSizeSelect.value );
+	const hiddenColumns = new Set( preferences.hidden_columns || [] );
+	let preferenceQueue = Promise.resolve();
+
+	function savePreferences() {
+		const values = { page_size: Number( pageSizeSelect.value ), hidden_columns: Array.from( hiddenColumns ) };
+		preferenceQueue = preferenceQueue.then( () => request( 'preferences', values ) )
+			.catch( ( error ) => setNotice( error.message, 'error' ) );
+	}
 	const columnControls = $( '.dkbce-columns' );
 
 	function updateColumnVisibility() {
@@ -53,7 +61,7 @@
 		const label = document.createElement( 'label' );
 		const input = document.createElement( 'input' );
 		input.type = 'checkbox';
-		input.checked = true;
+		input.checked = ! hiddenColumns.has( index );
 		input.addEventListener( 'change', () => {
 			if ( input.checked ) {
 				hiddenColumns.delete( index );
@@ -61,10 +69,12 @@
 				hiddenColumns.add( index );
 			}
 			updateColumnVisibility();
+			savePreferences();
 		} );
 		label.append( input, document.createTextNode( name ) );
 		$( '#dkbce-column-options' ).appendChild( label );
 	} );
+	updateColumnVisibility();
 	columnControls.querySelector( 'button' ).addEventListener( 'click', () => {
 		columnControls.open = false;
 		columnControls.querySelector( 'summary' ).focus();
@@ -125,6 +135,7 @@
 		return fetch( DKBCE.ajaxUrl, {
 			method: 'POST',
 			credentials: 'same-origin',
+			keepalive: action === 'preferences',
 			body: data,
 		} )
 			.then( ( response ) => response.json() )
@@ -223,8 +234,7 @@
 		state.page = 1;
 		state.loadingPage = false;
 		state.pageRequestId++;
-		state.selectedIds.clear();
-		state.loadedIds.clear();
+		state.excludedIds.clear();
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.hasQuery = false;
@@ -431,9 +441,9 @@
 		previewContent.querySelectorAll( '.dkbce-product-select' ).forEach( ( checkbox ) => {
 			checkbox.checked = selected;
 			if ( selected ) {
-				state.selectedIds.add( checkbox.value );
+				state.excludedIds.delete( checkbox.value );
 			} else {
-				state.selectedIds.delete( checkbox.value );
+				state.excludedIds.add( checkbox.value );
 			}
 		} );
 		updatePageSelectionControls();
@@ -495,11 +505,7 @@
 			checkbox.type = 'checkbox';
 			checkbox.className = 'dkbce-product-select';
 			checkbox.value = String( item.id );
-			if ( ! state.loadedIds.has( checkbox.value ) ) {
-				state.loadedIds.add( checkbox.value );
-				state.selectedIds.add( checkbox.value );
-			}
-			checkbox.checked = state.selectedIds.has( checkbox.value );
+			checkbox.checked = ! state.excludedIds.has( checkbox.value );
 			checkbox.setAttribute(
 				'aria-label',
 				DKBCE.i18n.ariaSelect.replace( '%d', String( item.id ) )
@@ -726,8 +732,7 @@
 				) {
 					return;
 				}
-				state.selectedIds.clear();
-				state.loadedIds.clear();
+				state.excludedIds.clear();
 				renderPreview( data );
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
@@ -743,12 +748,12 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selected = Array.from( state.selectedIds );
-		if ( selectedOnly && ! selected.length ) {
+		const selectedCount = Math.max( 0, state.count - state.excludedIds.size );
+		if ( selectedOnly && ! selectedCount ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
 		}
-		const count = selectedOnly ? selected.length : state.count;
+		const count = selectedOnly ? selectedCount : state.count;
 		$( '#dkbce-confirm-text' ).textContent = DKBCE.i18n.confirmText.replace(
 			'%d',
 			String( count )
@@ -786,7 +791,7 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedIds = Array.from( state.selectedIds );
+		const excludedIds = Array.from( state.excludedIds );
 		modal.hidden = true;
 		applyButton.disabled = true;
 		setNotice( '', 'info' );
@@ -799,7 +804,8 @@
 		request( 'apply', {
 			preview_id: state.previewId,
 			selected_only: selectedOnly ? '1' : '',
-			selected_ids: selectedOnly ? selectedIds : [],
+			selection_mode: 'all_except',
+			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
 		} )
 			.then( ( data ) => {
 				state.operationId = data.operation_id;
@@ -1056,11 +1062,14 @@
 	getButton.addEventListener( 'click', getProducts );
 	applyButton.addEventListener( 'click', openConfirm );
 	previewContent.addEventListener( 'change', ( event ) => {
+		if ( event.target.matches( '.dkbce-product-select, .dkbce-select-page' ) ) {
+			$( '#dkbce-selected-only' ).checked = true;
+		}
 		if ( event.target.matches( '.dkbce-product-select' ) ) {
 			if ( event.target.checked ) {
-				state.selectedIds.add( event.target.value );
+				state.excludedIds.delete( event.target.value );
 			} else {
-				state.selectedIds.delete( event.target.value );
+				state.excludedIds.add( event.target.value );
 			}
 			updatePageSelectionControls();
 		} else if ( event.target.matches( '.dkbce-select-page' ) ) {
@@ -1068,6 +1077,7 @@
 		}
 	} );
 	pageSizeSelect.addEventListener( 'change', () => {
+		savePreferences();
 		if ( state.previewId && ! state.busy && ! state.loadingPage ) {
 			fetchPreviewPage( 1 );
 		}

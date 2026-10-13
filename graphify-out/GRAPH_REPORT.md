@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-13)
 
 ## Corpus Check
-- 19 files · ~18,987 words
+- 19 files · ~19,576 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 203 nodes · 328 edges · 17 communities (7 shown, 10 thin omitted)
+- 206 nodes · 336 edges · 17 communities (7 shown, 10 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `252b9e90`
+- Built from commit: `88a940f2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,16 +32,16 @@
 - DKBCE_Operation_Store
 
 ## God Nodes (most connected - your core abstractions)
-1. `DKBCE_Admin_Functions` - 21 edges
+1. `DKBCE_Admin_Functions` - 23 edges
 2. `DKBCE_Bulk_Processor` - 15 edges
 3. `DKBCE_Operation_Store` - 15 edges
 4. `DKBCE_COGS_Service` - 14 edges
 5. `scripts` - 13 edges
 6. `preview()` - 11 edges
-7. `renderPreview()` - 10 edges
-8. `setNotice()` - 9 edges
-9. `getProducts()` - 8 edges
-10. `request()` - 7 edges
+7. `setNotice()` - 10 edges
+8. `renderPreview()` - 10 edges
+9. `request()` - 8 edges
+10. `getProducts()` - 8 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `dkbce_load_plugin_files()` --calls--> `DKBCE_Admin_Hooks`  [INFERRED]
@@ -75,25 +75,27 @@ Cohesion: 0.10
 Nodes (19): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, version (+11 more)
 
 ### Community 17 - "bulk-cogs-editor.js"
-Cohesion: 0.17
-Nodes (32): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+24 more)
+Cohesion: 0.16
+Nodes (33): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+25 more)
 
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.18
+Cohesion: 0.19
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
 - **47 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+42 more)
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 86 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 85 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Admin_Hooks`, `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.072) - this node is a cross-community bridge._
 - **Why does `@playwright/test` connect `package.json` to `global-setup.cjs`, `bulk-cogs-editor.spec.cjs`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Admin_Hooks`, `DKBCE_Operation_Store`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
   _`DKBCE_Operation_Store` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `name`, `version`, `update` to the rest of the system?**
