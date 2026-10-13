@@ -29,7 +29,52 @@ class DKBCE_Operation_Store {
 	 */
 	public function get( $operation_id ) {
 		$state = get_option( $this->operation_key( $operation_id ), false );
-		return is_array( $state ) ? $state : false;
+		if ( ! is_array( $state ) ) {
+			return false;
+		}
+
+		$state['cancel_requested'] = ! empty( $state['cancel_requested'] ) || $this->is_cancel_requested( $operation_id );
+		return $state;
+	}
+
+	/**
+	 * Request cancellation independently of worker progress writes.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return void
+	 */
+	public function request_cancellation( $operation_id ) {
+		update_option( $this->cancellation_key( $operation_id ), true, false );
+	}
+
+	/**
+	 * Read a cancellation request made by another PHP request.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return bool
+	 */
+	public function is_cancel_requested( $operation_id ) {
+		$key = $this->cancellation_key( $operation_id );
+		wp_cache_delete( $key, 'options' );
+
+		// A long-running worker can also have cached the absence of this option.
+		$notoptions = wp_cache_get( 'notoptions', 'options' );
+		if ( is_array( $notoptions ) && isset( $notoptions[ $key ] ) ) {
+			unset( $notoptions[ $key ] );
+			wp_cache_set( 'notoptions', $notoptions, 'options' );
+		}
+
+		return (bool) get_option( $key, false );
+	}
+
+	/**
+	 * Get the separate cancellation option name.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return string
+	 */
+	private function cancellation_key( $operation_id ) {
+		return 'dkbce_cancel_' . sanitize_key( $operation_id );
 	}
 
 	/**
@@ -135,7 +180,7 @@ class DKBCE_Operation_Store {
 	}
 
 	/**
-	 * Remove ID and outcome chunks after the operation is terminal.
+	 * Remove ID chunks, outcomes, and cancellation requests after completion.
 	 *
 	 * @param string $operation_id Operation UUID.
 	 * @param int    $chunk_count Number of persisted chunks.
@@ -145,6 +190,7 @@ class DKBCE_Operation_Store {
 		for ( $chunk_number = 1; $chunk_number <= $chunk_count; $chunk_number++ ) {
 			delete_option( $this->chunk_key( $operation_id, $chunk_number ) );
 		}
+		delete_option( $this->cancellation_key( $operation_id ) );
 	}
 
 	/**

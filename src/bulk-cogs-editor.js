@@ -12,8 +12,7 @@
 		page: 1,
 		loadingPage: false,
 		pageRequestId: 0,
-		selectedIds: new Set(),
-		loadedIds: new Set(),
+		excludedIds: new Set(),
 		busy: false,
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
@@ -33,6 +32,68 @@
 	const previewContent = $( '#dkbce-preview-content' );
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
+
+	const preferences = DKBCE.preferences || {};
+	pageSizeSelect.value = String( preferences.page_size || pageSizeSelect.value );
+	const hiddenColumns = new Set( preferences.hidden_columns || [] );
+	let preferenceQueue = Promise.resolve();
+
+	function savePreferences() {
+		const values = { page_size: Number( pageSizeSelect.value ), hidden_columns: Array.from( hiddenColumns ) };
+		preferenceQueue = preferenceQueue.then( () => request( 'preferences', values ) )
+			.catch( ( error ) => setNotice( error.message, 'error' ) );
+	}
+	const columnControls = $( '.dkbce-columns' );
+
+	function updateColumnVisibility() {
+		previewContent.querySelectorAll( 'tr' ).forEach( ( row ) => {
+			Array.from( row.children ).forEach( ( cell, index ) => {
+				cell.hidden = hiddenColumns.has( index );
+			} );
+		} );
+		const options = $( '#dkbce-column-options' ).querySelectorAll( 'input' );
+		options.forEach( ( input ) => {
+			input.disabled = input.checked && hiddenColumns.size === options.length - 1;
+		} );
+	}
+
+	DKBCE.i18n.columns.forEach( ( name, index ) => {
+		const label = document.createElement( 'label' );
+		const input = document.createElement( 'input' );
+		input.type = 'checkbox';
+		input.checked = ! hiddenColumns.has( index );
+		input.addEventListener( 'change', () => {
+			if ( input.checked ) {
+				hiddenColumns.delete( index );
+			} else {
+				hiddenColumns.add( index );
+			}
+			updateColumnVisibility();
+			savePreferences();
+		} );
+		label.append( input, document.createTextNode( name ) );
+		$( '#dkbce-column-options' ).appendChild( label );
+	} );
+	updateColumnVisibility();
+	columnControls.querySelector( 'button' ).addEventListener( 'click', () => {
+		columnControls.open = false;
+		columnControls.querySelector( 'summary' ).focus();
+	} );
+	document.addEventListener( 'click', ( event ) => {
+		document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open], .dkbce-filter-dropdown[open]' ).forEach( ( details ) => {
+			if ( ! details.contains( event.target ) ) {
+				details.open = false;
+			}
+		} );
+	} );
+	document.addEventListener( 'keydown', ( event ) => {
+		if ( event.key === 'Escape' ) {
+			document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open], .dkbce-filter-dropdown[open]' ).forEach( ( details ) => {
+				details.open = false;
+				details.querySelector( 'summary' ).focus();
+			} );
+		}
+	} );
 
 	function setNotice( message, type ) {
 		notice.className =
@@ -58,9 +119,13 @@
 		Object.keys( values || {} ).forEach( ( key ) => {
 			const value = values[ key ];
 			if ( key === 'filters' ) {
-				Object.keys( value ).forEach( ( filter ) =>
-					data.append( 'filters[' + filter + ']', value[ filter ] )
-				);
+				Object.keys( value ).forEach( ( filter ) => {
+					if ( Array.isArray( value[ filter ] ) ) {
+						value[ filter ].forEach( ( item ) => data.append( 'filters[' + filter + '][]', item ) );
+					} else {
+						data.append( 'filters[' + filter + ']', value[ filter ] );
+					}
+				} );
 			} else if ( Array.isArray( value ) ) {
 				value.forEach( ( item ) => data.append( key + '[]', item ) );
 			} else {
@@ -70,6 +135,7 @@
 		return fetch( DKBCE.ajaxUrl, {
 			method: 'POST',
 			credentials: 'same-origin',
+			keepalive: action === 'preferences',
 			body: data,
 		} )
 			.then( ( response ) => response.json() )
@@ -85,13 +151,81 @@
 			} );
 	}
 
+	function selectedFilterValues( selector ) {
+		const select = $( selector );
+		return select ? Array.from( select.selectedOptions, ( option ) => option.value )
+			.filter( ( value ) => value !== '0' && value !== 'any' ) : [];
+	}
+
+	// Keep native selects as the filter source; checkboxes provide a compact multi-select UI.
+	document.querySelectorAll( '.dkbce-multi-select' ).forEach( ( select ) => {
+		const details = document.createElement( 'details' );
+		details.className = 'dkbce-filter-dropdown';
+		const summary = document.createElement( 'summary' );
+		summary.id = select.id + '-summary';
+		const fieldLabel = document.querySelector( 'label[for="' + select.id + '"]' );
+		fieldLabel.id = select.id + '-label';
+		summary.setAttribute( 'aria-labelledby', fieldLabel.id + ' ' + summary.id );
+		const panel = document.createElement( 'div' );
+		panel.className = 'dkbce-popover';
+		const allOption = select.options[ 0 ];
+		const clear = document.createElement( 'button' );
+		clear.type = 'button';
+		clear.className = 'button-link';
+		clear.textContent = allOption.textContent;
+		panel.appendChild( clear );
+		const selectAllLabel = document.createElement( 'label' );
+		const selectAll = document.createElement( 'input' );
+		selectAll.type = 'checkbox';
+		selectAllLabel.append( selectAll, document.createTextNode( DKBCE.i18n.selectAll ) );
+		panel.appendChild( selectAllLabel );
+		const inputs = [];
+		Array.from( select.options ).slice( 1 ).forEach( ( option ) => {
+			const label = document.createElement( 'label' );
+			const input = document.createElement( 'input' );
+			input.type = 'checkbox';
+			input.addEventListener( 'change', () => {
+				allOption.selected = false;
+				option.selected = input.checked;
+				select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			} );
+			inputs.push( { input, option } );
+			label.append( input, document.createTextNode( option.textContent ) );
+			panel.appendChild( label );
+		} );
+		const sync = () => {
+			const selected = inputs.filter( ( { option } ) => option.selected );
+			selectAll.checked = inputs.length > 0 && selected.length === inputs.length;
+			selectAll.indeterminate = selected.length > 0 && selected.length < inputs.length;
+			selectAll.disabled = inputs.length === 0;
+			summary.textContent = selected.length ? selected.map( ( { option } ) => option.textContent ).join( ', ' ) : allOption.textContent;
+			summary.title = summary.textContent;
+			inputs.forEach( ( { input, option } ) => { input.checked = option.selected; } );
+		};
+		selectAll.addEventListener( 'change', () => {
+			allOption.selected = false;
+			inputs.forEach( ( { option } ) => { option.selected = selectAll.checked; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
+		clear.addEventListener( 'click', () => {
+			Array.from( select.options ).forEach( ( option ) => { option.selected = false; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
+		select.addEventListener( 'change', sync );
+		fieldLabel.addEventListener( 'click', ( event ) => { event.preventDefault(); summary.focus(); } );
+		details.append( summary, panel );
+		select.after( details );
+		select.hidden = true;
+		sync();
+	} );
+
 	function filters() {
 		return {
 			search: $( '#dkbce-search' ).value,
-			category: $( '#dkbce-category' ).value,
-			type: $( '#dkbce-type' ).value,
-			stock_status: $( '#dkbce-stock' ).value,
-			brand: $( '#dkbce-brand' ) ? $( '#dkbce-brand' ).value : '0',
+			category: selectedFilterValues( '#dkbce-category' ),
+			type: selectedFilterValues( '#dkbce-type' ),
+			stock_status: selectedFilterValues( '#dkbce-stock' ),
+			brand: selectedFilterValues( '#dkbce-brand' ),
 			price_min: $( '#dkbce-price-min' ).value,
 			price_max: $( '#dkbce-price-max' ).value,
 			cogs_min: $( '#dkbce-cogs-min' ).value,
@@ -113,8 +247,7 @@
 		state.page = 1;
 		state.loadingPage = false;
 		state.pageRequestId++;
-		state.selectedIds.clear();
-		state.loadedIds.clear();
+		state.excludedIds.clear();
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.hasQuery = false;
@@ -141,6 +274,11 @@
 		}
 		button.disabled = busy;
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
+		if ( button === getButton ) {
+			$( '#dkbce-products-loading' ).textContent = busy ? label : '';
+			toggleSpinner( productsSpinner, busy );
+			return;
+		}
 		if ( busy ) {
 			button.dataset.originalText = button.textContent;
 			button.textContent = label;
@@ -316,9 +454,9 @@
 		previewContent.querySelectorAll( '.dkbce-product-select' ).forEach( ( checkbox ) => {
 			checkbox.checked = selected;
 			if ( selected ) {
-				state.selectedIds.add( checkbox.value );
+				state.excludedIds.delete( checkbox.value );
 			} else {
-				state.selectedIds.delete( checkbox.value );
+				state.excludedIds.add( checkbox.value );
 			}
 		} );
 		updatePageSelectionControls();
@@ -380,11 +518,7 @@
 			checkbox.type = 'checkbox';
 			checkbox.className = 'dkbce-product-select';
 			checkbox.value = String( item.id );
-			if ( ! state.loadedIds.has( checkbox.value ) ) {
-				state.loadedIds.add( checkbox.value );
-				state.selectedIds.add( checkbox.value );
-			}
-			checkbox.checked = state.selectedIds.has( checkbox.value );
+			checkbox.checked = ! state.excludedIds.has( checkbox.value );
 			checkbox.setAttribute(
 				'aria-label',
 				DKBCE.i18n.ariaSelect.replace( '%d', String( item.id ) )
@@ -441,25 +575,43 @@
 			const pagination = document.createElement( 'nav' );
 			pagination.className = 'dkbce-pagination';
 			pagination.setAttribute( 'aria-label', DKBCE.i18n.paginationLabel );
-			const previous = document.createElement( 'button' );
-			previous.type = 'button';
-			previous.className = 'button';
-			previous.textContent = DKBCE.i18n.previousPage;
-			previous.disabled = 1 === data.page;
-			previous.addEventListener( 'click', () => fetchPreviewPage( data.page - 1 ) );
-			const pageNumber = document.createElement( 'span' );
-			pageNumber.textContent = DKBCE.i18n.pageNumber
-				.replace( '%1$d', String( data.page ) )
-				.replace( '%2$d', String( data.total_pages ) );
-			const next = document.createElement( 'button' );
-			next.type = 'button';
-			next.className = 'button';
-			next.textContent = DKBCE.i18n.nextPage;
-			next.disabled = data.page === data.total_pages;
-			next.addEventListener( 'click', () => fetchPreviewPage( data.page + 1 ) );
-			pagination.append( previous, pageNumber, next );
-			previewContent.appendChild( pagination );
+			const addPageButton = ( label, page, disabled = false ) => {
+				const button = document.createElement( 'button' );
+				button.type = 'button';
+				button.className = 'button';
+				button.textContent = label;
+				button.disabled = disabled;
+				button.setAttribute( 'aria-label', DKBCE.i18n.pageNumber
+					.replace( '%1$d', String( page ) )
+					.replace( '%2$d', String( data.total_pages ) ) );
+				if ( String( page ) === label && page === data.page ) {
+					button.setAttribute( 'aria-current', 'page' );
+				}
+				button.addEventListener( 'click', () => fetchPreviewPage( page ) );
+				pagination.appendChild( button );
+			};
+			addPageButton( '«', 1, data.page === 1 );
+			addPageButton( '‹', Math.max( 1, data.page - 1 ), data.page === 1 );
+			const pages = new Set( [ 1, data.total_pages ] );
+			const start = Math.max( 1, Math.min( data.page - 2, data.total_pages - 4 ) );
+			for ( let page = start; page <= Math.min( data.total_pages, start + 4 ); page++ ) {
+				pages.add( page );
+			}
+			let previousPage = 0;
+			Array.from( pages ).sort( ( a, b ) => a - b ).forEach( ( page ) => {
+				if ( previousPage && page > previousPage + 1 ) {
+					const gap = document.createElement( 'span' );
+					gap.textContent = '…';
+					pagination.appendChild( gap );
+				}
+				addPageButton( String( page ), page );
+				previousPage = page;
+			} );
+			addPageButton( '›', Math.min( data.total_pages, data.page + 1 ), data.page === data.total_pages );
+			addPageButton( '»', data.total_pages, data.page === data.total_pages );
+			footer.insertBefore( pagination, pageSummary );
 		}
+		updateColumnVisibility();
 		previewContent.hidden = false;
 		applyButton.disabled = state.busy || state.loadingPage || ! data.rows.length;
 	}
@@ -526,7 +678,6 @@
 		setNotice( '', 'info' );
 		invalidatePreview();
 		setBusy( true, getButton, DKBCE.i18n.loading );
-		toggleSpinner( productsSpinner, true );
 		request( 'get_products', { filters: requestedFilters } )
 			.then( ( data ) => {
 				if (
@@ -538,10 +689,10 @@
 				state.count = data.count;
 				state.hasQuery = true;
 				$( '#dkbce-product-count' ).textContent = data.count
-					? DKBCE.i18n.matchCount.replace(
-							'%d',
-							String( data.count )
-						)
+					? DKBCE.i18n.matchCount
+						.replace( '%1$d', String( data.count ) )
+						.replace( '%2$d', String( data.product_count ) )
+						.replace( '%3$d', String( data.variation_count ) )
 					: DKBCE.i18n.noProducts;
 				if ( 0 === data.count ) {
 					setNotice( DKBCE.i18n.noProducts, 'info' );
@@ -549,7 +700,6 @@
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
 			.finally( () => {
-				toggleSpinner( productsSpinner, false );
 				setBusy( false, getButton );
 				if ( state.hasQuery && state.count > 0 && hasValidActionValue() ) {
 					preview();
@@ -595,8 +745,7 @@
 				) {
 					return;
 				}
-				state.selectedIds.clear();
-				state.loadedIds.clear();
+				state.excludedIds.clear();
 				renderPreview( data );
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
@@ -612,12 +761,12 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selected = Array.from( state.selectedIds );
-		if ( selectedOnly && ! selected.length ) {
+		const selectedCount = Math.max( 0, state.count - state.excludedIds.size );
+		if ( selectedOnly && ! selectedCount ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
 		}
-		const count = selectedOnly ? selected.length : state.count;
+		const count = selectedOnly ? selectedCount : state.count;
 		$( '#dkbce-confirm-text' ).textContent = DKBCE.i18n.confirmText.replace(
 			'%d',
 			String( count )
@@ -655,7 +804,7 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedIds = Array.from( state.selectedIds );
+		const excludedIds = Array.from( state.excludedIds );
 		modal.hidden = true;
 		applyButton.disabled = true;
 		setNotice( '', 'info' );
@@ -668,7 +817,8 @@
 		request( 'apply', {
 			preview_id: state.previewId,
 			selected_only: selectedOnly ? '1' : '',
-			selected_ids: selectedOnly ? selectedIds : [],
+			selection_mode: 'all_except',
+			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
 		} )
 			.then( ( data ) => {
 				state.operationId = data.operation_id;
@@ -719,10 +869,20 @@
 			);
 		}
 
-		timeElement.textContent = DKBCE.i18n.elapsedTime.replace(
-			'%s',
-			formatDuration( elapsedSeconds )
-		) + ' · ' + DKBCE.i18n.remainingTime.replace( '%s', remaining );
+		timeElement.replaceChildren();
+		[
+			[ DKBCE.i18n.elapsedTime, formatDuration( elapsedSeconds ) ],
+			[ DKBCE.i18n.remainingTime, remaining ],
+		].forEach( ( [ template, duration ] ) => {
+			const card = document.createElement( 'span' );
+			const parts = template.split( '%s' );
+			const value = document.createElement( 'strong' );
+			value.className = 'dkbce-duration';
+			value.textContent = duration;
+			card.append( document.createTextNode( parts[ 0 ] ), value,
+				document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+			timeElement.appendChild( card );
+		} );
 	}
 
 	function renderOperation( operation ) {
@@ -755,7 +915,7 @@
 		progress.max = Math.max( 1, operation.total );
 		progress.value = Math.min( operation.processed, progress.max );
 		progress.setAttribute( 'aria-label', DKBCE.i18n.progressLabel );
-		operationPanel.appendChild( progress );
+
 		const text = document.createElement( 'p' );
 		let percent = 100;
 		if ( 'snapshot' === operation.stage ) {
@@ -765,18 +925,57 @@
 				( operation.processed / operation.total ) * 100
 			);
 		}
-		text.textContent = DKBCE.i18n.processed
-			.replace( '%1$d', operation.processed )
-			.replace( '%2$d', operation.total )
-			.replace( '%3$d', percent )
-			.replace( '%4$d', operation.succeeded )
-			.replace( '%5$d', operation.skipped )
-			.replace( '%6$d', operation.failed );
+		text.textContent = DKBCE.i18n.progressSummary
+			.replace( '%1$s', Number( operation.processed ).toLocaleString() )
+			.replace( '%2$s', Number( operation.total ).toLocaleString() );
+		text.className = 'dkbce-progress-count';
 		operationPanel.appendChild( text );
+		const track = document.createElement( 'div' );
+		track.className = 'dkbce-progress-track';
+		track.classList.toggle( 'is-active', ! terminalStatuses.includes( operation.status ) );
+		const highlight = document.createElement( 'span' );
+		highlight.className = 'dkbce-progress-highlight';
+		highlight.style.width = Math.max( 0, Math.min( 100, percent ) ) + '%';
+		highlight.setAttribute( 'aria-hidden', 'true' );
+		const percentage = document.createElement( 'span' );
+		percentage.className = 'dkbce-progress-percentage';
+		percentage.textContent = percent + '%';
+		percentage.setAttribute( 'aria-hidden', 'true' );
+		track.append( progress, highlight, percentage );
+		operationPanel.appendChild( track );
+		if (
+			'processing' === operation.stage &&
+			[ 'pending', 'processing' ].includes( operation.status ) &&
+			! operation.cancel_requested
+		) {
+			const backgroundMessage = document.createElement( 'p' );
+			backgroundMessage.textContent = DKBCE.i18n.backgroundMessage;
+			operationPanel.appendChild( backgroundMessage );
+		}
+		const stats = document.createElement( 'div' );
+		stats.className = 'dkbce-operation-stats';
+		[
+			[ 'succeeded', DKBCE.i18n.updatedLabel ],
+			[ 'skipped', DKBCE.i18n.skippedLabel ],
+			[ 'failed', DKBCE.i18n.failedLabel ],
+		].forEach( ( [ key, label ] ) => {
+			const card = document.createElement( 'div' );
+			card.className = 'dkbce-stat is-' + key;
+			const value = document.createElement( 'strong' );
+			value.textContent = Number( operation[ key ] ).toLocaleString();
+			const caption = document.createElement( 'span' );
+			caption.textContent = label;
+			card.append( value, caption );
+			stats.appendChild( card );
+		} );
+		const metrics = document.createElement( 'div' );
+		metrics.className = 'dkbce-operation-metrics';
+		metrics.appendChild( stats );
+		operationPanel.appendChild( metrics );
 		const time = document.createElement( 'p' );
 		time.className = 'dkbce-operation-time';
 		time.setAttribute( 'aria-live', 'off' );
-		operationPanel.appendChild( time );
+		metrics.appendChild( time );
 		updateOperationTime( operation, time );
 		if ( ! terminalStatuses.includes( operation.status ) ) {
 			state.operationTimer = window.setInterval(
@@ -897,11 +1096,14 @@
 	getButton.addEventListener( 'click', getProducts );
 	applyButton.addEventListener( 'click', openConfirm );
 	previewContent.addEventListener( 'change', ( event ) => {
+		if ( event.target.matches( '.dkbce-product-select, .dkbce-select-page' ) ) {
+			$( '#dkbce-selected-only' ).checked = true;
+		}
 		if ( event.target.matches( '.dkbce-product-select' ) ) {
 			if ( event.target.checked ) {
-				state.selectedIds.add( event.target.value );
+				state.excludedIds.delete( event.target.value );
 			} else {
-				state.selectedIds.delete( event.target.value );
+				state.excludedIds.add( event.target.value );
 			}
 			updatePageSelectionControls();
 		} else if ( event.target.matches( '.dkbce-select-page' ) ) {
@@ -909,6 +1111,7 @@
 		}
 	} );
 	pageSizeSelect.addEventListener( 'change', () => {
+		savePreferences();
 		if ( state.previewId && ! state.busy && ! state.loadingPage ) {
 			fetchPreviewPage( 1 );
 		}
@@ -951,12 +1154,10 @@
 			.forEach( ( input ) => {
 				input.value = '';
 			} );
-		$( '#dkbce-category' ).value = '0';
-		$( '#dkbce-type' ).value = 'any';
-		$( '#dkbce-stock' ).value = 'any';
-		if ( $( '#dkbce-brand' ) ) {
-			$( '#dkbce-brand' ).value = '0';
-		}
+		document.querySelectorAll( '.dkbce-multi-select' ).forEach( ( select ) => {
+			Array.from( select.options ).forEach( ( option ) => { option.selected = false; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
 		$( '#dkbce-product-count' ).textContent = '';
 		state.count = 0;
 		invalidatePreview( true );

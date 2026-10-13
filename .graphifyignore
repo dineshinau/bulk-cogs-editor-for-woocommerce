@@ -12,3 +12,20 @@ stylelint.config.js
 phpcs.xml.dist
 vendor
 /block/node_modules
+
+# Keep the reference graph focused on editable project code and tooling.
+.agents/
+.codex/
+graphify-out/
+assets/
+build/
+languages/
+screenshots/
+phpcs-results/
+playwright-report/
+test-results/
+docs/
+AGENTS.md
+CLAUDE.md
+readme.txt
+license.txt
