@@ -231,9 +231,10 @@ class DKBCE_Admin_Functions {
 		<div class="wrap dkbce-wrap">
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
-				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Update cost of goods for your WooCommerce products quickly and safely.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<div><h1><?php esc_html_e( 'Bulk Cost of Goods Sold (COGS) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Update cost of goods for your WooCommerce products quickly and safely.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
 				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Filter your products and click Get products.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Choose an action and enter a value. Clear COGS needs no value.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Review the calculated costs in the preview.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Apply to all matching products, or enable the checked-products option to limit the update. Confirm to start.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol></div></details>
 			</header>
+			<hr class="wp-header-end">
 			<?php if ( ! $available ) : ?>
 				<div class="notice notice-error"><p>
 				<?php

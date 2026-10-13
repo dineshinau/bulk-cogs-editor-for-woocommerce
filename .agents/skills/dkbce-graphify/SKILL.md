@@ -37,3 +37,22 @@ This uses the installed `graphify update .` CLI, cached AST extraction, and dete
 - Do not run semantic extraction, LLM labeling, a watcher, automatic dependency installation, or Git-hook installation as part of routine completion.
 
 Graphify CLI missing: report the missing tool and retain the source-based result. Do not replace Graphify with a handwritten graph and label it a successful refresh.
+
+## Commit ordering
+
+When the user requests commits, keep implementation and graph artifacts in
+separate commits:
+
+1. Commit the task's code, rebuilt assets, and related documentation or skill
+   changes first. Stage explicit paths and exclude `graphify-out/`.
+2. Commit refreshed `graphify-out/` artifacts separately, after the code commit.
+   If the refresh produces no changes, skip the graph commit.
+
+Use a Conventional Commits subject and a multiline body for each commit.
+Explain the changes and their purpose; include relevant validation results
+and limitations. The graph commit should describe the refresh and reference
+its associated code commit when applicable.
+
+Review each staged diff before committing. Preserve unrelated changes and
+never create empty commits. This workflow applies only when commits are
+requested; it does not authorize automatic commits or pushes.

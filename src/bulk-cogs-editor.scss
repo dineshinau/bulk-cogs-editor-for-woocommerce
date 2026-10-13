@@ -180,14 +180,16 @@ $border: #dce6f5;
 	&.striped > tbody > :nth-child(even) { background: #f3f7fb; }
 	tbody tr:hover { background: #edf4ff; }
 	a { color: $blue; text-decoration: none; &:hover { text-decoration: underline; } }
-	input { margin: 0; }
+	// Override WordPress's extra margin on table header inputs.
+	th input[type="checkbox"], td input[type="checkbox"] { margin: 0; vertical-align: middle; }
 	td:nth-child(7) { color: #24386d; font-weight: 600; }
 }
 .dkbce-product-cell { display: flex; align-items: center; gap: 14px; min-width: 170px; img { width: 26px; height: 26px; object-fit: contain; border-radius: 3px; } }
 .dkbce-change-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap; &.is-increase { color: #087c39; background: #e9f8ef; } &.is-decrease { color: #ad2534; background: #fff0f1; } }
 .dkbce-preview-summary { margin: 0 0 8px; color: $muted; font-size: 12px; }
 .dkbce-table-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-.dkbce-select-all-bottom { display: flex; align-items: center; gap: 8px; color: $muted; input { margin: 0; } }
+// Match the table's 1px outer border and 10px cell padding in either direction.
+.dkbce-select-all-bottom { display: flex; align-items: center; gap: 8px; padding-inline-start: 11px; color: $muted; input { margin: 0; } }
 .dkbce-page-summary { margin: 0; color: $muted; }
 .dkbce-pagination { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px; margin: 0; .button { min-height: 30px; padding: 0 9px; font-weight: 400; } [aria-current="page"] { background: $blue; color: #fff; border-color: $blue; } }
 .dkbce-preview-empty { padding: 28px 16px; border: 1px dashed $border; border-radius: 6px; background: #fafcff; text-align: center; color: $muted; h3 { margin: 10px 0; } p { margin: 0 auto 12px; max-width: 500px; } > .dashicons { color: $blue; } }
