@@ -902,7 +902,7 @@
 		progress.max = Math.max( 1, operation.total );
 		progress.value = Math.min( operation.processed, progress.max );
 		progress.setAttribute( 'aria-label', DKBCE.i18n.progressLabel );
-		operationPanel.appendChild( progress );
+
 		const text = document.createElement( 'p' );
 		let percent = 100;
 		if ( 'snapshot' === operation.stage ) {
@@ -913,11 +913,23 @@
 			);
 		}
 		text.textContent = DKBCE.i18n.progressSummary
-			.replace( '%1$d', operation.processed )
-			.replace( '%2$d', operation.total )
-			.replace( '%3$d', percent )
-			.replace( '%%', '%' );
+			.replace( '%1$s', Number( operation.processed ).toLocaleString() )
+			.replace( '%2$s', Number( operation.total ).toLocaleString() );
+		text.className = 'dkbce-progress-count';
 		operationPanel.appendChild( text );
+		const track = document.createElement( 'div' );
+		track.className = 'dkbce-progress-track';
+		track.classList.toggle( 'is-active', ! terminalStatuses.includes( operation.status ) );
+		const highlight = document.createElement( 'span' );
+		highlight.className = 'dkbce-progress-highlight';
+		highlight.style.width = Math.max( 0, Math.min( 100, percent ) ) + '%';
+		highlight.setAttribute( 'aria-hidden', 'true' );
+		const percentage = document.createElement( 'span' );
+		percentage.className = 'dkbce-progress-percentage';
+		percentage.textContent = percent + '%';
+		percentage.setAttribute( 'aria-hidden', 'true' );
+		track.append( progress, highlight, percentage );
+		operationPanel.appendChild( track );
 		const stats = document.createElement( 'div' );
 		stats.className = 'dkbce-operation-stats';
 		[

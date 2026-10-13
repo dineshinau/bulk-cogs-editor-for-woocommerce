@@ -152,8 +152,8 @@ class DKBCE_Admin_Functions {
 					'updatedLabel'       => __( 'Products updated', 'bulk-cogs-editor-for-woocommerce' ),
 					'skippedLabel'       => __( 'Products skipped', 'bulk-cogs-editor-for-woocommerce' ),
 					'failedLabel'        => __( 'Products failed', 'bulk-cogs-editor-for-woocommerce' ),
-					/* translators: 1: processed products, 2: total products, 3: percentage complete. */
-					'progressSummary'    => __( '%1$d of %2$d processed (%3$d%%)', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: 1: formatted processed product count, 2: formatted total product count. */
+					'progressSummary'    => __( '%1$s of %2$s products processed', 'bulk-cogs-editor-for-woocommerce' ),
 					'processing'         => __( 'Processing COGS updates…', 'bulk-cogs-editor-for-woocommerce' ),
 					'complete'           => __( 'COGS update completed.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: current operation status. */

@@ -198,7 +198,7 @@ $border: #dce6f5;
 #dkbce-apply-spinner { float: none; margin: 0; margin-inline-end: 8px; vertical-align: middle; &:not(.is-active) { display: none; } }
 .dkbce-operation {
 	h3 { margin: 0 0 8px; font-size: 16px; }
-	progress { display: block; width: 100%; height: 9px; border: 0; border-radius: 20px; overflow: hidden; accent-color: $blue; &::-webkit-progress-bar { background: #e1eaf7; } &::-webkit-progress-value { background: #3884ff; border-radius: 20px; } &::-moz-progress-bar { background: #3884ff; } }
+	progress { display: block; width: 100%; height: 32px; border: 0; border-radius: 20px; overflow: hidden; accent-color: $blue; &::-webkit-progress-bar { background: #e1eaf7; } &::-webkit-progress-value { background: #3884ff; border-radius: 20px; } &::-moz-progress-bar { background: #3884ff; } }
 	> p { margin: 6px 0; color: $muted; font-size: 12px; }
 }
 .dkbce-operation-metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 10px 0; }
@@ -329,4 +329,57 @@ $border: #dce6f5;
 		grid-template-columns: 110px 20px minmax(0, 1fr);
 		width: 100%;
 	}
+}
+
+.dkbce-operation > .dkbce-progress-count {
+	margin: 10px 0 8px;
+	color: $ink;
+	font-size: 16px;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+
+.dkbce-progress-track {
+	position: relative;
+	overflow: hidden;
+	border-radius: 20px;
+	background: #e1eaf7;
+}
+
+.dkbce-progress-percentage {
+	position: absolute;
+	top: 3px;
+	inset-inline-start: 50%;
+	transform: translateX(-50%);
+	padding: 2px 12px;
+	border-radius: 16px;
+	background: #182d60;
+	color: #fff;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 22px;
+	font-variant-numeric: tabular-nums;
+}
+
+.dkbce-progress-highlight {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	border-radius: 20px;
+	background: repeating-linear-gradient(115deg, transparent 0 14px, rgb(255 255 255 / 30%) 14px 28px);
+	pointer-events: none;
+	opacity: 0;
+}
+
+.dkbce-progress-track.is-active .dkbce-progress-highlight {
+	animation: dkbce-progress-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dkbce-progress-pulse {
+	0%, 100% { opacity: 0.15; }
+	50% { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dkbce-progress-track.is-active .dkbce-progress-highlight { animation: none; }
 }
