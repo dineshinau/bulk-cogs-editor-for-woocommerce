@@ -251,6 +251,11 @@
 		}
 		button.disabled = busy;
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
+		if ( button === getButton ) {
+			$( '#dkbce-products-loading' ).textContent = busy ? label : '';
+			toggleSpinner( productsSpinner, busy );
+			return;
+		}
 		if ( busy ) {
 			button.dataset.originalText = button.textContent;
 			button.textContent = label;
@@ -654,7 +659,6 @@
 		setNotice( '', 'info' );
 		invalidatePreview();
 		setBusy( true, getButton, DKBCE.i18n.loading );
-		toggleSpinner( productsSpinner, true );
 		request( 'get_products', { filters: requestedFilters } )
 			.then( ( data ) => {
 				if (
@@ -677,7 +681,6 @@
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
 			.finally( () => {
-				toggleSpinner( productsSpinner, false );
 				setBusy( false, getButton );
 				if ( state.hasQuery && state.count > 0 && hasValidActionValue() ) {
 					preview();
