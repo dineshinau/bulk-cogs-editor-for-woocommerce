@@ -158,13 +158,12 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 == Changelog ==
 
 = 1.1.0 =
-* Added a message during background updates explaining that you can close the browser and return later to view the results.
-* Keep the latest completed operation visible when returning to the editor.
-* Added a five-star WordPress.org review link to the plugin listing.
-* Improved progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
-* Fixed admin notices appearing between the page title and description.
-* Fixed alignment of the top and bottom select-all checkboxes with product row checkboxes.
-* Expanded the page title to clarify Cost of Goods Sold (COGS).
+* Fixed: Admin notices appearing between the page title and description.
+* Fixed: Alignment of the top and bottom select-all checkboxes with product row checkboxes.
+* Added: A message during background updates explaining that you can close the browser and return later to view the results.
+* Added: Keep the latest completed operation visible when returning to the editor.
+* Added: Expanded page title to clarify Cost of Goods Sold (COGS).
+* Improved: Progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
 
 = 1.0.0 (2026-10-10) =
 * Initial release.
