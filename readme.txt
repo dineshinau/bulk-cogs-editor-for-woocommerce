@@ -176,7 +176,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
-= 1.1.0 =
+= 1.1.0 (2026-10-14)=
 * Fixed: Admin notices appearing between the page title and description.
 * Fixed: Alignment of the top and bottom select-all checkboxes with product row checkboxes.
 * Improved: Progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
