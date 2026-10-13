@@ -27,7 +27,6 @@ class DKBCE_Admin_Hooks {
 		add_filter( 'posts_where', array( $cogs_service, 'filter_category_where' ), 10, 2 );
 		add_action( 'admin_menu', array( $admin_functions, 'register_submenu_page' ), 20 );
 		add_filter( 'plugin_action_links_' . DKBCE_PLUGIN_BASENAME, array( $admin_functions, 'plugin_action_links' ) );
-		add_filter( 'plugin_row_meta', array( $admin_functions, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $admin_functions, 'enqueue_assets' ) );
 		add_action( 'wp_ajax_dkbce_get_products', array( $admin_functions, 'ajax_get_products' ) );
 		add_action( 'wp_ajax_dkbce_preview', array( $admin_functions, 'ajax_preview' ) );

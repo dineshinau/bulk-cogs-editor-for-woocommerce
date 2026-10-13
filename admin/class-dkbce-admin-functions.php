@@ -86,22 +86,6 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Add a review link to this plugin's metadata row.
-	 *
-	 * @param array  $links Existing metadata links.
-	 * @param string $file Plugin basename.
-	 * @return array
-	 */
-	public function plugin_row_meta( array $links, string $file ): array {
-		if ( DKBCE_PLUGIN_BASENAME !== $file ) {
-			return $links;
-		}
-
-		$links[] = '<a href="' . esc_url( 'https://wordpress.org/support/plugin/bulk-cogs-editor-for-woocommerce/reviews/?filter=5#new-post' ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr__( 'Leave a five-star review on WordPress.org (opens in a new tab)', 'bulk-cogs-editor-for-woocommerce' ) . '"><span aria-hidden="true" style="color: #996800; font-size: 18px;">★★★★★</span></a>';
-		return $links;
-	}
-
-	/**
 	 * Load assets only on this plugin page.
 	 *
 	 * @param string $hook_suffix Current admin page hook.
