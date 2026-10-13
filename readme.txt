@@ -166,18 +166,22 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Screenshots ==
 
-1. **The Bulk COGS Editor screen:**  filter WooCommerce products, choose a COGS action, review the preview, and apply the update.
-2. **Filter products:** by title or SKU, category, brand, product type, stock status, price, and COGS range, then choose an action: set exact COGS, increase or decrease by a percentage or fixed amount, or clear COGS.
-3. **Preview every change:** before applying it. The paginated table shows each product's image, SKU, type, current COGS, new COGS, and the exact change, with 10, 20, 50, or 100 products per page.
-4. **Choose exactly which products to update:** Untick individual products or use "Select all products on this page", then apply the update only to the checked products.
-5. **A confirmation dialog shows** how many products will be changed before any COGS value is modified.
-6. **The update starts in the background:** The plugin collects the matching products and shows progress with a Cancel operation button.
-7. **Live progress:** while the batches are processed: products processed, success, skipped, and failed counts, elapsed time, and estimated time remaining.
-8. **Update completed:** final success, skipped, and failed counts, with a Refresh now link to reload the page.
+1. **The Bulk COGS Editor screen:** Select products, choose a COGS update action, review changes, and apply the update in four steps.
+2. **Filter products:** Select multiple categories and filter by name, SKU or product identifier, brand, product type, stock status, price, and current COGS. See matching product and variation counts before previewing changes.
+3. **Preview COGS changes:** Review a 5% increase in the paginated table, with product images, IDs, SKUs, types, current COGS, new COGS, and the amount and percentage of each change.
+4. **Choose which products to update:** Review the product selections, then enable "Only apply to products checked in the preview table" to limit the update to checked products.
+5. **Confirm COGS changes:** Check the number of products to be modified before choosing Apply changes or Cancel.
+6. **Collect matching products:** The update prepares the matching products and displays progress, outcome counts, elapsed time, and a Cancel operation button.
+7. **Track live progress:** See the processed product count, percentage complete, updated, skipped, and failed counts, elapsed time, and estimated time remaining. Updates continue in the background when you close the browser.
+8. **Manage preview columns:** Show or hide columns such as ID, SKU, product type, current COGS, new COGS, and change to customize the preview table.
+9. **Update completed:** View 100% progress, final updated, skipped, and failed counts, and elapsed time, with a Refresh now link to reload the page.
+10. **Request cancellation:** The progress panel shows "Cancellation requested..." while the running update responds to the request.
+11. **Update cancelled:** Review the final processed and outcome counts. Already processed products remain changed; cancellation does not roll back completed updates.
 
 == Changelog ==
 
-= 1.1.0 (2026-10-14)=
+= 1.1.0 (2026-10-14) =
+
 * Fixed: Admin notices appearing between the page title and description.
 * Fixed: Alignment of the top and bottom select-all checkboxes with product row checkboxes.
 * Improved: Progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
@@ -186,4 +190,5 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Added: Expanded page title to clarify Cost of Goods Sold (COGS).
 
 = 1.0.0 (2026-10-10) =
+
 * Initial release.
