@@ -4,6 +4,19 @@
   "graph": {},
   "nodes": [
     {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
+      "label": "DKBCE_Admin_Hooks",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_admin_hooks",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "label": "DKBCE_COGS_Service",
       "_callable": true,
@@ -27,19 +40,6 @@
       "file_type": "code",
       "norm_label": "dkbce_admin_functions",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
-      "label": "DKBCE_Admin_Hooks",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_admin_hooks",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L13"
     },
     {
@@ -117,6 +117,42 @@
       "source_location": "L45"
     },
     {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L890"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L47"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
       "label": ".calculate()",
       "_callable": true,
@@ -129,6 +165,18 @@
       "source_location": "L231"
     },
     {
+      "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
+      "label": ".filter_category_where()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".filter_category_where()",
+      "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L482"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_free_memory",
       "label": ".free_memory()",
       "_callable": true,
@@ -138,7 +186,7 @@
       "file_type": "code",
       "norm_label": ".free_memory()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L461"
+      "source_location": "L515"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_get_brand_taxonomy",
@@ -198,7 +246,7 @@
       "file_type": "code",
       "norm_label": ".range_clause()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L477"
+      "source_location": "L531"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_scan_matches",
@@ -261,6 +309,30 @@
       "source_location": "L188"
     },
     {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
+      "label": "dkbce_declare_hpos_compatibility()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_declare_hpos_compatibility()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L87"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
+      "label": "dkbce_load_plugin_files()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_load_plugin_files()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L71"
+    },
+    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_apply",
       "label": ".ajax_apply()",
       "_callable": true,
@@ -270,7 +342,7 @@
       "file_type": "code",
       "norm_label": ".ajax_apply()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L641"
+      "source_location": "L646"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_cancel",
@@ -282,7 +354,7 @@
       "file_type": "code",
       "norm_label": ".ajax_cancel()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L803"
+      "source_location": "L808"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_get_products",
@@ -294,7 +366,7 @@
       "file_type": "code",
       "norm_label": ".ajax_get_products()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L490"
+      "source_location": "L491"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preferences",
@@ -306,7 +378,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preferences()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L411"
+      "source_location": "L412"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview",
@@ -318,7 +390,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L528"
+      "source_location": "L533"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview_page",
@@ -330,7 +402,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L585"
+      "source_location": "L590"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_progress",
@@ -342,7 +414,7 @@
       "file_type": "code",
       "norm_label": ".ajax_progress()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L782"
+      "source_location": "L787"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_authorize_ajax",
@@ -354,7 +426,7 @@
       "file_type": "code",
       "norm_label": ".authorize_ajax()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L442"
+      "source_location": "L443"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_view_operation",
@@ -366,7 +438,7 @@
       "file_type": "code",
       "norm_label": ".can_view_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L829"
+      "source_location": "L834"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_construct",
@@ -402,7 +474,7 @@
       "file_type": "code",
       "norm_label": ".extend_product_query()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L867"
+      "source_location": "L872"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_action_description",
@@ -414,7 +486,7 @@
       "file_type": "code",
       "norm_label": ".get_action_description()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L378"
+      "source_location": "L379"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
@@ -426,7 +498,7 @@
       "file_type": "code",
       "norm_label": ".get_preferences()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L395"
+      "source_location": "L396"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_validated_request",
@@ -438,7 +510,7 @@
       "file_type": "code",
       "norm_label": ".get_validated_request()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L468"
+      "source_location": "L469"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_plugin_action_links",
@@ -474,7 +546,7 @@
       "file_type": "code",
       "norm_label": ".public_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L839"
+      "source_location": "L844"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_register_submenu_page",
@@ -498,7 +570,7 @@
       "file_type": "code",
       "norm_label": ".render_bulk_cogs_editor_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L226"
+      "source_location": "L227"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_send_nonce_error",
@@ -510,31 +582,7 @@
       "file_type": "code",
       "norm_label": ".send_nonce_error()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L456"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L24"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L45"
+      "source_location": "L457"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_product_lock",
@@ -693,30 +741,6 @@
       "source_location": "L174"
     },
     {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
-      "label": "dkbce_declare_hpos_compatibility()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_declare_hpos_compatibility()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L87"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
-      "label": "dkbce_load_plugin_files()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_load_plugin_files()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L71"
-    },
-    {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
       "label": "dkbce_wc_log()",
       "_callable": true,
@@ -738,7 +762,7 @@
       "file_type": "code",
       "norm_label": "actionlabel()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L295"
+      "source_location": "L308"
     },
     {
       "id": "src_bulk_cogs_editor_appendcell",
@@ -750,7 +774,7 @@
       "file_type": "code",
       "norm_label": "appendcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L327"
+      "source_location": "L340"
     },
     {
       "id": "src_bulk_cogs_editor_appendchangecell",
@@ -762,7 +786,7 @@
       "file_type": "code",
       "norm_label": "appendchangecell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L377"
+      "source_location": "L390"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductcell",
@@ -774,7 +798,7 @@
       "file_type": "code",
       "norm_label": "appendproductcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L350"
+      "source_location": "L363"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductlinkcell",
@@ -786,7 +810,7 @@
       "file_type": "code",
       "norm_label": "appendproductlinkcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L337"
+      "source_location": "L350"
     },
     {
       "id": "src_bulk_cogs_editor_applychanges",
@@ -798,7 +822,7 @@
       "file_type": "code",
       "norm_label": "applychanges()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L789"
+      "source_location": "L802"
     },
     {
       "id": "src_bulk_cogs_editor_canceloperation",
@@ -810,7 +834,7 @@
       "file_type": "code",
       "norm_label": "canceloperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1068"
+      "source_location": "L1081"
     },
     {
       "id": "src_bulk_cogs_editor_fetchpreviewpage",
@@ -822,7 +846,7 @@
       "file_type": "code",
       "norm_label": "fetchpreviewpage()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L606"
+      "source_location": "L619"
     },
     {
       "id": "src_bulk_cogs_editor_filters",
@@ -834,7 +858,7 @@
       "file_type": "code",
       "norm_label": "filters()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L209"
+      "source_location": "L222"
     },
     {
       "id": "src_bulk_cogs_editor_formatduration",
@@ -846,7 +870,7 @@
       "file_type": "code",
       "norm_label": "formatduration()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L828"
+      "source_location": "L841"
     },
     {
       "id": "src_bulk_cogs_editor_getproducts",
@@ -858,7 +882,7 @@
       "file_type": "code",
       "norm_label": "getproducts()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L660"
+      "source_location": "L673"
     },
     {
       "id": "src_bulk_cogs_editor_hasvalidactionvalue",
@@ -870,7 +894,7 @@
       "file_type": "code",
       "norm_label": "hasvalidactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L286"
+      "source_location": "L299"
     },
     {
       "id": "src_bulk_cogs_editor_invalidatepreview",
@@ -882,7 +906,7 @@
       "file_type": "code",
       "norm_label": "invalidatepreview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L230"
+      "source_location": "L243"
     },
     {
       "id": "src_bulk_cogs_editor_money",
@@ -894,7 +918,7 @@
       "file_type": "code",
       "norm_label": "money()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L310"
+      "source_location": "L323"
     },
     {
       "id": "src_bulk_cogs_editor_numericactionvalue",
@@ -906,7 +930,7 @@
       "file_type": "code",
       "norm_label": "numericactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L278"
+      "source_location": "L291"
     },
     {
       "id": "src_bulk_cogs_editor_openconfirm",
@@ -918,7 +942,7 @@
       "file_type": "code",
       "norm_label": "openconfirm()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L746"
+      "source_location": "L759"
     },
     {
       "id": "src_bulk_cogs_editor_pollprogress",
@@ -930,7 +954,7 @@
       "file_type": "code",
       "norm_label": "pollprogress()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1044"
+      "source_location": "L1057"
     },
     {
       "id": "src_bulk_cogs_editor_preview",
@@ -942,7 +966,7 @@
       "file_type": "code",
       "norm_label": "preview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L697"
+      "source_location": "L710"
     },
     {
       "id": "src_bulk_cogs_editor_renderoperation",
@@ -954,7 +978,7 @@
       "file_type": "code",
       "norm_label": "renderoperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L875"
+      "source_location": "L888"
     },
     {
       "id": "src_bulk_cogs_editor_renderpreview",
@@ -966,7 +990,7 @@
       "file_type": "code",
       "norm_label": "renderpreview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L452"
+      "source_location": "L465"
     },
     {
       "id": "src_bulk_cogs_editor_request",
@@ -1002,7 +1026,7 @@
       "file_type": "code",
       "norm_label": "schedulepreviewrefresh()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L765"
+      "source_location": "L778"
     },
     {
       "id": "src_bulk_cogs_editor_selectedaction",
@@ -1014,7 +1038,7 @@
       "file_type": "code",
       "norm_label": "selectedaction()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L223"
+      "source_location": "L236"
     },
     {
       "id": "src_bulk_cogs_editor_selectedfiltervalues",
@@ -1050,7 +1074,7 @@
       "file_type": "code",
       "norm_label": "setbusy()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L255"
+      "source_location": "L268"
     },
     {
       "id": "src_bulk_cogs_editor_setnotice",
@@ -1074,7 +1098,7 @@
       "file_type": "code",
       "norm_label": "setpageselection()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L440"
+      "source_location": "L453"
     },
     {
       "id": "src_bulk_cogs_editor_togglespinner",
@@ -1110,7 +1134,7 @@
       "file_type": "code",
       "norm_label": "updateoperationtime()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L838"
+      "source_location": "L851"
     },
     {
       "id": "src_bulk_cogs_editor_updatepageselectioncontrols",
@@ -1122,19 +1146,7 @@
       "file_type": "code",
       "norm_label": "updatepageselectioncontrols()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L429"
-    },
-    {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 188,
-      "community_name": "DKBCE_Operation_Store",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L882"
+      "source_location": "L442"
     },
     {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_cancellation_key",
@@ -1456,98 +1468,10 @@
       "source_location": "L46"
     },
     {
-      "id": "package",
-      "label": "package.json",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "package.json",
-      "source_file": "package.json",
-      "source_location": "L1"
-    },
-    {
-      "id": "package_dependencies",
-      "label": "dependencies",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "dependencies",
-      "source_file": "package.json",
-      "source_location": "L18"
-    },
-    {
-      "id": "package_dependencies_woocommerce_dependency_extraction_webpack_plugin",
-      "label": "@woocommerce/dependency-extraction-webpack-plugin",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "@woocommerce/dependency-extraction-webpack-plugin",
-      "source_file": "package.json",
-      "source_location": "L19"
-    },
-    {
-      "id": "package_dependencies_wordpress_scripts",
-      "label": "@wordpress/scripts",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "@wordpress/scripts",
-      "source_file": "package.json",
-      "source_location": "L20"
-    },
-    {
-      "id": "package_devdependencies",
-      "label": "devDependencies",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "devdependencies",
-      "source_file": "package.json",
-      "source_location": "L22"
-    },
-    {
-      "id": "package_devdependencies_playwright_cli",
-      "label": "@playwright/cli",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "@playwright/cli",
-      "source_file": "package.json",
-      "source_location": "L23"
-    },
-    {
-      "id": "package_devdependencies_playwright_test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "@playwright/test",
-      "source_file": "package.json",
-      "source_location": "L24"
-    },
-    {
-      "id": "package_name",
-      "label": "name",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "name",
-      "source_file": "package.json",
-      "source_location": "L2"
-    },
-    {
       "id": "package_scripts",
       "label": "scripts",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "scripts",
@@ -1558,7 +1482,7 @@
       "id": "package_scripts_build",
       "label": "build",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "build",
@@ -1569,7 +1493,7 @@
       "id": "package_scripts_check_engines",
       "label": "check-engines",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "check-engines",
@@ -1580,7 +1504,7 @@
       "id": "package_scripts_make_pot",
       "label": "make-pot",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "make-pot",
@@ -1591,7 +1515,7 @@
       "id": "package_scripts_npm_install",
       "label": "npm_install",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "npm_install",
@@ -1602,7 +1526,7 @@
       "id": "package_scripts_packages_update",
       "label": "packages-update",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "packages-update",
@@ -1613,7 +1537,7 @@
       "id": "package_scripts_phpcbf",
       "label": "phpcbf",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "phpcbf",
@@ -1624,7 +1548,7 @@
       "id": "package_scripts_phpcs",
       "label": "phpcs",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "phpcs",
@@ -1635,7 +1559,7 @@
       "id": "package_scripts_start",
       "label": "start",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "start",
@@ -1646,7 +1570,7 @@
       "id": "package_scripts_test_e2e",
       "label": "test:e2e",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "test:e2e",
@@ -1657,7 +1581,7 @@
       "id": "package_scripts_test_e2e_headed",
       "label": "test:e2e:headed",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "test:e2e:headed",
@@ -1668,7 +1592,7 @@
       "id": "package_scripts_update",
       "label": "update",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "update",
@@ -1679,7 +1603,7 @@
       "id": "package_scripts_zip",
       "label": "zip",
       "_origin": "ast",
-      "community": 10,
+      "community": 1,
       "community_name": "scripts",
       "file_type": "code",
       "norm_label": "zip",
@@ -1687,11 +1611,99 @@
       "source_location": "L16"
     },
     {
+      "id": "package",
+      "label": "package.json",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "package.json",
+      "source_file": "package.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "package_dependencies",
+      "label": "dependencies",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "dependencies",
+      "source_file": "package.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "package_dependencies_woocommerce_dependency_extraction_webpack_plugin",
+      "label": "@woocommerce/dependency-extraction-webpack-plugin",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "@woocommerce/dependency-extraction-webpack-plugin",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "package_dependencies_wordpress_scripts",
+      "label": "@wordpress/scripts",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "@wordpress/scripts",
+      "source_file": "package.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "package_devdependencies",
+      "label": "devDependencies",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "devdependencies",
+      "source_file": "package.json",
+      "source_location": "L22"
+    },
+    {
+      "id": "package_devdependencies_playwright_cli",
+      "label": "@playwright/cli",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "@playwright/cli",
+      "source_file": "package.json",
+      "source_location": "L23"
+    },
+    {
+      "id": "package_devdependencies_playwright_test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L24"
+    },
+    {
+      "id": "package_name",
+      "label": "name",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "name",
+      "source_file": "package.json",
+      "source_location": "L2"
+    },
+    {
       "id": "package_version",
       "label": "version",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "version",
       "source_file": "package.json",
@@ -1702,7 +1714,7 @@
       "label": "webpack.config.js",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "webpack.config.js",
       "source_file": "webpack.config.js",
@@ -1713,7 +1725,7 @@
       "label": "defaultConfig",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "defaultconfig",
       "source_file": "webpack.config.js",
@@ -1724,7 +1736,7 @@
       "label": "MiniCssExtractPlugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "minicssextractplugin",
       "source_file": "webpack.config.js",
@@ -1735,7 +1747,7 @@
       "label": "path",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "webpack.config.js",
@@ -1746,7 +1758,7 @@
       "label": "webpackConfig",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "webpackconfig",
       "source_file": "webpack.config.js",
@@ -1757,7 +1769,7 @@
       "label": "WooCommerceDependencyExtractionWebpackPlugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "code",
       "norm_label": "woocommercedependencyextractionwebpackplugin",
       "source_file": "webpack.config.js",
@@ -1768,7 +1780,7 @@
       "label": "@playwright/cli",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "concept",
       "norm_label": "@playwright/cli",
       "source_file": "package.json",
@@ -1779,7 +1791,7 @@
       "label": "@playwright/test",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "concept",
       "norm_label": "@playwright/test",
       "source_file": "package.json",
@@ -1790,7 +1802,7 @@
       "label": "@woocommerce/dependency-extraction-webpack-plugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "concept",
       "norm_label": "@woocommerce/dependency-extraction-webpack-plugin",
       "source_file": "package.json",
@@ -1801,11 +1813,22 @@
       "label": "@wordpress/scripts",
       "_origin": "ast",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "file_type": "concept",
       "norm_label": "@wordpress/scripts",
       "source_file": "package.json",
       "source_location": "L20"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks",
+      "label": "class-dkbce-admin-hooks.php",
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-admin-hooks.php",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L1"
     },
     {
       "id": "admin_class_dkbce_cogs_service",
@@ -1816,6 +1839,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-cogs-service.php",
       "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce",
+      "label": "bulk-cogs-editor-for-woocommerce.php",
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
       "source_location": "L1"
     },
     {
@@ -1830,17 +1864,6 @@
       "source_location": "L1"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks",
-      "label": "class-dkbce-admin-hooks.php",
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "class-dkbce-admin-hooks.php",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L1"
-    },
-    {
       "id": "admin_class_dkbce_bulk_processor",
       "label": "class-dkbce-bulk-processor.php",
       "_origin": "ast",
@@ -1849,17 +1872,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-bulk-processor.php",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce",
-      "label": "bulk-cogs-editor-for-woocommerce.php",
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
       "source_location": "L1"
     },
     {
@@ -2302,7 +2314,7 @@
       "label": "ref_mini_css_extract_plugin",
       "_origin": "semantic",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_mini_css_extract_plugin",
@@ -2314,7 +2326,7 @@
       "label": "ref_path",
       "_origin": "semantic",
       "community": 10,
-      "community_name": "scripts",
+      "community_name": "package.json",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_path",
@@ -2428,7 +2440,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L643",
+      "source_location": "L648",
       "weight": 1.0
     },
     {
@@ -2440,7 +2452,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L646",
+      "source_location": "L651",
       "weight": 1.0
     },
     {
@@ -2452,7 +2464,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L772",
+      "source_location": "L777",
       "weight": 1.0
     },
     {
@@ -2464,7 +2476,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L805",
+      "source_location": "L810",
       "weight": 1.0
     },
     {
@@ -2476,7 +2488,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L807",
+      "source_location": "L812",
       "weight": 1.0
     },
     {
@@ -2488,7 +2500,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L813",
+      "source_location": "L818",
       "weight": 1.0
     },
     {
@@ -2500,7 +2512,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L820",
+      "source_location": "L825",
       "weight": 1.0
     },
     {
@@ -2512,7 +2524,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L492",
+      "source_location": "L493",
       "weight": 1.0
     },
     {
@@ -2524,7 +2536,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L494",
+      "source_location": "L495",
       "weight": 1.0
     },
     {
@@ -2536,7 +2548,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L413",
+      "source_location": "L414",
       "weight": 1.0
     },
     {
@@ -2548,7 +2560,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L415",
+      "source_location": "L416",
       "weight": 1.0
     },
     {
@@ -2560,7 +2572,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L530",
+      "source_location": "L535",
       "weight": 1.0
     },
     {
@@ -2572,7 +2584,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L532",
+      "source_location": "L537",
       "weight": 1.0
     },
     {
@@ -2584,7 +2596,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L542",
+      "source_location": "L547",
       "weight": 1.0
     },
     {
@@ -2596,7 +2608,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L587",
+      "source_location": "L592",
       "weight": 1.0
     },
     {
@@ -2608,7 +2620,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L589",
+      "source_location": "L594",
       "weight": 1.0
     },
     {
@@ -2620,7 +2632,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L784",
+      "source_location": "L789",
       "weight": 1.0
     },
     {
@@ -2632,7 +2644,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L786",
+      "source_location": "L791",
       "weight": 1.0
     },
     {
@@ -2644,7 +2656,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L792",
+      "source_location": "L797",
       "weight": 1.0
     },
     {
@@ -2656,7 +2668,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L795",
+      "source_location": "L800",
       "weight": 1.0
     },
     {
@@ -2680,7 +2692,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L340",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -2944,7 +2956,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L444",
+      "source_location": "L461",
       "weight": 1.0
     },
     {
@@ -2956,7 +2968,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L446",
+      "source_location": "L463",
       "weight": 1.0
     },
     {
@@ -3196,7 +3208,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L304",
+      "source_location": "L317",
       "weight": 1.0
     },
     {
@@ -3208,7 +3220,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L404",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -3220,7 +3232,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L797",
+      "source_location": "L810",
       "weight": 1.0
     },
     {
@@ -3232,7 +3244,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L803",
+      "source_location": "L816",
       "weight": 1.0
     },
     {
@@ -3244,7 +3256,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L804",
+      "source_location": "L817",
       "weight": 1.0
     },
     {
@@ -3256,7 +3268,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L813",
+      "source_location": "L826",
       "weight": 1.0
     },
     {
@@ -3268,7 +3280,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L814",
+      "source_location": "L827",
       "weight": 1.0
     },
     {
@@ -3280,7 +3292,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1072",
+      "source_location": "L1085",
       "weight": 1.0
     },
     {
@@ -3292,7 +3304,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1080",
+      "source_location": "L1093",
       "weight": 1.0
     },
     {
@@ -3304,7 +3316,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L613",
+      "source_location": "L626",
       "weight": 1.0
     },
     {
@@ -3316,7 +3328,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L625",
+      "source_location": "L638",
       "weight": 1.0
     },
     {
@@ -3328,7 +3340,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L635",
+      "source_location": "L648",
       "weight": 1.0
     },
     {
@@ -3340,7 +3352,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L642",
+      "source_location": "L655",
       "weight": 1.0
     },
     {
@@ -3352,7 +3364,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L212",
+      "source_location": "L225",
       "weight": 1.0
     },
     {
@@ -3364,7 +3376,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L664",
+      "source_location": "L677",
       "weight": 1.0
     },
     {
@@ -3376,7 +3388,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L665",
+      "source_location": "L678",
       "weight": 1.0
     },
     {
@@ -3388,7 +3400,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L666",
+      "source_location": "L679",
       "weight": 1.0
     },
     {
@@ -3400,7 +3412,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L667",
+      "source_location": "L680",
       "weight": 1.0
     },
     {
@@ -3412,7 +3424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L668",
+      "source_location": "L681",
       "weight": 1.0
     },
     {
@@ -3424,7 +3436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L691",
+      "source_location": "L704",
       "weight": 1.0
     },
     {
@@ -3436,7 +3448,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L692",
+      "source_location": "L705",
       "weight": 1.0
     },
     {
@@ -3448,7 +3460,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L287",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -3460,7 +3472,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L288",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -3472,7 +3484,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L238",
+      "source_location": "L251",
       "weight": 1.0
     },
     {
@@ -3484,7 +3496,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L279",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -3496,7 +3508,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L753",
+      "source_location": "L766",
       "weight": 1.0
     },
     {
@@ -3508,7 +3520,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1051",
+      "source_location": "L1064",
       "weight": 1.0
     },
     {
@@ -3520,7 +3532,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1053",
+      "source_location": "L1066",
       "weight": 1.0
     },
     {
@@ -3532,7 +3544,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1065",
+      "source_location": "L1078",
       "weight": 1.0
     },
     {
@@ -3544,7 +3556,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L701",
+      "source_location": "L714",
       "weight": 1.0
     },
     {
@@ -3556,7 +3568,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L702",
+      "source_location": "L715",
       "weight": 1.0
     },
     {
@@ -3568,7 +3580,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L710",
+      "source_location": "L723",
       "weight": 1.0
     },
     {
@@ -3580,7 +3592,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L716",
+      "source_location": "L729",
       "weight": 1.0
     },
     {
@@ -3592,7 +3604,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L717",
+      "source_location": "L730",
       "weight": 1.0
     },
     {
@@ -3604,7 +3616,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L718",
+      "source_location": "L731",
       "weight": 1.0
     },
     {
@@ -3616,7 +3628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L719",
+      "source_location": "L732",
       "weight": 1.0
     },
     {
@@ -3628,7 +3640,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L736",
+      "source_location": "L749",
       "weight": 1.0
     },
     {
@@ -3640,7 +3652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1030",
+      "source_location": "L1043",
       "weight": 1.0
     },
     {
@@ -3652,7 +3664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L884",
+      "source_location": "L897",
       "weight": 1.0
     },
     {
@@ -3664,7 +3676,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L966",
+      "source_location": "L979",
       "weight": 1.0
     },
     {
@@ -3676,7 +3688,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L515",
+      "source_location": "L528",
       "weight": 1.0
     },
     {
@@ -3688,7 +3700,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L516",
+      "source_location": "L529",
       "weight": 1.0
     },
     {
@@ -3700,7 +3712,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L517",
+      "source_location": "L530",
       "weight": 1.0
     },
     {
@@ -3712,7 +3724,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L523",
+      "source_location": "L536",
       "weight": 1.0
     },
     {
@@ -3724,7 +3736,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L533",
+      "source_location": "L546",
       "weight": 1.0
     },
     {
@@ -3736,7 +3748,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L559",
+      "source_location": "L572",
       "weight": 1.0
     },
     {
@@ -3748,7 +3760,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L601",
+      "source_location": "L614",
       "weight": 1.0
     },
     {
@@ -3784,7 +3796,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L772",
+      "source_location": "L785",
       "weight": 1.0
     },
     {
@@ -3796,7 +3808,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L773",
+      "source_location": "L786",
       "weight": 1.0
     },
     {
@@ -3808,7 +3820,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L782",
+      "source_location": "L795",
       "weight": 1.0
     },
     {
@@ -3820,7 +3832,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L785",
+      "source_location": "L798",
       "weight": 1.0
     },
     {
@@ -3832,7 +3844,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L260",
+      "source_location": "L273",
       "weight": 1.0
     },
     {
@@ -3844,7 +3856,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L266",
+      "source_location": "L279",
       "weight": 1.0
     },
     {
@@ -3856,7 +3868,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L449",
+      "source_location": "L462",
       "weight": 1.0
     },
     {
@@ -3868,7 +3880,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L850",
+      "source_location": "L863",
       "weight": 1.0
     },
     {
@@ -3916,7 +3928,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1044",
+      "source_location": "L1057",
       "weight": 1.0
     },
     {
@@ -3928,7 +3940,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L230",
+      "source_location": "L243",
       "weight": 1.0
     },
     {
@@ -3940,7 +3952,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L295",
+      "source_location": "L308",
       "weight": 1.0
     },
     {
@@ -3964,7 +3976,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L429",
+      "source_location": "L442",
       "weight": 1.0
     },
     {
@@ -3976,7 +3988,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L440",
+      "source_location": "L453",
       "weight": 1.0
     },
     {
@@ -4000,7 +4012,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L606",
+      "source_location": "L619",
       "weight": 1.0
     },
     {
@@ -4829,7 +4841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1068",
+      "source_location": "L1081",
       "weight": 1.0
     },
     {
@@ -4873,7 +4885,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L209",
+      "source_location": "L222",
       "weight": 1.0
     },
     {
@@ -4884,7 +4896,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L223",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -4895,7 +4907,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L255",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -4906,7 +4918,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L278",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -4917,7 +4929,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L286",
+      "source_location": "L299",
       "weight": 1.0
     },
     {
@@ -4928,7 +4940,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L310",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -4939,7 +4951,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L327",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -4950,7 +4962,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L337",
+      "source_location": "L350",
       "weight": 1.0
     },
     {
@@ -4961,7 +4973,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L350",
+      "source_location": "L363",
       "weight": 1.0
     },
     {
@@ -4972,7 +4984,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L377",
+      "source_location": "L390",
       "weight": 1.0
     },
     {
@@ -4983,7 +4995,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L452",
+      "source_location": "L465",
       "weight": 1.0
     },
     {
@@ -4994,7 +5006,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L697",
+      "source_location": "L710",
       "weight": 1.0
     },
     {
@@ -5005,7 +5017,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L828",
+      "source_location": "L841",
       "weight": 1.0
     },
     {
@@ -5016,7 +5028,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L838",
+      "source_location": "L851",
       "weight": 1.0
     },
     {
@@ -5027,7 +5039,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L875",
+      "source_location": "L888",
       "weight": 1.0
     },
     {
@@ -5412,7 +5424,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L226",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -5423,7 +5435,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L378",
+      "source_location": "L379",
       "weight": 1.0
     },
     {
@@ -5434,7 +5446,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L395",
+      "source_location": "L396",
       "weight": 1.0
     },
     {
@@ -5445,7 +5457,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L411",
+      "source_location": "L412",
       "weight": 1.0
     },
     {
@@ -5456,7 +5468,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L442",
+      "source_location": "L443",
       "weight": 1.0
     },
     {
@@ -5467,7 +5479,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L456",
+      "source_location": "L457",
       "weight": 1.0
     },
     {
@@ -5478,7 +5490,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L468",
+      "source_location": "L469",
       "weight": 1.0
     },
     {
@@ -5489,7 +5501,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L490",
+      "source_location": "L491",
       "weight": 1.0
     },
     {
@@ -5511,7 +5523,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L528",
+      "source_location": "L533",
       "weight": 1.0
     },
     {
@@ -5522,7 +5534,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L585",
+      "source_location": "L590",
       "weight": 1.0
     },
     {
@@ -5533,7 +5545,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L641",
+      "source_location": "L646",
       "weight": 1.0
     },
     {
@@ -5555,7 +5567,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L782",
+      "source_location": "L787",
       "weight": 1.0
     },
     {
@@ -5566,7 +5578,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L803",
+      "source_location": "L808",
       "weight": 1.0
     },
     {
@@ -5588,7 +5600,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L829",
+      "source_location": "L834",
       "weight": 1.0
     },
     {
@@ -5599,7 +5611,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L839",
+      "source_location": "L844",
       "weight": 1.0
     },
     {
@@ -5610,7 +5622,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L867",
+      "source_location": "L872",
       "weight": 1.0
     },
     {
@@ -5621,7 +5633,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L882",
+      "source_location": "L890",
       "weight": 1.0
     },
     {
@@ -5654,7 +5666,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -5890,24 +5902,24 @@
     },
     {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L482",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_free_memory",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L461",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
-      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_range_clause",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L477",
+      "source_location": "L515",
       "weight": 1.0
     },
     {
@@ -5919,6 +5931,17 @@
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
       "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_range_clause",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -6117,7 +6140,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1083",
+      "source_location": "L1096",
       "weight": 1.0
     },
     {
@@ -6129,7 +6152,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1084",
+      "source_location": "L1097",
       "weight": 1.0
     },
     {
@@ -6141,7 +6164,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1110",
+      "source_location": "L1123",
       "weight": 1.0
     },
     {
@@ -6153,7 +6176,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1189",
+      "source_location": "L1202",
       "weight": 1.0
     },
     {
@@ -6165,7 +6188,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1078",
+      "source_location": "L1091",
       "weight": 1.0
     },
     {
@@ -6177,7 +6200,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1009",
+      "source_location": "L1022",
       "weight": 1.0
     },
     {
@@ -6189,7 +6212,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L506",
+      "source_location": "L509",
       "weight": 1.0
     },
     {
@@ -6201,7 +6224,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L884",
+      "source_location": "L892",
       "weight": 1.0
     },
     {
@@ -6213,7 +6236,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L885",
+      "source_location": "L893",
       "weight": 1.0
     },
     {
@@ -6225,7 +6248,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L886",
+      "source_location": "L894",
       "weight": 1.0
     },
     {
@@ -6238,6 +6261,18 @@
       "context": "call",
       "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -6314,5 +6349,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "17e6f54cca4ed539b8e4c3a01013ee073d2d2f72"
+  "built_at_commit": "d5b8fb72282adb8d3eae46ac70d0e5c9d024d9b9"
 }
