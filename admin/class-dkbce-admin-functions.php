@@ -157,8 +157,8 @@ class DKBCE_Admin_Functions {
 					'columns'            => array( __( 'Select', 'bulk-cogs-editor-for-woocommerce' ), __( 'ID', 'bulk-cogs-editor-for-woocommerce' ), __( 'Product', 'bulk-cogs-editor-for-woocommerce' ), __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ), __( 'Type', 'bulk-cogs-editor-for-woocommerce' ), __( 'Current COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'New COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'Change', 'bulk-cogs-editor-for-woocommerce' ) ),
 					'productOne'         => __( 'product matches.', 'bulk-cogs-editor-for-woocommerce' ),
 					'productMany'        => __( 'products match.', 'bulk-cogs-editor-for-woocommerce' ),
-					/* translators: %d: number of products. */
-					'matchCount'         => __( '%d matching products. Preview changes before applying.', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: 1: total matches, 2: product count excluding variations, 3: variation count. */
+					'matchCount'         => __( '%1$d matches: %2$d products and %3$d variations. Preview changes before applying.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: number of preview rows, 2: total matching products. */
 					'showing'            => __( 'Showing first %1$d of %2$d matching products.', 'bulk-cogs-editor-for-woocommerce' ),
 					'allShown'           => __( 'All matching products are shown.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -205,6 +205,7 @@ class DKBCE_Admin_Functions {
 					'filtersChanged'     => __( 'Filters changed. Get products again to refresh the matching set.', 'bulk-cogs-editor-for-woocommerce' ),
 					'getProducts'        => __( 'Get products', 'bulk-cogs-editor-for-woocommerce' ),
 					'filtersReset'       => __( 'All filters reset.', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectAll'          => __( 'Select all', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: positive formatted currency amount. */
 					'deltaPositive'      => __( '+%s', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelledStatus'    => __( 'Operation cancelled.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -281,7 +282,7 @@ class DKBCE_Admin_Functions {
 					if ( ! is_wp_error( $categories ) ) :
 						foreach ( $categories as $category ) :
 							?>
-						<option value="<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></option>
+						<option value="<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name . ' (' . number_format_i18n( $category->count ) . ')' ); ?></option>
 							<?php
 						endforeach;
 					endif;
@@ -499,10 +500,12 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
 		}
 
-		$filters['count'] = true;
+		$filters['count']           = true;
+		$filters['count_breakdown'] = true;
 
 		$products_started_at = microtime( true );
-		$product_count       = $this->service->scan_matches( $filters );
+		$counts              = $this->service->scan_matches( $filters );
+		$product_count       = $counts['count'];
 		dkbce_wc_log(
 			sprintf(
 				'Get Products completed in %.4f seconds ( Limit: %d, Filters: %s, Product count: %s).',
@@ -514,8 +517,10 @@ class DKBCE_Admin_Functions {
 		);
 		wp_send_json_success(
 			array(
-				'count' => $product_count,
-				'limit' => DKBCE_COGS_Service::PREVIEW_LIMIT,
+				'count'           => $product_count,
+				'product_count'   => $counts['product_count'],
+				'variation_count' => $counts['variation_count'],
+				'limit'           => DKBCE_COGS_Service::PREVIEW_LIMIT,
 			)
 		);
 	}
@@ -865,6 +870,9 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( ! empty( $query_vars['dkbce_category_ids'] ) ) {
+			$wp_query_args['dkbce_category_ids'] = array_map( 'absint', (array) $query_vars['dkbce_category_ids'] );
+		}
 		if ( ! empty( $query_vars['dkbce_meta_query'] ) ) {
 			$wp_query_args['meta_query'] = array_merge(
 				isset( $wp_query_args['meta_query'] ) ? $wp_query_args['meta_query'] : array(),

@@ -23,6 +23,8 @@ class DKBCE_Admin_Hooks {
 	 */
 	public function __construct() {
 		$admin_functions = DKBCE_Admin_Functions::get_instance();
+		$cogs_service    = new DKBCE_COGS_Service();
+		add_filter( 'posts_where', array( $cogs_service, 'filter_category_where' ), 10, 2 );
 		add_action( 'admin_menu', array( $admin_functions, 'register_submenu_page' ), 20 );
 		add_filter( 'plugin_action_links_' . DKBCE_PLUGIN_BASENAME, array( $admin_functions, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $admin_functions, 'plugin_row_meta' ), 10, 2 );

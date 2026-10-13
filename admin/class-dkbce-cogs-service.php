@@ -350,7 +350,7 @@ class DKBCE_COGS_Service {
 	 *
 	 * @param array $filters Normalized filters.
 	 *
-	 * @return array
+	 * @return array|int
 	 */
 	public function scan_matches( $filters ) {
 		$args = array(
@@ -376,8 +376,8 @@ class DKBCE_COGS_Service {
 		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {
 			$args['stock_status'] = $filters['stock_status'];
 		}
-		if ( $filters['category'] && array( 'variation' ) !== $this->selected_types( $filters ) ) {
-			$args['product_category_id'] = $filters['category'];
+		if ( $filters['category'] ) {
+			$args['dkbce_category_ids'] = $filters['category'];
 		}
 
 		if ( $filters['brand'] ) {
@@ -412,6 +412,23 @@ class DKBCE_COGS_Service {
 		}
 
 		if ( $filters['count'] ?? false ) {
+			if ( ! empty( $filters['count_breakdown'] ) ) {
+				$variation_count = 0;
+				if ( $total_count && in_array( 'variation', $args['type'], true ) ) {
+					$variation_args             = $args;
+					$variation_args['type']     = array( 'variation' );
+					$variation_args['limit']    = 1;
+					$variation_args['paginate'] = true;
+					$variations                 = wc_get_products( $variation_args );
+					$variation_count            = (int) $variations->total;
+				}
+
+				return array(
+					'count'           => $total_count,
+					'product_count'   => $total_count - $variation_count,
+					'variation_count' => $variation_count,
+				);
+			}
 			return $total_count;
 		}
 
@@ -453,6 +470,43 @@ class DKBCE_COGS_Service {
 			'page_size'   => $page_size,
 			'total_pages' => max( 1, (int) ceil( $total_count / $page_size ) ),
 		);
+	}
+
+	/**
+	 * Match categories on products or on a variation's parent product.
+	 *
+	 * @param string   $where Existing query conditions.
+	 * @param WP_Query $query Product query.
+	 * @return string
+	 */
+	public function filter_category_where( $where, $query ) {
+		$category_ids = $query->get( 'dkbce_category_ids' );
+		if ( empty( $category_ids ) ) {
+			return $where;
+		}
+
+		global $wpdb;
+
+		$tax_query = new WP_Tax_Query(
+			array(
+				array(
+					'taxonomy'         => 'product_cat',
+					'field'            => 'term_id',
+					'terms'            => array_map( 'absint', (array) $category_ids ),
+					'include_children' => true,
+				),
+			)
+		);
+		$sql       = $tax_query->get_sql( 'dkbce_category_product', 'ID' );
+
+		// EXISTS preserves one result per record even when several categories match.
+		$where .= " AND EXISTS (SELECT 1 FROM {$wpdb->posts} AS dkbce_category_product {$sql['join']}
+			WHERE dkbce_category_product.ID = CASE
+				WHEN {$wpdb->posts}.post_type = 'product_variation' THEN {$wpdb->posts}.post_parent
+				ELSE {$wpdb->posts}.ID END
+			AND dkbce_category_product.post_type = 'product' {$sql['where']})";
+
+		return $where;
 	}
 
 	/**

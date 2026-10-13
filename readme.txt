@@ -36,6 +36,9 @@ It works with WooCommerce's native Cost of Goods Sold feature, so there is nothi
 **Filtering**
 
 * Filter by title or SKU, category, product type, stock status, brand, current price, and current COGS. Filters are combined to narrow the matching products.
+* Select multiple values in each filter dropdown, or use "Select all" to select or clear every option. A partially selected checkbox indicates that only some options are selected.
+* Category options show product counts in parentheses. Parent and child categories are available, and selecting a parent category also includes its child categories.
+* Category filtering matches variations through their parent product's categories, including when only the Variation product type is selected.
 * Brand filtering appears only when a public brand taxonomy is registered for products.
 * Price filters use the current WooCommerce product price. COGS filters use the supported COGS API.
 
@@ -49,6 +52,7 @@ It works with WooCommerce's native Cost of Goods Sold feature, so there is nothi
 
 **Preview and selection**
 
+* See the total number of matches with separate product and variation counts before previewing changes.
 * Review matching products in a paginated table with product images, edit links, current and calculated COGS, and the change.
 * Choose 10, 20, 50, or 100 products per page. The default is 20.
 * Changing the action or its value refreshes the preview automatically.
@@ -128,6 +132,21 @@ Yes. You can preview all proposed cost changes in a paginated table showing prod
 
 = How does the plugin handle variable products and variations? =
 Variations are treated as individual product records. You can filter and update COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated.
+
+= How does "Select all" work in the filter dropdowns? =
+Each category, product type, stock status, and available brand dropdown has a "Select all" checkbox. Check it to select every option, or uncheck it to clear the selection. You can still select individual options. An empty filter does not restrict the results.
+
+= Why can selecting all categories return fewer matches than leaving the category filter empty? =
+Selecting all categories requires products to have a category assignment. Variations match the categories assigned to their parent product. Products without categories, and variations whose parent has no categories, are excluded. Use the "All categories" link in the dropdown or clear the category selection to remove this restriction.
+
+= Are child categories included? =
+Yes. The dropdown lists both parent and child categories in a flat list. Selecting a parent category also matches products in its child categories and variations of those products.
+
+= What do the counts beside category names mean? =
+The number in parentheses is WooCommerce's stored product count for that category. It does not count variations as separate records and does not change when you adjust the other filters. Use "Get products" to see the matching total and its product and variation breakdown for your current filters.
+
+= Does the matching total include variations? =
+Yes. The result message shows the total followed by separate product and variation counts, for example: "950 matches: 300 products and 650 variations." The product count excludes variation records. The counts cover all matching results, not just the current preview page.
 
 = What happens to products without a COGS value during relative adjustments? =
 Relative actions (percentage and fixed amount increases or decreases) skip products that do not have a COGS value set. To assign costs to those products, use the "Set exact" action.

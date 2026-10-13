@@ -174,6 +174,11 @@
 		clear.className = 'button-link';
 		clear.textContent = allOption.textContent;
 		panel.appendChild( clear );
+		const selectAllLabel = document.createElement( 'label' );
+		const selectAll = document.createElement( 'input' );
+		selectAll.type = 'checkbox';
+		selectAllLabel.append( selectAll, document.createTextNode( DKBCE.i18n.selectAll ) );
+		panel.appendChild( selectAllLabel );
 		const inputs = [];
 		Array.from( select.options ).slice( 1 ).forEach( ( option ) => {
 			const label = document.createElement( 'label' );
@@ -190,10 +195,18 @@
 		} );
 		const sync = () => {
 			const selected = inputs.filter( ( { option } ) => option.selected );
+			selectAll.checked = inputs.length > 0 && selected.length === inputs.length;
+			selectAll.indeterminate = selected.length > 0 && selected.length < inputs.length;
+			selectAll.disabled = inputs.length === 0;
 			summary.textContent = selected.length ? selected.map( ( { option } ) => option.textContent ).join( ', ' ) : allOption.textContent;
 			summary.title = summary.textContent;
 			inputs.forEach( ( { input, option } ) => { input.checked = option.selected; } );
 		};
+		selectAll.addEventListener( 'change', () => {
+			allOption.selected = false;
+			inputs.forEach( ( { option } ) => { option.selected = selectAll.checked; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
 		clear.addEventListener( 'click', () => {
 			Array.from( select.options ).forEach( ( option ) => { option.selected = false; } );
 			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
@@ -676,10 +689,10 @@
 				state.count = data.count;
 				state.hasQuery = true;
 				$( '#dkbce-product-count' ).textContent = data.count
-					? DKBCE.i18n.matchCount.replace(
-							'%d',
-							String( data.count )
-						)
+					? DKBCE.i18n.matchCount
+						.replace( '%1$d', String( data.count ) )
+						.replace( '%2$d', String( data.product_count ) )
+						.replace( '%3$d', String( data.variation_count ) )
 					: DKBCE.i18n.noProducts;
 				if ( 0 === data.count ) {
 					setNotice( DKBCE.i18n.noProducts, 'info' );
