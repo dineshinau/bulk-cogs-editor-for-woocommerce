@@ -4,19 +4,6 @@
   "graph": {},
   "nodes": [
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
-      "label": "DKBCE_Admin_Hooks",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": "dkbce_admin_hooks",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "label": "DKBCE_COGS_Service",
       "_callable": true,
@@ -40,6 +27,19 @@
       "file_type": "code",
       "norm_label": "dkbce_admin_functions",
       "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
+      "label": "DKBCE_Admin_Hooks",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_admin_hooks",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L13"
     },
     {
@@ -115,66 +115,6 @@
       "norm_label": "tool_path()",
       "source_file": "scripts/php-quality.py",
       "source_location": "L45"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L24"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L44"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
-      "label": "dkbce_declare_hpos_compatibility()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": "dkbce_declare_hpos_compatibility()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L87"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
-      "label": "dkbce_load_plugin_files()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": "dkbce_load_plugin_files()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L71"
-    },
-    {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L866"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
@@ -330,7 +270,7 @@
       "file_type": "code",
       "norm_label": ".ajax_apply()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L625"
+      "source_location": "L641"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_cancel",
@@ -342,7 +282,7 @@
       "file_type": "code",
       "norm_label": ".ajax_cancel()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L787"
+      "source_location": "L803"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_get_products",
@@ -354,7 +294,7 @@
       "file_type": "code",
       "norm_label": ".ajax_get_products()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L474"
+      "source_location": "L490"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preferences",
@@ -366,7 +306,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preferences()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L395"
+      "source_location": "L411"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview",
@@ -378,7 +318,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L512"
+      "source_location": "L528"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview_page",
@@ -390,7 +330,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L569"
+      "source_location": "L585"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_progress",
@@ -402,7 +342,7 @@
       "file_type": "code",
       "norm_label": ".ajax_progress()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L766"
+      "source_location": "L782"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_authorize_ajax",
@@ -414,7 +354,7 @@
       "file_type": "code",
       "norm_label": ".authorize_ajax()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L426"
+      "source_location": "L442"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_view_operation",
@@ -426,7 +366,7 @@
       "file_type": "code",
       "norm_label": ".can_view_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L813"
+      "source_location": "L829"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_construct",
@@ -450,7 +390,7 @@
       "file_type": "code",
       "norm_label": ".enqueue_assets()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L94"
+      "source_location": "L110"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_extend_product_query",
@@ -462,7 +402,7 @@
       "file_type": "code",
       "norm_label": ".extend_product_query()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L851"
+      "source_location": "L867"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_action_description",
@@ -474,7 +414,7 @@
       "file_type": "code",
       "norm_label": ".get_action_description()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L362"
+      "source_location": "L378"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
@@ -486,7 +426,7 @@
       "file_type": "code",
       "norm_label": ".get_preferences()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L379"
+      "source_location": "L395"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_validated_request",
@@ -498,7 +438,7 @@
       "file_type": "code",
       "norm_label": ".get_validated_request()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L452"
+      "source_location": "L468"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_plugin_action_links",
@@ -513,6 +453,18 @@
       "source_location": "L82"
     },
     {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_plugin_row_meta",
+      "label": ".plugin_row_meta()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".plugin_row_meta()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L95"
+    },
+    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_public_operation",
       "label": ".public_operation()",
       "_callable": true,
@@ -522,7 +474,7 @@
       "file_type": "code",
       "norm_label": ".public_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L823"
+      "source_location": "L839"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_register_submenu_page",
@@ -546,7 +498,7 @@
       "file_type": "code",
       "norm_label": ".render_bulk_cogs_editor_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L210"
+      "source_location": "L226"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_send_nonce_error",
@@ -558,7 +510,31 @@
       "file_type": "code",
       "norm_label": ".send_nonce_error()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L440"
+      "source_location": "L456"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L45"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_product_lock",
@@ -717,6 +693,30 @@
       "source_location": "L174"
     },
     {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
+      "label": "dkbce_declare_hpos_compatibility()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_declare_hpos_compatibility()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L87"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
+      "label": "dkbce_load_plugin_files()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_load_plugin_files()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L71"
+    },
+    {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
       "label": "dkbce_wc_log()",
       "_callable": true,
@@ -810,7 +810,7 @@
       "file_type": "code",
       "norm_label": "canceloperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1059"
+      "source_location": "L1068"
     },
     {
       "id": "src_bulk_cogs_editor_fetchpreviewpage",
@@ -930,7 +930,7 @@
       "file_type": "code",
       "norm_label": "pollprogress()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1035"
+      "source_location": "L1044"
     },
     {
       "id": "src_bulk_cogs_editor_preview",
@@ -1125,6 +1125,18 @@
       "source_location": "L429"
     },
     {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 188,
+      "community_name": "DKBCE_Operation_Store",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L882"
+    },
+    {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_cancellation_key",
       "label": ".cancellation_key()",
       "_callable": true,
@@ -1309,7 +1321,7 @@
       "label": "fixtureSku()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "fixturesku()",
@@ -1321,7 +1333,7 @@
       "label": "getProducts()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "getproducts()",
@@ -1333,7 +1345,7 @@
       "label": "loadPage()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "loadpage()",
@@ -1345,7 +1357,7 @@
       "label": "preview()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "preview()",
@@ -1357,7 +1369,7 @@
       "label": "requestAjax()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "requestajax()",
@@ -1369,7 +1381,7 @@
       "label": "rowForSku()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "rowforsku()",
@@ -1381,7 +1393,7 @@
       "label": "setFilters()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "setfilters()",
@@ -1444,33 +1456,11 @@
       "source_location": "L46"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks",
-      "label": "class-dkbce-admin-hooks.php",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": "class-dkbce-admin-hooks.php",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce",
-      "label": "bulk-cogs-editor-for-woocommerce.php",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_Admin_Hooks",
-      "file_type": "code",
-      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L1"
-    },
-    {
       "id": "package",
       "label": "package.json",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "package.json",
       "source_file": "package.json",
@@ -1481,7 +1471,7 @@
       "label": "dependencies",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "dependencies",
       "source_file": "package.json",
@@ -1492,7 +1482,7 @@
       "label": "@woocommerce/dependency-extraction-webpack-plugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "@woocommerce/dependency-extraction-webpack-plugin",
       "source_file": "package.json",
@@ -1503,7 +1493,7 @@
       "label": "@wordpress/scripts",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "@wordpress/scripts",
       "source_file": "package.json",
@@ -1514,7 +1504,7 @@
       "label": "devDependencies",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "devdependencies",
       "source_file": "package.json",
@@ -1525,7 +1515,7 @@
       "label": "@playwright/cli",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "@playwright/cli",
       "source_file": "package.json",
@@ -1536,7 +1526,7 @@
       "label": "@playwright/test",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "@playwright/test",
       "source_file": "package.json",
@@ -1547,18 +1537,161 @@
       "label": "name",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "name",
       "source_file": "package.json",
       "source_location": "L2"
     },
     {
+      "id": "package_scripts",
+      "label": "scripts",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "scripts",
+      "source_file": "package.json",
+      "source_location": "L4"
+    },
+    {
+      "id": "package_scripts_build",
+      "label": "build",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "build",
+      "source_file": "package.json",
+      "source_location": "L8"
+    },
+    {
+      "id": "package_scripts_check_engines",
+      "label": "check-engines",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "check-engines",
+      "source_file": "package.json",
+      "source_location": "L11"
+    },
+    {
+      "id": "package_scripts_make_pot",
+      "label": "make-pot",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "make-pot",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
+      "id": "package_scripts_npm_install",
+      "label": "npm_install",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "npm_install",
+      "source_file": "package.json",
+      "source_location": "L6"
+    },
+    {
+      "id": "package_scripts_packages_update",
+      "label": "packages-update",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "packages-update",
+      "source_file": "package.json",
+      "source_location": "L12"
+    },
+    {
+      "id": "package_scripts_phpcbf",
+      "label": "phpcbf",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "phpcbf",
+      "source_file": "package.json",
+      "source_location": "L13"
+    },
+    {
+      "id": "package_scripts_phpcs",
+      "label": "phpcs",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "phpcs",
+      "source_file": "package.json",
+      "source_location": "L14"
+    },
+    {
+      "id": "package_scripts_start",
+      "label": "start",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "start",
+      "source_file": "package.json",
+      "source_location": "L7"
+    },
+    {
+      "id": "package_scripts_test_e2e",
+      "label": "test:e2e",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "test:e2e",
+      "source_file": "package.json",
+      "source_location": "L9"
+    },
+    {
+      "id": "package_scripts_test_e2e_headed",
+      "label": "test:e2e:headed",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "test:e2e:headed",
+      "source_file": "package.json",
+      "source_location": "L10"
+    },
+    {
+      "id": "package_scripts_update",
+      "label": "update",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "update",
+      "source_file": "package.json",
+      "source_location": "L5"
+    },
+    {
+      "id": "package_scripts_zip",
+      "label": "zip",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "scripts",
+      "file_type": "code",
+      "norm_label": "zip",
+      "source_file": "package.json",
+      "source_location": "L16"
+    },
+    {
       "id": "package_version",
       "label": "version",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "version",
       "source_file": "package.json",
@@ -1569,7 +1702,7 @@
       "label": "webpack.config.js",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "webpack.config.js",
       "source_file": "webpack.config.js",
@@ -1580,7 +1713,7 @@
       "label": "defaultConfig",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "defaultconfig",
       "source_file": "webpack.config.js",
@@ -1591,7 +1724,7 @@
       "label": "MiniCssExtractPlugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "minicssextractplugin",
       "source_file": "webpack.config.js",
@@ -1602,7 +1735,7 @@
       "label": "path",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "webpack.config.js",
@@ -1613,7 +1746,7 @@
       "label": "webpackConfig",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "webpackconfig",
       "source_file": "webpack.config.js",
@@ -1624,7 +1757,7 @@
       "label": "WooCommerceDependencyExtractionWebpackPlugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "code",
       "norm_label": "woocommercedependencyextractionwebpackplugin",
       "source_file": "webpack.config.js",
@@ -1635,7 +1768,7 @@
       "label": "@playwright/cli",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "concept",
       "norm_label": "@playwright/cli",
       "source_file": "package.json",
@@ -1646,7 +1779,7 @@
       "label": "@playwright/test",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "concept",
       "norm_label": "@playwright/test",
       "source_file": "package.json",
@@ -1657,7 +1790,7 @@
       "label": "@woocommerce/dependency-extraction-webpack-plugin",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "concept",
       "norm_label": "@woocommerce/dependency-extraction-webpack-plugin",
       "source_file": "package.json",
@@ -1668,7 +1801,7 @@
       "label": "@wordpress/scripts",
       "_origin": "ast",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "file_type": "concept",
       "norm_label": "@wordpress/scripts",
       "source_file": "package.json",
@@ -1697,6 +1830,17 @@
       "source_location": "L1"
     },
     {
+      "id": "admin_class_dkbce_admin_hooks",
+      "label": "class-dkbce-admin-hooks.php",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "class-dkbce-admin-hooks.php",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_bulk_processor",
       "label": "class-dkbce-bulk-processor.php",
       "_origin": "ast",
@@ -1705,6 +1849,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-bulk-processor.php",
       "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce",
+      "label": "bulk-cogs-editor-for-woocommerce.php",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
       "source_location": "L1"
     },
     {
@@ -1741,11 +1896,77 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_e2e_bulk_cogs_editor_spec",
+      "label": "bulk-cogs-editor.spec.cjs",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "bulk-cogs-editor.spec.cjs",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_bulk_cogs_editor_spec_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L2"
+    },
+    {
+      "id": "tests_e2e_bulk_cogs_editor_spec_os",
+      "label": "os",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "os",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L3"
+    },
+    {
+      "id": "tests_e2e_bulk_cogs_editor_spec_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L4"
+    },
+    {
+      "id": "tests_e2e_bulk_cogs_editor_spec_statedirectory",
+      "label": "stateDirectory",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "statedirectory",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L6"
+    },
+    {
+      "id": "tests_e2e_bulk_cogs_editor_spec_test_expect",
+      "label": "{ test, expect }",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "code",
+      "norm_label": "{ test, expect }",
+      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_e2e_global_setup",
       "label": "global-setup.cjs",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "global-setup.cjs",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1756,7 +1977,7 @@
       "label": "adminCredentialsFile",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "admincredentialsfile",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1767,7 +1988,7 @@
       "label": "{ chromium }",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "{ chromium }",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1778,7 +1999,7 @@
       "label": "crypto",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "crypto",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1789,7 +2010,7 @@
       "label": "{ execFileSync }",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "{ execfilesync }",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1800,7 +2021,7 @@
       "label": "fixtureScript",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "fixturescript",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1811,7 +2032,7 @@
       "label": "fs",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "fs",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1822,7 +2043,7 @@
       "label": "os",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "os",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1833,7 +2054,7 @@
       "label": "path",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1844,7 +2065,7 @@
       "label": "stateDirectory",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "statedirectory",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1855,7 +2076,7 @@
       "label": "stateFile",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "statefile",
       "source_file": "tests/e2e/global-setup.cjs",
@@ -1866,7 +2087,7 @@
       "label": "global-teardown.cjs",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "global-teardown.cjs",
       "source_file": "tests/e2e/global-teardown.cjs",
@@ -1877,7 +2098,7 @@
       "label": "{ execFileSync }",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "{ execfilesync }",
       "source_file": "tests/e2e/global-teardown.cjs",
@@ -1888,7 +2109,7 @@
       "label": "fs",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "fs",
       "source_file": "tests/e2e/global-teardown.cjs",
@@ -1899,7 +2120,7 @@
       "label": "os",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "os",
       "source_file": "tests/e2e/global-teardown.cjs",
@@ -1910,7 +2131,7 @@
       "label": "path",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "tests/e2e/global-teardown.cjs",
@@ -1921,7 +2142,7 @@
       "label": "playwright.config.cjs",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "playwright.config.cjs",
       "source_file": "tests/e2e/playwright.config.cjs",
@@ -1932,7 +2153,7 @@
       "label": "{ defineConfig }",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "{ defineconfig }",
       "source_file": "tests/e2e/playwright.config.cjs",
@@ -1943,7 +2164,7 @@
       "label": "os",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "os",
       "source_file": "tests/e2e/playwright.config.cjs",
@@ -1954,7 +2175,7 @@
       "label": "path",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "tests/e2e/playwright.config.cjs",
@@ -1965,7 +2186,7 @@
       "label": "stateDirectory",
       "_origin": "ast",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "file_type": "code",
       "norm_label": "statedirectory",
       "source_file": "tests/e2e/playwright.config.cjs",
@@ -2002,215 +2223,6 @@
       "file_type": "code",
       "norm_label": "src/index.php",
       "source_file": "src/index.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "package_scripts",
-      "label": "scripts",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "scripts",
-      "source_file": "package.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "package_scripts_build",
-      "label": "build",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "build",
-      "source_file": "package.json",
-      "source_location": "L8"
-    },
-    {
-      "id": "package_scripts_check_engines",
-      "label": "check-engines",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "check-engines",
-      "source_file": "package.json",
-      "source_location": "L11"
-    },
-    {
-      "id": "package_scripts_make_pot",
-      "label": "make-pot",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "make-pot",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "package_scripts_npm_install",
-      "label": "npm_install",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "npm_install",
-      "source_file": "package.json",
-      "source_location": "L6"
-    },
-    {
-      "id": "package_scripts_packages_update",
-      "label": "packages-update",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "packages-update",
-      "source_file": "package.json",
-      "source_location": "L12"
-    },
-    {
-      "id": "package_scripts_phpcbf",
-      "label": "phpcbf",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "phpcbf",
-      "source_file": "package.json",
-      "source_location": "L13"
-    },
-    {
-      "id": "package_scripts_phpcs",
-      "label": "phpcs",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "phpcs",
-      "source_file": "package.json",
-      "source_location": "L14"
-    },
-    {
-      "id": "package_scripts_start",
-      "label": "start",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "start",
-      "source_file": "package.json",
-      "source_location": "L7"
-    },
-    {
-      "id": "package_scripts_test_e2e",
-      "label": "test:e2e",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "test:e2e",
-      "source_file": "package.json",
-      "source_location": "L9"
-    },
-    {
-      "id": "package_scripts_test_e2e_headed",
-      "label": "test:e2e:headed",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "test:e2e:headed",
-      "source_file": "package.json",
-      "source_location": "L10"
-    },
-    {
-      "id": "package_scripts_update",
-      "label": "update",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "update",
-      "source_file": "package.json",
-      "source_location": "L5"
-    },
-    {
-      "id": "package_scripts_zip",
-      "label": "zip",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "scripts",
-      "file_type": "code",
-      "norm_label": "zip",
-      "source_file": "package.json",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec",
-      "label": "bulk-cogs-editor.spec.cjs",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "bulk-cogs-editor.spec.cjs",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L2"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec_os",
-      "label": "os",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "os",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L3"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L4"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec_statedirectory",
-      "label": "stateDirectory",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "statedirectory",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L6"
-    },
-    {
-      "id": "tests_e2e_bulk_cogs_editor_spec_test_expect",
-      "label": "{ test, expect }",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "{ test, expect }",
-      "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
       "source_location": "L1"
     },
     {
@@ -2290,7 +2302,7 @@
       "label": "ref_mini_css_extract_plugin",
       "_origin": "semantic",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_mini_css_extract_plugin",
@@ -2302,7 +2314,7 @@
       "label": "ref_path",
       "_origin": "semantic",
       "community": 10,
-      "community_name": "package.json",
+      "community_name": "scripts",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_path",
@@ -2314,7 +2326,7 @@
       "label": "ref_node_child_process",
       "_origin": "semantic",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_child_process",
@@ -2326,7 +2338,7 @@
       "label": "ref_node_crypto",
       "_origin": "semantic",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_crypto",
@@ -2338,7 +2350,7 @@
       "label": "ref_node_fs",
       "_origin": "semantic",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_fs",
@@ -2350,7 +2362,7 @@
       "label": "ref_node_os",
       "_origin": "semantic",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_os",
@@ -2362,7 +2374,7 @@
       "label": "ref_node_path",
       "_origin": "semantic",
       "community": 2,
-      "community_name": "global-setup.cjs",
+      "community_name": "bulk-cogs-editor.spec.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_path",
@@ -2416,7 +2428,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L627",
+      "source_location": "L643",
       "weight": 1.0
     },
     {
@@ -2428,7 +2440,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L630",
+      "source_location": "L646",
       "weight": 1.0
     },
     {
@@ -2440,7 +2452,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L756",
+      "source_location": "L772",
       "weight": 1.0
     },
     {
@@ -2452,7 +2464,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L789",
+      "source_location": "L805",
       "weight": 1.0
     },
     {
@@ -2464,7 +2476,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L791",
+      "source_location": "L807",
       "weight": 1.0
     },
     {
@@ -2476,7 +2488,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L797",
+      "source_location": "L813",
       "weight": 1.0
     },
     {
@@ -2488,7 +2500,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L804",
+      "source_location": "L820",
       "weight": 1.0
     },
     {
@@ -2500,7 +2512,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L476",
+      "source_location": "L492",
       "weight": 1.0
     },
     {
@@ -2512,7 +2524,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L478",
+      "source_location": "L494",
       "weight": 1.0
     },
     {
@@ -2524,7 +2536,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L397",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -2536,7 +2548,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L399",
+      "source_location": "L415",
       "weight": 1.0
     },
     {
@@ -2548,7 +2560,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L514",
+      "source_location": "L530",
       "weight": 1.0
     },
     {
@@ -2560,7 +2572,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L516",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -2572,7 +2584,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L526",
+      "source_location": "L542",
       "weight": 1.0
     },
     {
@@ -2584,7 +2596,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L571",
+      "source_location": "L587",
       "weight": 1.0
     },
     {
@@ -2596,7 +2608,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L573",
+      "source_location": "L589",
       "weight": 1.0
     },
     {
@@ -2608,7 +2620,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L768",
+      "source_location": "L784",
       "weight": 1.0
     },
     {
@@ -2620,7 +2632,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L770",
+      "source_location": "L786",
       "weight": 1.0
     },
     {
@@ -2632,7 +2644,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L776",
+      "source_location": "L792",
       "weight": 1.0
     },
     {
@@ -2644,7 +2656,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L779",
+      "source_location": "L795",
       "weight": 1.0
     },
     {
@@ -2656,7 +2668,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L122",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -2668,7 +2680,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L324",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -3268,7 +3280,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1063",
+      "source_location": "L1072",
       "weight": 1.0
     },
     {
@@ -3280,7 +3292,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1071",
+      "source_location": "L1080",
       "weight": 1.0
     },
     {
@@ -3496,7 +3508,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1042",
+      "source_location": "L1051",
       "weight": 1.0
     },
     {
@@ -3508,7 +3520,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1044",
+      "source_location": "L1053",
       "weight": 1.0
     },
     {
@@ -3520,7 +3532,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1056",
+      "source_location": "L1065",
       "weight": 1.0
     },
     {
@@ -3628,7 +3640,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1021",
+      "source_location": "L1030",
       "weight": 1.0
     },
     {
@@ -3652,7 +3664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L957",
+      "source_location": "L966",
       "weight": 1.0
     },
     {
@@ -3904,7 +3916,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1035",
+      "source_location": "L1044",
       "weight": 1.0
     },
     {
@@ -4817,7 +4829,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1059",
+      "source_location": "L1068",
       "weight": 1.0
     },
     {
@@ -5383,13 +5395,24 @@
     },
     {
       "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
+      "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
       "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_render_bulk_cogs_editor_page",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L210",
+      "source_location": "L226",
       "weight": 1.0
     },
     {
@@ -5400,7 +5423,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L362",
+      "source_location": "L378",
       "weight": 1.0
     },
     {
@@ -5411,7 +5434,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L379",
+      "source_location": "L395",
       "weight": 1.0
     },
     {
@@ -5422,7 +5445,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L395",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -5433,7 +5456,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L426",
+      "source_location": "L442",
       "weight": 1.0
     },
     {
@@ -5444,7 +5467,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L440",
+      "source_location": "L456",
       "weight": 1.0
     },
     {
@@ -5455,7 +5478,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L452",
+      "source_location": "L468",
       "weight": 1.0
     },
     {
@@ -5466,7 +5489,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L474",
+      "source_location": "L490",
       "weight": 1.0
     },
     {
@@ -5488,7 +5511,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L512",
+      "source_location": "L528",
       "weight": 1.0
     },
     {
@@ -5499,7 +5522,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L569",
+      "source_location": "L585",
       "weight": 1.0
     },
     {
@@ -5510,7 +5533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L625",
+      "source_location": "L641",
       "weight": 1.0
     },
     {
@@ -5532,7 +5555,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L766",
+      "source_location": "L782",
       "weight": 1.0
     },
     {
@@ -5543,18 +5566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L787",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
-      "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_view_operation",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L813",
+      "source_location": "L803",
       "weight": 1.0
     },
     {
@@ -5570,13 +5582,24 @@
     },
     {
       "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
+      "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_view_operation",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L829",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
       "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_public_operation",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L823",
+      "source_location": "L839",
       "weight": 1.0
     },
     {
@@ -5587,7 +5610,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L851",
+      "source_location": "L867",
       "weight": 1.0
     },
     {
@@ -5598,18 +5621,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L866",
+      "source_location": "L882",
       "weight": 1.0
     },
     {
       "source": "admin_class_dkbce_admin_functions_dkbce_admin_functions",
-      "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
+      "target": "admin_class_dkbce_admin_functions_dkbce_admin_functions_plugin_row_meta",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L94",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -5631,7 +5654,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -6094,7 +6117,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1074",
+      "source_location": "L1083",
       "weight": 1.0
     },
     {
@@ -6106,7 +6129,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1075",
+      "source_location": "L1084",
       "weight": 1.0
     },
     {
@@ -6118,7 +6141,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1101",
+      "source_location": "L1110",
       "weight": 1.0
     },
     {
@@ -6130,7 +6153,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1180",
+      "source_location": "L1189",
       "weight": 1.0
     },
     {
@@ -6142,7 +6165,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1069",
+      "source_location": "L1078",
       "weight": 1.0
     },
     {
@@ -6154,7 +6177,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1000",
+      "source_location": "L1009",
       "weight": 1.0
     },
     {
@@ -6166,7 +6189,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L490",
+      "source_location": "L506",
       "weight": 1.0
     },
     {
@@ -6178,7 +6201,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L868",
+      "source_location": "L884",
       "weight": 1.0
     },
     {
@@ -6190,7 +6213,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L869",
+      "source_location": "L885",
       "weight": 1.0
     },
     {
@@ -6202,7 +6225,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L870",
+      "source_location": "L886",
       "weight": 1.0
     },
     {
@@ -6291,5 +6314,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7ec92062f1653a05f2b29c80f33f060322575af8"
+  "built_at_commit": "17e6f54cca4ed539b8e4c3a01013ee073d2d2f72"
 }
