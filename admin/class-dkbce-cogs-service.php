@@ -73,18 +73,28 @@ class DKBCE_COGS_Service {
 		if ( ! is_array( $raw ) ) {
 			return new WP_Error( 'invalid_filters', __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
-		foreach ( array( 'search', 'category', 'type', 'stock_status', 'brand', 'price_min', 'price_max', 'cogs_min', 'cogs_max' ) as $key ) {
+		foreach ( array( 'search', 'price_min', 'price_max', 'cogs_min', 'cogs_max' ) as $key ) {
 			if ( isset( $raw[ $key ] ) && ! is_scalar( $raw[ $key ] ) ) {
 				return new WP_Error( 'invalid_filters', __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
 		}
 
+		foreach ( array( 'category', 'type', 'stock_status', 'brand' ) as $key ) {
+			$values = isset( $raw[ $key ] ) ? (array) $raw[ $key ] : array();
+			foreach ( $values as $value ) {
+				if ( ! is_scalar( $value ) ) {
+					return new WP_Error( 'invalid_filters', __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) );
+				}
+			}
+			$raw[ $key ] = $values;
+		}
+
 		$filters = array(
 			'search'       => isset( $raw['search'] ) ? trim( sanitize_text_field( wp_unslash( $raw['search'] ) ) ) : '',
-			'category'     => isset( $raw['category'] ) ? absint( wp_unslash( $raw['category'] ) ) : 0,
-			'type'         => isset( $raw['type'] ) ? sanitize_key( wp_unslash( $raw['type'] ) ) : 'any',
-			'stock_status' => isset( $raw['stock_status'] ) ? sanitize_key( wp_unslash( $raw['stock_status'] ) ) : 'any',
-			'brand'        => isset( $raw['brand'] ) ? absint( wp_unslash( $raw['brand'] ) ) : 0,
+			'category'     => array_values( array_unique( array_filter( array_map( 'absint', wp_unslash( $raw['category'] ) ) ) ) ),
+			'type'         => array_values( array_unique( array_diff( array_map( 'sanitize_key', wp_unslash( $raw['type'] ) ), array( 'any', '' ) ) ) ),
+			'stock_status' => array_values( array_unique( array_diff( array_map( 'sanitize_key', wp_unslash( $raw['stock_status'] ) ), array( 'any', '' ) ) ) ),
+			'brand'        => array_values( array_unique( array_filter( array_map( 'absint', wp_unslash( $raw['brand'] ) ) ) ) ),
 			'price_min'    => isset( $raw['price_min'] ) ? $this->validate_optional_amount( $raw['price_min'] ) : '',
 			'price_max'    => isset( $raw['price_max'] ) ? $this->validate_optional_amount( $raw['price_max'] ) : '',
 			'cogs_min'     => isset( $raw['cogs_min'] ) ? $this->validate_optional_amount( $raw['cogs_min'] ) : '',
@@ -95,25 +105,28 @@ class DKBCE_COGS_Service {
 			return new WP_Error( 'invalid_search', __( 'Search must be 100 characters or fewer.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		if ( 'any' !== $filters['type'] ) {
-			$types = $this->get_product_types();
-			if ( ! isset( $types[ $filters['type'] ] ) ) {
-				return new WP_Error( 'invalid_type', __( 'Choose a supported product type.', 'bulk-cogs-editor-for-woocommerce' ) );
+		$types = $this->get_product_types();
+		foreach ( $filters['type'] as $type ) {
+			if ( ! isset( $types[ $type ] ) ) {
+				return new WP_Error( 'invalid_type', __( 'Choose supported product types.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
 		}
 
-		$stock_statuses = array( 'any', 'instock', 'outofstock', 'onbackorder' );
-		if ( ! in_array( $filters['stock_status'], $stock_statuses, true ) ) {
-			return new WP_Error( 'invalid_stock_status', __( 'Choose a supported stock status.', 'bulk-cogs-editor-for-woocommerce' ) );
+		if ( array_diff( $filters['stock_status'], array( 'instock', 'outofstock', 'onbackorder' ) ) ) {
+			return new WP_Error( 'invalid_stock_status', __( 'Choose supported stock statuses.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		if ( $filters['category'] && ! term_exists( $filters['category'], 'product_cat' ) ) {
-			return new WP_Error( 'invalid_category', __( 'The selected product category no longer exists.', 'bulk-cogs-editor-for-woocommerce' ) );
+		foreach ( $filters['category'] as $category ) {
+			if ( ! term_exists( $category, 'product_cat' ) ) {
+				return new WP_Error( 'invalid_category', __( 'A selected product category no longer exists.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
 		}
 
 		$brand_taxonomy = $this->get_brand_taxonomy();
-		if ( $filters['brand'] && ( ! $brand_taxonomy || ! term_exists( $filters['brand'], $brand_taxonomy->name ) ) ) {
-			return new WP_Error( 'invalid_brand', __( 'The selected brand is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) );
+		foreach ( $filters['brand'] as $brand ) {
+			if ( ! $brand_taxonomy || ! term_exists( $brand, $brand_taxonomy->name ) ) {
+				return new WP_Error( 'invalid_brand', __( 'A selected brand is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
 		}
 
 		foreach ( array( 'price', 'cogs' ) as $range ) {
@@ -201,8 +214,8 @@ class DKBCE_COGS_Service {
 	 * @return array
 	 */
 	public function selected_types( $filters ) {
-		if ( 'any' !== $filters['type'] ) {
-			return array( $filters['type'] );
+		if ( ! empty( $filters['type'] ) && 'any' !== $filters['type'] ) {
+			return (array) $filters['type'];
 		}
 
 		return array_keys( $this->get_product_types() );
@@ -351,14 +364,14 @@ class DKBCE_COGS_Service {
 
 		if ( ! empty( $filters['search'] ) ) {
 			$data_store      = WC_Data_Store::load( 'product' );
-			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Name + SKU, includes variation parents.
+			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Matches product text, SKU and GTIN/ISBN/EAN/UPC, including variations and their parents.
 			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
 		}
 
-		if ( 'any' !== $filters['stock_status'] ) {
+		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {
 			$args['stock_status'] = $filters['stock_status'];
 		}
-		if ( $filters['category'] && 'variation' !== $filters['type'] ) {
+		if ( $filters['category'] && array( 'variation' ) !== $this->selected_types( $filters ) ) {
 			$args['product_category_id'] = $filters['category'];
 		}
 

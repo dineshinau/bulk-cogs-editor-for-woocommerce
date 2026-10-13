@@ -70,7 +70,7 @@
 		columnControls.querySelector( 'summary' ).focus();
 	} );
 	document.addEventListener( 'click', ( event ) => {
-		document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open]' ).forEach( ( details ) => {
+		document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open], .dkbce-filter-dropdown[open]' ).forEach( ( details ) => {
 			if ( ! details.contains( event.target ) ) {
 				details.open = false;
 			}
@@ -78,7 +78,7 @@
 	} );
 	document.addEventListener( 'keydown', ( event ) => {
 		if ( event.key === 'Escape' ) {
-			document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open]' ).forEach( ( details ) => {
+			document.querySelectorAll( '.dkbce-columns[open], .dkbce-help[open], .dkbce-filter-dropdown[open]' ).forEach( ( details ) => {
 				details.open = false;
 				details.querySelector( 'summary' ).focus();
 			} );
@@ -109,9 +109,13 @@
 		Object.keys( values || {} ).forEach( ( key ) => {
 			const value = values[ key ];
 			if ( key === 'filters' ) {
-				Object.keys( value ).forEach( ( filter ) =>
-					data.append( 'filters[' + filter + ']', value[ filter ] )
-				);
+				Object.keys( value ).forEach( ( filter ) => {
+					if ( Array.isArray( value[ filter ] ) ) {
+						value[ filter ].forEach( ( item ) => data.append( 'filters[' + filter + '][]', item ) );
+					} else {
+						data.append( 'filters[' + filter + ']', value[ filter ] );
+					}
+				} );
 			} else if ( Array.isArray( value ) ) {
 				value.forEach( ( item ) => data.append( key + '[]', item ) );
 			} else {
@@ -136,13 +140,68 @@
 			} );
 	}
 
+	function selectedFilterValues( selector ) {
+		const select = $( selector );
+		return select ? Array.from( select.selectedOptions, ( option ) => option.value )
+			.filter( ( value ) => value !== '0' && value !== 'any' ) : [];
+	}
+
+	// Keep native selects as the filter source; checkboxes provide a compact multi-select UI.
+	document.querySelectorAll( '.dkbce-multi-select' ).forEach( ( select ) => {
+		const details = document.createElement( 'details' );
+		details.className = 'dkbce-filter-dropdown';
+		const summary = document.createElement( 'summary' );
+		summary.id = select.id + '-summary';
+		const fieldLabel = document.querySelector( 'label[for="' + select.id + '"]' );
+		fieldLabel.id = select.id + '-label';
+		summary.setAttribute( 'aria-labelledby', fieldLabel.id + ' ' + summary.id );
+		const panel = document.createElement( 'div' );
+		panel.className = 'dkbce-popover';
+		const allOption = select.options[ 0 ];
+		const clear = document.createElement( 'button' );
+		clear.type = 'button';
+		clear.className = 'button-link';
+		clear.textContent = allOption.textContent;
+		panel.appendChild( clear );
+		const inputs = [];
+		Array.from( select.options ).slice( 1 ).forEach( ( option ) => {
+			const label = document.createElement( 'label' );
+			const input = document.createElement( 'input' );
+			input.type = 'checkbox';
+			input.addEventListener( 'change', () => {
+				allOption.selected = false;
+				option.selected = input.checked;
+				select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			} );
+			inputs.push( { input, option } );
+			label.append( input, document.createTextNode( option.textContent ) );
+			panel.appendChild( label );
+		} );
+		const sync = () => {
+			const selected = inputs.filter( ( { option } ) => option.selected );
+			summary.textContent = selected.length ? selected.map( ( { option } ) => option.textContent ).join( ', ' ) : allOption.textContent;
+			summary.title = summary.textContent;
+			inputs.forEach( ( { input, option } ) => { input.checked = option.selected; } );
+		};
+		clear.addEventListener( 'click', () => {
+			Array.from( select.options ).forEach( ( option ) => { option.selected = false; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
+		select.addEventListener( 'change', sync );
+		fieldLabel.addEventListener( 'click', ( event ) => { event.preventDefault(); summary.focus(); } );
+		details.append( summary, panel );
+		select.after( details );
+		select.hidden = true;
+		sync();
+	} );
+
 	function filters() {
 		return {
 			search: $( '#dkbce-search' ).value,
-			category: $( '#dkbce-category' ).value,
-			type: $( '#dkbce-type' ).value,
-			stock_status: $( '#dkbce-stock' ).value,
-			brand: $( '#dkbce-brand' ) ? $( '#dkbce-brand' ).value : '0',
+			category: selectedFilterValues( '#dkbce-category' ),
+			type: selectedFilterValues( '#dkbce-type' ),
+			stock_status: selectedFilterValues( '#dkbce-stock' ),
+			brand: selectedFilterValues( '#dkbce-brand' ),
 			price_min: $( '#dkbce-price-min' ).value,
 			price_max: $( '#dkbce-price-max' ).value,
 			cogs_min: $( '#dkbce-cogs-min' ).value,
@@ -1042,12 +1101,10 @@
 			.forEach( ( input ) => {
 				input.value = '';
 			} );
-		$( '#dkbce-category' ).value = '0';
-		$( '#dkbce-type' ).value = 'any';
-		$( '#dkbce-stock' ).value = 'any';
-		if ( $( '#dkbce-brand' ) ) {
-			$( '#dkbce-brand' ).value = '0';
-		}
+		document.querySelectorAll( '.dkbce-multi-select' ).forEach( ( select ) => {
+			Array.from( select.options ).forEach( ( option ) => { option.selected = false; } );
+			select.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+		} );
 		$( '#dkbce-product-count' ).textContent = '';
 		state.count = 0;
 		invalidatePreview( true );

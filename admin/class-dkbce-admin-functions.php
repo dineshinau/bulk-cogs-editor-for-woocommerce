@@ -255,10 +255,10 @@ class DKBCE_Admin_Functions {
 
 			<div class="dkbce-workspace">
 			<section class="dkbce-section dkbce-filters-section" aria-labelledby="dkbce-filters-title">
-				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-filter" aria-hidden="true"></i><span aria-hidden="true">1</span><div><h2 id="dkbce-filters-title"><?php esc_html_e( 'Select products', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Choose the products you want to update. All filters are combined.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-actions dkbce-filter-actions"><button type="button" class="button button-primary" id="dkbce-get-products" <?php disabled( ! $available ); ?>><?php esc_html_e( 'Get products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-reset"><?php esc_html_e( 'Reset filters', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span id="dkbce-product-count" aria-live="polite"></span><span id="dkbce-products-spinner" class="spinner" aria-hidden="true"></span></div></div>
+				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-filter" aria-hidden="true"></i><span aria-hidden="true">1</span><div><h2 id="dkbce-filters-title"><?php esc_html_e( 'Select products', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Select one or more values per filter. Leave a filter empty to include all values.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-actions dkbce-filter-actions"><button type="button" class="button button-primary" id="dkbce-get-products" <?php disabled( ! $available ); ?>><?php esc_html_e( 'Get products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-reset"><?php esc_html_e( 'Reset filters', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span id="dkbce-product-count" aria-live="polite"></span><span id="dkbce-products-spinner" class="spinner" aria-hidden="true"></span></div></div>
 				<div class="dkbce-grid dkbce-filter-grid">
-					<p><label for="dkbce-search"><?php esc_html_e( 'Search', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-search" type="search" maxlength="100" placeholder="<?php esc_attr_e( 'Product name or SKU', 'bulk-cogs-editor-for-woocommerce' ); ?>"></p>
-					<p><label for="dkbce-category"><?php esc_html_e( 'Product category', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-category"><option value="0"><?php esc_html_e( 'All categories', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
+					<p><label for="dkbce-search"><?php esc_html_e( 'Search', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-search" type="search" maxlength="100" aria-describedby="dkbce-search-help" placeholder="<?php esc_attr_e( 'Name, SKU or product identifier', 'bulk-cogs-editor-for-woocommerce' ); ?>"><span id="dkbce-search-help" class="description"><?php esc_html_e( 'Search by name, SKU, GTIN, ISBN, EAN or UPC.', 'bulk-cogs-editor-for-woocommerce' ); ?></span></p>
+					<p><label for="dkbce-category"><?php esc_html_e( 'Product category', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-category" class="dkbce-multi-select" multiple size="4"><option value="0"><?php esc_html_e( 'All categories', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
 					<?php
 					if ( ! is_wp_error( $categories ) ) :
 						foreach ( $categories as $category ) :
@@ -269,16 +269,16 @@ class DKBCE_Admin_Functions {
 					endif;
 					?>
 					</select></p>
-					<p><label for="dkbce-type"><?php esc_html_e( 'Product type', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-type"><option value="any"><?php esc_html_e( 'All product types', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
+					<p><label for="dkbce-type"><?php esc_html_e( 'Product type', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-type" class="dkbce-multi-select" multiple size="4"><option value="any"><?php esc_html_e( 'All product types', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
 					<?php
 					foreach ( $types as $type => $label ) :
 						?>
 						<option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ); ?></option><?php endforeach; ?></select></p>
-					<p><label for="dkbce-stock"><?php esc_html_e( 'Stock status', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-stock"><option value="any"><?php esc_html_e( 'Any stock status', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="instock"><?php esc_html_e( 'In stock', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="outofstock"><?php esc_html_e( 'Out of stock', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="onbackorder"><?php esc_html_e( 'On backorder', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p>
+					<p><label for="dkbce-stock"><?php esc_html_e( 'Stock status', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-stock" class="dkbce-multi-select" multiple size="4"><option value="any"><?php esc_html_e( 'Any stock status', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="instock"><?php esc_html_e( 'In stock', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="outofstock"><?php esc_html_e( 'Out of stock', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="onbackorder"><?php esc_html_e( 'On backorder', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p>
 					<?php
 					if ( $brand_taxonomy ) :
 						?>
-						<p><label for="dkbce-brand"><?php echo esc_html( $brand_taxonomy->labels->singular_name ); ?></label><select id="dkbce-brand"><option value="0"><?php esc_html_e( 'All brands', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
+						<p><label for="dkbce-brand"><?php echo esc_html( $brand_taxonomy->labels->singular_name ); ?></label><select id="dkbce-brand" class="dkbce-multi-select" multiple size="4"><option value="0"><?php esc_html_e( 'All brands', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
 						<?php
 						if ( ! is_wp_error( $brands ) ) :
 							foreach ( $brands as $brand ) :

@@ -1,28 +1,30 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-13)
 
 ## Corpus Check
-- 19 files · ~18,462 words
+- 19 files · ~18,935 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 202 nodes · 326 edges · 15 communities (5 shown, 10 thin omitted)
+- 203 nodes · 328 edges · 17 communities (7 shown, 10 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `87df391f`
+- Built from commit: `098db46e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - php-quality.py
 - DKBCE_Admin_Hooks
-- bulk-cogs-editor.spec.cjs
+- global-setup.cjs
 - ref_bulk_cogs_editor_css
 - ref_node_process
-- ref_anthropic_ai_sdk
 - scripts
+- bulk-cogs-editor.spec.cjs
+- ref_anthropic_ai_sdk
+- package.json
 - DKBCE_Admin_Functions
 - bulk-cogs-editor.js
 - DKBCE_COGS_Service
@@ -50,23 +52,31 @@
 ## Import Cycles
 - None detected.
 
-## Communities (15 total, 10 thin omitted)
+## Communities (17 total, 10 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.16
 Nodes (14): argparse, os, pathlib, changed_files(), main(), php_files(), Include staged, unstaged, and untracked PHP paths, excluding deletions., Format and check selected project PHP files without running tests. (+6 more)
 
-### Community 2 - "bulk-cogs-editor.spec.cjs"
-Cohesion: 0.06
-Nodes (32): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, @playwright/test, fs, getProducts() (+24 more)
+### Community 2 - "global-setup.cjs"
+Cohesion: 0.09
+Nodes (23): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, adminCredentialsFile, { chromium }, crypto (+15 more)
 
-### Community 10 - "scripts"
-Cohesion: 0.06
-Nodes (31): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+23 more)
+### Community 6 - "scripts"
+Cohesion: 0.15
+Nodes (13): scripts, build, check-engines, make-pot, npm_install, packages-update, phpcbf, phpcs (+5 more)
+
+### Community 7 - "bulk-cogs-editor.spec.cjs"
+Cohesion: 0.18
+Nodes (8): fs, getProducts(), os, path, preview(), setFilters(), stateDirectory, { test, expect }
+
+### Community 10 - "package.json"
+Cohesion: 0.10
+Nodes (19): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, version (+11 more)
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.17
-Nodes (31): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+23 more)
+Nodes (32): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+24 more)
 
 ### Community 188 - "DKBCE_Operation_Store"
 Cohesion: 0.18
@@ -80,15 +90,15 @@ Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@playwright/test` connect `bulk-cogs-editor.spec.cjs` to `scripts`?**
+- **Why does `@playwright/test` connect `package.json` to `global-setup.cjs`, `bulk-cogs-editor.spec.cjs`?**
   _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Admin_Hooks`, `DKBCE_Operation_Store`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
+  _High betweenness centrality (0.067) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
   _`DKBCE_Operation_Store` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `name`, `version`, `update` to the rest of the system?**
   _47 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `bulk-cogs-editor.spec.cjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.06282051282051282 - nodes in this community are weakly interconnected._
-- **Should `scripts` be split into smaller, more focused modules?**
-  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
+- **Should `global-setup.cjs` be split into smaller, more focused modules?**
+  _Cohesion score 0.08923076923076922 - nodes in this community are weakly interconnected._
+- **Should `package.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
