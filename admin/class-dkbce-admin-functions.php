@@ -74,7 +74,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Add "Settings" link to plugin action row.
+	 * Add the settings link to the plugin action row.
 	 *
 	 * @param array $links Existing links.
 	 * @return array
@@ -82,6 +82,23 @@ class DKBCE_Admin_Functions {
 	public function plugin_action_links( array $links ): array {
 		$settings_link = '<a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor' ) ) . '">' . __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		array_unshift( $links, $settings_link );
+		return $links;
+	}
+
+	/**
+	 * Add documentation and video links to this plugin's row metadata.
+	 *
+	 * @param array  $links Existing metadata links.
+	 * @param string $file Plugin basename.
+	 * @return array
+	 */
+	public function plugin_row_meta( array $links, string $file ): array {
+		if ( DKBCE_PLUGIN_BASENAME !== $file ) {
+			return $links;
+		}
+
+		$links[] = '<a href="' . esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Doc', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
+		$links[] = '<a href="' . esc_url( 'https://youtu.be/R-kw_6g2JIg' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Video', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		return $links;
 	}
 
@@ -234,7 +251,10 @@ class DKBCE_Admin_Functions {
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
 				<div><h1><?php esc_html_e( 'Bulk Cost of Goods Sold (COGS) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Update cost of goods for your WooCommerce products quickly and safely.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
-				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Filter your products and click Get products.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Choose an action and enter a value. Clear COGS needs no value.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Review the calculated costs in the preview.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Apply to all matching products, or enable the checked-products option to limit the update. Confirm to start.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol></div></details>
+				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Use the filters to find the products you want to update, then click Get products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Set an exact cost, increase or decrease costs by an amount or percentage, or choose Clear COGS to remove costs. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Compare current and new costs in the preview. No changes are saved until you apply and confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'By default, the update includes all matching products across all preview pages. To update specific products, check them in the preview and enable the option to apply only to checked products. Click Apply changes, then confirm.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol>
+					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p><a href="<?php echo esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/R-kw_6g2JIg' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
+				</div></details>
 			</header>
 			<hr class="wp-header-end">
 			<?php if ( ! $available ) : ?>
