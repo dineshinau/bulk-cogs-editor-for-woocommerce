@@ -193,6 +193,7 @@ class DKBCE_Admin_Functions {
 					/* translators: %s: positive formatted currency amount. */
 					'deltaPositive'      => __( '+%s', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelledStatus'    => __( 'Operation cancelled.', 'bulk-cogs-editor-for-woocommerce' ),
+					'clearCancelled'     => __( 'Clear cancellation state', 'bulk-cogs-editor-for-woocommerce' ),
 					'failedStatus'       => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'withErrorsStatus'   => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'completedStatus'    => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -807,6 +808,30 @@ class DKBCE_Admin_Functions {
 			$state['cancel_requested'] = true;
 		}
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
+	}
+
+	/**
+	 * Clear the current user's cancelled operation reference.
+	 *
+	 * @return void
+	 */
+	public function ajax_clear_cancelled() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
+		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		$state = $this->store->get( $operation_id );
+		if ( ! $state || get_current_user_id() !== (int) $state['user_id'] || 'cancelled' !== $state['status'] ) {
+			wp_send_json_error( array( 'message' => __( 'This cancelled operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		if ( ! delete_user_meta( get_current_user_id(), 'dkbce_latest_operation', $operation_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'The cancellation state could not be cleared. Refresh the page and try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+		wp_send_json_success();
 	}
 
 	/**

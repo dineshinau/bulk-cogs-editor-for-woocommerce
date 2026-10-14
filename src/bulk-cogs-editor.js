@@ -993,6 +993,22 @@
 			cancelled.textContent = operation.cancelled_note;
 			operationPanel.appendChild( cancelled );
 		}
+		if ( 'cancelled' === operation.status ) {
+			const clearButton = document.createElement( 'button' );
+			clearButton.type = 'button';
+			clearButton.className = 'button-link';
+			clearButton.textContent = DKBCE.i18n.clearCancelled;
+			clearButton.addEventListener( 'click', () => {
+				clearButton.disabled = true;
+				request( 'clear_cancelled', { operation_id: operation.operation_id } )
+					.then( () => window.location.reload() )
+					.catch( ( error ) => {
+						clearButton.disabled = false;
+						setNotice( error.message, 'error' );
+					} );
+			} );
+			operationPanel.appendChild( clearButton );
+		}
 		if ( operation.errors && operation.errors.length ) {
 			const list = document.createElement( 'ul' );
 			operation.errors.forEach( ( error ) => {
