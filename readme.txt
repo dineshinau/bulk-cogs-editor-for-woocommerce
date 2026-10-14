@@ -31,6 +31,12 @@ It works with WooCommerce's native Cost of Goods Sold feature, so there is nothi
 3. **Preview** the proposed changes in a paginated table.
 4. **Apply** the update and follow the progress, elapsed time, and success, skipped, and failed counts.
 
+= Watch the plugin in action =
+
+See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
+
+https://www.youtube.com/watch?v=R-kw_6g2JIg
+
 = Features =
 
 **Filtering**
