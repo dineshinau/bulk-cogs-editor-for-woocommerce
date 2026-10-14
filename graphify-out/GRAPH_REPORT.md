@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-14)
 
 ## Corpus Check
-- 19 files · ~20,256 words
+- 19 files · ~20,472 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 208 nodes · 342 edges · 16 communities (6 shown, 10 thin omitted)
+- 209 nodes · 343 edges · 15 communities (7 shown, 8 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cc0277b3`
+- Built from commit: `5225d71d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,6 @@
 - bulk-cogs-editor.spec.cjs
 - ref_bulk_cogs_editor_css
 - ref_node_process
-- DKBCE_Admin_Hooks
 - ref_anthropic_ai_sdk
 - package.json
 - DKBCE_Admin_Functions
@@ -31,7 +30,7 @@
 - DKBCE_Operation_Store
 
 ## God Nodes (most connected - your core abstractions)
-1. `DKBCE_Admin_Functions` - 24 edges
+1. `DKBCE_Admin_Functions` - 25 edges
 2. `DKBCE_COGS_Service` - 16 edges
 3. `DKBCE_Bulk_Processor` - 15 edges
 4. `DKBCE_Operation_Store` - 15 edges
@@ -51,7 +50,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (16 total, 10 thin omitted)
+## Communities (15 total, 8 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.16
@@ -73,24 +72,26 @@ Nodes (19): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wo
 Cohesion: 0.16
 Nodes (33): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+25 more)
 
+### Community 117 - "DKBCE_COGS_Service"
+Cohesion: 0.14
+Nodes (3): DKBCE_Admin_Hooks, DKBCE_COGS_Service, dkbce_load_plugin_files()
+
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.19
+Cohesion: 0.18
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
 - **47 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+42 more)
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 86 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 87 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_COGS_Service`, `DKBCE_Admin_Hooks`?**
-  _High betweenness centrality (0.068) - this node is a cross-community bridge._
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Operation_Store`, `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.071) - this node is a cross-community bridge._
 - **Why does `@playwright/test` connect `package.json` to `bulk-cogs-editor.spec.cjs`?**
   _High betweenness centrality (0.064) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.055) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
   _`DKBCE_COGS_Service` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
@@ -99,3 +100,5 @@ _Questions this graph is uniquely positioned to answer:_
   _47 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `bulk-cogs-editor.spec.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.0620782726045884 - nodes in this community are weakly interconnected._
+- **Should `package.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
