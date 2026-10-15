@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-14T16:10:17+00:00\n"
+"POT-Creation-Date: 2026-10-15T06:44:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -718,24 +718,24 @@ msgstr ""
 msgid "WooCommerce COGS is no longer available or enabled."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:239
-#: admin/class-dkbce-bulk-processor.php:371
+#: admin/class-dkbce-bulk-processor.php:267
+#: admin/class-dkbce-bulk-processor.php:399
 msgid "The background queue became unavailable. Some changes may already have been applied."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:340
+#: admin/class-dkbce-bulk-processor.php:368
 msgid "Already processed products remain changed; no rollback was performed."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:424
+#: admin/class-dkbce-bulk-processor.php:452
 msgid "Product no longer exists."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:441
+#: admin/class-dkbce-bulk-processor.php:469
 msgid "COGS could not be calculated."
 msgstr ""
 
-#: admin/class-dkbce-bulk-processor.php:464
+#: admin/class-dkbce-bulk-processor.php:492
 msgid "Product could not be updated. Check the WooCommerce log for details."
 msgstr ""
 
