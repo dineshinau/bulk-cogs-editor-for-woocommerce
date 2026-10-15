@@ -172,6 +172,34 @@ class DKBCE_Bulk_Processor {
 	 * @return bool Whether another chunk may run in this request.
 	 */
 	private function update_batch( &$state, $deadline ) {
+		// This internal WooCommerce API is not available in every supported version.
+		$deferrer_class = \Automattic\WooCommerce\Internal\Caches\ProductTransientsDeferrer::class;
+		if ( ! function_exists( 'wc_get_container' ) || ! class_exists( $deferrer_class ) ) {
+			return $this->process_update_batch( $state, $deadline );
+		}
+
+		$deferrer = wc_get_container()->get( $deferrer_class );
+		if ( ! is_callable( array( $deferrer, 'start_deferring' ) ) || ! is_callable( array( $deferrer, 'stop_deferring' ) ) ) {
+			return $this->process_update_batch( $state, $deadline );
+		}
+
+		$deferrer->start_deferring();
+		try {
+			return $this->process_update_batch( $state, $deadline );
+		} finally {
+			// Flush this batch even on cancellation, a time limit, or an exception.
+			$deferrer->stop_deferring();
+		}
+	}
+
+	/**
+	 * Apply one persisted batch, retaining per-product outcomes and checkpoints.
+	 *
+	 * @param array $state Operation state.
+	 * @param float $deadline Time after which another product must not be started.
+	 * @return bool Whether another chunk may run in this request.
+	 */
+	private function process_update_batch( &$state, $deadline ) {
 		$chunk_number = $state['processed_chunks'] + 1;
 		$chunk        = $this->store->get_chunk( $state['operation_id'], $chunk_number );
 
