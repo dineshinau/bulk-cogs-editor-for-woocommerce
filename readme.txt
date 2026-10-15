@@ -14,7 +14,7 @@ Bulk update WooCommerce Cost of Goods Sold (COGS). Filter products, preview chan
 
 **Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches.
 
-It works with WooCommerce's native Cost of Goods Sold feature, so there is nothing extra to set up beyond turning COGS on in WooCommerce.
+It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
