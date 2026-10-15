@@ -185,6 +185,15 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
+= 1.1.1 (2026-10-15) =
+
+* Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
+* Fixed: Keep matching product counts visible when changing the selected COGS action.
+* Improved: Prevent filter changes while an update is running and require products to be fetched before choosing an action. The editor guides users to Get products when they try.
+* Improved: Place the action warning in the Step 2 title row and center it on larger screens.
+* Added: Select the first or last number of products across all matching results, or choose all results.
+* Added: Clear a finished operation when using the Refresh now link.
+
 = 1.1.0 (2026-10-14) =
 
 * Fixed: Admin notices appearing between the page title and description.
