@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T12:33:00+00:00\n"
+"POT-Creation-Date: 2026-10-15T13:07:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -691,7 +691,7 @@ msgstr ""
 #: admin/class-dkbce-admin-functions.php:643
 #: admin/class-dkbce-admin-functions.php:704
 #: admin/class-dkbce-admin-functions.php:929
-msgid "The preview expired. Run the preview again before applying changes."
+msgid "Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:654

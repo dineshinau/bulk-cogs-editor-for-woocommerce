@@ -189,6 +189,9 @@
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
 		notice.querySelector( 'p' ).textContent = message;
 		notice.hidden = ! message;
+		if ( message.includes( 'Your preview has expired.' ) ) {
+			window.scrollTo( 0, 0 );
+		}
 	}
 
 	function setApplySpinner( active ) {
