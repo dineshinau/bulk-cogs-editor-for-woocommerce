@@ -277,7 +277,7 @@
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
 			! state.previewId || ! state.count || ! state.rows.length;
-		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value' )
+		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value, #dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running; } );
 	}
 
@@ -633,7 +633,7 @@
 	}
 
 	function fetchPreviewPage( page ) {
-		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId ) {
+		if ( state.busy || state.loadingPage || ! state.previewId ) {
 			return;
 		}
 		const previousPage = state.pageData;
@@ -653,6 +653,7 @@
 		pageSizeSelect.disabled = true;
 		request( 'preview_page', {
 			preview_id: state.previewId,
+			operation_id: isOperationRunning() ? state.operationId : '',
 			page,
 			page_size: Number( pageSizeSelect.value ),
 		} )

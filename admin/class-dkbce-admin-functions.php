@@ -598,10 +598,38 @@ class DKBCE_Admin_Functions {
 		}
 		$this->authorize_ajax();
 
-		$token     = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
-		$page_no   = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
-		$page_size = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
-		$preview   = get_transient( 'dkbce_preview_' . $token );
+		$token        = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$page_no      = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$page_size    = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
+		if ( $operation_id ) {
+			$state = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id ) : false;
+			if ( ! $this->can_view_operation( $state ) ) {
+				wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+			}
+			if ( $page_no < 1 || ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+
+			// The apply token is consumed. Browsing an operation is read-only and
+			// uses its trusted filters, which may match fewer products as costs change.
+			$filters              = $state['filters'];
+			$filters['operation'] = $state['operation'];
+			$filters['page_no']   = $page_no;
+			$filters['page_size'] = $page_size;
+			$result               = $this->service->scan_matches( $filters );
+			wp_send_json_success(
+				array(
+					'preview_id'  => $token,
+					'count'       => $result['count'],
+					'page'        => $result['page'],
+					'page_size'   => $result['page_size'],
+					'total_pages' => $result['total_pages'],
+					'rows'        => $result['rows'],
+				)
+			);
+		}
+		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
