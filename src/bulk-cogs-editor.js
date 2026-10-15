@@ -17,6 +17,7 @@
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
 		operationStatus: '',
+		startingOperation: false,
 		operationStartedAt: null,
 		operationTimer: null,
 		pollTimer: null,
@@ -265,6 +266,21 @@
 		}
 	}
 
+	function isOperationRunning() {
+		return state.startingOperation || Boolean( state.operationId &&
+			! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ]
+				.includes( state.operationStatus ) );
+	}
+
+	function updateOperationControls() {
+		const running = isOperationRunning();
+		getButton.disabled = state.busy || running;
+		applyButton.disabled = running || state.busy || state.loadingPage ||
+			! state.previewId || ! state.count || ! state.rows.length;
+		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value' )
+			.forEach( ( input ) => { input.disabled = running; } );
+	}
+
 	function setBusy( busy, button, label ) {
 		state.busy = busy;
 		pageSizeSelect.disabled = busy;
@@ -272,7 +288,7 @@
 			const terminal = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
 			setApplySpinner( busy || ( state.operationId && ! terminal.includes( state.operationStatus ) ) );
 		}
-		button.disabled = busy;
+		updateOperationControls();
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( button === getButton ) {
 			$( '#dkbce-products-loading' ).textContent = busy ? label : '';
@@ -613,11 +629,11 @@
 		}
 		updateColumnVisibility();
 		previewContent.hidden = false;
-		applyButton.disabled = state.busy || state.loadingPage || ! data.rows.length;
+		updateOperationControls();
 	}
 
 	function fetchPreviewPage( page ) {
-		if ( state.busy || state.loadingPage || ! state.previewId ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId ) {
 			return;
 		}
 		const previousPage = state.pageData;
@@ -666,12 +682,12 @@
 				toggleSpinner( previewSpinner, false );
 				previewContent.removeAttribute( 'aria-busy' );
 				pageSizeSelect.disabled = state.busy;
-				applyButton.disabled = ! state.previewId || state.busy;
+				updateOperationControls();
 			} );
 	}
 
 	function getProducts() {
-		if ( state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
 		const requestedFilters = filters();
@@ -708,7 +724,7 @@
 	}
 
 	function preview() {
-		if ( state.busy || state.loadingPage || 0 === state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || 0 === state.count ) {
 			return;
 		}
 		const action = selectedAction();
@@ -752,12 +768,12 @@
 			.finally( () => {
 				toggleSpinner( previewSpinner, false );
 				setBusy( false, getButton );
-				applyButton.disabled = ! state.previewId || ! state.count || state.loadingPage;
+				updateOperationControls();
 			} );
 	}
 
 	function openConfirm() {
-		if ( ! state.previewId || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || ! state.count ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -779,7 +795,7 @@
 		if ( state.previewTimer ) {
 			window.clearTimeout( state.previewTimer );
 		}
-		if ( ! state.hasQuery || ! state.count ) {
+		if ( isOperationRunning() || ! state.hasQuery || ! state.count ) {
 			return;
 		}
 		const action = selectedAction();
@@ -800,7 +816,7 @@
 	}
 
 	function applyChanges() {
-		if ( ! state.previewId || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || state.busy || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -813,6 +829,8 @@
 			window.clearInterval( state.operationTimer );
 			state.operationTimer = null;
 		}
+		state.startingOperation = true;
+		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		request( 'apply', {
 			preview_id: state.previewId,
@@ -827,14 +845,11 @@
 				pollProgress();
 			} )
 			.catch( ( error ) => {
-				applyButton.disabled = false;
 				setNotice( error.message, 'error' );
 			} )
 			.finally( () => {
+				state.startingOperation = false;
 				setBusy( false, applyButton );
-				if ( state.operationId ) {
-					applyButton.disabled = true;
-				}
 			} );
 	}
 
@@ -887,6 +902,7 @@
 
 	function renderOperation( operation ) {
 		state.operationStatus = operation.status;
+		updateOperationControls();
 		if ( null === state.operationStartedAt ) {
 			state.operationStartedAt = window.performance.now() - operation.elapsed_seconds * 1000;
 		}
@@ -1225,6 +1241,7 @@
 				Boolean( card.querySelector( 'input:checked' ) )
 			)
 		);
+	updateOperationControls();
 	if ( state.operationId ) {
 		operationPanel.hidden = false;
 		pollProgress();
