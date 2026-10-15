@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1792049573.5641418,
-    "seen": 1792049920.2158697,
-    "ast_hash": "053f1ebc2d3db81b927e6de6d4cd5a7c",
+    "mtime": 1792051294.2956078,
+    "seen": 1792051312.4261527,
+    "ast_hash": "ed69cbb139eebecc0d8e762c002f9e3a",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1792049905.9327226,
-    "seen": 1792049920.2158935,
-    "ast_hash": "7f8b1479bc40870a1da398347f799f0c",
+    "mtime": 1792051290.865296,
+    "seen": 1792051312.4262316,
+    "ast_hash": "580853d5dfd86fbef043888c183e8cd1",
     "semantic_hash": ""
   },
   "src/index.php": {
