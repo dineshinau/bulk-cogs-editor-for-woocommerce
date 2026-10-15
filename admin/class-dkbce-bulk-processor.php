@@ -11,11 +11,13 @@ defined( 'ABSPATH' ) || exit;
  * Snapshots matching IDs and processes them in Action Scheduler batches.
  */
 class DKBCE_Bulk_Processor {
-	const BATCH_SIZE        = 50;
-	const BATCH_TIME_LIMIT  = 20;
-	const PROGRESS_INTERVAL = 5;
-	const HOOK              = 'dkbce_process_operation';
-	const GROUP             = 'bulk-cogs-editor';
+	const BATCH_SIZE          = 50;
+	const BATCH_TIME_LIMIT    = 20;
+	const PROGRESS_INTERVAL   = 5;
+	const OPERATION_LOCK_TTL  = 180;
+	const STALE_OPERATION_AGE = 120;
+	const HOOK                = 'dkbce_process_operation';
+	const GROUP               = 'bulk-cogs-editor';
 
 	/** Operation state store.
 	 *
@@ -56,6 +58,29 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
+	 * Requeue an operation whose worker has stopped making progress.
+	 *
+	 * @param array $state Operation state.
+	 * @return void
+	 */
+	public function recover_if_stale( $state ) {
+		if ( in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+			return;
+		}
+
+		$last_update = isset( $state['updated_at'] ) ? absint( $state['updated_at'] ) : absint( $state['created_at'] );
+		if ( time() - $last_update < self::STALE_OPERATION_AGE ) {
+			return;
+		}
+
+		if ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( self::HOOK, array( $state['operation_id'] ), self::GROUP ) ) {
+			return;
+		}
+
+		$this->enqueue( $state['operation_id'] );
+	}
+
+	/**
 	 * Get the product limit to persist when creating a new operation.
 	 *
 	 * @return int
@@ -78,6 +103,25 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function process_operation( $operation_id ) {
+		$lock_token = $this->acquire_operation_lock( $operation_id );
+		if ( ! $lock_token ) {
+			return;
+		}
+
+		try {
+			$this->process_operation_locked( $operation_id );
+		} finally {
+			$this->release_operation_lock( $operation_id, $lock_token );
+		}
+	}
+
+	/**
+	 * Process an operation after acquiring its worker lock.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return void
+	 */
+	private function process_operation_locked( $operation_id ) {
 		$deadline = microtime( true ) + self::BATCH_TIME_LIMIT;
 		$state    = $this->store->get( $operation_id );
 		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
@@ -99,6 +143,7 @@ class DKBCE_Bulk_Processor {
 
 		$state['status']     = 'processing';
 		$state['started_at'] = $state['started_at'] ? $state['started_at'] : time();
+		$state['updated_at'] = time();
 		$this->store->save( $state );
 
 		// Reuse the loaded WordPress request across chunks. Bound memory growth too.
@@ -114,6 +159,50 @@ class DKBCE_Bulk_Processor {
 		}
 
 		$this->queue_next( $state );
+	}
+
+	/**
+	 * Acquire an expiring lock so recovery actions cannot run concurrently.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return string|false Lock token, or false when another worker owns the lock.
+	 */
+	private function acquire_operation_lock( $operation_id ) {
+		$key        = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		$lock_token = wp_generate_uuid4();
+		$lock       = array(
+			'token'      => $lock_token,
+			'created_at' => time(),
+		);
+
+		if ( add_option( $key, $lock, '', false ) ) {
+			return $lock_token;
+		}
+
+		$existing = get_option( $key, false );
+		if ( is_array( $existing ) && isset( $existing['created_at'] ) && time() - absint( $existing['created_at'] ) > self::OPERATION_LOCK_TTL ) {
+			delete_option( $key );
+			if ( add_option( $key, $lock, '', false ) ) {
+				return $lock_token;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Release this worker's operation lock.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param string $lock_token Lock token.
+	 * @return void
+	 */
+	private function release_operation_lock( $operation_id, $lock_token ) {
+		$key  = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		$lock = get_option( $key, false );
+		if ( is_array( $lock ) && isset( $lock['token'] ) && hash_equals( $lock['token'], $lock_token ) ) {
+			delete_option( $key );
+		}
 	}
 
 	/**
@@ -348,6 +437,7 @@ class DKBCE_Bulk_Processor {
 			$this->finish_operation( $state, 'cancelled' );
 			return false;
 		}
+		$state['updated_at'] = time();
 		$this->store->save( $state );
 		return true;
 	}

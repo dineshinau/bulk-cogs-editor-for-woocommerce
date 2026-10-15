@@ -830,6 +830,7 @@ class DKBCE_Admin_Functions {
 		if ( ! $this->can_view_operation( $state ) ) {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
+		$this->processor->recover_if_stale( $state );
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
 	}
 
@@ -854,6 +855,7 @@ class DKBCE_Admin_Functions {
 		if ( ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 			$this->store->request_cancellation( $operation_id );
 			$state['cancel_requested'] = true;
+			$this->processor->enqueue( $operation_id );
 		}
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
 	}
