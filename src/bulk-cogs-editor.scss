@@ -19,9 +19,29 @@ $border: #dce6f5;
 	.dkbce-wrap #dkbce-get-products.dkbce-needs-products { animation: none; }
 }
 
-.dkbce-filter-actions > .notice {
+.dkbce-action-section > .dkbce-section-heading {
+	position: relative;
+	min-height: 48px;
+}
+
+.dkbce-action-section .dkbce-section-heading > .notice {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 	margin: 0;
-	max-width: 440px;
+	width: max-content;
+	max-width: 100%;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+@media (max-width: 1400px) {
+	.dkbce-action-section .dkbce-section-heading > .notice {
+		position: static;
+		transform: none;
+		flex: 0 0 100%;
+		margin-inline: auto;
+	}
 }
 
 .dkbce-range-selection {

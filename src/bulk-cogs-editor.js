@@ -43,7 +43,7 @@
 	rangeLabel.textContent = DKBCE.i18n.selectRange;
 	const rangeDirection = document.createElement( 'select' );
 	rangeDirection.id = 'dkbce-range-direction';
-	[ [ 'first', DKBCE.i18n.selectFirst ], [ 'last', DKBCE.i18n.selectLast ], [ 'all', DKBCE.i18n.allResults ] ].forEach( ( [ value, label ] ) => {
+	[ [ 'all', DKBCE.i18n.allResults ], [ 'first', DKBCE.i18n.selectFirst ], [ 'last', DKBCE.i18n.selectLast ] ].forEach( ( [ value, label ] ) => {
 		rangeDirection.add( new Option( label, value ) );
 	} );
 	const rangeCount = document.createElement( 'input' );
@@ -51,7 +51,7 @@
 	rangeCount.min = '1';
 	rangeCount.step = '1';
 	rangeCount.required = true;
-	rangeCount.value = '1';
+	rangeCount.value = '';
 	rangeCount.setAttribute( 'aria-label', DKBCE.i18n.selectCount );
 	const rangeButton = document.createElement( 'button' );
 	rangeButton.type = 'button';
@@ -106,7 +106,7 @@
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			setNotice( DKBCE.i18n.fetchProductsFirst, 'error' );
-			getButton.before( notice );
+			actionSection.querySelector( '.dkbce-section-heading' ).appendChild( notice );
 			getButton.classList.remove( 'dkbce-needs-products' );
 			window.cancelAnimationFrame( actionShakeFrame );
 			actionShakeFrame = window.requestAnimationFrame( () => {
