@@ -129,32 +129,47 @@ class DKBCE_Bulk_Processor {
 			$state['batch_size'] = $first_chunk ? count( $first_chunk['ids'] ) : self::BATCH_SIZE;
 		}
 
-		$filters              = $state['filters'] ?? array();
-		$filters['page_no']   = $state['page'] ?? 1;
-		$filters['page_size'] = $state['batch_size'];
-
-		if ( ! isset( $state['total_count'] ) ) {
-			$filters['get_ids']   = false;
-			$filters['count']     = true;
-			$state['total_count'] = $this->service->scan_matches( $filters );
+		if ( ! isset( $state['snapshot_after_id'] ) ) {
+			// Resume older operations from their last durable chunk, not an offset.
+			$last_chunk                 = $state['snapshot_chunks'] ? $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] ) : false;
+			$state['snapshot_after_id'] = $last_chunk && $last_chunk['ids'] ? max( $last_chunk['ids'] ) : 0;
 		}
 
-		$filters['get_ids'] = true;
-		$filters['count']   = false;
-		$product_ids        = $this->service->scan_matches( $filters );
+		$filters              = $state['filters'] ?? array();
+		$filters['page_no']   = 1;
+		$filters['page_size'] = $state['batch_size'];
+		$filters['after_id']  = $state['snapshot_after_id'];
+		$filters['get_ids']   = true;
+		$filters['count']     = false;
+
+		if ( ! empty( $filters['search'] ) ) {
+			$search_ids = $this->store->get_search_ids( $state['operation_id'] );
+			if ( false === $search_ids ) {
+				$search_ids = $this->service->search_product_ids( $filters['search'] );
+				$this->store->save_search_ids( $state['operation_id'], $search_ids );
+			}
+			$filters['search_ids'] = $search_ids;
+		}
+
+		// Reuse a chunk saved just before an interrupted progress write.
+		$next_chunk  = $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] + 1 );
+		$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
 
 		if ( $product_ids ) {
 			++$state['snapshot_chunks'];
 			$state['total'] += count( $product_ids );
-			$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
-			++$state['page'];
+			if ( ! $next_chunk ) {
+				$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
+			}
+			$state['snapshot_after_id'] = max( $product_ids );
 			return $this->save_progress( $state );
 		}
 
-		// An empty page ends the scan even if products disappeared after counting.
-		$state['stage'] = 'processing';
+		// Derive the total from durable chunks instead of fetching every ID twice.
+		$state['total_count'] = $state['total'];
+		$state['stage']       = 'processing';
 
-		dkbce_wc_log( 'Total IDs: ' . $state['total_count'] . ', Product IDs count: ' . count( $product_ids ) );
+		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'] );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );

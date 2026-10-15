@@ -899,6 +899,9 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( isset( $query_vars['dkbce_after_id'] ) ) {
+			$wp_query_args['dkbce_after_id'] = absint( $query_vars['dkbce_after_id'] );
+		}
 		if ( ! empty( $query_vars['dkbce_category_ids'] ) ) {
 			$wp_query_args['dkbce_category_ids'] = array_map( 'absint', (array) $query_vars['dkbce_category_ids'] );
 		}

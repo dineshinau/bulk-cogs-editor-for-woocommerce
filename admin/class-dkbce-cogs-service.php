@@ -346,6 +346,17 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Resolve WooCommerce text, SKU and global identifier search matches once.
+	 *
+	 * @param string $search Search term.
+	 * @return array
+	 */
+	public function search_product_ids( $search ) {
+		$data_store = WC_Data_Store::load( 'product' );
+		return array_map( 'absint', $data_store->search_products( $search, '', true, true ) );
+	}
+
+	/**
 	 * Find matching IDs and count without retaining the full catalog in memory.
 	 *
 	 * @param array $filters Normalized filters.
@@ -368,8 +379,7 @@ class DKBCE_COGS_Service {
 		}
 
 		if ( ! empty( $filters['search'] ) ) {
-			$data_store      = WC_Data_Store::load( 'product' );
-			$search_ids      = $data_store->search_products( $filters['search'], '', true, true ); // Matches product text, SKU and GTIN/ISBN/EAN/UPC, including variations and their parents.
+			$search_ids      = $filters['search_ids'] ?? $this->search_product_ids( $filters['search'] );
 			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
 		}
 
@@ -443,6 +453,10 @@ class DKBCE_COGS_Service {
 
 		$args['limit'] = $page_size;
 		$args['page']  = $page_no;
+		if ( isset( $filters['after_id'] ) && ! empty( $filters['get_ids'] ) ) {
+			$args['dkbce_after_id'] = absint( $filters['after_id'] );
+			$args['page']           = 1;
+		}
 
 		$product_ids = wc_get_products( $args );
 
@@ -473,19 +487,24 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Match categories on products or on a variation's parent product.
+	 * Apply the snapshot cursor and match product or parent categories.
 	 *
 	 * @param string   $where Existing query conditions.
 	 * @param WP_Query $query Product query.
 	 * @return string
 	 */
 	public function filter_category_where( $where, $query ) {
+		global $wpdb;
+
+		$after_id = $query->get( 'dkbce_after_id' );
+		if ( is_numeric( $after_id ) ) {
+			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", absint( $after_id ) );
+		}
+
 		$category_ids = $query->get( 'dkbce_category_ids' );
 		if ( empty( $category_ids ) ) {
 			return $where;
 		}
-
-		global $wpdb;
 
 		$tax_query = new WP_Tax_Query(
 			array(
