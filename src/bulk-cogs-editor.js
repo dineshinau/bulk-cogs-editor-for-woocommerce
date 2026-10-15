@@ -13,6 +13,7 @@
 		loadingPage: false,
 		pageRequestId: 0,
 		excludedIds: new Set(),
+		selectionRange: null,
 		busy: false,
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
@@ -24,6 +25,8 @@
 	};
 
 	const notice = $( '#dkbce-alert' );
+	const noticeParent = notice.parentNode;
+	const noticeNextSibling = notice.nextSibling;
 	const getButton = $( '#dkbce-get-products' );
 	const productsSpinner = $( '#dkbce-products-spinner' );
 	const previewSpinner = $( '#dkbce-preview-spinner' );
@@ -33,6 +36,87 @@
 	const previewContent = $( '#dkbce-preview-content' );
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
+	const rangeControls = document.createElement( 'div' );
+	rangeControls.className = 'dkbce-range-selection';
+	const rangeLabel = document.createElement( 'label' );
+	rangeLabel.htmlFor = 'dkbce-range-direction';
+	rangeLabel.textContent = DKBCE.i18n.selectRange;
+	const rangeDirection = document.createElement( 'select' );
+	rangeDirection.id = 'dkbce-range-direction';
+	[ [ 'first', DKBCE.i18n.selectFirst ], [ 'last', DKBCE.i18n.selectLast ], [ 'all', DKBCE.i18n.allResults ] ].forEach( ( [ value, label ] ) => {
+		rangeDirection.add( new Option( label, value ) );
+	} );
+	const rangeCount = document.createElement( 'input' );
+	rangeCount.type = 'number';
+	rangeCount.min = '1';
+	rangeCount.step = '1';
+	rangeCount.required = true;
+	rangeCount.value = '1';
+	rangeCount.setAttribute( 'aria-label', DKBCE.i18n.selectCount );
+	const rangeButton = document.createElement( 'button' );
+	rangeButton.type = 'button';
+	rangeButton.className = 'button';
+	rangeButton.textContent = DKBCE.i18n.selectRows;
+	rangeControls.append( rangeLabel, rangeDirection, rangeCount, rangeButton );
+	$( '.dkbce-preview-controls' ).prepend( rangeControls );
+	rangeDirection.addEventListener( 'change', updateOperationControls );
+	rangeButton.addEventListener( 'click', () => {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId ) {
+			return;
+		}
+		if ( rangeDirection.value === 'all' ) {
+			state.selectionRange = null;
+			state.excludedIds.clear();
+			renderPreview( state.pageData );
+			setNotice( DKBCE.i18n.rangeSelected.replace( '%d', state.count ), 'info' );
+			return;
+		}
+		rangeCount.max = String( state.count );
+		if ( ! rangeCount.reportValidity() ) {
+			return;
+		}
+		const previewId = state.previewId;
+		setBusy( true, rangeButton, DKBCE.i18n.loading );
+		request( 'select_range', { preview_id: previewId, direction: rangeDirection.value, count: rangeCount.value } )
+			.then( ( data ) => {
+				if ( state.previewId !== previewId ) {
+					return;
+				}
+				state.selectionRange = data.range;
+				state.excludedIds.clear();
+				$( '#dkbce-selected-only' ).checked = true;
+				renderPreview( state.pageData );
+				setNotice( DKBCE.i18n.rangeSelected.replace( '%d', data.range.count ), 'info' );
+			} )
+			.catch( ( error ) => setNotice( error.message, 'error' ) )
+			.finally( () => setBusy( false, rangeButton ) );
+	} );
+	const actionSection = $( '.dkbce-action-section' );
+	let actionNoticeTimer;
+	let actionShakeFrame;
+	[ 'click', 'keydown', 'beforeinput', 'paste' ].forEach( ( eventName ) => {
+		actionSection.addEventListener( eventName, ( event ) => {
+			if ( state.hasQuery && state.count > 0 ) {
+				return;
+			}
+			if ( ! event.target.closest( '.dkbce-action-card, #dkbce-value' ) ||
+				( eventName === 'keydown' && event.key === 'Tab' ) ) {
+				return;
+			}
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			setNotice( DKBCE.i18n.fetchProductsFirst, 'error' );
+			getButton.before( notice );
+			getButton.classList.remove( 'dkbce-needs-products' );
+			window.cancelAnimationFrame( actionShakeFrame );
+			actionShakeFrame = window.requestAnimationFrame( () => {
+				actionShakeFrame = window.requestAnimationFrame( () => {
+					getButton.classList.add( 'dkbce-needs-products' );
+				} );
+			} );
+			actionNoticeTimer = window.setTimeout( () => setNotice( '', 'info' ), 5000 );
+		}, true );
+	} );
 
 	const preferences = DKBCE.preferences || {};
 	pageSizeSelect.value = String( preferences.page_size || pageSizeSelect.value );
@@ -97,6 +181,10 @@
 	} );
 
 	function setNotice( message, type ) {
+		window.clearTimeout( actionNoticeTimer );
+		window.cancelAnimationFrame( actionShakeFrame );
+		getButton.classList.remove( 'dkbce-needs-products' );
+		noticeParent.insertBefore( notice, noticeNextSibling );
 		notice.className =
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
 		notice.querySelector( 'p' ).textContent = message;
@@ -249,6 +337,7 @@
 		state.loadingPage = false;
 		state.pageRequestId++;
 		state.excludedIds.clear();
+		state.selectionRange = null;
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.hasQuery = false;
@@ -260,10 +349,6 @@
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
 		pageSizeSelect.disabled = state.busy;
-		if ( state.hasQuery && state.count > 0 ) {
-			$( '#dkbce-product-count' ).textContent =
-				DKBCE.i18n.previewRequired;
-		}
 	}
 
 	function isOperationRunning() {
@@ -274,11 +359,33 @@
 
 	function updateOperationControls() {
 		const running = isOperationRunning();
+		$( '#dkbce-value' ).readOnly = ! state.hasQuery || state.count === 0;
+		[ rangeDirection, rangeCount, rangeButton ].forEach( ( input ) => {
+			input.disabled = running || state.busy || state.loadingPage || ! state.previewId;
+		} );
+		rangeCount.disabled = rangeCount.disabled || rangeDirection.value === 'all';
+		rangeCount.max = String( Math.max( 1, state.count ) );
+		document.querySelectorAll( '.dkbce-filter-grid input, .dkbce-filter-grid select, .dkbce-filter-grid button, #dkbce-reset' )
+			.forEach( ( input ) => {
+				if ( running ) {
+					if ( ! ( 'disabledBeforeOperation' in input.dataset ) ) {
+						input.dataset.disabledBeforeOperation = String( input.disabled );
+					}
+					input.disabled = true;
+				} else if ( 'disabledBeforeOperation' in input.dataset ) {
+					input.disabled = input.dataset.disabledBeforeOperation === 'true';
+					delete input.dataset.disabledBeforeOperation;
+				}
+			} );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
 			! state.previewId || ! state.count || ! state.rows.length;
 		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value, #dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running; } );
+		if ( state.selectionRange ) {
+			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
+				.forEach( ( input ) => { input.disabled = true; } );
+		}
 	}
 
 	function setBusy( busy, button, label ) {
@@ -535,6 +642,9 @@
 			checkbox.className = 'dkbce-product-select';
 			checkbox.value = String( item.id );
 			checkbox.checked = ! state.excludedIds.has( checkbox.value );
+			if ( state.selectionRange ) {
+				checkbox.checked = Number( item.id ) >= state.selectionRange.min && Number( item.id ) <= state.selectionRange.max;
+			}
 			checkbox.setAttribute(
 				'aria-label',
 				DKBCE.i18n.ariaSelect.replace( '%d', String( item.id ) )
@@ -778,7 +888,7 @@
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedCount = Math.max( 0, state.count - state.excludedIds.size );
+		const selectedCount = state.selectionRange ? state.selectionRange.count : Math.max( 0, state.count - state.excludedIds.size );
 		if ( selectedOnly && ! selectedCount ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
@@ -836,7 +946,8 @@
 		request( 'apply', {
 			preview_id: state.previewId,
 			selected_only: selectedOnly ? '1' : '',
-			selection_mode: 'all_except',
+			selection_mode: state.selectionRange ? 'range' : 'all_except',
+			range_token: state.selectionRange ? state.selectionRange.token : '',
 			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
 		} )
 			.then( ( data ) => {

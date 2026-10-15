@@ -374,6 +374,9 @@ class DKBCE_COGS_Service {
 		);
 
 		// Exclusions are validated against the user's preview before snapshotting.
+		if ( ! empty( $filters['selection_range'] ) ) {
+			$args['dkbce_selection_range'] = array( $filters['selection_range']['min'], $filters['selection_range']['max'] );
+		}
 		if ( ! empty( $filters['excluded_ids'] ) ) {
 			$args['exclude'] = array_map( 'absint', $filters['excluded_ids'] );
 		}
@@ -496,7 +499,11 @@ class DKBCE_COGS_Service {
 	public function filter_category_where( $where, $query ) {
 		global $wpdb;
 
-		$after_id = $query->get( 'dkbce_after_id' );
+		$after_id        = $query->get( 'dkbce_after_id' );
+		$selection_range = $query->get( 'dkbce_selection_range' );
+		if ( is_array( $selection_range ) && 2 === count( $selection_range ) ) {
+			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID BETWEEN %d AND %d", absint( $selection_range[0] ), absint( $selection_range[1] ) );
+		}
 		if ( is_numeric( $after_id ) ) {
 			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", absint( $after_id ) );
 		}
