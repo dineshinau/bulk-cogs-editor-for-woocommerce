@@ -879,7 +879,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Clear the current user's cancelled operation reference.
+	 * Clear the current user's finished operation reference.
 	 *
 	 * @return void
 	 */
@@ -893,11 +893,12 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
 		$state = $this->store->get( $operation_id );
-		if ( ! $state || get_current_user_id() !== (int) $state['user_id'] || 'cancelled' !== $state['status'] ) {
-			wp_send_json_error( array( 'message' => __( 'This cancelled operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		if ( ! $state || get_current_user_id() !== (int) $state['user_id'] || ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'This finished operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
-		if ( ! delete_user_meta( get_current_user_id(), 'dkbce_latest_operation', $operation_id ) ) {
-			wp_send_json_error( array( 'message' => __( 'The cancellation state could not be cleared. Refresh the page and try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		delete_user_meta( get_current_user_id(), 'dkbce_latest_operation', $operation_id );
+		if ( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) === $operation_id ) {
+			wp_send_json_error( array( 'message' => __( 'The operation could not be cleared. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
 		wp_send_json_success();
 	}

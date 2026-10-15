@@ -1180,6 +1180,19 @@
 				const refreshLink = document.createElement( 'a' );
 				refreshLink.href = window.location.href;
 				refreshLink.textContent = DKBCE.i18n.refreshNow;
+				refreshLink.addEventListener( 'click', ( event ) => {
+					event.preventDefault();
+					if ( refreshLink.getAttribute( 'aria-busy' ) === 'true' ) {
+						return;
+					}
+					refreshLink.setAttribute( 'aria-busy', 'true' );
+					request( 'clear_operation', { operation_id: operation.operation_id } )
+						.then( () => window.location.reload() )
+						.catch( ( error ) => {
+							refreshLink.removeAttribute( 'aria-busy' );
+							setNotice( error.message, 'error' );
+						} );
+				} );
 				refreshMessage.append( document.createTextNode( DKBCE.i18n.refreshing + ' ' ), refreshLink );
 				refreshNotice.appendChild( refreshMessage );
 				operationPanel.appendChild( refreshNotice );

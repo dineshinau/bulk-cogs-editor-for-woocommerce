@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T12:20:32+00:00\n"
+"POT-Creation-Date: 2026-10-15T12:29:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -690,7 +690,7 @@ msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:643
 #: admin/class-dkbce-admin-functions.php:704
-#: admin/class-dkbce-admin-functions.php:928
+#: admin/class-dkbce-admin-functions.php:929
 msgid "The preview expired. Run the preview again before applying changes."
 msgstr ""
 
@@ -699,8 +699,8 @@ msgid "That preview page is unavailable. Run the preview again."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:665
-#: admin/class-dkbce-admin-functions.php:939
-#: admin/class-dkbce-admin-functions.php:949
+#: admin/class-dkbce-admin-functions.php:940
+#: admin/class-dkbce-admin-functions.php:950
 msgid "Products changed after this preview. Run the preview again."
 msgstr ""
 
@@ -747,14 +747,14 @@ msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:897
-msgid "This cancelled operation is unavailable."
+msgid "This finished operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:900
-msgid "The cancellation state could not be cleared. Refresh the page and try again."
+#: admin/class-dkbce-admin-functions.php:901
+msgid "The operation could not be cleared. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:933
+#: admin/class-dkbce-admin-functions.php:934
 msgid "Choose a valid number of matching products."
 msgstr ""
 
