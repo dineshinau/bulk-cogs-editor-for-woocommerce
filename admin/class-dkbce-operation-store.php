@@ -93,6 +93,27 @@ class DKBCE_Operation_Store {
 	}
 
 	/**
+	 * Get cached search matches separately from frequently written progress.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return array|false False means the search has not been resolved yet.
+	 */
+	public function get_search_ids( $operation_id ) {
+		return get_option( 'dkbce_search_' . sanitize_key( $operation_id ), false );
+	}
+
+	/**
+	 * Persist search matches, including an empty result, without autoloading.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param array  $ids Search matches.
+	 * @return void
+	 */
+	public function save_search_ids( $operation_id, $ids ) {
+		add_option( 'dkbce_search_' . sanitize_key( $operation_id ), $ids, '', false );
+	}
+
+	/**
 	 * Save one snapshot batch of product IDs and per-product outcomes.
 	 *
 	 * @param string $operation_id Operation UUID.
@@ -191,6 +212,7 @@ class DKBCE_Operation_Store {
 			delete_option( $this->chunk_key( $operation_id, $chunk_number ) );
 		}
 		delete_option( $this->cancellation_key( $operation_id ) );
+		delete_option( 'dkbce_search_' . sanitize_key( $operation_id ) );
 	}
 
 	/**

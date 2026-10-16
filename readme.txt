@@ -4,7 +4,6 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product cost, woocommerce
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Requires Plugins: woocommerce
 Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -15,7 +14,13 @@ Bulk update WooCommerce Cost of Goods Sold (COGS). Filter products, preview chan
 
 **Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches.
 
-It works with WooCommerce's native Cost of Goods Sold feature, so there is nothing extra to set up beyond turning COGS on in WooCommerce.
+It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+
+= Watch the plugin in action =
+
+See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
+
+https://www.youtube.com/watch?v=R-kw_6g2JIg
 
 = Why use Bulk COGS Editor? =
 
@@ -179,6 +184,15 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 11. **Update cancelled:** Review the final processed and outcome counts. Already processed products remain changed; cancellation does not roll back completed updates.
 
 == Changelog ==
+
+= 1.1.1 (2026-10-15) =
+
+* Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
+* Fixed: Keep matching product counts visible when changing the selected COGS action.
+* Improved: Prevent filter changes while an update is running and require products to be fetched before choosing an action. The editor guides users to Get products when they try.
+* Improved: Place the action warning in the Step 2 title row and center it on larger screens.
+* Added: Select the first or last number of products across all matching results, or choose all results.
+* Added: Clear a finished operation when using the Refresh now link.
 
 = 1.1.0 (2026-10-14) =
 

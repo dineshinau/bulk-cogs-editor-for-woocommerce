@@ -74,7 +74,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Add "Settings" link to plugin action row.
+	 * Add the settings link to the plugin action row.
 	 *
 	 * @param array $links Existing links.
 	 * @return array
@@ -82,6 +82,23 @@ class DKBCE_Admin_Functions {
 	public function plugin_action_links( array $links ): array {
 		$settings_link = '<a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor' ) ) . '">' . __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		array_unshift( $links, $settings_link );
+		return $links;
+	}
+
+	/**
+	 * Add documentation and video links to this plugin's row metadata.
+	 *
+	 * @param array  $links Existing metadata links.
+	 * @param string $file Plugin basename.
+	 * @return array
+	 */
+	public function plugin_row_meta( array $links, string $file ): array {
+		if ( DKBCE_PLUGIN_BASENAME !== $file ) {
+			return $links;
+		}
+
+		$links[] = '<a href="' . esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Doc', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
+		$links[] = '<a href="' . esc_url( 'https://youtu.be/R-kw_6g2JIg' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Video', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		return $links;
 	}
 
@@ -137,6 +154,15 @@ class DKBCE_Admin_Functions {
 					'pageNumber'         => __( 'Page %1$d of %2$d', 'bulk-cogs-editor-for-woocommerce' ),
 					'noProducts'         => __( 'No products match the selected filters.', 'bulk-cogs-editor-for-woocommerce' ),
 					'previewRequired'    => __( 'Get products to calculate the changes before applying them.', 'bulk-cogs-editor-for-woocommerce' ),
+					'fetchProductsFirst' => __( 'Fetch matching products in Step 1 before choosing a COGS action.', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectRange'        => __( 'Select from all results', 'bulk-cogs-editor-for-woocommerce' ),
+					'allResults'         => __( 'All', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of selected matching products. */
+					'rangeSelected'      => __( '%d products selected across all pages.', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectFirst'        => __( 'First', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectLast'         => __( 'Last', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectCount'        => __( 'Number of products to select', 'bulk-cogs-editor-for-woocommerce' ),
+					'selectRows'         => __( 'Select', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelled'          => __( 'Operation cancelled. Products already processed remain changed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'columns'            => array( __( 'Select', 'bulk-cogs-editor-for-woocommerce' ), __( 'ID', 'bulk-cogs-editor-for-woocommerce' ), __( 'Product', 'bulk-cogs-editor-for-woocommerce' ), __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ), __( 'Type', 'bulk-cogs-editor-for-woocommerce' ), __( 'Current COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'New COGS', 'bulk-cogs-editor-for-woocommerce' ), __( 'Change', 'bulk-cogs-editor-for-woocommerce' ) ),
 					'productOne'         => __( 'product matches.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -193,6 +219,7 @@ class DKBCE_Admin_Functions {
 					/* translators: %s: positive formatted currency amount. */
 					'deltaPositive'      => __( '+%s', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelledStatus'    => __( 'Operation cancelled.', 'bulk-cogs-editor-for-woocommerce' ),
+					'clearCancelled'     => __( 'Clear cancellation state', 'bulk-cogs-editor-for-woocommerce' ),
 					'failedStatus'       => __( 'Operation failed.', 'bulk-cogs-editor-for-woocommerce' ),
 					'withErrorsStatus'   => __( 'Operation completed with errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'completedStatus'    => __( 'Operation completed.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -233,7 +260,10 @@ class DKBCE_Admin_Functions {
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
 				<div><h1><?php esc_html_e( 'Bulk Cost of Goods Sold (COGS) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Update cost of goods for your WooCommerce products quickly and safely.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
-				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Filter your products and click Get products.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Choose an action and enter a value. Clear COGS needs no value.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Review the calculated costs in the preview.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Apply to all matching products, or enable the checked-products option to limit the update. Confirm to start.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol></div></details>
+				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Use the filters to find the products you want to update, then click Get products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Set an exact cost, increase or decrease costs by an amount or percentage, or choose Clear COGS to remove costs. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Compare current and new costs in the preview. No changes are saved until you apply and confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'By default, the update includes all matching products across all preview pages. To update specific products, check them in the preview and enable the option to apply only to checked products. Click Apply changes, then confirm.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol>
+					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p><a href="<?php echo esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/R-kw_6g2JIg' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
+				</div></details>
 			</header>
 			<hr class="wp-header-end">
 			<?php if ( ! $available ) : ?>
@@ -577,12 +607,40 @@ class DKBCE_Admin_Functions {
 		}
 		$this->authorize_ajax();
 
-		$token     = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
-		$page_no   = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
-		$page_size = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
-		$preview   = get_transient( 'dkbce_preview_' . $token );
+		$token        = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$page_no      = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? absint( wp_unslash( $_POST['page'] ) ) : 0;
+		$page_size    = isset( $_POST['page_size'] ) && is_scalar( $_POST['page_size'] ) ? absint( wp_unslash( $_POST['page_size'] ) ) : 0;
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
+		if ( $operation_id ) {
+			$state = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id ) : false;
+			if ( ! $this->can_view_operation( $state ) ) {
+				wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+			}
+			if ( $page_no < 1 || ! in_array( $page_size, DKBCE_COGS_Service::PREVIEW_PAGE_SIZES, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Choose a valid number of products per page.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+
+			// The apply token is consumed. Browsing an operation is read-only and
+			// uses its trusted filters, which may match fewer products as costs change.
+			$filters              = $state['filters'];
+			$filters['operation'] = $state['operation'];
+			$filters['page_no']   = $page_no;
+			$filters['page_size'] = $page_size;
+			$result               = $this->service->scan_matches( $filters );
+			wp_send_json_success(
+				array(
+					'preview_id'  => $token,
+					'count'       => $result['count'],
+					'page'        => $result['page'],
+					'page_size'   => $result['page_size'],
+					'total_pages' => $result['total_pages'],
+					'rows'        => $result['rows'],
+				)
+			);
+		}
+		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
-			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 		if ( ! $page_size ) {
 			$page_size = (int) $preview['page_size'];
@@ -643,7 +701,7 @@ class DKBCE_Admin_Functions {
 		$preview = get_transient( 'dkbce_preview_' . $token );
 
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
-			wp_send_json_error( array( 'message' => __( 'The preview expired. Run the preview again before applying changes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 
 		if ( ! add_option( 'dkbce_preview_claim_' . $token, get_current_user_id(), '', false ) ) {
@@ -666,8 +724,17 @@ class DKBCE_Admin_Functions {
 
 		$selected_only = '1' === $selected_only_value;
 		$exclude_mode  = isset( $_POST['selection_mode'] ) && 'all_except' === $_POST['selection_mode'];
-		$excluded_ids  = array();
-		if ( $selected_only && $exclude_mode ) {
+		$range_mode    = $selected_only && isset( $_POST['selection_mode'] ) && 'range' === $_POST['selection_mode'];
+		if ( $range_mode ) {
+			$range_token = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
+			if ( empty( $preview['selection_range'] ) || ! hash_equals( $preview['selection_range']['token'], $range_token ) ) {
+				wp_send_json_error( array( 'message' => __( 'Select the product range again before applying.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			$preview['filters']['selection_range'] = $preview['selection_range'];
+			$exclude_mode                          = true;
+		}
+		$excluded_ids = array();
+		if ( $selected_only && $exclude_mode && ! $range_mode ) {
 			$raw_excluded = isset( $_POST['excluded_ids'] ) && is_string( $_POST['excluded_ids'] ) ? json_decode( wp_unslash( $_POST['excluded_ids'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON IDs are strictly validated below.
 			if ( ! is_array( $raw_excluded ) || count( $raw_excluded ) > count( $preview['row_ids'] ) ) {
 				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
@@ -781,6 +848,7 @@ class DKBCE_Admin_Functions {
 		if ( ! $this->can_view_operation( $state ) ) {
 			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
+		$this->processor->recover_if_stale( $state );
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
 	}
 
@@ -805,8 +873,34 @@ class DKBCE_Admin_Functions {
 		if ( ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 			$this->store->request_cancellation( $operation_id );
 			$state['cancel_requested'] = true;
+			$this->processor->enqueue( $operation_id );
 		}
 		wp_send_json_success( array( 'state' => $this->public_operation( $state ) ) );
+	}
+
+	/**
+	 * Clear the current user's finished operation reference.
+	 *
+	 * @return void
+	 */
+	public function ajax_clear_cancelled() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$operation_id = isset( $_POST['operation_id'] ) && is_string( $_POST['operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['operation_id'] ) ) : '';
+		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		$state = $this->store->get( $operation_id );
+		if ( ! $state || get_current_user_id() !== (int) $state['user_id'] || ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'This finished operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		delete_user_meta( get_current_user_id(), 'dkbce_latest_operation', $operation_id );
+		if ( get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ) === $operation_id ) {
+			wp_send_json_error( array( 'message' => __( 'The operation could not be cleared. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+		wp_send_json_success();
 	}
 
 	/**
@@ -817,6 +911,53 @@ class DKBCE_Admin_Functions {
 	 */
 	private function can_view_operation( $state ) {
 		return $state && ( get_current_user_id() === (int) $state['user_id'] || current_user_can( 'manage_woocommerce' ) );
+	}
+
+	/**
+	 * Resolve a selection range against the complete authorized preview.
+	 *
+	 * @return void
+	 */
+	public function ajax_select_range() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$preview = get_transient( 'dkbce_preview_' . $token );
+		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
+			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		$direction = isset( $_POST['direction'] ) && is_string( $_POST['direction'] ) ? sanitize_key( wp_unslash( $_POST['direction'] ) ) : '';
+		$count     = isset( $_POST['count'] ) && is_string( $_POST['count'] ) ? sanitize_text_field( wp_unslash( $_POST['count'] ) ) : '';
+		if ( ! in_array( $direction, array( 'first', 'last' ), true ) || ! ctype_digit( $count ) || (int) $count < 1 || (int) $count > (int) $preview['total'] ) {
+			wp_send_json_error( array( 'message' => __( 'Choose a valid number of matching products.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		$count            = (int) $count;
+		$filters          = $preview['filters'];
+		$filters['count'] = true;
+		if ( (int) $this->service->scan_matches( $filters ) !== (int) $preview['total'] ) {
+			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+		$filters['count']     = false;
+		$filters['get_ids']   = true;
+		$filters['page_size'] = 1;
+		$filters['page_no']   = 'first' === $direction ? 1 : (int) $preview['total'] - $count + 1;
+		$first                = $this->service->scan_matches( $filters );
+		$filters['page_no']  += $count - 1;
+		$last                 = $this->service->scan_matches( $filters );
+		if ( ! $first || ! $last ) {
+			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+		$range                      = array(
+			'min'   => absint( $first[0] ),
+			'max'   => absint( $last[0] ),
+			'count' => $count,
+			'token' => wp_generate_uuid4(),
+		);
+		$preview['selection_range'] = $range;
+		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
+		wp_send_json_success( array( 'range' => $range ) );
 	}
 
 	/**
@@ -854,6 +995,12 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( isset( $query_vars['dkbce_after_id'] ) ) {
+			$wp_query_args['dkbce_after_id'] = absint( $query_vars['dkbce_after_id'] );
+		}
+		if ( isset( $query_vars['dkbce_selection_range'] ) ) {
+			$wp_query_args['dkbce_selection_range'] = array_map( 'absint', $query_vars['dkbce_selection_range'] );
+		}
 		if ( ! empty( $query_vars['dkbce_category_ids'] ) ) {
 			$wp_query_args['dkbce_category_ids'] = array_map( 'absint', (array) $query_vars['dkbce_category_ids'] );
 		}

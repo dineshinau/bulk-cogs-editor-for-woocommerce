@@ -11,11 +11,13 @@ defined( 'ABSPATH' ) || exit;
  * Snapshots matching IDs and processes them in Action Scheduler batches.
  */
 class DKBCE_Bulk_Processor {
-	const BATCH_SIZE        = 50;
-	const BATCH_TIME_LIMIT  = 20;
-	const PROGRESS_INTERVAL = 5;
-	const HOOK              = 'dkbce_process_operation';
-	const GROUP             = 'bulk-cogs-editor';
+	const BATCH_SIZE          = 50;
+	const BATCH_TIME_LIMIT    = 20;
+	const PROGRESS_INTERVAL   = 5;
+	const OPERATION_LOCK_TTL  = 180;
+	const STALE_OPERATION_AGE = 120;
+	const HOOK                = 'dkbce_process_operation';
+	const GROUP               = 'bulk-cogs-editor';
 
 	/** Operation state store.
 	 *
@@ -56,6 +58,29 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
+	 * Requeue an operation whose worker has stopped making progress.
+	 *
+	 * @param array $state Operation state.
+	 * @return void
+	 */
+	public function recover_if_stale( $state ) {
+		if ( in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+			return;
+		}
+
+		$last_update = isset( $state['updated_at'] ) ? absint( $state['updated_at'] ) : absint( $state['created_at'] );
+		if ( time() - $last_update < self::STALE_OPERATION_AGE ) {
+			return;
+		}
+
+		if ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( self::HOOK, array( $state['operation_id'] ), self::GROUP ) ) {
+			return;
+		}
+
+		$this->enqueue( $state['operation_id'] );
+	}
+
+	/**
 	 * Get the product limit to persist when creating a new operation.
 	 *
 	 * @return int
@@ -78,6 +103,25 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function process_operation( $operation_id ) {
+		$lock_token = $this->acquire_operation_lock( $operation_id );
+		if ( ! $lock_token ) {
+			return;
+		}
+
+		try {
+			$this->process_operation_locked( $operation_id );
+		} finally {
+			$this->release_operation_lock( $operation_id, $lock_token );
+		}
+	}
+
+	/**
+	 * Process an operation after acquiring its worker lock.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return void
+	 */
+	private function process_operation_locked( $operation_id ) {
 		$deadline = microtime( true ) + self::BATCH_TIME_LIMIT;
 		$state    = $this->store->get( $operation_id );
 		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
@@ -99,6 +143,7 @@ class DKBCE_Bulk_Processor {
 
 		$state['status']     = 'processing';
 		$state['started_at'] = $state['started_at'] ? $state['started_at'] : time();
+		$state['updated_at'] = time();
 		$this->store->save( $state );
 
 		// Reuse the loaded WordPress request across chunks. Bound memory growth too.
@@ -117,6 +162,50 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
+	 * Acquire an expiring lock so recovery actions cannot run concurrently.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return string|false Lock token, or false when another worker owns the lock.
+	 */
+	private function acquire_operation_lock( $operation_id ) {
+		$key        = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		$lock_token = wp_generate_uuid4();
+		$lock       = array(
+			'token'      => $lock_token,
+			'created_at' => time(),
+		);
+
+		if ( add_option( $key, $lock, '', false ) ) {
+			return $lock_token;
+		}
+
+		$existing = get_option( $key, false );
+		if ( is_array( $existing ) && isset( $existing['created_at'] ) && time() - absint( $existing['created_at'] ) > self::OPERATION_LOCK_TTL ) {
+			delete_option( $key );
+			if ( add_option( $key, $lock, '', false ) ) {
+				return $lock_token;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Release this worker's operation lock.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param string $lock_token Lock token.
+	 * @return void
+	 */
+	private function release_operation_lock( $operation_id, $lock_token ) {
+		$key  = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		$lock = get_option( $key, false );
+		if ( is_array( $lock ) && isset( $lock['token'] ) && hash_equals( $lock['token'], $lock_token ) ) {
+			delete_option( $key );
+		}
+	}
+
+	/**
 	 * Collect one bounded page of matching IDs before updates begin.
 	 *
 	 * @param array $state Operation state.
@@ -129,32 +218,47 @@ class DKBCE_Bulk_Processor {
 			$state['batch_size'] = $first_chunk ? count( $first_chunk['ids'] ) : self::BATCH_SIZE;
 		}
 
-		$filters              = $state['filters'] ?? array();
-		$filters['page_no']   = $state['page'] ?? 1;
-		$filters['page_size'] = $state['batch_size'];
-
-		if ( ! isset( $state['total_count'] ) ) {
-			$filters['get_ids']   = false;
-			$filters['count']     = true;
-			$state['total_count'] = $this->service->scan_matches( $filters );
+		if ( ! isset( $state['snapshot_after_id'] ) ) {
+			// Resume older operations from their last durable chunk, not an offset.
+			$last_chunk                 = $state['snapshot_chunks'] ? $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] ) : false;
+			$state['snapshot_after_id'] = $last_chunk && $last_chunk['ids'] ? max( $last_chunk['ids'] ) : 0;
 		}
 
-		$filters['get_ids'] = true;
-		$filters['count']   = false;
-		$product_ids        = $this->service->scan_matches( $filters );
+		$filters              = $state['filters'] ?? array();
+		$filters['page_no']   = 1;
+		$filters['page_size'] = $state['batch_size'];
+		$filters['after_id']  = $state['snapshot_after_id'];
+		$filters['get_ids']   = true;
+		$filters['count']     = false;
+
+		if ( ! empty( $filters['search'] ) ) {
+			$search_ids = $this->store->get_search_ids( $state['operation_id'] );
+			if ( false === $search_ids ) {
+				$search_ids = $this->service->search_product_ids( $filters['search'] );
+				$this->store->save_search_ids( $state['operation_id'], $search_ids );
+			}
+			$filters['search_ids'] = $search_ids;
+		}
+
+		// Reuse a chunk saved just before an interrupted progress write.
+		$next_chunk  = $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] + 1 );
+		$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
 
 		if ( $product_ids ) {
 			++$state['snapshot_chunks'];
 			$state['total'] += count( $product_ids );
-			$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
-			++$state['page'];
+			if ( ! $next_chunk ) {
+				$this->store->save_chunk( $state['operation_id'], $state['snapshot_chunks'], $product_ids );
+			}
+			$state['snapshot_after_id'] = max( $product_ids );
 			return $this->save_progress( $state );
 		}
 
-		// An empty page ends the scan even if products disappeared after counting.
-		$state['stage'] = 'processing';
+		// Derive the total from durable chunks instead of fetching every ID twice.
+		$state['total_count'] = $state['total'];
+		$state['stage']       = 'processing';
 
-		dkbce_wc_log( 'Total IDs: ' . $state['total_count'] . ', Product IDs count: ' . count( $product_ids ) );
+		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'] );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
@@ -172,6 +276,34 @@ class DKBCE_Bulk_Processor {
 	 * @return bool Whether another chunk may run in this request.
 	 */
 	private function update_batch( &$state, $deadline ) {
+		// This internal WooCommerce API is not available in every supported version.
+		$deferrer_class = \Automattic\WooCommerce\Internal\Caches\ProductTransientsDeferrer::class;
+		if ( ! function_exists( 'wc_get_container' ) || ! class_exists( $deferrer_class ) ) {
+			return $this->process_update_batch( $state, $deadline );
+		}
+
+		$deferrer = wc_get_container()->get( $deferrer_class );
+		if ( ! is_callable( array( $deferrer, 'start_deferring' ) ) || ! is_callable( array( $deferrer, 'stop_deferring' ) ) ) {
+			return $this->process_update_batch( $state, $deadline );
+		}
+
+		$deferrer->start_deferring();
+		try {
+			return $this->process_update_batch( $state, $deadline );
+		} finally {
+			// Flush this batch even on cancellation, a time limit, or an exception.
+			$deferrer->stop_deferring();
+		}
+	}
+
+	/**
+	 * Apply one persisted batch, retaining per-product outcomes and checkpoints.
+	 *
+	 * @param array $state Operation state.
+	 * @param float $deadline Time after which another product must not be started.
+	 * @return bool Whether another chunk may run in this request.
+	 */
+	private function process_update_batch( &$state, $deadline ) {
 		$chunk_number = $state['processed_chunks'] + 1;
 		$chunk        = $this->store->get_chunk( $state['operation_id'], $chunk_number );
 
@@ -305,6 +437,7 @@ class DKBCE_Bulk_Processor {
 			$this->finish_operation( $state, 'cancelled' );
 			return false;
 		}
+		$state['updated_at'] = time();
 		$this->store->save( $state );
 		return true;
 	}
