@@ -13,16 +13,20 @@
 		loadingPage: false,
 		pageRequestId: 0,
 		excludedIds: new Set(),
+		selectionRange: null,
 		busy: false,
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
 		operationStatus: '',
+		startingOperation: false,
 		operationStartedAt: null,
 		operationTimer: null,
 		pollTimer: null,
 	};
 
 	const notice = $( '#dkbce-alert' );
+	const noticeParent = notice.parentNode;
+	const noticeNextSibling = notice.nextSibling;
 	const getButton = $( '#dkbce-get-products' );
 	const productsSpinner = $( '#dkbce-products-spinner' );
 	const previewSpinner = $( '#dkbce-preview-spinner' );
@@ -32,6 +36,87 @@
 	const previewContent = $( '#dkbce-preview-content' );
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
+	const rangeControls = document.createElement( 'div' );
+	rangeControls.className = 'dkbce-range-selection';
+	const rangeLabel = document.createElement( 'label' );
+	rangeLabel.htmlFor = 'dkbce-range-direction';
+	rangeLabel.textContent = DKBCE.i18n.selectRange;
+	const rangeDirection = document.createElement( 'select' );
+	rangeDirection.id = 'dkbce-range-direction';
+	[ [ 'all', DKBCE.i18n.allResults ], [ 'first', DKBCE.i18n.selectFirst ], [ 'last', DKBCE.i18n.selectLast ] ].forEach( ( [ value, label ] ) => {
+		rangeDirection.add( new Option( label, value ) );
+	} );
+	const rangeCount = document.createElement( 'input' );
+	rangeCount.type = 'number';
+	rangeCount.min = '1';
+	rangeCount.step = '1';
+	rangeCount.required = true;
+	rangeCount.value = '';
+	rangeCount.setAttribute( 'aria-label', DKBCE.i18n.selectCount );
+	const rangeButton = document.createElement( 'button' );
+	rangeButton.type = 'button';
+	rangeButton.className = 'button';
+	rangeButton.textContent = DKBCE.i18n.selectRows;
+	rangeControls.append( rangeLabel, rangeDirection, rangeCount, rangeButton );
+	$( '.dkbce-preview-controls' ).prepend( rangeControls );
+	rangeDirection.addEventListener( 'change', updateOperationControls );
+	rangeButton.addEventListener( 'click', () => {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId ) {
+			return;
+		}
+		if ( rangeDirection.value === 'all' ) {
+			state.selectionRange = null;
+			state.excludedIds.clear();
+			renderPreview( state.pageData );
+			setNotice( DKBCE.i18n.rangeSelected.replace( '%d', state.count ), 'info' );
+			return;
+		}
+		rangeCount.max = String( state.count );
+		if ( ! rangeCount.reportValidity() ) {
+			return;
+		}
+		const previewId = state.previewId;
+		setBusy( true, rangeButton, DKBCE.i18n.loading );
+		request( 'select_range', { preview_id: previewId, direction: rangeDirection.value, count: rangeCount.value } )
+			.then( ( data ) => {
+				if ( state.previewId !== previewId ) {
+					return;
+				}
+				state.selectionRange = data.range;
+				state.excludedIds.clear();
+				$( '#dkbce-selected-only' ).checked = true;
+				renderPreview( state.pageData );
+				setNotice( DKBCE.i18n.rangeSelected.replace( '%d', data.range.count ), 'info' );
+			} )
+			.catch( ( error ) => setNotice( error.message, 'error' ) )
+			.finally( () => setBusy( false, rangeButton ) );
+	} );
+	const actionSection = $( '.dkbce-action-section' );
+	let actionNoticeTimer;
+	let actionShakeFrame;
+	[ 'click', 'keydown', 'beforeinput', 'paste' ].forEach( ( eventName ) => {
+		actionSection.addEventListener( eventName, ( event ) => {
+			if ( state.hasQuery && state.count > 0 ) {
+				return;
+			}
+			if ( ! event.target.closest( '.dkbce-action-card, #dkbce-value' ) ||
+				( eventName === 'keydown' && event.key === 'Tab' ) ) {
+				return;
+			}
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			setNotice( DKBCE.i18n.fetchProductsFirst, 'error' );
+			actionSection.querySelector( '.dkbce-section-heading' ).appendChild( notice );
+			getButton.classList.remove( 'dkbce-needs-products' );
+			window.cancelAnimationFrame( actionShakeFrame );
+			actionShakeFrame = window.requestAnimationFrame( () => {
+				actionShakeFrame = window.requestAnimationFrame( () => {
+					getButton.classList.add( 'dkbce-needs-products' );
+				} );
+			} );
+			actionNoticeTimer = window.setTimeout( () => setNotice( '', 'info' ), 5000 );
+		}, true );
+	} );
 
 	const preferences = DKBCE.preferences || {};
 	pageSizeSelect.value = String( preferences.page_size || pageSizeSelect.value );
@@ -96,10 +181,17 @@
 	} );
 
 	function setNotice( message, type ) {
+		window.clearTimeout( actionNoticeTimer );
+		window.cancelAnimationFrame( actionShakeFrame );
+		getButton.classList.remove( 'dkbce-needs-products' );
+		noticeParent.insertBefore( notice, noticeNextSibling );
 		notice.className =
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
 		notice.querySelector( 'p' ).textContent = message;
 		notice.hidden = ! message;
+		if ( message.includes( 'Your preview has expired.' ) ) {
+			window.scrollTo( 0, 0 );
+		}
 	}
 
 	function setApplySpinner( active ) {
@@ -248,6 +340,7 @@
 		state.loadingPage = false;
 		state.pageRequestId++;
 		state.excludedIds.clear();
+		state.selectionRange = null;
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.hasQuery = false;
@@ -259,9 +352,42 @@
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
 		pageSizeSelect.disabled = state.busy;
-		if ( state.hasQuery && state.count > 0 ) {
-			$( '#dkbce-product-count' ).textContent =
-				DKBCE.i18n.previewRequired;
+	}
+
+	function isOperationRunning() {
+		return state.startingOperation || Boolean( state.operationId &&
+			! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ]
+				.includes( state.operationStatus ) );
+	}
+
+	function updateOperationControls() {
+		const running = isOperationRunning();
+		$( '#dkbce-value' ).readOnly = ! state.hasQuery || state.count === 0;
+		[ rangeDirection, rangeCount, rangeButton ].forEach( ( input ) => {
+			input.disabled = running || state.busy || state.loadingPage || ! state.previewId;
+		} );
+		rangeCount.disabled = rangeCount.disabled || rangeDirection.value === 'all';
+		rangeCount.max = String( Math.max( 1, state.count ) );
+		document.querySelectorAll( '.dkbce-filter-grid input, .dkbce-filter-grid select, .dkbce-filter-grid button, #dkbce-reset' )
+			.forEach( ( input ) => {
+				if ( running ) {
+					if ( ! ( 'disabledBeforeOperation' in input.dataset ) ) {
+						input.dataset.disabledBeforeOperation = String( input.disabled );
+					}
+					input.disabled = true;
+				} else if ( 'disabledBeforeOperation' in input.dataset ) {
+					input.disabled = input.dataset.disabledBeforeOperation === 'true';
+					delete input.dataset.disabledBeforeOperation;
+				}
+			} );
+		getButton.disabled = state.busy || running;
+		applyButton.disabled = running || state.busy || state.loadingPage ||
+			! state.previewId || ! state.count || ! state.rows.length;
+		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value, #dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
+			.forEach( ( input ) => { input.disabled = running; } );
+		if ( state.selectionRange ) {
+			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
+				.forEach( ( input ) => { input.disabled = true; } );
 		}
 	}
 
@@ -272,7 +398,7 @@
 			const terminal = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
 			setApplySpinner( busy || ( state.operationId && ! terminal.includes( state.operationStatus ) ) );
 		}
-		button.disabled = busy;
+		updateOperationControls();
 		button.setAttribute( 'aria-busy', busy ? 'true' : 'false' );
 		if ( button === getButton ) {
 			$( '#dkbce-products-loading' ).textContent = busy ? label : '';
@@ -519,6 +645,9 @@
 			checkbox.className = 'dkbce-product-select';
 			checkbox.value = String( item.id );
 			checkbox.checked = ! state.excludedIds.has( checkbox.value );
+			if ( state.selectionRange ) {
+				checkbox.checked = Number( item.id ) >= state.selectionRange.min && Number( item.id ) <= state.selectionRange.max;
+			}
 			checkbox.setAttribute(
 				'aria-label',
 				DKBCE.i18n.ariaSelect.replace( '%d', String( item.id ) )
@@ -613,7 +742,7 @@
 		}
 		updateColumnVisibility();
 		previewContent.hidden = false;
-		applyButton.disabled = state.busy || state.loadingPage || ! data.rows.length;
+		updateOperationControls();
 	}
 
 	function fetchPreviewPage( page ) {
@@ -637,6 +766,7 @@
 		pageSizeSelect.disabled = true;
 		request( 'preview_page', {
 			preview_id: state.previewId,
+			operation_id: isOperationRunning() ? state.operationId : '',
 			page,
 			page_size: Number( pageSizeSelect.value ),
 		} )
@@ -666,12 +796,12 @@
 				toggleSpinner( previewSpinner, false );
 				previewContent.removeAttribute( 'aria-busy' );
 				pageSizeSelect.disabled = state.busy;
-				applyButton.disabled = ! state.previewId || state.busy;
+				updateOperationControls();
 			} );
 	}
 
 	function getProducts() {
-		if ( state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
 		const requestedFilters = filters();
@@ -708,7 +838,7 @@
 	}
 
 	function preview() {
-		if ( state.busy || state.loadingPage || 0 === state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || 0 === state.count ) {
 			return;
 		}
 		const action = selectedAction();
@@ -752,16 +882,16 @@
 			.finally( () => {
 				toggleSpinner( previewSpinner, false );
 				setBusy( false, getButton );
-				applyButton.disabled = ! state.previewId || ! state.count || state.loadingPage;
+				updateOperationControls();
 			} );
 	}
 
 	function openConfirm() {
-		if ( ! state.previewId || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || ! state.count ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedCount = Math.max( 0, state.count - state.excludedIds.size );
+		const selectedCount = state.selectionRange ? state.selectionRange.count : Math.max( 0, state.count - state.excludedIds.size );
 		if ( selectedOnly && ! selectedCount ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
@@ -779,7 +909,7 @@
 		if ( state.previewTimer ) {
 			window.clearTimeout( state.previewTimer );
 		}
-		if ( ! state.hasQuery || ! state.count ) {
+		if ( isOperationRunning() || ! state.hasQuery || ! state.count ) {
 			return;
 		}
 		const action = selectedAction();
@@ -800,7 +930,7 @@
 	}
 
 	function applyChanges() {
-		if ( ! state.previewId || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || state.busy || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -813,28 +943,32 @@
 			window.clearInterval( state.operationTimer );
 			state.operationTimer = null;
 		}
+		state.startingOperation = true;
+		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		request( 'apply', {
 			preview_id: state.previewId,
 			selected_only: selectedOnly ? '1' : '',
-			selection_mode: 'all_except',
+			selection_mode: state.selectionRange ? 'range' : 'all_except',
+			range_token: state.selectionRange ? state.selectionRange.token : '',
 			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
 		} )
 			.then( ( data ) => {
 				state.operationId = data.operation_id;
 				operationPanel.hidden = false;
 				renderOperation( data.state );
+				window.scrollTo( {
+					top: document.documentElement.scrollHeight,
+					behavior: 'smooth',
+				} );
 				pollProgress();
 			} )
 			.catch( ( error ) => {
-				applyButton.disabled = false;
 				setNotice( error.message, 'error' );
 			} )
 			.finally( () => {
+				state.startingOperation = false;
 				setBusy( false, applyButton );
-				if ( state.operationId ) {
-					applyButton.disabled = true;
-				}
 			} );
 	}
 
@@ -887,6 +1021,7 @@
 
 	function renderOperation( operation ) {
 		state.operationStatus = operation.status;
+		updateOperationControls();
 		if ( null === state.operationStartedAt ) {
 			state.operationStartedAt = window.performance.now() - operation.elapsed_seconds * 1000;
 		}
@@ -993,6 +1128,22 @@
 			cancelled.textContent = operation.cancelled_note;
 			operationPanel.appendChild( cancelled );
 		}
+		if ( 'cancelled' === operation.status ) {
+			const clearButton = document.createElement( 'button' );
+			clearButton.type = 'button';
+			clearButton.className = 'button-link';
+			clearButton.textContent = DKBCE.i18n.clearCancelled;
+			clearButton.addEventListener( 'click', () => {
+				clearButton.disabled = true;
+				request( 'clear_cancelled', { operation_id: operation.operation_id } )
+					.then( () => window.location.reload() )
+					.catch( ( error ) => {
+						clearButton.disabled = false;
+						setNotice( error.message, 'error' );
+					} );
+			} );
+			operationPanel.appendChild( clearButton );
+		}
 		if ( operation.errors && operation.errors.length ) {
 			const list = document.createElement( 'ul' );
 			operation.errors.forEach( ( error ) => {
@@ -1036,6 +1187,19 @@
 				const refreshLink = document.createElement( 'a' );
 				refreshLink.href = window.location.href;
 				refreshLink.textContent = DKBCE.i18n.refreshNow;
+				refreshLink.addEventListener( 'click', ( event ) => {
+					event.preventDefault();
+					if ( refreshLink.getAttribute( 'aria-busy' ) === 'true' ) {
+						return;
+					}
+					refreshLink.setAttribute( 'aria-busy', 'true' );
+					request( 'clear_operation', { operation_id: operation.operation_id } )
+						.then( () => window.location.reload() )
+						.catch( ( error ) => {
+							refreshLink.removeAttribute( 'aria-busy' );
+							setNotice( error.message, 'error' );
+						} );
+				} );
 				refreshMessage.append( document.createTextNode( DKBCE.i18n.refreshing + ' ' ), refreshLink );
 				refreshNotice.appendChild( refreshMessage );
 				operationPanel.appendChild( refreshNotice );
@@ -1176,6 +1340,9 @@
 					);
 				actionLabel();
 				invalidatePreview( false );
+				rangeDirection.value = 'all';
+				rangeCount.value = '';
+				updateOperationControls();
 				schedulePreviewRefresh();
 				} )
 		);
@@ -1209,6 +1376,7 @@
 				Boolean( card.querySelector( 'input:checked' ) )
 			)
 		);
+	updateOperationControls();
 	if ( state.operationId ) {
 		operationPanel.hidden = false;
 		pollProgress();

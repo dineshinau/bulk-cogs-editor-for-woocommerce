@@ -4,8 +4,7 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product cost, woocommerce
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Requires Plugins: woocommerce
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,13 +14,20 @@ Bulk update WooCommerce Cost of Goods Sold (COGS). Filter products, preview chan
 
 **Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches.
 
-It works with WooCommerce's native Cost of Goods Sold feature, so there is nothing extra to set up beyond turning COGS on in WooCommerce.
+It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+
+= Watch the plugin in action =
+
+See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
+
+https://www.youtube.com/watch?v=R-kw_6g2JIg
 
 = Why use Bulk COGS Editor? =
 
 * **Save time when supplier prices change.** Raise or lower costs for a whole category, brand, or group of products in one pass instead of editing products one by one.
 * **Preview before you apply.** See the current COGS, the calculated COGS, and the exact change for every product. Previewing never changes your store data.
 * **Built for large catalogs.** Updates run in Action Scheduler batches, with live progress and the option to cancel.
+* **Faster bulk updates.** A reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
 * **Your prices stay untouched.** The plugin only changes the Cost of Goods Sold value.
 
 = How it works =
@@ -64,6 +70,8 @@ It works with WooCommerce's native Cost of Goods Sold feature, so there is nothi
 * View progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started.
 * Cancel at any time. Updates that already completed are kept.
 * Product matching uses bounded ID batches to limit memory use.
+* Batch cache preparation, fewer repeated database reads, and grouped WooCommerce cache cleanup reduce processing overhead while all COGS writes use WooCommerce CRUD APIs.
+* Saved per-product outcomes and progress checkpoints allow interrupted operations to resume without blindly repeating completed updates.
 
 **Product types**
 
@@ -74,6 +82,30 @@ It works with WooCommerce's native Cost of Goods Sold feature, so there is nothi
 
 * Relative actions (percentage or fixed amount) skip products whose COGS is not set. Use "Set exact" to add costs to those products.
 * WooCommerce's product COGS API converts a value of zero to empty. Clearing uses the API's null value.
+
+= Performance for large catalogs =
+
+Bulk processing has been improved by reducing repeated product scans and counts, preparing product and variation-parent caches in batches, and grouping WooCommerce product cache cleanup. Progress counters are checkpointed while each product's outcome is saved for recovery. COGS updates continue to use WooCommerce's CRUD/data layer, preserving its hooks and cache handling.
+
+In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes. The latest reported run updated **10,000 products in 21 minutes 34 seconds, with zero skipped and zero failed** — about 57–64% less time than the initial implementation.
+
+The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
+
+= Run background updates with WP-CLI =
+
+If your host provides WP-CLI and permits longer CLI processes, you can use Action Scheduler's existing CLI runner to process the Bulk COGS Editor queue. It reuses the loaded WordPress process across actions and avoids the default HTTP runner's sleep between asynchronous requests. The editor continues to show progress and accept cancellation requests.
+
+After confirming an update in the editor, run this command from your WordPress directory:
+
+`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
+
+The command processes due actions for all Bulk COGS Editor operations on that site, not just the current user's update. It exits when no matching actions are due; it does not wait for future updates or delayed retries. The batch size here counts scheduled actions, not products. Product batches and the worker's cooperative time budget keep their existing limits.
+
+If Action Scheduler reports too many concurrent batches, let the current worker finish and retry the command. Keep the normal queue runner available for other WooCommerce jobs and delayed retries. A host-approved cron can invoke the same command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
+
+For a benchmark, prefix the command with `time` to include CLI startup and shutdown in its elapsed time. Also record the editor's full operation duration and final updated, skipped, and failed counts. Compare the same product mix, initial costs, filters, action, and hosting conditions. The CLI command can start after the operation has already begun, so its elapsed time alone is not the full operation duration.
+
+With plugin logging enabled, WooCommerce > Status > Logs, source `dkbce`, includes one `COGS worker timing` entry for each worker that acquired the operation lock. Each entry identifies the operation, runner, start and finish timestamps, and elapsed seconds. For a single operation, sum worker elapsed times to measure time inside the worker callbacks; subtract each previous finish timestamp from the next start timestamp to measure gaps between workers. Gaps include scheduling, request startup, and other work outside the callback. Callback time includes snapshot collection, product processing, and batch cache flushing, but excludes WordPress startup, deferred shutdown work, and the timing log write itself. Use the runner labels to identify runs where HTTP, WP-Cron, and CLI processing were mixed.
 
 = Use cases =
 
@@ -180,6 +212,21 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
+= 1.1.1 (2026-10-20) =
+
+* Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
+* Fixed: Keep matching product counts visible when changing the selected COGS action.
+* Fixed: Allow preview pagination during background updates after the preview token has been consumed, while keeping product selection disabled.
+* Improved: Scroll to the bottom of the editor when a background update starts so its progress is visible.
+* Improved: Prevent filter changes while an update is running and require products to be fetched before choosing an action. The editor guides users to Get products when they try.
+* Improved: Place the action warning in the Step 2 title row and center it on larger screens.
+* Improved: Explain how to refresh an expired preview and scroll to the notice so the instructions are visible.
+* Improved: Collect matching products using a product ID cursor, cache search matches per operation, and recover saved snapshot chunks after interruptions.
+* Improved: Group WooCommerce product transient invalidations within each update batch to reduce repeated cache cleanup.
+* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. The latest reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
+* Added: Select the first or last number of products across all matching results, or choose all results.
+* Added: Clear a finished operation when using the Refresh now link.
+
 = 1.1.0 (2026-10-14) =
 
 * Fixed: Admin notices appearing between the page title and description.
@@ -188,6 +235,11 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Added: A message during background updates explaining that you can close the browser and return later to view the results.
 * Added: Keep the latest completed operation visible when returning to the editor.
 * Added: Expanded page title to clarify Cost of Goods Sold (COGS).
+* Added: Select-all controls in filter dropdowns and product counts beside category names.
+* Added: Separate product and variation counts in matching results.
+* Added: Documentation and video links in the plugin row and editor help section, with clearer COGS setup and usage instructions.
+* Added: Clear cancelled updates from the editor using the Refresh now link.
+* Fixed: Match variations through their parent product's categories, including when filtering for variations only.
 
 = 1.0.0 (2026-10-10) =
 

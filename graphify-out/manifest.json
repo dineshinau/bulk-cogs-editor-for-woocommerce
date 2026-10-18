@@ -1,116 +1,122 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1791896745.1037846,
-    "seen": 1791896773.4975345,
-    "ast_hash": "2709fafaaa1b5ddd85a55cb2168535f3",
+    "mtime": 1792069673.6378243,
+    "seen": 1792321901.3631504,
+    "ast_hash": "175c8d135426fe5dafe05f46052d321b",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
-    "mtime": 1791896251.6237905,
-    "seen": 1791896517.043913,
-    "ast_hash": "8241500483f2b314650b4f04004a9fc3",
+    "mtime": 1792067664.6677818,
+    "seen": 1792321901.3631592,
+    "ast_hash": "1227dc6ece70df99aedbd8386d6ef723",
     "semantic_hash": ""
   },
   "admin/index.php": {
-    "mtime": 1791827828.5490959,
-    "seen": 1791841517.8181179,
+    "mtime": 1791464424.5929277,
+    "seen": 1791973937.064749,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1791892312.7317944,
-    "seen": 1791892334.635356,
-    "ast_hash": "4091f0ef9993aa2837e37497e8d34b29",
+    "mtime": 1792322014.0602112,
+    "seen": 1792325600.5734665,
+    "ast_hash": "0e5ccce2dd9acd913dd2428e3e9c8177",
     "semantic_hash": ""
   },
   "index.php": {
-    "mtime": 1791827828.652517,
-    "seen": 1791841517.8181245,
+    "mtime": 1791464424.7648845,
+    "seen": 1791973937.0647526,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "package.json": {
-    "mtime": 1791892313.080592,
-    "seen": 1791892334.6353612,
-    "ast_hash": "612c18f816e6fc2a5e6883ec8d562d7e",
+    "mtime": 1792067664.6734836,
+    "seen": 1792321901.3631878,
+    "ast_hash": "72e2139a1199fceb497f265bfbbbbeca",
     "semantic_hash": ""
   },
   "skills-lock.json": {
-    "mtime": 1791827828.6645172,
-    "seen": 1791841517.818135,
+    "mtime": 1791464424.783215,
+    "seen": 1791973937.064757,
     "ast_hash": "89a2d97ae04fc486d74450bbaeebaea5",
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
   },
   "admin/class-dkbce-bulk-processor.php": {
-    "mtime": 1791842571.2645297,
-    "seen": 1791842581.2751732,
-    "ast_hash": "249be9ad7bc8605ed2aaaedcbf590fca",
+    "mtime": 1792352773.6283293,
+    "seen": 1792355334.369966,
+    "ast_hash": "5d41040de54e1b204dea2d0db60f560c",
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {
-    "mtime": 1791896747.6895292,
-    "seen": 1791896773.4975545,
-    "ast_hash": "cde19734d9a7139863f23816b0be61a4",
+    "mtime": 1792067664.6685312,
+    "seen": 1792321901.3631673,
+    "ast_hash": "91a8ee88433562b61f0f65fd97c28ac4",
     "semantic_hash": ""
   },
   "admin/class-dkbce-operation-store.php": {
-    "mtime": 1791840915.0565238,
-    "seen": 1791841517.818114,
-    "ast_hash": "277857d538674cf60ea8bf1c6a39e941",
+    "mtime": 1792352767.12833,
+    "seen": 1792355334.369972,
+    "ast_hash": "50bf9685b926c39ea6f38c0a6ab00e38",
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1791896745.1517847,
-    "seen": 1791896773.4975777,
-    "ast_hash": "6c458cb9a098b15e3be6ee6e0b72d905",
+    "mtime": 1792355538.4963403,
+    "seen": 1792355559.6194935,
+    "ast_hash": "9d2294c95f61a5dfdb7492deba22a212",
     "semantic_hash": ""
   },
   "src/index.php": {
-    "mtime": 1791827828.6674383,
-    "seen": 1791841517.8181415,
+    "mtime": 1791464424.7872078,
+    "seen": 1791973937.0647602,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": ""
   },
   "webpack.config.js": {
-    "mtime": 1791827828.668961,
-    "seen": 1791841517.8181586,
+    "mtime": 1791464424.7945864,
+    "seen": 1791973937.0647697,
     "ast_hash": "34a05699174a551e9563daa75cd848ed",
     "semantic_hash": ""
   },
   "scripts/php-quality.py": {
-    "mtime": 1791841386.8525293,
-    "seen": 1791841517.8181312,
+    "mtime": 1791917192.3857238,
+    "seen": 1791973937.0647554,
     "ast_hash": "ca94b568a344e5dde4648951fc8d8796",
     "semantic_hash": ""
   },
   "tests/e2e/bulk-cogs-editor.spec.cjs": {
-    "mtime": 1791827828.6685996,
-    "seen": 1791841517.8181446,
-    "ast_hash": "0dadc84db1543a589ecbdad15cd64abe",
+    "mtime": 1792355203.6043313,
+    "seen": 1792355334.3699923,
+    "ast_hash": "6b3b27bb1140f6e9189b656e10c639d0",
     "semantic_hash": ""
   },
   "tests/e2e/fixtures.php": {
-    "mtime": 1791827828.668961,
-    "seen": 1791841517.8181477,
+    "mtime": 1791464424.7905543,
+    "seen": 1791973937.0647633,
     "ast_hash": "13079ce4588d9dbef5e9e2241be45ae3",
     "semantic_hash": ""
   },
   "tests/e2e/global-setup.cjs": {
-    "mtime": 1791827828.668961,
-    "seen": 1791841517.8181503,
+    "mtime": 1791464424.7915525,
+    "seen": 1791973937.064765,
     "ast_hash": "aa3829651e3a6e033438ec96f9d48e4a",
     "semantic_hash": ""
   },
   "tests/e2e/global-teardown.cjs": {
-    "mtime": 1791827828.668961,
-    "seen": 1791841517.818153,
+    "mtime": 1791464424.7915525,
+    "seen": 1791973937.0647666,
     "ast_hash": "8ad0f9a616b5e5899189179930fbda98",
     "semantic_hash": ""
   },
   "tests/e2e/playwright.config.cjs": {
-    "mtime": 1791827828.668961,
-    "seen": 1791841517.8181555,
+    "mtime": 1791464424.7928467,
+    "seen": 1791973937.0647683,
     "ast_hash": "f2b823a8e391b007cbf33060a3156544",
+    "semantic_hash": ""
+  },
+  "blueprint/blueprint.json": {
+    "mtime": 1792354403.6518576,
+    "seen": 1792355334.3699765,
+    "ast_hash": "a7ab6f49845bdd924c61a48f26831617",
     "semantic_hash": ""
   }
 }
