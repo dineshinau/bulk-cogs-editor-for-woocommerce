@@ -7,7 +7,7 @@
   },
   "features": {
     "networking": true
-    
+
   },
   "steps": [
     {
@@ -59,7 +59,7 @@
     },
     {
       "step": "runPHP",
-      "code": "<?php require '/wordpress/wp-load.php'; for ($i = 1; $i <= 50; $i++) { $p = new WC_Product_Simple(); $p->set_name('Sample Product ' . $i); $p->set_regular_price(10 * $i); $p->save(); }"
+      "code": "<?php require '/wordpress/wp-load.php'; for ($i = 1; $i <= 10; $i++) { $p = new WC_Product_Simple(); $p->set_name('Sample Product ' . $i); $p->set_regular_price(10 * $i); $p->save(); }"
     }
   ]
 }

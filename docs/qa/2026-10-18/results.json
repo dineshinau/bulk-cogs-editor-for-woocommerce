@@ -1,0 +1,742 @@
+{
+  "date": "2026-10-18T20:02:35.516Z",
+  "site": "https://wsl.com/wcdev",
+  "results": [
+    {
+      "name": "Admin page, six actions, prerequisite guard",
+      "status": "PASS",
+      "seconds": 0.098,
+      "evidence": "Fetch matching products in Step 1 before choosing a COGS action."
+    },
+    {
+      "name": "SKU search",
+      "status": "PASS",
+      "seconds": 0.093,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Title search",
+      "status": "PASS",
+      "seconds": 0.077,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "No matches",
+      "status": "PASS",
+      "seconds": 0.085,
+      "evidence": {
+        "count": 0,
+        "product_count": 0,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Type simple",
+      "status": "PASS",
+      "seconds": 0.084,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Type variable",
+      "status": "PASS",
+      "seconds": 0.078,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Type variation",
+      "status": "PASS",
+      "seconds": 0.078,
+      "evidence": {
+        "count": 1,
+        "product_count": 0,
+        "variation_count": 1,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Type grouped",
+      "status": "PASS",
+      "seconds": 0.078,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Type external",
+      "status": "PASS",
+      "seconds": 0.068,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Stock instock",
+      "status": "PASS",
+      "seconds": 0.13,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Stock outofstock",
+      "status": "PASS",
+      "seconds": 0.126,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Stock onbackorder",
+      "status": "PASS",
+      "seconds": 0.085,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Category AND price AND COGS",
+      "status": "PASS",
+      "seconds": 0.082,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Category matches variation via parent",
+      "status": "PASS",
+      "seconds": 0.075,
+      "evidence": {
+        "count": 1,
+        "product_count": 0,
+        "variation_count": 1,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Multiple product types",
+      "status": "PASS",
+      "seconds": 0.07,
+      "evidence": {
+        "count": 63,
+        "product_count": 63,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Price exclusion",
+      "status": "PASS",
+      "seconds": 0.065,
+      "evidence": {
+        "count": 0,
+        "product_count": 0,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "Brand",
+      "status": "PASS",
+      "seconds": 0.069,
+      "evidence": {
+        "count": 1,
+        "product_count": 1,
+        "variation_count": 0,
+        "limit": 50
+      }
+    },
+    {
+      "name": "UI search and count remain when action changes",
+      "status": "PASS",
+      "seconds": 0.823,
+      "evidence": "1 matches: 1 products and 0 variations. Preview changes before applying."
+    },
+    {
+      "name": "Filter dropdown select all, partial state, clear and reset",
+      "status": "PASS",
+      "seconds": 0.884
+    },
+    {
+      "name": "Automatic UI preview set",
+      "status": "PASS",
+      "seconds": 1.181,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 15,
+        "change": 5,
+        "change_percent": 50,
+        "change_direction": "up",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Automatic UI preview increase_percent",
+      "status": "PASS",
+      "seconds": 1.165,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 11,
+        "change": 1,
+        "change_percent": 10,
+        "change_direction": "up",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Automatic UI preview decrease_percent",
+      "status": "PASS",
+      "seconds": 1.224,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 9,
+        "change": -1,
+        "change_percent": -10,
+        "change_direction": "down",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Automatic UI preview increase_fixed",
+      "status": "PASS",
+      "seconds": 1.133,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 12,
+        "change": 2,
+        "change_percent": 20,
+        "change_direction": "up",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Automatic UI preview decrease_fixed",
+      "status": "PASS",
+      "seconds": 1.159,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 8,
+        "change": -2,
+        "change_percent": -20,
+        "change_direction": "down",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Automatic UI preview clear",
+      "status": "PASS",
+      "seconds": 1.278,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": null,
+        "change": null,
+        "change_percent": null,
+        "change_direction": "down",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Empty costs skip",
+      "status": "PASS",
+      "seconds": 0.173,
+      "evidence": {
+        "id": 1384,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1384&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Empty 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-EMPTY",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": null,
+        "new": null,
+        "change": null,
+        "change_percent": null,
+        "change_direction": "",
+        "status": "skipped",
+        "reason": "Current COGS is not set."
+      }
+    },
+    {
+      "name": "Zero normalized empty",
+      "status": "PASS",
+      "seconds": 0.167,
+      "evidence": {
+        "id": 1383,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1383&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Zero 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-ZERO",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": null,
+        "new": null,
+        "change": null,
+        "change_percent": null,
+        "change_direction": "",
+        "status": "skipped",
+        "reason": "Current COGS is not set."
+      }
+    },
+    {
+      "name": "Rounding",
+      "status": "PASS",
+      "seconds": 0.173,
+      "evidence": {
+        "id": 1385,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1385&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Decimal 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-DECIMAL",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 9.99,
+        "new": 10.39,
+        "change": 0.40000000000000036,
+        "change_percent": 4.004004004004007,
+        "change_direction": "up",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Decrease floor",
+      "status": "PASS",
+      "seconds": 0.169,
+      "evidence": {
+        "id": 1382,
+        "edit_url": "https://wsl.com/wcdev/wp-admin/post.php?post=1382&action=edit",
+        "image_url": "https://wsl.com/wcdev/wp-content/uploads/woocommerce-placeholder-300x300.webp",
+        "name": "DKBCE E2E Simple 45b814f18c84fdca",
+        "sku": "DKBCE-E2E-45B814F18C84FDCA-SIMPLE",
+        "type": "simple",
+        "type_label": "Simple product",
+        "current": 10,
+        "new": 0,
+        "change": -10,
+        "change_percent": -100,
+        "change_direction": "down",
+        "status": "success",
+        "reason": ""
+      }
+    },
+    {
+      "name": "Images, edit links, change indicators, escaped product names",
+      "status": "PASS",
+      "seconds": 2.45
+    },
+    {
+      "name": "Pagination, page sizes, cross-page exclusions, first/last/all selection",
+      "status": "PASS",
+      "seconds": 5.285
+    },
+    {
+      "name": "Display preferences persist after reload",
+      "status": "PASS",
+      "seconds": 1.564
+    },
+    {
+      "name": "Bad nonce",
+      "status": "PASS",
+      "seconds": 0.063,
+      "evidence": {
+        "status": 403,
+        "success": false,
+        "data": {
+          "message": "Your session expired. Reload the page and try again."
+        }
+      }
+    },
+    {
+      "name": "Unknown action",
+      "status": "PASS",
+      "seconds": 0.059,
+      "evidence": {
+        "status": 400,
+        "success": false,
+        "data": {
+          "message": "Choose one of the available COGS actions."
+        }
+      }
+    },
+    {
+      "name": "Negative value",
+      "status": "PASS",
+      "seconds": 0.055,
+      "evidence": {
+        "status": 400,
+        "success": false,
+        "data": {
+          "message": "Enter a valid non-negative number."
+        }
+      }
+    },
+    {
+      "name": "Reversed price range",
+      "status": "PASS",
+      "seconds": 0.051,
+      "evidence": {
+        "status": 400,
+        "success": false,
+        "data": {
+          "message": "Each minimum must be less than or equal to its maximum."
+        }
+      }
+    },
+    {
+      "name": "Unknown product type",
+      "status": "PASS",
+      "seconds": 0.05,
+      "evidence": {
+        "status": 400,
+        "success": false,
+        "data": {
+          "message": "Choose supported product types."
+        }
+      }
+    },
+    {
+      "name": "Expired preview",
+      "status": "PASS",
+      "seconds": 0.053,
+      "evidence": {
+        "status": 400,
+        "success": false,
+        "data": {
+          "message": "Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes"
+        }
+      }
+    },
+    {
+      "name": "Unknown operation",
+      "status": "PASS",
+      "seconds": 0.055,
+      "evidence": {
+        "status": 404,
+        "success": false,
+        "data": {
+          "message": "This operation is unavailable."
+        }
+      }
+    },
+    {
+      "name": "Customer capability denial",
+      "status": "PASS",
+      "seconds": 0.655
+    },
+    {
+      "name": "UI confirmation, selected update, replay rejection and persistence",
+      "status": "PASS",
+      "seconds": 24.042,
+      "evidence": {
+        "operation_id": "545b8796-3de0-4a16-a93c-b568855a9c2b",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 21,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Persisted update increase_percent",
+      "status": "PASS",
+      "seconds": 7.721,
+      "evidence": {
+        "operation_id": "ddc4c8e0-d1a7-44fe-a886-3557c214398c",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 5,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Persisted update decrease_percent",
+      "status": "PASS",
+      "seconds": 4.105,
+      "evidence": {
+        "operation_id": "698fc63e-72d1-483f-857c-8d89025676bf",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 3,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Persisted update increase_fixed",
+      "status": "PASS",
+      "seconds": 5.407,
+      "evidence": {
+        "operation_id": "82069bf1-c02a-45bf-940f-fbc0f095e1ee",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 4,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Persisted update decrease_fixed",
+      "status": "PASS",
+      "seconds": 5.403,
+      "evidence": {
+        "operation_id": "3ebef788-34e0-4e17-a9e8-1dfadbf24251",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 4,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Persisted update clear",
+      "status": "PASS",
+      "seconds": 4.088,
+      "evidence": {
+        "operation_id": "021036cb-8250-4ee0-9fd0-d43ff506dd00",
+        "status": "completed",
+        "stage": "processing",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 4,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Variation-only update preserves parent COGS",
+      "status": "FAIL",
+      "seconds": 6.247,
+      "error": "Parent was changed",
+      "screenshot": "failure-46.png"
+    },
+    {
+      "name": "Full 55-product operation freezes COGS-filtered membership across batches",
+      "status": "PASS",
+      "seconds": 8.931,
+      "evidence": {
+        "operation_id": "5520df84-7d15-4c97-a680-613638392ff9",
+        "status": "completed",
+        "stage": "processing",
+        "total": 55,
+        "processed": 55,
+        "succeeded": 55,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 7,
+        "errors": [],
+        "error_summary": "",
+        "cancel_requested": false,
+        "cancelled_note": ""
+      }
+    },
+    {
+      "name": "Apply first three across all preview pages",
+      "status": "PASS",
+      "seconds": 5.224,
+      "evidence": {
+        "range": {
+          "min": 1393,
+          "max": 1395,
+          "count": 3,
+          "token": "006ca398-1749-4ac1-a82c-5756dd664eda"
+        },
+        "state": {
+          "operation_id": "c9cf891e-51bc-412a-a819-5b68ef8d0415",
+          "status": "completed",
+          "stage": "processing",
+          "total": 3,
+          "processed": 3,
+          "succeeded": 3,
+          "skipped": 0,
+          "failed": 0,
+          "elapsed_seconds": 3,
+          "errors": [],
+          "error_summary": "",
+          "cancel_requested": false,
+          "cancelled_note": ""
+        }
+      }
+    },
+    {
+      "name": "Apply last three across all preview pages",
+      "status": "PASS",
+      "seconds": 5.558,
+      "evidence": {
+        "range": {
+          "min": 1445,
+          "max": 1447,
+          "count": 3,
+          "token": "dfe425d4-63d3-49b2-be74-96cf42f3951a"
+        },
+        "state": {
+          "operation_id": "9d9d908f-eef0-40d5-a4cc-34940eb2aa74",
+          "status": "completed",
+          "stage": "processing",
+          "total": 3,
+          "processed": 3,
+          "succeeded": 3,
+          "skipped": 0,
+          "failed": 0,
+          "elapsed_seconds": 4,
+          "errors": [],
+          "error_summary": "",
+          "cancel_requested": false,
+          "cancelled_note": ""
+        }
+      }
+    },
+    {
+      "name": "Original product selling prices are preserved",
+      "status": "PASS",
+      "seconds": 2.162,
+      "evidence": [
+        "20.00",
+        "42.00"
+      ]
+    },
+    {
+      "name": "Background filter lock, consumed-token pagination, cancellation and refresh",
+      "status": "FAIL",
+      "seconds": 10.71,
+      "error": "expect(locator).toContainText(expected) failed\n\nLocator: locator('#dkbce-operation')\nExpected substring: \"cancelled\"\nReceived string:    \"Collecting matching products…0 of 0 products processed0%0Products updated0Products skipped0Products failedElapsed time: 00:00:02Approx. time remaining: —Already processed products remain changed; no rollback was performed.Clear cancellation state\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" locator('#dkbce-operation') with timeout 5000ms\n  - waiting for locator('#dkbce-operation')\n    14 × locator resolved to <div aria-live=\"polite\" id=\"dkbce-operation\" class=\"dkbce-operation\">…</div>\n       - unexpected value \"Collecting matching products…0 of 0 products processed0%0Products updated0Products skipped0Products failedElapsed time: 00:00:02Approx. time remaining: —Already processed products remain changed; no rollback was performed.Clear cancellation state\"\n",
+      "screenshot": "failure-51.png"
+    },
+    {
+      "name": "No uncaught browser JavaScript errors",
+      "status": "PASS",
+      "seconds": 0
+    },
+    {
+      "name": "Disposable fixture cleanup",
+      "status": "PASS"
+    }
+  ],
+  "errors": []
+}
