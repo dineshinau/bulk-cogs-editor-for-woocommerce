@@ -217,6 +217,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
 * Fixed: Keep matching product counts visible when changing the selected COGS action.
 * Fixed: Allow preview pagination during background updates after the preview token has been consumed, while keeping product selection disabled.
+* Improved: Scroll to the bottom of the editor when a background update starts so its progress is visible.
 * Improved: Prevent filter changes while an update is running and require products to be fetched before choosing an action. The editor guides users to Get products when they try.
 * Improved: Place the action warning in the Step 2 title row and center it on larger screens.
 * Improved: Explain how to refresh an expired preview and scroll to the notice so the instructions are visible.

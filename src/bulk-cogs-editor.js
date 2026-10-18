@@ -957,6 +957,10 @@
 				state.operationId = data.operation_id;
 				operationPanel.hidden = false;
 				renderOperation( data.state );
+				window.scrollTo( {
+					top: document.documentElement.scrollHeight,
+					behavior: 'smooth',
+				} );
 				pollProgress();
 			} )
 			.catch( ( error ) => {
