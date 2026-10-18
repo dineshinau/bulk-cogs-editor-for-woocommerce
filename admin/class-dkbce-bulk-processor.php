@@ -557,32 +557,6 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
-	 * Acquire a short-lived per-product lock to serialize concurrent operations.
-	 *
-	 * @param int    $product_id Product ID.
-	 * @param string $operation_id Operation UUID.
-	 * @return bool
-	 */
-	private function acquire_product_lock( $product_id, $operation_id ) {
-		$key  = 'dkbce_product_lock_' . absint( $product_id );
-		$lock = array(
-			'operation_id' => $operation_id,
-			'created_at'   => time(),
-		);
-		if ( add_option( $key, $lock, '', false ) ) {
-			return true;
-		}
-
-		$existing = get_option( $key, false );
-		if ( is_array( $existing ) && isset( $existing['created_at'] ) && time() - absint( $existing['created_at'] ) > 900 ) {
-			delete_option( $key );
-			return add_option( $key, $lock, '', false );
-		}
-
-		return false;
-	}
-
-	/**
 	 * Safely apply the operation to a single product.
 	 *
 	 * @param int   $product_id Product ID.
@@ -590,7 +564,8 @@ class DKBCE_Bulk_Processor {
 	 * @return array
 	 */
 	private function process_product( $product_id, $state ) {
-		if ( ! $this->acquire_product_lock( $product_id, $state['operation_id'] ) ) {
+		$lock = $this->store->acquire_product_lock( $product_id, $state['operation_id'] );
+		if ( false === $lock ) {
 			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id );
 			return array(
 				'status'  => 'deferred',
@@ -652,7 +627,7 @@ class DKBCE_Bulk_Processor {
 				'message' => __( 'Product could not be updated. Check the WooCommerce log for details.', 'bulk-cogs-editor-for-woocommerce' ),
 			);
 		} finally {
-			delete_option( 'dkbce_product_lock_' . absint( $product_id ) );
+			$this->store->release_product_lock( $product_id, $lock );
 		}
 	}
 }

@@ -118,24 +118,26 @@ Validation: PHP formatting, syntax, and PHPCS passed. No automated tests or bulk
 
 ## 5. Reduce operation-state and locking persistence overhead
 
-Status: pending; consider only after profiling the simpler improvements.
+Status: implemented with the existing options storage; runtime comparison pending.
 
 Findings:
 
-- Each product attempts an option-based lock acquisition and later deletes the lock.
-- Each durable outcome rewrites its chunk option, including IDs and accumulated results.
-- A 10,000-product run therefore makes approximately 10,000 chunk update calls and 20,000 product-lock insert/delete attempts, before WooCommerce persistence. These are code-path counts, not measured SQL query totals.
-- Rewriting growing serialized results repeatedly may become expensive as catalogs grow.
+- Each product used general WordPress option APIs for lock insertion/deletion and chunk persistence.
+- Each durable outcome still rewrites its chunk, including IDs and accumulated results. This remains bounded by the frozen batch size.
 
-Proposed change:
+Implementation:
 
-- Measure serialization, option writes, lock operations, and database time independently.
-- If significant, consider an indexed operation-results table with one durable row per operation/product and atomic claims.
-- Preserve cross-operation product locking, durable outcomes, recovery, and cancellation.
-- Do not buffer all outcomes until the end of a chunk merely to reduce writes.
-- Treat a table transition as a compatibility-sensitive migration with cleanup and rollback planning.
+- Acquire product locks with an atomic insert against the existing unique option name. Uncontended acquisition requires one SQL statement.
+- Read an existing lock directly only on contention. Preserve the 900-second expiry and support legacy serialized lock records.
+- Reclaim expired locks with a conditional update matching the exact observed value. Include a unique token in new records and release only the exact owned value, protecting replacement locks from expired workers.
+- Persist chunk outcomes immediately through a direct update with one serialization, avoiding general option-API reads, comparisons, filters, and cache bookkeeping. Invalidate the corresponding option cache after each write.
+- Accept a zero-row update only when a fresh database read confirms the identical value. Throw on failed or missing outcome persistence before advancing progress counters.
+- Keep existing chunk data, product locks, cancellation, outcome durability, and WooCommerce CRUD. No new tables or data migration are required.
+- General WordPress add/update/delete-option hooks do not run on these internal lock and outcome writes. Product save hooks and the normal operation-state APIs are unchanged.
 
-Expected scope: `admin/class-dkbce-operation-store.php`, `admin/class-dkbce-bulk-processor.php`, and any required schema lifecycle code.
+Scope: `admin/class-dkbce-operation-store.php` and `admin/class-dkbce-bulk-processor.php`. See [implementation plan](../../docs/superpowers/plans/2026-10-18-persistence-overhead.md).
+
+Validation: PHP formatting, syntax, PHPCS, and diff checks passed. No automated tests or bulk benchmark were run. Query/runtime reductions are not measured. Compare the same product mix and action before proceeding to step 6. A dedicated outcome table remains deferred until profiling justifies a migration.
 
 ## 6. Profile WooCommerce saves and extension callbacks
 
