@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-18)
 
 ## Corpus Check
-- 20 files · ~23,057 words
+- 20 files · ~23,411 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 230 nodes · 387 edges · 17 communities (7 shown, 10 thin omitted)
+- 231 nodes · 387 edges · 16 communities (8 shown, 8 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8d6967d9`
+- Built from commit: `76aaacd6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,6 @@
 - bulk-cogs-editor.spec.cjs
 - ref_bulk_cogs_editor_css
 - ref_node_process
-- DKBCE_Admin_Hooks
 - blueprint.json
 - ref_anthropic_ai_sdk
 - package.json
@@ -33,9 +32,9 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `DKBCE_Admin_Functions` - 26 edges
-2. `DKBCE_Bulk_Processor` - 21 edges
-3. `DKBCE_COGS_Service` - 17 edges
-4. `DKBCE_Operation_Store` - 17 edges
+2. `DKBCE_Bulk_Processor` - 20 edges
+3. `DKBCE_Operation_Store` - 19 edges
+4. `DKBCE_COGS_Service` - 17 edges
 5. `scripts` - 13 edges
 6. `preview()` - 13 edges
 7. `renderPreview()` - 11 edges
@@ -52,7 +51,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (17 total, 10 thin omitted)
+## Communities (16 total, 8 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.16
@@ -64,43 +63,47 @@ Nodes (13): scripts, build, check-engines, make-pot, npm_install, packages-updat
 
 ### Community 2 - "bulk-cogs-editor.spec.cjs"
 Cohesion: 0.06
-Nodes (31): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, fs, getProducts(), os (+23 more)
+Nodes (32): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, @playwright/test, fs, getProducts() (+24 more)
 
 ### Community 7 - "blueprint.json"
 Cohesion: 0.22
 Nodes (8): features, networking, landingPage, preferredVersions, php, wp, $schema, steps
 
 ### Community 10 - "package.json"
-Cohesion: 0.10
-Nodes (19): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, version (+11 more)
+Cohesion: 0.11
+Nodes (18): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, version (+10 more)
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.17
 Nodes (35): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+27 more)
 
+### Community 117 - "DKBCE_COGS_Service"
+Cohesion: 0.13
+Nodes (3): DKBCE_Admin_Hooks, DKBCE_COGS_Service, dkbce_load_plugin_files()
+
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.16
+Cohesion: 0.13
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
 - **53 isolated node(s):** `$schema`, `landingPage`, `php`, `wp`, `networking` (+48 more)
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 95 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 97 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_COGS_Service`, `DKBCE_Admin_Hooks`?**
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Operation_Store`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `DKBCE_Bulk_Processor` connect `DKBCE_Bulk_Processor` to `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
-  _`DKBCE_COGS_Service` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `DKBCE_Bulk_Processor` connect `DKBCE_Bulk_Processor` to `DKBCE_Operation_Store`?**
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
   _`DKBCE_Operation_Store` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 2 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
+  _`DKBCE_COGS_Service` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `landingPage`, `php` to the rest of the system?**
   _53 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `bulk-cogs-editor.spec.cjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.0620782726045884 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06282051282051282 - nodes in this community are weakly interconnected._
+- **Should `package.json` be split into smaller, more focused modules?**
+  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

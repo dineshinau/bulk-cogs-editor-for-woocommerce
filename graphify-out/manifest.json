@@ -42,9 +42,9 @@
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
   },
   "admin/class-dkbce-bulk-processor.php": {
-    "mtime": 1792338577.241335,
-    "seen": 1792338598.4083292,
-    "ast_hash": "8eab7a7ab315c5833269d17a1ac223dd",
+    "mtime": 1792339179.6960547,
+    "seen": 1792339224.9080873,
+    "ast_hash": "5d41040de54e1b204dea2d0db60f560c",
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {
@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-operation-store.php": {
-    "mtime": 1792049573.5664988,
-    "seen": 1792049920.2158823,
-    "ast_hash": "c407af7973a918bac8d30bc451d66d5d",
+    "mtime": 1792339193.8853216,
+    "seen": 1792339224.9080915,
+    "ast_hash": "50bf9685b926c39ea6f38c0a6ab00e38",
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
