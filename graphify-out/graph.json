@@ -570,7 +570,7 @@
       "file_type": "code",
       "norm_label": ".acquire_operation_lock()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L170"
+      "source_location": "L183"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_product_lock",
@@ -582,7 +582,7 @@
       "file_type": "code",
       "norm_label": ".acquire_product_lock()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L516"
+      "source_location": "L529"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_apply_summary",
@@ -594,7 +594,7 @@
       "file_type": "code",
       "norm_label": ".apply_summary()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L451"
+      "source_location": "L464"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_construct",
@@ -630,7 +630,7 @@
       "file_type": "code",
       "norm_label": ".finish_operation()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L467"
+      "source_location": "L480"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_get_batch_size",
@@ -666,7 +666,7 @@
       "file_type": "code",
       "norm_label": ".process_operation_locked()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L124"
+      "source_location": "L137"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_process_product",
@@ -678,7 +678,7 @@
       "file_type": "code",
       "norm_label": ".process_product()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L542"
+      "source_location": "L555"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_process_update_batch",
@@ -690,7 +690,7 @@
       "file_type": "code",
       "norm_label": ".process_update_batch()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L306"
+      "source_location": "L319"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_queue_next",
@@ -702,7 +702,7 @@
       "file_type": "code",
       "norm_label": ".queue_next()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L499"
+      "source_location": "L512"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_record_outcome",
@@ -714,7 +714,7 @@
       "file_type": "code",
       "norm_label": ".record_outcome()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L410"
+      "source_location": "L423"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_recover_if_stale",
@@ -738,7 +738,7 @@
       "file_type": "code",
       "norm_label": ".release_operation_lock()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L200"
+      "source_location": "L213"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_save_progress",
@@ -750,7 +750,7 @@
       "file_type": "code",
       "norm_label": ".save_progress()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L434"
+      "source_location": "L447"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_snapshot_batch",
@@ -762,7 +762,7 @@
       "file_type": "code",
       "norm_label": ".snapshot_batch()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L214"
+      "source_location": "L227"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_update_batch",
@@ -774,7 +774,7 @@
       "file_type": "code",
       "norm_label": ".update_batch()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L278"
+      "source_location": "L291"
     },
     {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
@@ -3007,7 +3007,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L468",
+      "source_location": "L481",
       "weight": 1.0
     },
     {
@@ -3019,7 +3019,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L106",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -3031,7 +3031,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L112",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -3043,7 +3043,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L114",
+      "source_location": "L115",
       "weight": 1.0
     },
     {
@@ -3055,7 +3055,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L133",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -3067,7 +3067,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L154",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -3079,7 +3079,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L155",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -3091,7 +3091,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L161",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -3103,7 +3103,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L543",
+      "source_location": "L556",
       "weight": 1.0
     },
     {
@@ -3115,7 +3115,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L312",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -3127,7 +3127,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L318",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -3139,7 +3139,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L326",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -3151,7 +3151,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L356",
+      "source_location": "L369",
       "weight": 1.0
     },
     {
@@ -3163,7 +3163,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L357",
+      "source_location": "L370",
       "weight": 1.0
     },
     {
@@ -3175,7 +3175,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L362",
+      "source_location": "L375",
       "weight": 1.0
     },
     {
@@ -3187,7 +3187,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L500",
+      "source_location": "L513",
       "weight": 1.0
     },
     {
@@ -3199,7 +3199,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L505",
+      "source_location": "L518",
       "weight": 1.0
     },
     {
@@ -3223,7 +3223,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L437",
+      "source_location": "L450",
       "weight": 1.0
     },
     {
@@ -3235,7 +3235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L254",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -3247,7 +3247,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L264",
+      "source_location": "L277",
       "weight": 1.0
     },
     {
@@ -3259,7 +3259,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L282",
+      "source_location": "L295",
       "weight": 1.0
     },
     {
@@ -6345,7 +6345,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L124",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -6356,7 +6356,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L170",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -6367,7 +6367,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L200",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -6378,7 +6378,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L214",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -6389,7 +6389,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L278",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -6400,7 +6400,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L306",
+      "source_location": "L319",
       "weight": 1.0
     },
     {
@@ -6422,7 +6422,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L410",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -6433,7 +6433,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L434",
+      "source_location": "L447",
       "weight": 1.0
     },
     {
@@ -6444,7 +6444,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L451",
+      "source_location": "L464",
       "weight": 1.0
     },
     {
@@ -6455,7 +6455,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L467",
+      "source_location": "L480",
       "weight": 1.0
     },
     {
@@ -6466,18 +6466,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L499",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
-      "target": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_product_lock",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L516",
+      "source_location": "L512",
       "weight": 1.0
     },
     {
@@ -6493,13 +6482,24 @@
     },
     {
       "source": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
+      "target": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_product_lock",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L529",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
       "target": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_process_product",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L542",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -7041,7 +7041,19 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L479",
+      "source_location": "L492",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_process_operation",
+      "target": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -7053,7 +7065,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L132",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -7065,7 +7077,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L544",
+      "source_location": "L557",
       "weight": 1.0
     },
     {
@@ -7077,7 +7089,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L261",
+      "source_location": "L274",
       "weight": 1.0
     },
     {
@@ -7106,5 +7118,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "187bf0b528642c62ea973dc2f7c151f3b19b1161"
+  "built_at_commit": "d04f43cd29649dab589f9c47631a7053a7c82f16"
 }
