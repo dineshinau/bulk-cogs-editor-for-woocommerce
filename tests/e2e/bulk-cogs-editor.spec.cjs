@@ -10,7 +10,7 @@ const pageURL = 'wp-admin/edit.php?post_type=product&page=bulk-cogs-editor';
 async function loadPage( page ) {
 	await page.goto( pageURL );
 	await expect(
-		page.getByRole( 'heading', { name: 'Bulk COGS Editor' } )
+		page.getByRole( 'heading', { name: 'Bulk Cost of Goods Sold (COGS) Editor' } )
 	).toBeVisible();
 	await expect( page.locator( '#dkbce-get-products' ) ).toBeEnabled();
 }
@@ -81,15 +81,14 @@ async function requestAjax( page, action, values = {}, nonce ) {
 
 async function preview( page, action, value, filterValues = {} ) {
 	await getProducts( page, filterValues );
-	await page.locator( `input[name="dkbce-action"][value="${ action }"]` ).check();
-	if ( 'clear' !== action ) {
-		await page.locator( '#dkbce-value' ).fill( String( value ) );
-	}
 	const responsePromise = page.waitForResponse( ( response ) =>
 		response.url().includes( 'admin-ajax.php' ) &&
 		response.request().postData()?.includes( 'dkbce_preview' )
 	);
-	await page.locator( '#dkbce-preview' ).click();
+	await page.locator( `input[name="dkbce-action"][value="${ action }"]` ).check();
+	if ( 'clear' !== action ) {
+		await page.locator( '#dkbce-value' ).fill( String( value ) );
+	}
 	const response = await responsePromise;
 	const payload = await response.json();
 	await expect( page.locator( '.dkbce-preview-table' ) ).toBeVisible();
@@ -349,8 +348,8 @@ test( 'confirms apply, processes selected disposable product, and rejects replay
 
 	await page.locator( '#dkbce-apply' ).click();
 	await page.locator( '#dkbce-confirm-apply' ).click();
-	await expect( page.locator( '#dkbce-operation' ) ).toContainText( 'Success: 1', {
-		timeout: 45000,
+	await expect( page.locator( '#dkbce-operation' ) ).toContainText( '1 of 1 products processed', {
+		timeout: 80000,
 	} );
 	await expect( page.locator( '#dkbce-operation h3' ) ).toContainText( 'completed' );
 
@@ -361,10 +360,7 @@ test( 'confirms apply, processes selected disposable product, and rejects replay
 	} );
 	expect( [ 400, 409 ] ).toContain( replay.status );
 
-	await getProducts( page, { search: fixtureSku( 'SIMPLE' ) } );
-	await page.locator( 'input[name="dkbce-action"][value="set"]' ).check();
-	await page.locator( '#dkbce-value' ).fill( '15' );
-	await page.locator( '#dkbce-preview' ).click();
+	await preview( page, 'set', '15', { search: fixtureSku( 'SIMPLE' ) } );
 	const row = rowForSku( page, fixtureSku( 'SIMPLE' ) );
 	await expect( row.locator( 'td' ).nth( 5 ) ).toContainText( '15.00' );
 } );
