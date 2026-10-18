@@ -212,7 +212,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
-= 1.1.1 (2026-10-19) =
+= 1.1.1 (2026-10-20) =
 
 * Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
 * Fixed: Keep matching product counts visible when changing the selected COGS action.
