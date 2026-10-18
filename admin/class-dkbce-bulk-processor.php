@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || exit;
 class DKBCE_Bulk_Processor {
 	const BATCH_SIZE          = 50;
 	const BATCH_TIME_LIMIT    = 20;
-	const PROGRESS_INTERVAL   = 5;
+	const PROGRESS_INTERVAL   = 25;
+	const PROGRESS_TIME_LIMIT = 2;
+	const CANCEL_INTERVAL     = 1;
 	const OPERATION_LOCK_TTL  = 180;
 	const STALE_OPERATION_AGE = 120;
 	const HOOK                = 'dkbce_process_operation';
@@ -30,6 +32,13 @@ class DKBCE_Bulk_Processor {
 	 * @var DKBCE_COGS_Service
 	 */
 	private $service;
+
+	/**
+	 * Timestamp of the last fresh cancellation check in this worker.
+	 *
+	 * @var float
+	 */
+	private $last_cancellation_check = 0.0;
 
 	/**
 	 * Set up the batch hook.
@@ -108,6 +117,7 @@ class DKBCE_Bulk_Processor {
 		if ( ! $lock_token ) {
 			return;
 		}
+		$this->last_cancellation_check = 0.0;
 
 		try {
 			$this->process_operation_locked( $operation_id );
@@ -359,6 +369,7 @@ class DKBCE_Bulk_Processor {
 		}
 
 		$since_checkpoint = 0;
+		$checkpoint_at    = microtime( true );
 		foreach ( $chunk['ids'] as $product_id ) {
 			$key = (string) $product_id;
 			if ( isset( $chunk['results'][ $key ] ) ) {
@@ -369,6 +380,10 @@ class DKBCE_Bulk_Processor {
 				if ( $this->save_progress( $state ) ) {
 					$this->queue_next( $state );
 				}
+				return false;
+			}
+
+			if ( ! $this->check_cancellation( $state ) ) {
 				return false;
 			}
 
@@ -391,11 +406,14 @@ class DKBCE_Bulk_Processor {
 			$this->store->update_chunk( $state['operation_id'], $chunk_number, $chunk );
 			$this->record_outcome( $state, $product_id, $outcome );
 			++$since_checkpoint;
-			if ( $since_checkpoint >= self::PROGRESS_INTERVAL ) {
+			$checkpoint_due = $since_checkpoint >= self::PROGRESS_INTERVAL || microtime( true ) - $checkpoint_at >= self::PROGRESS_TIME_LIMIT;
+			// A completed chunk has its own checkpoint immediately below.
+			if ( $checkpoint_due && count( $chunk['results'] ) < count( $chunk['ids'] ) ) {
 				if ( ! $this->save_progress( $state ) ) {
 					return false;
 				}
 				$since_checkpoint = 0;
+				$checkpoint_at    = microtime( true );
 			}
 		}
 
@@ -445,13 +463,32 @@ class DKBCE_Bulk_Processor {
 	 * @return bool Whether processing may continue.
 	 */
 	private function save_progress( &$state ) {
+		if ( ! $this->check_cancellation( $state, true ) ) {
+			return false;
+		}
+		$state['updated_at'] = time();
+		$this->store->save( $state );
+		return true;
+	}
+
+	/**
+	 * Poll cancellation independently of progress saves, without reading per product.
+	 *
+	 * @param array $state Operation state, modified by reference.
+	 * @param bool  $force Whether to bypass the polling interval at a checkpoint.
+	 * @return bool Whether processing may continue.
+	 */
+	private function check_cancellation( &$state, $force = false ) {
+		$now = microtime( true );
+		if ( empty( $state['cancel_requested'] ) && ! $force && $now - $this->last_cancellation_check < self::CANCEL_INTERVAL ) {
+			return true;
+		}
+		$this->last_cancellation_check = $now;
 		if ( ! empty( $state['cancel_requested'] ) || $this->store->is_cancel_requested( $state['operation_id'] ) ) {
 			$state['cancel_requested'] = true;
 			$this->finish_operation( $state, 'cancelled' );
 			return false;
 		}
-		$state['updated_at'] = time();
-		$this->store->save( $state );
 		return true;
 	}
 
