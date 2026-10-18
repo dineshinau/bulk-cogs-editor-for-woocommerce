@@ -918,7 +918,7 @@
       "file_type": "code",
       "norm_label": "canceloperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1241"
+      "source_location": "L1245"
     },
     {
       "id": "src_bulk_cogs_editor_fetchpreviewpage",
@@ -954,7 +954,7 @@
       "file_type": "code",
       "norm_label": "formatduration()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L971"
+      "source_location": "L975"
     },
     {
       "id": "src_bulk_cogs_editor_getproducts",
@@ -1050,7 +1050,7 @@
       "file_type": "code",
       "norm_label": "pollprogress()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1217"
+      "source_location": "L1221"
     },
     {
       "id": "src_bulk_cogs_editor_preview",
@@ -1074,7 +1074,7 @@
       "file_type": "code",
       "norm_label": "renderoperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1018"
+      "source_location": "L1022"
     },
     {
       "id": "src_bulk_cogs_editor_renderpreview",
@@ -1242,7 +1242,7 @@
       "file_type": "code",
       "norm_label": "updateoperationtime()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L981"
+      "source_location": "L985"
     },
     {
       "id": "src_bulk_cogs_editor_updatepageselectioncontrols",
@@ -3703,7 +3703,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L960",
+      "source_location": "L964",
       "weight": 1.0
     },
     {
@@ -3715,7 +3715,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1245",
+      "source_location": "L1249",
       "weight": 1.0
     },
     {
@@ -3727,7 +3727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1253",
+      "source_location": "L1257",
       "weight": 1.0
     },
     {
@@ -3991,7 +3991,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1224",
+      "source_location": "L1228",
       "weight": 1.0
     },
     {
@@ -4003,7 +4003,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1226",
+      "source_location": "L1230",
       "weight": 1.0
     },
     {
@@ -4015,7 +4015,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1238",
+      "source_location": "L1242",
       "weight": 1.0
     },
     {
@@ -4147,7 +4147,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1020",
+      "source_location": "L1024",
       "weight": 1.0
     },
     {
@@ -4159,7 +4159,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1028",
+      "source_location": "L1032",
       "weight": 1.0
     },
     {
@@ -4171,7 +4171,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1110",
+      "source_location": "L1114",
       "weight": 1.0
     },
     {
@@ -4183,7 +4183,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1134",
+      "source_location": "L1138",
       "weight": 1.0
     },
     {
@@ -4195,7 +4195,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1138",
+      "source_location": "L1142",
       "weight": 1.0
     },
     {
@@ -4447,7 +4447,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L993",
+      "source_location": "L997",
       "weight": 1.0
     },
     {
@@ -4495,7 +4495,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1217",
+      "source_location": "L1221",
       "weight": 1.0
     },
     {
@@ -5545,7 +5545,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1018",
+      "source_location": "L1022",
       "weight": 1.0
     },
     {
@@ -5556,7 +5556,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1241",
+      "source_location": "L1245",
       "weight": 1.0
     },
     {
@@ -5710,7 +5710,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L971",
+      "source_location": "L975",
       "weight": 1.0
     },
     {
@@ -5721,7 +5721,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L981",
+      "source_location": "L985",
       "weight": 1.0
     },
     {
@@ -6943,7 +6943,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1256",
+      "source_location": "L1260",
       "weight": 1.0
     },
     {
@@ -6955,7 +6955,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1257",
+      "source_location": "L1261",
       "weight": 1.0
     },
     {
@@ -6967,7 +6967,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1283",
+      "source_location": "L1287",
       "weight": 1.0
     },
     {
@@ -6979,7 +6979,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1365",
+      "source_location": "L1369",
       "weight": 1.0
     },
     {
@@ -7003,7 +7003,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1251",
+      "source_location": "L1255",
       "weight": 1.0
     },
     {
@@ -7015,7 +7015,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1169",
+      "source_location": "L1173",
       "weight": 1.0
     },
     {
@@ -7176,5 +7176,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "208801c19aa10b3fa5537bc79f9d3643a2e45c68"
+  "built_at_commit": "684c7d62b0a1166d5b3e6bc022601a103de0aa17"
 }
