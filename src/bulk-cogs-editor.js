@@ -1336,6 +1336,9 @@
 					);
 				actionLabel();
 				invalidatePreview( false );
+				rangeDirection.value = 'all';
+				rangeCount.value = '';
+				updateOperationControls();
 				schedulePreviewRefresh();
 				} )
 		);
