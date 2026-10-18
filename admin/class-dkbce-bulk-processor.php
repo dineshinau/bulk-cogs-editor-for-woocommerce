@@ -634,7 +634,12 @@ class DKBCE_Bulk_Processor {
 
 			$product->set_cogs_value( $result['new'] );
 			$product->update_meta_data( '_dkbce_last_bulk_cogs_operation', $state['operation_id'] );
-			$product->save();
+			if ( empty( $product->get_changes() ) ) {
+				// Let WooCommerce normalize COGS, then persist retry protection without a full save.
+				$product->save_meta_data();
+			} else {
+				$product->save();
+			}
 			return array(
 				'status'  => 'success',
 				'message' => '',
