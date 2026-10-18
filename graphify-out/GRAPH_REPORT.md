@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-18)
 
 ## Corpus Check
-- 20 files · ~22,856 words
+- 20 files · ~23,032 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 229 nodes · 384 edges · 17 communities (7 shown, 10 thin omitted)
+- 230 nodes · 387 edges · 17 communities (7 shown, 10 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d04f43cd`
+- Built from commit: `a986d1dc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,7 +33,7 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `DKBCE_Admin_Functions` - 26 edges
-2. `DKBCE_Bulk_Processor` - 20 edges
+2. `DKBCE_Bulk_Processor` - 21 edges
 3. `DKBCE_COGS_Service` - 17 edges
 4. `DKBCE_Operation_Store` - 17 edges
 5. `scripts` - 13 edges
@@ -79,7 +79,7 @@ Cohesion: 0.17
 Nodes (35): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), fetchPreviewPage() (+27 more)
 
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.15
+Cohesion: 0.16
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
@@ -90,10 +90,12 @@ Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Operation_Store`, `DKBCE_Admin_Hooks`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
-- **Why does `@playwright/test` connect `package.json` to `bulk-cogs-editor.spec.cjs`?**
-  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_COGS_Service`, `DKBCE_Admin_Hooks`?**
+  _High betweenness centrality (0.070) - this node is a cross-community bridge._
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
+- **Why does `DKBCE_Bulk_Processor` connect `DKBCE_Bulk_Processor` to `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
   _`DKBCE_COGS_Service` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `dkbce_e2e_cleanup()`) actually correct?**
@@ -102,5 +104,3 @@ _Questions this graph is uniquely positioned to answer:_
   _53 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `bulk-cogs-editor.spec.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.0620782726045884 - nodes in this community are weakly interconnected._
-- **Should `package.json` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
