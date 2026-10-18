@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version constant.
  */
-define( 'DKBCE_VERSION', '1.1.0' );
+define( 'DKBCE_VERSION', '1.1.1' );
 
 /**
  * Plugin file path constant.
