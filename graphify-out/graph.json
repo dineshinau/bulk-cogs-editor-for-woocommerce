@@ -1506,7 +1506,7 @@
       "file_type": "code",
       "norm_label": "fixturesku()",
       "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L99"
+      "source_location": "L98"
     },
     {
       "id": "tests_e2e_bulk_cogs_editor_spec_getproducts",
@@ -1566,7 +1566,7 @@
       "file_type": "code",
       "norm_label": "rowforsku()",
       "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L103"
+      "source_location": "L102"
     },
     {
       "id": "tests_e2e_bulk_cogs_editor_spec_setfilters",
@@ -4663,7 +4663,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L103",
+      "source_location": "L102",
       "weight": 1.0
     },
     {
@@ -4711,7 +4711,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/e2e/bulk-cogs-editor.spec.cjs",
-      "source_location": "L99",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -7176,5 +7176,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "76aaacd66e6bc484371e230fe8a5308a63b5faa3"
+  "built_at_commit": "208801c19aa10b3fa5537bc79f9d3643a2e45c68"
 }
