@@ -91,6 +91,22 @@ In the developer's [reported benchmark results](https://github.com/dineshinau/bu
 
 The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
+= Run background updates with WP-CLI =
+
+If your host provides WP-CLI and permits longer CLI processes, you can use Action Scheduler's existing CLI runner to process the Bulk COGS Editor queue. It reuses the loaded WordPress process across actions and avoids the default HTTP runner's sleep between asynchronous requests. The editor continues to show progress and accept cancellation requests.
+
+After confirming an update in the editor, run this command from your WordPress directory:
+
+`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
+
+The command processes due actions for all Bulk COGS Editor operations on that site, not just the current user's update. It exits when no matching actions are due; it does not wait for future updates or delayed retries. The batch size here counts scheduled actions, not products. Product batches and the worker's cooperative time budget keep their existing limits.
+
+If Action Scheduler reports too many concurrent batches, let the current worker finish and retry the command. Keep the normal queue runner available for other WooCommerce jobs and delayed retries. A host-approved cron can invoke the same command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
+
+For a benchmark, prefix the command with `time` to include CLI startup and shutdown in its elapsed time. Also record the editor's full operation duration and final updated, skipped, and failed counts. Compare the same product mix, initial costs, filters, action, and hosting conditions. The CLI command can start after the operation has already begun, so its elapsed time alone is not the full operation duration.
+
+With plugin logging enabled, WooCommerce > Status > Logs, source `dkbce`, includes one `COGS worker timing` entry for each worker that acquired the operation lock. Each entry identifies the operation, runner, start and finish timestamps, and elapsed seconds. For a single operation, sum worker elapsed times to measure time inside the worker callbacks; subtract each previous finish timestamp from the next start timestamp to measure gaps between workers. Gaps include scheduling, request startup, and other work outside the callback. Callback time includes snapshot collection, product processing, and batch cache flushing, but excludes WordPress startup, deferred shutdown work, and the timing log write itself. Use the runner labels to identify runs where HTTP, WP-Cron, and CLI processing were mixed.
+
 = Use cases =
 
 * **Supplier price change:** filter the affected products by category or brand, preview a percentage or fixed increase, then apply it to the matching products.

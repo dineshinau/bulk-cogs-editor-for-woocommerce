@@ -103,6 +103,7 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function process_operation( $operation_id ) {
+		$started_at = microtime( true );
 		$lock_token = $this->acquire_operation_lock( $operation_id );
 		if ( ! $lock_token ) {
 			return;
@@ -112,6 +113,18 @@ class DKBCE_Bulk_Processor {
 			$this->process_operation_locked( $operation_id );
 		} finally {
 			$this->release_operation_lock( $operation_id, $lock_token );
+			$finished_at = microtime( true );
+			$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
+			dkbce_wc_log(
+				sprintf(
+					'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds).',
+					$operation_id,
+					$runner,
+					$started_at,
+					$finished_at,
+					$finished_at - $started_at
+				)
+			);
 		}
 	}
 
