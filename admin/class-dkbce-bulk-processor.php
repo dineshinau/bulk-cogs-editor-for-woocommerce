@@ -525,7 +525,7 @@ class DKBCE_Bulk_Processor {
 
 		if ( 'csv_import' === $state['operation']['action'] ) {
 			$csv                 = new DKBCE_CSV_Service();
-			$state['csv_report'] = $csv->line( array( 'id', 'cogs', 'status', 'error' ) );
+			$state['csv_report'] = $csv->line( array( 'id', 'new_cogs', 'status', 'error' ) );
 			for ( $number = 1; $number <= $state['snapshot_chunks']; ++$number ) {
 				$chunk = $this->store->get_chunk( $state['operation_id'], $number );
 				foreach ( $chunk['ids'] ?? array() as $id ) {

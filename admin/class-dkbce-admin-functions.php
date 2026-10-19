@@ -317,7 +317,7 @@ class DKBCE_Admin_Functions {
 					<button type="button" class="button-link" id="dkbce-csv-template"><?php esc_html_e( 'Download sample CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				</div>
 				<div id="dkbce-csv-export-options">
-					<p><?php esc_html_e( 'Use the filters below to choose products. Product type controls whether variable parents and variations are included. Export includes all matching pages.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p><?php esc_html_e( 'Use the filters below to choose products. Product type controls whether variable parents and variations are included. Export includes all matching pages. A blank new_cogs column is always added last. Enter your new costs there before importing.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<fieldset class="dkbce-csv-columns"><legend><?php esc_html_e( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
 					<?php foreach ( DKBCE_CSV_Service::COLUMNS as $column ) : ?>
 						<label><input type="checkbox" name="dkbce-csv-column" value="<?php echo esc_attr( $column ); ?>" checked> <?php echo esc_html( $column ); ?></label>
@@ -325,7 +325,7 @@ class DKBCE_Admin_Functions {
 					</fieldset>
 				</div>
 				<div id="dkbce-csv-import-options" hidden>
-					<p><?php esc_html_e( 'UTF-8 CSV, up to 1 MB and 1,000 rows. Required headers: cogs and id or sku. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p><?php esc_html_e( 'UTF-8 CSV, up to 1 MB and 1,000 rows. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. Older files without new_cogs can still use cogs. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<label id="dkbce-csv-drop" for="dkbce-csv-file"><?php esc_html_e( 'Drop a CSV file here or choose a file', 'bulk-cogs-editor-for-woocommerce' ); ?><input type="file" id="dkbce-csv-file" accept=".csv,text/csv"></label>
 				</div>
 				<p><button type="button" class="button button-primary" id="dkbce-csv-preview"><?php esc_html_e( 'Preview CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
@@ -634,7 +634,7 @@ class DKBCE_Admin_Functions {
 		$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], wp_list_pluck( $result['rows'], 'id' ) ) ) );
 		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
 		$result['errors'] = $preview['errors'];
-		$report           = $csv->line( array( 'row', 'id', 'sku', 'cogs', 'error' ) );
+		$report           = $csv->line( array( 'row', 'id', 'sku', 'new_cogs', 'error' ) );
 		foreach ( $preview['errors'] as $error ) {
 			$report .= $csv->line( array( $error['line'], $error['id'], $error['sku'], $error['value'], $error['error'] ) );
 		}
@@ -720,7 +720,7 @@ class DKBCE_Admin_Functions {
 		$filters['after_id']     = $after;
 		$ids                     = $this->service->scan_matches( $filters );
 		$csv                     = new DKBCE_CSV_Service();
-		$output                  = 0 === $after ? $csv->line( $columns ) : '';
+		$output                  = 0 === $after ? $csv->line( array_merge( $columns, array( 'new_cogs' ) ) ) : '';
 		$exported                = 0;
 		foreach ( $ids as $id ) {
 			$product = wc_get_product( $id );
@@ -740,6 +740,7 @@ class DKBCE_Admin_Functions {
 			foreach ( $columns as $column ) {
 				$cells[] = $values[ $column ];
 			}
+			$cells[] = ''; // The editable new_cogs column is always last and starts blank.
 			$output .= $csv->line( $cells );
 			++$exported;
 		}

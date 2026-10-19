@@ -32,10 +32,17 @@ class DKBCE_CSV_Service {
 		$file = new SplTempFileObject();
 		$file->fwrite( $contents );
 		$file->rewind();
-		$header = $file->fgetcsv( ',', '"', '' );
-		$header = is_array( $header ) ? array_map( 'trim', $header ) : array();
-		if ( count( $header ) !== count( array_unique( $header ) ) || ! in_array( 'cogs', $header, true ) || ( ! in_array( 'id', $header, true ) && ! in_array( 'sku', $header, true ) ) ) {
-			return new WP_Error( 'csv_header', __( 'CSV headers must include cogs and id or sku, with no duplicate columns.', 'bulk-cogs-editor-for-woocommerce' ) );
+		$header       = $file->fgetcsv( ',', '"', '' );
+		$header       = is_array( $header ) ? array_map( 'trim', $header ) : array();
+		$header       = array_map(
+			static function ( $column ) {
+				return str_replace( ' ', '_', strtolower( $column ) );
+			},
+			$header
+		);
+		$value_column = in_array( 'new_cogs', $header, true ) ? 'new_cogs' : 'cogs';
+		if ( count( $header ) !== count( array_unique( $header ) ) || ! in_array( $value_column, $header, true ) || ( ! in_array( 'id', $header, true ) && ! in_array( 'sku', $header, true ) ) ) {
+			return new WP_Error( 'csv_header', __( 'CSV headers must include new_cogs (or legacy cogs) and id or sku, with no duplicate columns.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 		$rows = array();
 		$seen = array();
@@ -60,7 +67,7 @@ class DKBCE_CSV_Service {
 				$data           = array_combine( $header, $fields );
 				$id             = trim( $data['id'] ?? '' );
 				$row['sku']     = trim( $data['sku'] ?? '' );
-				$row['value']   = trim( $data['cogs'] );
+				$row['value']   = trim( $data[ $value_column ] );
 				$sku_candidates = array( $row['sku'] );
 				if ( "'" === substr( $row['sku'], 0, 1 ) && preg_match( '/\A[\x00-\x20]*[=+@-]|\A[\t\r\n]/', substr( $row['sku'], 1 ) ) ) {
 					$sku_candidates[] = substr( $row['sku'], 1 );

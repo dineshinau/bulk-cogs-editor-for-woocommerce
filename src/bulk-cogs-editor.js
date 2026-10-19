@@ -282,7 +282,7 @@
 	} );
 	$( '#dkbce-csv-file' ).addEventListener( 'change', () => invalidatePreview( true ) );
 	$( '#dkbce-csv-preview' ).addEventListener( 'click', previewCSV );
-	$( '#dkbce-csv-template' ).addEventListener( 'click', () => downloadCSV( [ 'id,sku,cogs\r\n,REPLACE-WITH-YOUR-SKU,12.50\r\n' ], 'cogs-template.csv' ) );
+	$( '#dkbce-csv-template' ).addEventListener( 'click', () => downloadCSV( [ 'id,sku,cogs,new_cogs\r\n,REPLACE-WITH-YOUR-SKU,10.00,12.50\r\n' ], 'cogs-template.csv' ) );
 	$( '#dkbce-csv-drop' ).addEventListener( 'dragover', ( event ) => event.preventDefault() );
 	$( '#dkbce-csv-drop' ).addEventListener( 'drop', ( event ) => {
 		event.preventDefault();
