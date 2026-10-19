@@ -119,7 +119,11 @@ This status report covers the site's full Action Scheduler queue. It does not fi
 
 The command processes due actions for all Bulk COGS Editor operations on that site, not just the current user's update. It exits when no matching actions are due; it does not wait for future updates or delayed retries. The batch size here counts scheduled actions, not products. Product batches and the worker's cooperative time budget keep their existing limits.
 
-If Action Scheduler reports too many concurrent batches, let the current worker finish and retry the command. Keep the normal queue runner available for other WooCommerce jobs and delayed retries. A host-approved cron can invoke the same command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
+Action Scheduler allows one claimed batch by default. While the editor's background worker is processing an update, the CLI command can report `There are too many concurrent batches.` If the update is still progressing in the editor and you want the CLI runner to work alongside it, add `--force`:
+
+`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0 --force`
+
+The plugin locks each operation so two workers cannot advance the same operation at once. Forced runs can still add server load, and this command processes due Bulk COGS Editor actions for every user on the site. Use it only when concurrent processing is appropriate for your hosting capacity. Without `--force`, wait for the active Action Scheduler batch to finish and retry. Keep the normal queue runner available for delayed retries. A host-approved cron can invoke the command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
 
 For a benchmark, prefix the command with `time` to include CLI startup and shutdown in its elapsed time. Also record the editor's full operation duration and final updated, skipped, and failed counts. Compare the same product mix, initial costs, filters, action, and hosting conditions. The CLI command can start after the operation has already begun, so its elapsed time alone is not the full operation duration.
 
