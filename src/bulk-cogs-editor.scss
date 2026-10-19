@@ -245,6 +245,8 @@ $border: #dce6f5;
 .dkbce-empty-note { font-size: 12px; }
 #dkbce-preview-content:not([hidden]) + .dkbce-preview-empty { display: none; }
 .dkbce-apply-section { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; .dkbce-section-heading { margin: 0; } > p { margin: 0; } > p:last-child { margin-inline-start: auto; } }
+.dkbce-csv-workflow .dkbce-apply-section { display: grid; grid-template-columns: minmax(280px, 1fr) auto auto; align-items: center; gap: 14px 24px; .dkbce-section-heading { min-width: 0; } > p:last-child { margin-inline-start: 0; } }
+.dkbce-csv-workflow #dkbce-apply[aria-busy='true'] { border-color: #b8ceff; background: #eff5ff; color: $blue; opacity: 1; }
 .dkbce-selection-option { color: $muted; font-size: 12px; label { display: flex; align-items: center; gap: 6px; } }
 #dkbce-apply-spinner { float: none; margin: 0; margin-inline-end: 8px; vertical-align: middle; &:not(.is-active) { display: none; } }
 .dkbce-operation {
@@ -281,6 +283,7 @@ $border: #dce6f5;
 		white-space: nowrap;
 	}
 }
+.dkbce-export-time { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 10px; > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 10px 12px; border: 1px solid $border; border-radius: 6px; background: #f5f8ff; } }
 .dkbce-preview-loading { display: flex; align-items: center; gap: 8px; min-height: 72px; }
 .dkbce-spinner { width: 18px; height: 18px; border: 2px solid $border; border-top-color: $blue; border-radius: 50%; animation: dkbce-spin 0.7s linear infinite; }
 @keyframes dkbce-spin { to { transform: rotate(360deg); } }
@@ -290,6 +293,8 @@ $border: #dce6f5;
 @media (max-width: 1400px) { .dkbce-section-heading { flex-wrap: wrap; } .dkbce-action-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
 	.dkbce-operation-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.dkbce-csv-workflow .dkbce-apply-section { grid-template-columns: minmax(0, 1fr) auto; }
+	.dkbce-csv-workflow .dkbce-apply-section .dkbce-section-heading { grid-column: 1 / -1; }
 	.dkbce-filter-actions { width: 100%; justify-content: flex-start; }
 	.dkbce-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); > p, > .dkbce-range { grid-column: auto; } }
 	.dkbce-value-row { flex-wrap: wrap; > .description { flex-basis: 100%; } }
@@ -305,6 +310,10 @@ $border: #dce6f5;
 	.dkbce-action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	.dkbce-grid { grid-template-columns: minmax(0, 1fr); }
 	.dkbce-operation-metrics { grid-template-columns: 1fr; }
+	.dkbce-export-time { grid-template-columns: 1fr; }
+	.dkbce-csv-workflow .dkbce-apply-section { grid-template-columns: minmax(0, 1fr); }
+	.dkbce-csv-workflow .dkbce-apply-section .dkbce-section-heading { grid-column: auto; }
+	.dkbce-csv-workflow .dkbce-apply-section > p:last-child { justify-self: start; }
 	.dkbce-apply-section > p:last-child { margin-inline-start: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .dkbce-action-card { transition: none; } .dkbce-spinner { animation: none; } }

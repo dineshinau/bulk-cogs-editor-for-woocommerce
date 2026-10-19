@@ -375,7 +375,7 @@
 		percentage.setAttribute( 'aria-hidden', 'true' );
 		track.append( progress, highlight, percentage );
 		const time = document.createElement( 'p' );
-		time.className = 'dkbce-operation-time';
+		time.className = 'dkbce-operation-time dkbce-export-time';
 		time.setAttribute( 'aria-live', 'off' );
 		const cancel = document.createElement( 'button' );
 		cancel.type = 'button';
@@ -397,10 +397,16 @@
 			time.replaceChildren();
 			[ [ DKBCE.i18n.elapsedTime, formatDuration( elapsed ) ], [ DKBCE.i18n.remainingTime, remaining ] ].forEach( ( [ template, duration ] ) => {
 				const parts = template.split( '%s' );
+				const metric = document.createElement( 'span' );
+				metric.appendChild( document.createTextNode( parts[ 0 ] ) );
 				const value = document.createElement( 'strong' );
 				value.className = 'dkbce-duration';
 				value.textContent = duration;
-				time.append( document.createTextNode( parts[ 0 ] ), value, document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+				metric.appendChild( value );
+				if ( parts.length > 1 ) {
+					metric.appendChild( document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+				}
+				time.appendChild( metric );
 			} );
 		};
 		renderProgress();
