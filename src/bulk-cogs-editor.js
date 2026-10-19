@@ -5,6 +5,9 @@
 	const $ = ( selector ) => document.querySelector( selector );
 	const state = {
 		mode: 'bulk',
+		importPreparing: false,
+		importId: DKBCE.importId || '',
+		importCancel: false,
 		count: 0,
 		hasQuery: false,
 		previewId: '',
@@ -136,7 +139,7 @@
 
 	function updateCSVMode() {
 		const active = csvMode();
-		const importing = active && $( '#dkbce-csv-action' ).value === 'import';
+		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
 		$( '#dkbce-csv' ).hidden = ! active;
 		actionSection.hidden = active;
 		$( '.dkbce-filters-section' ).hidden = importing;
@@ -167,9 +170,9 @@
 			return;
 		}
 		const button = $( '#dkbce-csv-preview' );
-		const mode = $( '#dkbce-csv-action' ).value;
+		const mode = $( 'input[name="dkbce-csv-action"]:checked' ).value;
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
-		if ( mode === 'import' && ( ! file || file.size > 1024 * 1024 ) ) {
+		if ( mode === 'import' && ( ! file || file.size > DKBCE.maxUploadSize ) ) {
 			setNotice( DKBCE.csv.file, 'error' );
 			return;
 		}
@@ -181,29 +184,15 @@
 			const data = await request( 'csv_preview', {
 				mode,
 				filters: mode === 'export' ? filters() : {},
-				csv: mode === 'import' ? new TextDecoder( 'utf-8', { fatal: true } ).decode( await file.arrayBuffer() ) : '',
+				import_file: mode === 'import' ? file : '',
 			} );
-			pageSizeSelect.value = String( data.page_size );
-			state.hasQuery = true;
-			renderPreview( data );
-			const errors = $( '#dkbce-csv-errors' );
-			errors.replaceChildren();
-			if ( data.errors.length ) {
-				const explanation = document.createElement( 'p' );
-				explanation.textContent = DKBCE.csv.errors;
-				const report = document.createElement( 'button' );
-				report.type = 'button';
-				report.className = 'button';
-				report.textContent = DKBCE.csv.report;
-				report.addEventListener( 'click', () => downloadCSV( [ data.error_csv ], 'cogs-import-errors.csv' ) );
-				const list = document.createElement( 'ul' );
-				data.errors.forEach( ( error ) => {
-					const item = document.createElement( 'li' );
-					item.textContent = DKBCE.csv.row + ' ' + error.line + ': ' + error.error;
-					list.appendChild( item );
-				} );
-				errors.append( explanation, report, list );
-				errors.hidden = false;
+			if ( data.import_id ) {
+				state.importId = data.import_id;
+				state.importCancel = false;
+				state.importPreparing = true;
+				pollImport();
+			} else {
+				showImportPreview( data );
 			}
 		} catch ( error ) {
 			setNotice( error.message, 'error' );
@@ -211,6 +200,95 @@
 			setBusy( false, button );
 		}
 	}
+
+	async function downloadImportReport( source, results, button ) {
+		button.disabled = true;
+		try {
+			const parts = [];
+			let after = 0;
+			let batch;
+			do {
+				batch = await request( 'import_report', { import_id: source, results: results ? '1' : '0', after } );
+				parts.push( batch.csv );
+				after = batch.after;
+			} while ( ! batch.done );
+			downloadCSV( parts, results ? 'cogs-import-results.csv' : 'cogs-import-errors.csv' );
+		} catch ( error ) {
+			setNotice( error.message, 'error' );
+		} finally {
+			button.disabled = false;
+		}
+	}
+
+	function showImportPreview( data ) {
+		pageSizeSelect.value = String( data.page_size );
+		state.hasQuery = true;
+		renderPreview( data );
+		const errors = $( '#dkbce-csv-errors' );
+		errors.replaceChildren();
+		errors.hidden = ! data.errors.length;
+		if ( ! data.errors.length ) { return; }
+		const explanation = document.createElement( 'p' );
+		explanation.textContent = DKBCE.csv.errors + ' ' + DKBCE.csv.invalidCount.replace( '%d', data.invalid_count || data.errors.length );
+		const report = document.createElement( 'button' );
+		report.type = 'button';
+		report.className = 'button';
+		report.textContent = DKBCE.csv.report;
+		report.addEventListener( 'click', () => downloadImportReport( data.report_source, false, report ) );
+		const list = document.createElement( 'ul' );
+		data.errors.forEach( ( error ) => {
+			const item = document.createElement( 'li' );
+			item.textContent = DKBCE.csv.row + ' ' + error.row_no + ': ' + error.error;
+			list.appendChild( item );
+		} );
+		errors.append( explanation, report, list );
+	}
+
+	async function pollImport() {
+		const panel = $( '#dkbce-import-progress' );
+		panel.hidden = false;
+		const status = panel.querySelector( 'p' );
+		const cancel = panel.querySelector( 'button' );
+		cancel.hidden = false;
+		cancel.disabled = state.importCancel;
+		status.textContent = DKBCE.csv.preparing;
+		updateOperationControls();
+		try {
+			const data = await request( 'import_status', { import_id: state.importId, cancel: state.importCancel ? '1' : '0' } );
+			if ( [ 'pending', 'processing' ].includes( data.status ) ) {
+				status.textContent = ( state.importCancel ? DKBCE.csv.cancelling : DKBCE.csv.preparing ) + ' ' +
+					( data.stage === 'import_strings' ? DKBCE.csv.readingStrings : DKBCE.csv.processed.replace( '%d', data.processed ) ) +
+					( data.sheet ? ' — ' + data.sheet : '' );
+				window.setTimeout( pollImport, 2000 );
+				return;
+			}
+			state.importPreparing = false;
+			cancel.hidden = true;
+			if ( data.status === 'ready' ) {
+				panel.hidden = true;
+				setNotice( '', 'info' );
+				showImportPreview( data.preview );
+			} else {
+				status.textContent = data.message || DKBCE.csv.importStopped;
+			}
+			updateOperationControls();
+		} catch ( error ) {
+			if ( error.status >= 400 && error.status < 500 ) {
+				state.importPreparing = false;
+				cancel.hidden = true;
+				status.textContent = error.message;
+				updateOperationControls();
+				return;
+			}
+			status.textContent = error.message + ' ' + DKBCE.csv.retrying;
+			window.setTimeout( pollImport, 5000 );
+		}
+	}
+
+	$( '#dkbce-import-progress button' ).addEventListener( 'click', () => {
+		state.importCancel = true;
+		$( '#dkbce-import-progress button' ).disabled = true;
+	} );
 
 	async function exportCSV() {
 		if ( state.busy || isOperationRunning() || ! state.previewId ) {
@@ -275,10 +353,12 @@
 			updateCSVMode();
 		} );
 	} );
-	$( '#dkbce-csv-action' ).addEventListener( 'change', () => {
-		invalidatePreview( true );
-		$( '#dkbce-csv-errors' ).hidden = true;
-		updateCSVMode();
+	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
+		input.addEventListener( 'change', () => {
+			invalidatePreview( true );
+			$( '#dkbce-csv-errors' ).hidden = true;
+			updateCSVMode();
+		} );
 	} );
 	$( '#dkbce-csv-file' ).addEventListener( 'change', () => invalidatePreview( true ) );
 	$( '#dkbce-csv-preview' ).addEventListener( 'click', previewCSV );
@@ -404,7 +484,15 @@
 			keepalive: action === 'preferences',
 			body: data,
 		} )
-			.then( ( response ) => response.json() )
+			.then( async ( response ) => {
+				const payload = await response.json();
+				if ( ! response.ok ) {
+					const error = new Error( payload.data && payload.data.message ? payload.data.message : DKBCE.csv.requestFailed );
+					error.status = response.status;
+					throw error;
+				}
+				return payload;
+			} )
 			.then( ( response ) => {
 				if ( ! response.success ) {
 					throw new Error(
@@ -529,7 +617,7 @@
 	}
 
 	function isOperationRunning() {
-		return state.startingOperation || Boolean( state.operationId &&
+		return state.importPreparing || state.startingOperation || Boolean( state.operationId &&
 			! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ]
 				.includes( state.operationStatus ) );
 	}
@@ -1073,7 +1161,7 @@
 	}
 
 	function openConfirm() {
-		if ( csvMode() && $( '#dkbce-csv-action' ).value === 'export' ) {
+		if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
 			exportCSV();
 			return;
 		}
@@ -1335,6 +1423,15 @@
 			} );
 			operationPanel.appendChild( clearButton );
 		}
+		if ( operation.import_source && [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( operation.status ) ) {
+			const report = document.createElement( 'button' );
+			report.type = 'button';
+			report.className = 'button';
+			report.textContent = DKBCE.csv.report;
+			report.addEventListener( 'click', () => downloadImportReport( operation.import_source, true, report ) );
+			operationPanel.appendChild( report );
+		}
+
 		if ( operation.csv_report ) {
 			const report = document.createElement( 'button' );
 			report.type = 'button';
@@ -1576,12 +1673,16 @@
 			)
 		);
 	updateOperationControls();
-	if ( DKBCE.operationMode === 'csv_import' ) {
+	if ( state.importId || DKBCE.operationMode === 'csv_import' ) {
 		state.mode = 'csv';
-		$( '#dkbce-csv-action' ).value = 'import';
+		$( 'input[name="dkbce-csv-action"][value="import"]' ).checked = true;
 		updateCSVMode();
 	}
-	if ( state.operationId ) {
+	if ( state.importId ) {
+		state.operationId = '';
+		state.importPreparing = true;
+		pollImport();
+	} else if ( state.operationId ) {
 		operationPanel.hidden = false;
 		pollProgress();
 	}

@@ -50,6 +50,7 @@ class DKBCE_Bulk_Processor {
 		$this->store   = $store;
 		$this->service = $service;
 		add_action( self::HOOK, array( $this, 'process_operation' ) );
+		add_action( 'dkbce_cleanup_import', array( $this, 'cleanup_import' ) );
 	}
 
 	/**
@@ -73,7 +74,7 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function recover_if_stale( $state ) {
-		if ( in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+		if ( in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled', 'ready', 'expired' ), true ) ) {
 			return;
 		}
 
@@ -160,6 +161,26 @@ class DKBCE_Bulk_Processor {
 	}
 
 	/**
+	 * Clean import staging while excluding a concurrent preview worker.
+	 *
+	 * @param string $operation_id Import ID.
+	 * @return void
+	 */
+	public function cleanup_import( $operation_id ) {
+		$lock = $this->acquire_operation_lock( $operation_id );
+		if ( ! $lock ) {
+			as_schedule_single_action( time() + MINUTE_IN_SECONDS, 'dkbce_cleanup_import', array( $operation_id ), self::GROUP );
+			return;
+		}
+		try {
+			$imports = new DKBCE_Import_Processor();
+			$imports->cleanup( $operation_id );
+		} finally {
+			$this->release_operation_lock( $operation_id, $lock );
+		}
+	}
+
+	/**
 	 * Process an operation after acquiring its worker lock.
 	 *
 	 * @param string $operation_id Operation UUID.
@@ -168,7 +189,13 @@ class DKBCE_Bulk_Processor {
 	private function process_operation_locked( $operation_id ) {
 		$deadline = microtime( true ) + self::BATCH_TIME_LIMIT;
 		$state    = $this->store->get( $operation_id );
-		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled', 'ready', 'expired' ), true ) ) {
+			return;
+		}
+
+		if ( 'import_preview' === $state['action'] ) {
+			$imports = new DKBCE_Import_Processor();
+			$imports->process( $state, $this->store, $this->service );
 			return;
 		}
 
@@ -183,6 +210,15 @@ class DKBCE_Bulk_Processor {
 			$state['error_summary'] = __( 'WooCommerce COGS is no longer available or enabled.', 'bulk-cogs-editor-for-woocommerce' );
 			$this->finish_operation( $state, 'failed' );
 			return;
+		}
+
+		if ( ! empty( $state['operation']['source_id'] ) ) {
+			$source = $this->store->get( $state['operation']['source_id'] );
+			if ( ! $source || 'ready' !== $source['status'] || ( $source['applied_operation'] ?? '' ) !== $operation_id ) {
+				$state['error_summary'] = __( 'The staged import is unavailable. Prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' );
+				$this->finish_operation( $state, 'failed' );
+				return;
+			}
 		}
 
 		$state['status']     = 'processing';
@@ -285,8 +321,13 @@ class DKBCE_Bulk_Processor {
 		}
 
 		// Reuse a chunk saved just before an interrupted progress write.
-		$next_chunk  = $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] + 1 );
-		$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
+		$next_chunk = $this->store->get_chunk( $state['operation_id'], $state['snapshot_chunks'] + 1 );
+		if ( ! empty( $state['operation']['source_id'] ) ) {
+			$imports     = new DKBCE_Import_Store();
+			$product_ids = $next_chunk ? $next_chunk['ids'] : array_map( 'intval', wp_list_pluck( $imports->rows( $state['operation']['source_id'], $state['batch_size'], 0, $state['snapshot_after_id'] ), 'product_id' ) );
+		} else {
+			$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
+		}
 
 		if ( $product_ids ) {
 			++$state['snapshot_chunks'];
@@ -460,6 +501,10 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	private function record_outcome( &$state, $product_id, $outcome ) {
+		if ( ! empty( $state['operation']['source_id'] ) ) {
+			$imports = new DKBCE_Import_Store();
+			$imports->outcome( $state['operation']['source_id'], $product_id, $outcome );
+		}
 		++$state['processed'];
 		++$state['counted_chunk_results'];
 		if ( 'success' === $outcome['status'] ) {
@@ -544,7 +589,7 @@ class DKBCE_Bulk_Processor {
 			$state['cancelled_note'] = __( 'Already processed products remain changed; no rollback was performed.', 'bulk-cogs-editor-for-woocommerce' );
 		}
 
-		if ( 'csv_import' === $state['operation']['action'] ) {
+		if ( 'csv_import' === $state['operation']['action'] && empty( $state['operation']['source_id'] ) ) {
 			$csv                 = new DKBCE_CSV_Service();
 			$state['csv_report'] = $csv->line( array( 'id', 'new_cogs', 'status', 'error' ) );
 			for ( $number = 1; $number <= $state['snapshot_chunks']; ++$number ) {

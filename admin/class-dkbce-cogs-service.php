@@ -231,6 +231,11 @@ class DKBCE_COGS_Service {
 	public function calculate( $product, $operation ) {
 		if ( 'csv_import' === $operation['action'] ) {
 			$id = $product->get_id();
+			if ( ! empty( $operation['source_id'] ) ) {
+				$imports             = new DKBCE_Import_Store();
+				$value               = $imports->value( $operation['source_id'], $id );
+				$operation['values'] = null === $value ? array() : array( $id => $value );
+			}
 			if ( ! isset( $operation['values'][ $id ] ) ) {
 				return new WP_Error( 'csv_target', __( 'This product is not in the validated CSV.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}

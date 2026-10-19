@@ -91,11 +91,23 @@ In the developer's [reported benchmark results](https://github.com/dineshinau/bu
 
 The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
+= Import CSV and XLSX files =
+
+Choose CSV mode and Import on the Bulk COGS Editor page. Upload a UTF-8 CSV or an XLSX workbook. The upload limit follows WordPress's maximum upload size, shown beside the file field; the plugin does not impose a separate file-size or row-count cap. Hosting upload, memory, storage and execution limits still apply.
+
+Exported CSV files end with a blank `new_cogs` column. Fill this column with the new costs, then import the file. Required headers are `new_cogs` and `id` or `sku`; legacy files may use `cogs` when `new_cogs` is absent. ID and SKU must agree when both are supplied. Blank costs are excluded; use decimal points without currency symbols. Duplicate product rows are excluded and included in the error report.
+
+XLSX imports read the first worksheet's raw cell values. Replace formulas with values before uploading, and store SKUs as text to preserve leading zeros. XLSX needs PHP's ZIP, XMLReader and DOM extensions. XLSX text is decoded by its XML reader; Windows-1252 is not required. CSV remains UTF-8 only. Export still produces CSV.
+
+Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to resume its progress display. Once ready, review paged products, download validation errors, select products and explicitly apply the changes. Preparation can be cancelled independently of an applied update. Original uploads are deleted when preparation ends; staged previews and reports expire through scheduled cleanup after approximately 24 hours, with retention extended while an applied update is active.
+
+The WP-CLI command below processes both preview preparation and confirmed updates. Preview workers must run on the upload server as the same operating-system user as PHP, because original uploads are stored in private temporary files. If your shell uses a different user, ask your host to run the command as the PHP user; ordinary product updates do not need the uploaded file. During preparation, worker logs report the stage, checked row count and batch size. The total and remaining row counts are unknown until reading finishes.
+
 = Run background updates with WP-CLI =
 
 If your host provides WP-CLI and permits longer CLI processes, you can use Action Scheduler's existing CLI runner to process the Bulk COGS Editor queue. It reuses the loaded WordPress process across actions and avoids the default HTTP runner's sleep between asynchronous requests. The editor continues to show progress and accept cancellation requests.
 
-After confirming an update in the editor, run this command from your WordPress directory:
+After uploading an import for preview or confirming an update in the editor, run this command from your WordPress directory:
 
 `wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
 

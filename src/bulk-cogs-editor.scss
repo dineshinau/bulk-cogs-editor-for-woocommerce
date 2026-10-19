@@ -442,6 +442,14 @@ $border: #dce6f5;
 	padding-block: 4px;
 }
 
+.dkbce-csv-action {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 20px;
+	label { display: inline-flex; align-items: center; gap: 4px; }
+	input[type="radio"] { margin: 0; }
+}
+
 .dkbce-csv-columns {
 	display: flex;
 	flex-wrap: wrap;

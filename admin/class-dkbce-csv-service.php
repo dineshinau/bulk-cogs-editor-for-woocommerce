@@ -15,108 +15,80 @@ class DKBCE_CSV_Service {
 	const COLUMNS = array( 'id', 'sku', 'name', 'cogs', 'regular_price', 'sale_price', 'type' );
 
 	/**
-	 * Validate a bounded UTF-8 CSV document.
+	 * Normalize and validate the column header.
 	 *
-	 * @param string             $contents CSV document.
-	 * @param DKBCE_COGS_Service $service Product service.
-	 * @return array|WP_Error
+	 * @param array $header Header cells.
+	 * @return array
+	 * @throws RuntimeException When required columns are absent or repeated.
 	 */
-	public function parse( $contents, $service ) {
-		if ( strlen( $contents ) > MB_IN_BYTES || false !== strpos( $contents, "\0" ) || ! preg_match( '//u', $contents ) ) {
-			return new WP_Error( 'csv_file', __( 'Use a UTF-8 CSV file no larger than 1 MB.', 'bulk-cogs-editor-for-woocommerce' ) );
-		}
-		$contents = preg_replace( '/\A\xEF\xBB\xBF/', '', $contents );
-		if ( ! $this->valid_quoting( $contents ) ) {
-			return new WP_Error( 'csv_quotes', __( 'Malformed CSV quoting. Use double quotes around fields containing commas or newlines.', 'bulk-cogs-editor-for-woocommerce' ) );
-		}
-		$file = new SplTempFileObject();
-		$file->fwrite( $contents );
-		$file->rewind();
-		$header       = $file->fgetcsv( ',', '"', '' );
-		$header       = is_array( $header ) ? array_map( 'trim', $header ) : array();
-		$header       = array_map(
+	public function header( $header ) {
+		$header = array_map(
 			static function ( $column ) {
-				return str_replace( ' ', '_', strtolower( $column ) );
+				return str_replace( ' ', '_', strtolower( trim( (string) $column ) ) );
 			},
 			$header
 		);
-		$value_column = in_array( 'new_cogs', $header, true ) ? 'new_cogs' : 'cogs';
-		if ( count( $header ) !== count( array_unique( $header ) ) || ! in_array( $value_column, $header, true ) || ( ! in_array( 'id', $header, true ) && ! in_array( 'sku', $header, true ) ) ) {
-			return new WP_Error( 'csv_header', __( 'CSV headers must include new_cogs (or legacy cogs) and id or sku, with no duplicate columns.', 'bulk-cogs-editor-for-woocommerce' ) );
+		if ( count( $header ) !== count( array_unique( $header ) ) || ( ! in_array( 'new_cogs', $header, true ) && ! in_array( 'cogs', $header, true ) ) || ( ! in_array( 'id', $header, true ) && ! in_array( 'sku', $header, true ) ) ) {
+			throw new RuntimeException( esc_html__( 'Headers must include new_cogs (or legacy cogs) and id or sku, with no duplicate columns.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
-		$rows = array();
-		$seen = array();
-		while ( ! $file->eof() ) {
-			$fields = $file->fgetcsv( ',', '"', '' );
-			if ( false === $fields || array( null ) === $fields ) {
-				continue;
-			}
-			if ( count( $rows ) >= 1000 ) {
-				return new WP_Error( 'csv_limit', __( 'Import at most 1,000 rows per file.', 'bulk-cogs-editor-for-woocommerce' ) );
-			}
-			$row = array(
-				'line'  => count( $rows ) + 2,
-				'id'    => 0,
-				'sku'   => '',
-				'value' => '',
-				'error' => '',
-			);
-			if ( count( $fields ) !== count( $header ) ) {
-				$row['error'] = __( 'The number of fields does not match the header.', 'bulk-cogs-editor-for-woocommerce' );
-			} else {
-				$data           = array_combine( $header, $fields );
-				$id             = trim( $data['id'] ?? '' );
-				$row['sku']     = trim( $data['sku'] ?? '' );
-				$row['value']   = trim( $data[ $value_column ] );
-				$sku_candidates = array( $row['sku'] );
-				if ( "'" === substr( $row['sku'], 0, 1 ) && preg_match( '/\A[\x00-\x20]*[=+@-]|\A[\t\r\n]/', substr( $row['sku'], 1 ) ) ) {
-					$sku_candidates[] = substr( $row['sku'], 1 );
-				}
-				$product = false;
-				if ( '' !== $id ) {
-					$product = preg_match( '/\A[1-9][0-9]*\z/', $id ) && (string) absint( $id ) === $id ? wc_get_product( absint( $id ) ) : false;
-				} elseif ( '' !== $row['sku'] ) {
-					$ids = array();
-					foreach ( $sku_candidates as $candidate ) {
-						$ids = array_values( array_unique( array_merge( $ids, $this->sku_ids( $candidate ) ) ) );
-					}
-					if ( 1 === count( $ids ) ) {
-						$product = wc_get_product( $ids[0] );
-					}
-				}
-				if ( ! $product || in_array( $product->get_status(), array( 'trash', 'auto-draft' ), true ) || ! current_user_can( 'edit_post', $product->get_id() ) || ( '' !== $row['sku'] && ! in_array( $product->get_sku(), $sku_candidates, true ) ) ) {
-					$row['error'] = __( 'Product is missing, ambiguous, inaccessible, or ID and SKU disagree.', 'bulk-cogs-editor-for-woocommerce' );
-				} else {
-					$row['id'] = $product->get_id();
-					if ( isset( $seen[ $row['id'] ] ) ) {
-						$row['error']                         = __( 'Duplicate product in CSV. Remove all duplicate rows and preview again.', 'bulk-cogs-editor-for-woocommerce' );
-						$rows[ $seen[ $row['id'] ] ]['error'] = $row['error'];
-					} else {
-						$seen[ $row['id'] ] = count( $rows );
-					}
-					$action = $service->validate_action( 'set', $row['value'] );
-					if ( '' === $row['value'] || ! preg_match( '/\A[0-9]+(?:\.[0-9]+)?\z/', $row['value'] ) || is_wp_error( $action ) ) {
-						$row['error'] = __( 'Enter a non-negative decimal COGS value. Blank values are not imported.', 'bulk-cogs-editor-for-woocommerce' );
-					} else {
-						$row['value'] = $action['value'];
-					}
-				}
-			}
-			$rows[] = $row;
-		}
-		$values = array();
-		$errors = array();
-		foreach ( $rows as $row ) {
-			if ( $row['error'] ) {
-				$errors[] = $row;
-			} else {
-				$values[ $row['id'] ] = $row['value'];
-			}
-		}
-		return array(
-			'values' => $values,
-			'errors' => $errors,
+		return $header;
+	}
+
+	/**
+	 * Validate a single imported row without writing product data.
+	 *
+	 * @param array              $fields Input cells.
+	 * @param array              $header Normalized header.
+	 * @param int                $line Record number.
+	 * @param int                $user_id Upload owner, including in CLI workers.
+	 * @param DKBCE_COGS_Service $service Product calculations.
+	 * @return array
+	 */
+	public function validate_row( $fields, $header, $line, $user_id, $service ) {
+		$row = array(
+			'line'  => $line,
+			'id'    => 0,
+			'sku'   => '',
+			'value' => '',
+			'error' => '',
 		);
+		if ( count( $fields ) !== count( $header ) ) {
+			$row['error'] = __( 'The number of fields does not match the header.', 'bulk-cogs-editor-for-woocommerce' );
+			return $row;
+		}
+		$value_column   = in_array( 'new_cogs', $header, true ) ? 'new_cogs' : 'cogs';
+		$data           = array_combine( $header, $fields );
+		$id             = trim( $data['id'] ?? '' );
+		$row['sku']     = trim( $data['sku'] ?? '' );
+		$row['value']   = trim( $data[ $value_column ] );
+		$sku_candidates = array( $row['sku'] );
+		if ( "'" === substr( $row['sku'], 0, 1 ) && preg_match( '/\A[\x00-\x20]*[=+@-]|\A[\t\r\n]/', substr( $row['sku'], 1 ) ) ) {
+			$sku_candidates[] = substr( $row['sku'], 1 );
+		}
+		$product = false;
+		if ( '' !== $id ) {
+			$product = preg_match( '/\A[1-9][0-9]*\z/', $id ) && (string) absint( $id ) === $id ? wc_get_product( absint( $id ) ) : false;
+		} elseif ( '' !== $row['sku'] ) {
+			$ids = array();
+			foreach ( $sku_candidates as $candidate ) {
+				$ids = array_values( array_unique( array_merge( $ids, $this->sku_ids( $candidate ) ) ) );
+			}
+			if ( 1 === count( $ids ) ) {
+				$product = wc_get_product( $ids[0] );
+			}
+		}
+		if ( ! $product || in_array( $product->get_status(), array( 'trash', 'auto-draft' ), true ) || ! user_can( $user_id, 'edit_post', $product->get_id() ) || ( '' !== $row['sku'] && ! in_array( $product->get_sku(), $sku_candidates, true ) ) ) {
+			$row['error'] = __( 'Product is missing, ambiguous, inaccessible, or ID and SKU disagree.', 'bulk-cogs-editor-for-woocommerce' );
+		} else {
+			$row['id'] = $product->get_id();
+			$action    = $service->validate_action( 'set', $row['value'] );
+			if ( '' === $row['value'] || ! preg_match( '/\A[0-9]+(?:\.[0-9]+)?\z/', $row['value'] ) || is_wp_error( $action ) ) {
+				$row['error'] = __( 'Enter a non-negative decimal COGS value. Blank values are not imported.', 'bulk-cogs-editor-for-woocommerce' );
+			} else {
+				$row['value'] = $action['value'];
+			}
+		}
+		return $row;
 	}
 
 	/**
@@ -125,7 +97,7 @@ class DKBCE_CSV_Service {
 	 * @param string $contents UTF-8 CSV.
 	 * @return bool
 	 */
-	private function valid_quoting( $contents ) {
+	public function valid_quoting( $contents ) {
 		$state  = 'start';
 		$length = strlen( $contents );
 		for ( $index = 0; $index < $length; ++$index ) {

@@ -30,6 +30,8 @@ class DKBCE_Admin_Hooks {
 		add_filter( 'plugin_row_meta', array( $admin_functions, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $admin_functions, 'enqueue_assets' ) );
 		add_action( 'wp_ajax_dkbce_get_products', array( $admin_functions, 'ajax_get_products' ) );
+		add_action( 'wp_ajax_dkbce_import_status', array( $admin_functions, 'ajax_import_status' ) );
+		add_action( 'wp_ajax_dkbce_import_report', array( $admin_functions, 'ajax_import_report' ) );
 		add_action( 'wp_ajax_dkbce_csv_preview', array( $admin_functions, 'ajax_csv_preview' ) );
 		add_action( 'wp_ajax_dkbce_csv_export', array( $admin_functions, 'ajax_csv_export' ) );
 		add_action( 'wp_ajax_dkbce_preview', array( $admin_functions, 'ajax_preview' ) );

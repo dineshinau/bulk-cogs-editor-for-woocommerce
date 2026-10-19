@@ -127,10 +127,18 @@ class DKBCE_Admin_Functions {
 			$operation = false;
 		}
 
+		$import_id  = sanitize_key( get_user_meta( get_current_user_id(), 'dkbce_latest_import', true ) );
+		$import_job = $import_id ? $this->store->get( $import_id ) : false;
+		if ( ! $import_job || get_current_user_id() !== (int) $import_job['user_id'] || ! in_array( $import_job['status'], array( 'pending', 'processing', 'ready' ), true ) || ! empty( $import_job['applied_operation'] ) || get_option( 'dkbce_preview_claim_' . $import_id ) ) {
+			$import_id = '';
+		}
+
 		wp_localize_script(
 			'dkbce-admin',
 			'DKBCE',
 			array(
+				'importId'       => $import_id,
+				'maxUploadSize'  => wp_max_upload_size(),
 				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 				'nonce'          => wp_create_nonce( self::NONCE ),
 				'cogsAvailable'  => $this->service->is_cogs_available(),
@@ -141,21 +149,31 @@ class DKBCE_Admin_Functions {
 				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
 				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
 				'csv'            => array(
-					'selection'  => __( 'Only include products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
-					'exportHelp' => __( 'Review the products, then download the selected CSV columns. Export does not change costs. Keep this page open until the download is ready.', 'bulk-cogs-editor-for-woocommerce' ),
-					'export'     => __( 'Generate & download CSV', 'bulk-cogs-editor-for-woocommerce' ),
-					'apply'      => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
-					'file'       => __( 'Choose a CSV file no larger than 1 MB.', 'bulk-cogs-editor-for-woocommerce' ),
-					'columns'    => __( 'Select at least one CSV column.', 'bulk-cogs-editor-for-woocommerce' ),
-					'errors'     => __( 'Invalid rows are excluded from this preview and cannot be applied.', 'bulk-cogs-editor-for-woocommerce' ),
-					'report'     => __( 'Download error report', 'bulk-cogs-editor-for-woocommerce' ),
-					'row'        => __( 'Row', 'bulk-cogs-editor-for-woocommerce' ),
-					'status'     => __( 'Status', 'bulk-cogs-editor-for-woocommerce' ),
-					'valid'      => __( 'Ready', 'bulk-cogs-editor-for-woocommerce' ),
-					'exporting'  => __( 'Preparing CSV… Keep this page open.', 'bulk-cogs-editor-for-woocommerce' ),
-					'downloaded' => __( 'CSV download ready.', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelled'  => __( 'Export cancelled. No file was downloaded.', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancel'     => __( 'Cancel export', 'bulk-cogs-editor-for-woocommerce' ),
+					'requestFailed'  => __( 'Request failed. Check the server upload limit or reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ),
+					'preparing'      => __( 'Preparing import preview in the background. You can return to this page later.', 'bulk-cogs-editor-for-woocommerce' ),
+					'readingStrings' => __( 'Reading spreadsheet text…', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: rows processed. */
+					'processed'      => __( 'Rows checked: %d.', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: invalid row count. */
+					'invalidCount'   => __( 'Invalid rows: %d. Showing the first 50; download the report for all errors.', 'bulk-cogs-editor-for-woocommerce' ),
+					'retrying'       => __( 'Retrying status shortly. Reload this page if your session has expired.', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelling'     => __( 'Cancelling import preparation…', 'bulk-cogs-editor-for-woocommerce' ),
+					'importStopped'  => __( 'Import preparation stopped or this preview was already applied. Upload again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
+					'selection'      => __( 'Only include products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportHelp'     => __( 'Review the products, then download the selected CSV columns. Export does not change costs. Keep this page open until the download is ready.', 'bulk-cogs-editor-for-woocommerce' ),
+					'export'         => __( 'Generate & download CSV', 'bulk-cogs-editor-for-woocommerce' ),
+					'apply'          => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
+					'file'           => __( 'Choose a CSV or XLSX file within the WordPress upload limit.', 'bulk-cogs-editor-for-woocommerce' ),
+					'columns'        => __( 'Select at least one CSV column.', 'bulk-cogs-editor-for-woocommerce' ),
+					'errors'         => __( 'Invalid rows are excluded from this preview and cannot be applied.', 'bulk-cogs-editor-for-woocommerce' ),
+					'report'         => __( 'Download error report', 'bulk-cogs-editor-for-woocommerce' ),
+					'row'            => __( 'Row', 'bulk-cogs-editor-for-woocommerce' ),
+					'status'         => __( 'Status', 'bulk-cogs-editor-for-woocommerce' ),
+					'valid'          => __( 'Ready', 'bulk-cogs-editor-for-woocommerce' ),
+					'exporting'      => __( 'Preparing CSV… Keep this page open.', 'bulk-cogs-editor-for-woocommerce' ),
+					'downloaded'     => __( 'CSV download ready.', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelled'      => __( 'Export cancelled. No file was downloaded.', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancel'         => __( 'Cancel export', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 				'i18n'           => array(
 					/* translators: %d: number of products that will be changed. */
@@ -312,8 +330,11 @@ class DKBCE_Admin_Functions {
 			<section id="dkbce-csv" class="dkbce-section" hidden aria-labelledby="dkbce-csv-title">
 				<h2 id="dkbce-csv-title"><?php esc_html_e( 'CSV action', 'bulk-cogs-editor-for-woocommerce' ); ?></h2>
 				<div class="dkbce-actions">
-					<label for="dkbce-csv-action"><?php esc_html_e( 'Action', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
-					<select id="dkbce-csv-action"><option value="export"><?php esc_html_e( 'Export CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="import"><?php esc_html_e( 'Import CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select>
+					<fieldset class="dkbce-csv-action">
+						<legend class="screen-reader-text"><?php esc_html_e( 'CSV action', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
+						<label><input type="radio" name="dkbce-csv-action" value="export" checked> <?php esc_html_e( 'Export CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
+						<label><input type="radio" name="dkbce-csv-action" value="import"> <?php esc_html_e( 'Import CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
+					</fieldset>
 					<button type="button" class="button-link" id="dkbce-csv-template"><?php esc_html_e( 'Download sample CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				</div>
 				<div id="dkbce-csv-export-options">
@@ -325,8 +346,15 @@ class DKBCE_Admin_Functions {
 					</fieldset>
 				</div>
 				<div id="dkbce-csv-import-options" hidden>
-					<p><?php esc_html_e( 'UTF-8 CSV, up to 1 MB and 1,000 rows. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. Older files without new_cogs can still use cogs. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
-					<label id="dkbce-csv-drop" for="dkbce-csv-file"><?php esc_html_e( 'Drop a CSV file here or choose a file', 'bulk-cogs-editor-for-woocommerce' ); ?><input type="file" id="dkbce-csv-file" accept=".csv,text/csv"></label>
+					<p><?php esc_html_e( 'UTF-8 CSV or XLSX (first worksheet, formulas replaced with values). No plugin row limit. Preview preparation runs in the background; review the paged results before applying. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. Older files without new_cogs can still use cogs. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p>
+					<?php
+					/* translators: %s: site maximum upload size. */
+					printf( esc_html__( 'Maximum upload size: %s (WordPress setting).', 'bulk-cogs-editor-for-woocommerce' ), esc_html( size_format( wp_max_upload_size() ) ) );
+					?>
+					</p>
+					<div id="dkbce-import-progress" hidden><p role="status" aria-live="polite"></p><button type="button" class="button"><?php esc_html_e( 'Cancel preparation', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div>
+					<label id="dkbce-csv-drop" for="dkbce-csv-file"><?php esc_html_e( 'Drop a CSV or XLSX file here or choose a file', 'bulk-cogs-editor-for-woocommerce' ); ?><input type="file" id="dkbce-csv-file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
 				</div>
 				<p><button type="button" class="button button-primary" id="dkbce-csv-preview"><?php esc_html_e( 'Preview CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
 				<div id="dkbce-csv-errors" hidden></div>
@@ -616,22 +644,34 @@ class DKBCE_Admin_Functions {
 		);
 		$csv     = new DKBCE_CSV_Service();
 		if ( 'import' === $mode ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The CSV parser validates each field; text sanitization would corrupt quoted records.
-			$contents = isset( $_POST['csv'] ) && is_string( $_POST['csv'] ) ? wp_unslash( $_POST['csv'] ) : '';
-			$result   = $csv->parse( $contents, $this->service );
-			if ( is_wp_error( $result ) ) {
-				wp_send_json_error( array( 'message' => $result->get_error_message() ), 400 );
+			if ( ! isset( $_FILES['import_file']['name'], $_FILES['import_file']['tmp_name'], $_FILES['import_file']['error'] ) || ! is_string( $_FILES['import_file']['name'] ) || ! is_string( $_FILES['import_file']['tmp_name'] ) || ! is_int( $_FILES['import_file']['error'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'Choose a CSV or XLSX file within the WordPress upload limit.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
-			$preview['operation']['values'] = $result['values'];
-			$preview['errors']              = $result['errors'];
-			$preview['row_ids']             = array_keys( $result['values'] );
-			$preview['total']               = count( $result['values'] );
-		} else {
-			$preview['total'] = $this->service->scan_matches( array_merge( $filters, array( 'count' => true ) ) );
+			try {
+				$imports = new DKBCE_Import_Processor();
+				$upload  = array(
+					'name'     => sanitize_file_name( $_FILES['import_file']['name'] ),
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- PHP upload path is checked with is_uploaded_file before moving to a generated private path.
+					'tmp_name' => $_FILES['import_file']['tmp_name'],
+					'error'    => (int) $_FILES['import_file']['error'],
+				);
+				$job     = $imports->upload( $upload );
+				wp_send_json_success(
+					array(
+						'import_id' => $job['operation_id'],
+						'status'    => $job['status'],
+					)
+				);
+			} catch ( Throwable $exception ) {
+				wp_send_json_error( array( 'message' => $exception->getMessage() ), 400 );
+			}
 		}
-		$token              = wp_generate_uuid4();
-		$result             = $this->csv_preview_page( $preview, $token, 1, $preview['page_size'] );
-		$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], wp_list_pluck( $result['rows'], 'id' ) ) ) );
+		$preview['total'] = $this->service->scan_matches( array_merge( $filters, array( 'count' => true ) ) );
+		$token            = wp_generate_uuid4();
+		$result           = $this->csv_preview_page( $preview, $token, 1, $preview['page_size'] );
+		if ( empty( $preview['operation']['source_id'] ) ) {
+			$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], wp_list_pluck( $result['rows'], 'id' ) ) ) );
+		}
 		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
 		$result['errors'] = $preview['errors'];
 		$report           = $csv->line( array( 'row', 'id', 'sku', 'new_cogs', 'error' ) );
@@ -640,6 +680,102 @@ class DKBCE_Admin_Functions {
 		}
 		$result['error_csv'] = $report;
 		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Poll or cancel the current user's read-only import preparation.
+	 *
+	 * @return void
+	 */
+	public function ajax_import_status() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$id  = isset( $_POST['import_id'] ) && is_string( $_POST['import_id'] ) ? sanitize_text_field( wp_unslash( $_POST['import_id'] ) ) : '';
+		$job = preg_match( '/\A[0-9a-f-]{36}\z/i', $id ) ? $this->store->get( $id ) : false;
+		if ( ! $job || 'import_preview' !== $job['action'] || get_current_user_id() !== (int) $job['user_id'] ) {
+			wp_send_json_error( array( 'message' => __( 'This import preview is unavailable. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		if ( isset( $_POST['cancel'] ) && '1' === $_POST['cancel'] && empty( $job['cancel_requested'] ) && in_array( $job['status'], array( 'pending', 'processing' ), true ) ) {
+			$this->store->request_cancellation( $id );
+			$this->processor->enqueue( $id );
+		}
+		$this->processor->recover_if_stale( $job );
+		$result = array(
+			'import_id' => $id,
+			'status'    => $job['status'],
+			'stage'     => $job['stage'],
+			'processed' => (int) $job['processed'],
+			'message'   => $job['error_summary'],
+			'sheet'     => $job['sheet_name'] ?? '',
+		);
+		if ( 'ready' === $job['status'] ) {
+			if ( get_option( 'dkbce_preview_claim_' . $id ) ) {
+				$result['status'] = 'applied';
+			} else {
+				$preview = array(
+					'user_id'   => $job['user_id'],
+					'filters'   => array(),
+					'operation' => array(
+						'action'    => 'csv_import',
+						'value'     => '',
+						'source_id' => $id,
+					),
+					'total'     => $job['total'],
+					'page_size' => DKBCE_COGS_Service::PREVIEW_PAGE_SIZE,
+					'row_ids'   => array(),
+				);
+				set_transient( 'dkbce_preview_' . $id, $preview, 10 * MINUTE_IN_SECONDS );
+				$result['preview']                  = $this->csv_preview_page( $preview, $id, 1, $preview['page_size'] );
+				$imports                            = new DKBCE_Import_Store();
+				$result['preview']['errors']        = $imports->rows( $id, 50, 0, 0, true );
+				$result['preview']['invalid_count'] = $job['counts']['invalid'];
+				$result['preview']['report_source'] = $id;
+			}
+		}
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Download a bounded page of validation or final import errors.
+	 *
+	 * @return void
+	 */
+	public function ajax_import_report() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$id  = isset( $_POST['import_id'] ) && is_string( $_POST['import_id'] ) ? sanitize_text_field( wp_unslash( $_POST['import_id'] ) ) : '';
+		$job = preg_match( '/\A[0-9a-f-]{36}\z/i', $id ) ? $this->store->get( $id ) : false;
+		if ( ! $job || 'import_preview' !== $job['action'] || get_current_user_id() !== (int) $job['user_id'] || 'ready' !== $job['status'] ) {
+			wp_send_json_error( array( 'message' => __( 'This import report has expired or is not ready.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		$after   = isset( $_POST['after'] ) && is_scalar( $_POST['after'] ) ? absint( wp_unslash( $_POST['after'] ) ) : 0;
+		$results = isset( $_POST['results'] ) && '1' === $_POST['results'];
+		if ( $results ) {
+			$operation = empty( $job['applied_operation'] ) ? false : $this->store->get( $job['applied_operation'] );
+			if ( ! $operation || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors', 'cancelled', 'failed' ), true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Wait for the import to finish before downloading its results.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+			}
+		}
+		$imports = new DKBCE_Import_Store();
+		$rows    = $results ? $imports->results( $id, $after ) : $imports->rows( $id, 100, 0, $after, true );
+		$csv     = new DKBCE_CSV_Service();
+		$output  = 0 === $after ? $csv->line( array( 'row', 'id', 'sku', 'new_cogs', 'error' ) ) : '';
+		foreach ( $rows as $row ) {
+			$message = $results ? ( $row['result_message'] ? $row['result_message'] : __( 'Not processed before the operation stopped.', 'bulk-cogs-editor-for-woocommerce' ) ) : $row['error'];
+			$output .= $csv->line( array( $row['row_no'], $row['product_id'], $row['sku'], $row['value'], $message ) );
+			$after   = (int) $row['row_no'];
+		}
+		wp_send_json_success(
+			array(
+				'csv'   => $output,
+				'after' => $after,
+				'done'  => count( $rows ) < 100,
+			)
+		);
 	}
 
 	/**
@@ -654,7 +790,17 @@ class DKBCE_Admin_Functions {
 	private function csv_preview_page( $preview, $token, $page, $size ) {
 		if ( 'csv_import' === $preview['operation']['action'] ) {
 			$rows = array();
-			foreach ( array_slice( array_keys( $preview['operation']['values'] ), ( $page - 1 ) * $size, $size ) as $id ) {
+			if ( ! empty( $preview['operation']['source_id'] ) ) {
+				$source = $this->store->get( $preview['operation']['source_id'] );
+				if ( ! $source || 'ready' !== $source['status'] ) {
+					wp_send_json_error( array( 'message' => __( 'The import preview has expired. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) ), 410 );
+				}
+				$imports = new DKBCE_Import_Store();
+				$ids     = array_map( 'intval', wp_list_pluck( $imports->rows( $preview['operation']['source_id'], $size, ( $page - 1 ) * $size ), 'product_id' ) );
+			} else {
+				$ids = array_slice( array_keys( $preview['operation']['values'] ), ( $page - 1 ) * $size, $size );
+			}
+			foreach ( $ids as $id ) {
 				$product = wc_get_product( $id );
 				if ( $product ) {
 					$rows[] = $this->service->preview_row( $product, $preview['operation'] );
@@ -841,7 +987,7 @@ class DKBCE_Admin_Functions {
 					$this->csv_preview_page(
 						array(
 							'operation' => $state['operation'],
-							'total'     => count( $state['operation']['values'] ),
+							'total'     => ! empty( $state['operation']['source_id'] ) ? (int) ( $this->store->get( $state['operation']['source_id'] )['selected_total'] ?? $state['total'] ) : count( $state['operation']['values'] ),
 						),
 						$token,
 						$page_no,
@@ -883,8 +1029,10 @@ class DKBCE_Admin_Functions {
 			if ( $page_no < 1 || $page_no > max( 1, (int) ceil( $preview['total'] / $page_size ) ) ) {
 				wp_send_json_error( array( 'message' => __( 'That CSV page is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
-			$result             = $this->csv_preview_page( $preview, $token, $page_no, $page_size );
-			$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], wp_list_pluck( $result['rows'], 'id' ) ) ) );
+			$result = $this->csv_preview_page( $preview, $token, $page_no, $page_size );
+			if ( empty( $preview['operation']['source_id'] ) ) {
+				$preview['row_ids'] = array_values( array_unique( array_merge( $preview['row_ids'], wp_list_pluck( $result['rows'], 'id' ) ) ) );
+			}
 			set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
 			wp_send_json_success( $result );
 		}
@@ -924,6 +1072,7 @@ class DKBCE_Admin_Functions {
 	 * Create an operation after validating the preview token and selected scope.
 	 *
 	 * @return void
+	 * @throws RuntimeException Internally caught and returned as an invalid import selection.
 	 */
 	public function ajax_apply() {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
@@ -948,7 +1097,23 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'Export cannot update products.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 
-		if ( ! add_option( 'dkbce_preview_claim_' . $token, get_current_user_id(), '', false ) ) {
+		$import_job = false;
+		if ( ! empty( $preview['operation']['source_id'] ) ) {
+			$import_job = $this->store->get( $preview['operation']['source_id'] );
+			if ( ! $import_job || 'ready' !== $import_job['status'] || get_current_user_id() !== (int) $import_job['user_id'] ) {
+				wp_send_json_error( array( 'message' => __( 'The import preview is not ready or has expired.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+		}
+
+		if ( ! add_option(
+			'dkbce_preview_claim_' . $token,
+			array(
+				'user_id'    => get_current_user_id(),
+				'created_at' => time(),
+			),
+			'',
+			false
+		) ) {
 			wp_send_json_error( array( 'message' => __( 'This preview has already been used. Run a new preview before applying.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
 
@@ -978,7 +1143,7 @@ class DKBCE_Admin_Functions {
 			$exclude_mode                          = true;
 		}
 		$excluded_ids = array();
-		if ( $selected_only && $exclude_mode && ! $range_mode ) {
+		if ( $selected_only && $exclude_mode && ! $range_mode && ! $import_job ) {
 			$raw_excluded = isset( $_POST['excluded_ids'] ) && is_string( $_POST['excluded_ids'] ) ? json_decode( wp_unslash( $_POST['excluded_ids'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON IDs are strictly validated below.
 			if ( ! is_array( $raw_excluded ) || count( $raw_excluded ) > count( $preview['row_ids'] ) ) {
 				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
@@ -995,8 +1160,30 @@ class DKBCE_Admin_Functions {
 			}
 		}
 
+		if ( $import_job ) {
+			try {
+				$imports = new DKBCE_Import_Store();
+				if ( $selected_only ) {
+					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every JSON ID is checked against private staged rows by exclude().
+					$excluded = isset( $_POST['excluded_ids'] ) && is_string( $_POST['excluded_ids'] ) ? json_decode( wp_unslash( $_POST['excluded_ids'] ), true ) : null;
+					if ( ! $exclude_mode || $range_mode || ! is_array( $excluded ) ) {
+						throw new RuntimeException( esc_html__( 'Choose import products using the preview checkboxes.', 'bulk-cogs-editor-for-woocommerce' ) );
+					}
+					$imports->exclude( $import_job['operation_id'], array_unique( $excluded, SORT_REGULAR ) );
+				}
+				$counts = $imports->counts( $import_job['operation_id'] );
+				if ( ! $counts['valid'] ) {
+					throw new RuntimeException( esc_html__( 'Select at least one valid product to import.', 'bulk-cogs-editor-for-woocommerce' ) );
+				}
+			} catch ( Throwable $exception ) {
+				wp_send_json_error( array( 'message' => $exception->getMessage() ), 400 );
+			}
+			$selected_only = false;
+			$exclude_mode  = false;
+		}
+
 		$csv_ids = null;
-		if ( 'csv_import' === $preview['operation']['action'] ) {
+		if ( 'csv_import' === $preview['operation']['action'] && ! $import_job ) {
 			$csv_ids = array_keys( $preview['operation']['values'] );
 			if ( $selected_only ) {
 				if ( ! $exclude_mode || $range_mode ) {
@@ -1076,6 +1263,12 @@ class DKBCE_Admin_Functions {
 		}
 
 		$this->store->save( $state );
+		if ( $import_job ) {
+			$import_job['applied_operation'] = $operation_id;
+			$import_job['selected_total']    = $counts['valid'];
+			$this->store->save( $import_job );
+			delete_user_meta( get_current_user_id(), 'dkbce_latest_import', $import_job['operation_id'] );
+		}
 		update_user_meta( get_current_user_id(), 'dkbce_latest_operation', $operation_id );
 
 		if ( ! $this->processor->enqueue( $operation_id ) ) {
@@ -1192,6 +1385,9 @@ class DKBCE_Admin_Functions {
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
+		if ( ! empty( $preview['operation']['source_id'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'Choose import products using the preview checkboxes.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
 		$direction = isset( $_POST['direction'] ) && is_string( $_POST['direction'] ) ? sanitize_key( wp_unslash( $_POST['direction'] ) ) : '';
 		$count     = isset( $_POST['count'] ) && is_string( $_POST['count'] ) ? sanitize_text_field( wp_unslash( $_POST['count'] ) ) : '';
 		if ( ! in_array( $direction, array( 'first', 'last' ), true ) || ! ctype_digit( $count ) || (int) $count < 1 || (int) $count > (int) $preview['total'] ) {
@@ -1233,6 +1429,7 @@ class DKBCE_Admin_Functions {
 	private function public_operation( $state ) {
 		return array(
 			'csv_report'       => $state['csv_report'] ?? '',
+			'import_source'    => $state['operation']['source_id'] ?? '',
 			'operation_id'     => $state['operation_id'],
 			'status'           => $state['status'],
 			'stage'            => $state['stage'],
