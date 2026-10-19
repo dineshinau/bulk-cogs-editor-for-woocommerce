@@ -101,7 +101,7 @@ After confirming an update in the editor, run this command from your WordPress d
 
 To check Action Scheduler queue status, run:
 
-`wp action-scheduler status`
+`wp action-scheduler status --group=bulk-cogs-editor`
 
 This status report covers the site's full Action Scheduler queue. It does not filter by the Bulk COGS Editor group.
 
