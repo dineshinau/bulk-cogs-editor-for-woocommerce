@@ -119,22 +119,43 @@ class DKBCE_Bulk_Processor {
 		}
 		$this->last_cancellation_check = 0.0;
 
+		$initial_state = false;
 		try {
+			$initial_state = $this->store->get( $operation_id );
 			$this->process_operation_locked( $operation_id );
 		} finally {
-			$this->release_operation_lock( $operation_id, $lock_token );
+			try {
+				// Read counters while locked so the next worker cannot advance them.
+				$state = $this->store->get( $operation_id );
+			} finally {
+				$this->release_operation_lock( $operation_id, $lock_token );
+			}
 			$finished_at = microtime( true );
 			$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
-			dkbce_wc_log(
-				sprintf(
-					'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds).',
-					$operation_id,
-					$runner,
-					$started_at,
-					$finished_at,
-					$finished_at - $started_at
-				)
+			$processed   = isset( $state['processed'] ) ? (int) $state['processed'] : null;
+			$total       = isset( $state['total'] ) ? (int) $state['total'] : null;
+			$stage       = $state['stage'] ?? 'unknown';
+			$remaining   = 'processing' === $stage && null !== $total && null !== $processed ? max( 0, $total - $processed ) : 'unknown';
+			// Persisted counter growth includes any outcomes recovered on retry.
+			$processed_delta = null !== $processed && isset( $initial_state['processed'] ) ? max( 0, $processed - (int) $initial_state['processed'] ) : 'unknown';
+			$message         = sprintf(
+				'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds, processed: %s, remaining: %s, batch_size: %s, processed_delta: %s, total: %s, stage: %s).',
+				$operation_id,
+				$runner,
+				$started_at,
+				$finished_at,
+				$finished_at - $started_at,
+				$processed ?? 'unknown',
+				$remaining,
+				$state['batch_size'] ?? 'unknown',
+				$processed_delta,
+				$total ?? 'unknown',
+				$stage
 			);
+			dkbce_wc_log( $message );
+			if ( 'WP-CLI' === $runner && class_exists( 'WP_CLI' ) ) {
+				WP_CLI::log( $message );
+			}
 		}
 	}
 
