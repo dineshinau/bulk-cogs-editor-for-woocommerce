@@ -99,6 +99,12 @@ After confirming an update in the editor, run this command from your WordPress d
 
 `wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
 
+To check Action Scheduler queue status, run:
+
+`wp action-scheduler status`
+
+This status report covers the site's full Action Scheduler queue. It does not filter by the Bulk COGS Editor group.
+
 The command processes due actions for all Bulk COGS Editor operations on that site, not just the current user's update. It exits when no matching actions are due; it does not wait for future updates or delayed retries. The batch size here counts scheduled actions, not products. Product batches and the worker's cooperative time budget keep their existing limits.
 
 If Action Scheduler reports too many concurrent batches, let the current worker finish and retry the command. Keep the normal queue runner available for other WooCommerce jobs and delayed retries. A host-approved cron can invoke the same command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
