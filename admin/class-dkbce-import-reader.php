@@ -130,6 +130,23 @@ class DKBCE_Import_Reader {
 		if ( empty( $state['sheet'] ) ) {
 			throw new RuntimeException( esc_html__( 'The first XLSX sheet is not a readable worksheet.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
+		$worksheet = $this->xml( $state['file'], $state['sheet'] );
+		try {
+			while ( $this->read( $worksheet ) ) {
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Native XMLReader properties.
+				if ( XMLReader::ELEMENT !== $worksheet->nodeType || 'dimension' !== $worksheet->localName ) {
+					continue;
+				}
+				$dimension = $worksheet->getAttribute( 'ref' );
+				if ( preg_match( '/\A[A-Z]+[1-9][0-9]*(?::[A-Z]+([1-9][0-9]*))?\z/', $dimension, $match ) ) {
+					$last_row                 = isset( $match[1] ) ? (int) $match[1] : (int) preg_replace( '/\A[A-Z]+/', '', $dimension );
+					$state['estimated_total'] = max( 0, $last_row - 1 );
+				}
+				break;
+			}
+		} finally {
+			$worksheet->close();
+		}
 		$state['stage'] = empty( $state['strings'] ) ? 'import_rows' : 'import_strings';
 	}
 

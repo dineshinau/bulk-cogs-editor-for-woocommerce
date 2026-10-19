@@ -261,7 +261,12 @@
 	async function pollImport() {
 		const panel = $( '#dkbce-import-progress' );
 		panel.hidden = false;
-		const status = panel.querySelector( 'p' );
+		const status = $( '#dkbce-import-status' );
+		const count = $( '#dkbce-import-count' );
+		const progressTrack = $( '#dkbce-import-progress-track' );
+		const progressBar = $( '#dkbce-import-progress-bar' );
+		const percentage = $( '#dkbce-import-percentage' );
+		const time = $( '#dkbce-import-time' );
 		const cancel = panel.querySelector( 'button' );
 		cancel.hidden = false;
 		cancel.disabled = state.importCancel;
@@ -269,10 +274,38 @@
 		updateOperationControls();
 		try {
 			const data = await request( 'import_status', { import_id: state.importId, cancel: state.importCancel ? '1' : '0' } );
+			const processed = Number( data.processed ) || 0;
+			const ratio = null === data.progress_ratio || undefined === data.progress_ratio ? null : Math.max( 0, Math.min( 1, Number( data.progress_ratio ) ) );
+			const total = Number( data.total_rows ) || 0;
+			count.textContent = total > 0
+				? DKBCE.csv.progressRows.replace( '%1$s', processed.toLocaleString() ).replace( '%2$s', total.toLocaleString() )
+				: DKBCE.csv.progressUnknown.replace( '%s', processed.toLocaleString() );
+			if ( null === ratio ) {
+				progressBar.removeAttribute( 'value' );
+				percentage.textContent = '';
+			} else {
+				const percent = Math.floor( ratio * 100 );
+				progressBar.value = percent;
+				percentage.textContent = percent + '%';
+			}
+			progressTrack.classList.toggle( 'is-active', [ 'pending', 'processing' ].includes( data.status ) );
+			const elapsed = Number( data.elapsed_seconds ) || 0;
+			const remaining = null !== ratio && ratio > 0 && ratio < 1
+				? formatDuration( elapsed * ( 1 - ratio ) / ratio )
+				: ratio >= 1 ? formatDuration( 0 ) : DKBCE.i18n.estimatingTime;
+			time.replaceChildren();
+			[ [ DKBCE.i18n.elapsedTime, formatDuration( elapsed ) ], [ DKBCE.i18n.remainingTime, remaining ] ].forEach( ( [ template, duration ] ) => {
+				const parts = template.split( '%s' );
+				const value = document.createElement( 'strong' );
+				value.className = 'dkbce-duration';
+				value.textContent = duration;
+				time.append( document.createTextNode( parts[ 0 ] ), value, document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+			} );
 			if ( [ 'pending', 'processing' ].includes( data.status ) ) {
-				status.textContent = ( state.importCancel ? DKBCE.csv.cancelling : DKBCE.csv.preparing ) + ' ' +
-					( data.stage === 'import_strings' ? DKBCE.csv.readingStrings : DKBCE.csv.processed.replace( '%d', data.processed ) ) +
-					( data.sheet ? ' — ' + data.sheet : '' );
+				status.textContent = state.importCancel
+					? DKBCE.csv.cancelling
+					: data.stage === 'import_strings' ? DKBCE.csv.readingStrings : DKBCE.csv.preparing;
+				status.textContent += data.sheet ? ' — ' + data.sheet : '';
 				window.setTimeout( pollImport, 2000 );
 				return;
 			}

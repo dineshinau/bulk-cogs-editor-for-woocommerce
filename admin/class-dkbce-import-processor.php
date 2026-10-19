@@ -74,6 +74,7 @@ class DKBCE_Import_Processor {
 			'offset'           => 0,
 			'processed'        => 0,
 			'total'            => 0,
+			'estimated_total'  => 0,
 			'batch_size'       => 250,
 			'created_at'       => time(),
 			'updated_at'       => time(),
