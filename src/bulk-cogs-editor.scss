@@ -435,3 +435,32 @@ $border: #dce6f5;
 @media (prefers-reduced-motion: reduce) {
 	.dkbce-progress-track.is-active .dkbce-progress-highlight { animation: none; }
 }
+
+.dkbce-mode-switch {
+	display: flex;
+	gap: 8px;
+	padding-block: 4px;
+}
+
+.dkbce-csv-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 20px;
+	legend { margin-bottom: 8px; font-weight: 600; }
+}
+
+#dkbce-csv-drop {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px;
+	padding: 20px;
+	border: 1px dashed #8c8f94;
+	background: #f6f7f7;
+}
+
+#dkbce-csv-errors {
+	border-inline-start: 4px solid #d63638;
+	padding: 4px 16px;
+	ul { max-height: 220px; overflow: auto; }
+}

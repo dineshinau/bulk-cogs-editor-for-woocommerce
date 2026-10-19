@@ -229,6 +229,26 @@ class DKBCE_COGS_Service {
 	 * @return array|WP_Error
 	 */
 	public function calculate( $product, $operation ) {
+		if ( 'csv_import' === $operation['action'] ) {
+			$id = $product->get_id();
+			if ( ! isset( $operation['values'][ $id ] ) ) {
+				return new WP_Error( 'csv_target', __( 'This product is not in the validated CSV.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			return $this->calculate(
+				$product,
+				array(
+					'action' => 'set',
+					'value'  => $operation['values'][ $id ],
+				)
+			);
+		}
+		if ( 'csv_export' === $operation['action'] ) {
+			return array(
+				'current' => $product->get_cogs_value(),
+				'new'     => $product->get_cogs_value(),
+				'status'  => 'success',
+			);
+		}
 		$current = $product->get_cogs_value();
 		$action  = $operation['action'];
 

@@ -523,6 +523,22 @@ class DKBCE_Bulk_Processor {
 			$state['cancelled_note'] = __( 'Already processed products remain changed; no rollback was performed.', 'bulk-cogs-editor-for-woocommerce' );
 		}
 
+		if ( 'csv_import' === $state['operation']['action'] ) {
+			$csv                 = new DKBCE_CSV_Service();
+			$state['csv_report'] = $csv->line( array( 'id', 'cogs', 'status', 'error' ) );
+			for ( $number = 1; $number <= $state['snapshot_chunks']; ++$number ) {
+				$chunk = $this->store->get_chunk( $state['operation_id'], $number );
+				foreach ( $chunk['ids'] ?? array() as $id ) {
+					$result = $chunk['results'][ $id ] ?? array(
+						'status'  => 'not_processed',
+						'message' => __( 'Not processed before the operation stopped.', 'bulk-cogs-editor-for-woocommerce' ),
+					);
+					if ( 'success' !== $result['status'] ) {
+						$state['csv_report'] .= $csv->line( array( $id, $state['operation']['values'][ $id ], $result['status'], $result['message'] ) );
+					}
+				}
+			}
+		}
 		$this->store->save( $state );
 		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'] );
 		$duration = isset( $state['requested_at'] ) ? microtime( true ) - $state['requested_at'] : 0;
@@ -591,6 +607,12 @@ class DKBCE_Bulk_Processor {
 				);
 			}
 
+			if ( 'csv_export' === $state['operation']['action'] || ( 'csv_import' === $state['operation']['action'] && ! user_can( $state['user_id'], 'edit_post', $product_id ) ) ) {
+				return array(
+					'status'  => 'failed',
+					'message' => __( 'This operation cannot update this product.', 'bulk-cogs-editor-for-woocommerce' ),
+				);
+			}
 			$result = $this->service->calculate( $product, $state['operation'] );
 			if ( is_wp_error( $result ) ) {
 				dkbce_wc_log( 'Product could not be calculated for product ID: ' . $product_id );
