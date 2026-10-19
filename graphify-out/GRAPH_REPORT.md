@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-19)
 
 ## Corpus Check
-- 24 files · ~34,091 words
+- 24 files · ~34,546 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 280 nodes · 524 edges · 17 communities (7 shown, 10 thin omitted)
+- 280 nodes · 525 edges · 18 communities (8 shown, 10 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 43 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `19a13387`
+- Built from commit: `81c81638`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -23,8 +23,9 @@
 - ref_node_process
 - DKBCE_Import_Store
 - blueprint.json
-- ref_anthropic_ai_sdk
 - scripts
+- ref_anthropic_ai_sdk
+- package.json
 - DKBCE_Admin_Functions
 - bulk-cogs-editor.js
 - DKBCE_COGS_Service
@@ -52,7 +53,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (17 total, 10 thin omitted)
+## Communities (18 total, 10 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.16
@@ -66,9 +67,13 @@ Nodes (31): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, r
 Cohesion: 0.22
 Nodes (8): features, networking, landingPage, preferredVersions, php, wp, $schema, steps
 
-### Community 10 - "scripts"
-Cohesion: 0.06
-Nodes (32): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+24 more)
+### Community 8 - "scripts"
+Cohesion: 0.15
+Nodes (13): scripts, build, check-engines, make-pot, npm_install, packages-update, phpcbf, phpcs (+5 more)
+
+### Community 10 - "package.json"
+Cohesion: 0.10
+Nodes (19): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, version (+11 more)
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.16
