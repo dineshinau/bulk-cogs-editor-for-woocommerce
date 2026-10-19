@@ -286,7 +286,7 @@ $border: #dce6f5;
 @keyframes dkbce-spin { to { transform: rotate(360deg); } }
 .dkbce-refresh-notice { margin-top: 16px; }
 .dkbce-dialog { position: fixed; z-index: 100000; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(14 25 50 / 45%); }
-.dkbce-dialog-panel { box-sizing: border-box; width: min(520px, 100%); padding: 24px; border-radius: 12px; background: #fff; box-shadow: 0 10px 40px rgb(0 0 0 / 20%); h2 { margin-top: 0; } .dkbce-actions { justify-content: flex-end; } }
+.dkbce-dialog-panel { box-sizing: border-box; width: min(520px, 100%); padding: 24px; border-radius: 12px; background: #fff; box-shadow: 0 10px 40px rgb(0 0 0 / 20%); h2 { margin-top: 0; } > label { display: block; margin: 18px 0; } > #dkbce-confirm-export-label[hidden] { display: none; } .dkbce-actions { justify-content: flex-end; } }
 @media (max-width: 1400px) { .dkbce-section-heading { flex-wrap: wrap; } .dkbce-action-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
 	.dkbce-operation-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -37,7 +37,9 @@ class DKBCE_Import_Processor {
 		$rows->install();
 		$id = wp_generate_uuid4();
 		// Keep originals outside the uploads directory; only authorized AJAX returns staged data.
-		$path = wp_tempnam( 'dkbce-' . $id, sys_get_temp_dir() );
+		// Respect WordPress's configured temporary directory; PHP's upload temp
+		// directory can be on a separate mount where moving files is not allowed.
+		$path = wp_tempnam( 'dkbce-' . $id, get_temp_dir() );
 		if ( ! $path ) {
 			throw new RuntimeException( esc_html__( 'A private temporary import file could not be created.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
