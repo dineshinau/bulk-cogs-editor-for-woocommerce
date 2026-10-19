@@ -146,11 +146,12 @@ class DKBCE_COGS_Service {
 	/**
 	 * Validate an operation type and value.
 	 *
-	 * @param mixed $action Raw action key.
-	 * @param mixed $raw_value Raw amount.
+	 * @param mixed    $action Raw action key.
+	 * @param mixed    $raw_value Raw amount.
+	 * @param int|null $precision Optional decimal precision override.
 	 * @return array|WP_Error
 	 */
-	public function validate_action( $action, $raw_value ) {
+	public function validate_action( $action, $raw_value, $precision = null ) {
 		$action  = is_string( $action ) ? sanitize_key( wp_unslash( $action ) ) : '';
 		$actions = array( 'set', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'clear' );
 		if ( ! in_array( $action, $actions, true ) ) {
@@ -164,7 +165,7 @@ class DKBCE_COGS_Service {
 			);
 		}
 
-		$value = $this->validate_optional_amount( $raw_value );
+		$value = $this->validate_optional_amount( $raw_value, $precision );
 		if ( is_wp_error( $value ) || '' === $value ) {
 			return new WP_Error( 'invalid_amount', __( 'Enter a valid non-negative number.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
@@ -180,12 +181,13 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Parse a non-negative decimal string using store precision.
+	 * Parse a non-negative decimal string using store precision by default.
 	 *
-	 * @param mixed $raw Raw value.
+	 * @param mixed    $raw Raw value.
+	 * @param int|null $precision Optional decimal precision override.
 	 * @return string|WP_Error
 	 */
-	private function validate_optional_amount( $raw ) {
+	private function validate_optional_amount( $raw, $precision = null ) {
 		if ( '' === $raw || null === $raw ) {
 			return '';
 		}
@@ -198,13 +200,13 @@ class DKBCE_COGS_Service {
 			return new WP_Error( 'invalid_amount', 'invalid' );
 		}
 
-		$precision = wc_get_price_decimals();
-		$parts     = explode( '.', $value );
-		if ( isset( $parts[1] ) && strlen( $parts[1] ) > $precision ) {
+		$decimal_precision = null === $precision ? wc_get_price_decimals() : min( 6, absint( $precision ) );
+		$parts             = explode( '.', $value );
+		if ( isset( $parts[1] ) && strlen( $parts[1] ) > $decimal_precision ) {
 			return new WP_Error( 'invalid_precision', 'invalid' );
 		}
 
-		return wc_format_decimal( $value, $precision, false );
+		return wc_format_decimal( $value, $decimal_precision, false );
 	}
 
 	/**
@@ -242,8 +244,9 @@ class DKBCE_COGS_Service {
 			return $this->calculate(
 				$product,
 				array(
-					'action' => 'set',
-					'value'  => $operation['values'][ $id ],
+					'action'             => 'set',
+					'value'              => $operation['values'][ $id ],
+					'preserve_precision' => true,
 				)
 			);
 		}
@@ -295,7 +298,8 @@ class DKBCE_COGS_Service {
 				return new WP_Error( 'invalid_action', __( 'Choose a supported COGS action.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		$new_value = wc_format_decimal( (string) round( $new_value, wc_get_price_decimals(), PHP_ROUND_HALF_UP ), wc_get_price_decimals(), false );
+		$precision = ! empty( $operation['preserve_precision'] ) ? 6 : wc_get_price_decimals();
+		$new_value = wc_format_decimal( (string) round( $new_value, $precision, PHP_ROUND_HALF_UP ), $precision, false );
 		if ( strlen( strtok( $new_value, '.' ) ) > strlen( self::MAX_AMOUNT ) ) {
 			return new WP_Error( 'amount_too_large', __( 'The calculated value exceeds the supported monetary limit.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}

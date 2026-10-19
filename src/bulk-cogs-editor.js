@@ -283,7 +283,11 @@
 				setNotice( '', 'info' );
 				showImportPreview( data.preview );
 			} else {
-				status.textContent = data.message || DKBCE.csv.importStopped;
+				const message = data.message || DKBCE.csv.importStopped;
+				status.textContent = message;
+				if ( [ 'failed', 'expired' ].includes( data.status ) ) {
+					setNotice( message, 'error' );
+				}
 			}
 			updateOperationControls();
 		} catch ( error ) {
@@ -291,6 +295,7 @@
 				state.importPreparing = false;
 				cancel.hidden = true;
 				status.textContent = error.message;
+				setNotice( error.message, 'error' );
 				updateOperationControls();
 				return;
 			}

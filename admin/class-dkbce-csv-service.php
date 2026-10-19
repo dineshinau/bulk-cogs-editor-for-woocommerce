@@ -81,11 +81,12 @@ class DKBCE_CSV_Service {
 			$row['error'] = __( 'Product is missing, ambiguous, inaccessible, or ID and SKU disagree.', 'bulk-cogs-editor-for-woocommerce' );
 		} else {
 			$row['id'] = $product->get_id();
-			$action    = $service->validate_action( 'set', $row['value'] );
-			if ( '' === $row['value'] || ! preg_match( '/\A[0-9]+(?:\.[0-9]+)?\z/', $row['value'] ) || is_wp_error( $action ) ) {
+			$action    = $service->validate_action( 'set', $row['value'], 6 );
+			if ( '' === $row['value'] || is_wp_error( $action ) ) {
 				$row['error'] = __( 'Enter a non-negative decimal COGS value. Blank values are not imported.', 'bulk-cogs-editor-for-woocommerce' );
 			} else {
-				$row['value'] = $action['value'];
+				// COGS can retain more precision than the store's currency display setting.
+				$row['value'] = wc_format_decimal( $action['value'], false, true );
 			}
 		}
 		return $row;
