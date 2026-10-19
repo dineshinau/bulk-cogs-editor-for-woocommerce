@@ -318,20 +318,60 @@
 		let after = 0;
 		let count = 0;
 		let cancelled = false;
+		const total = state.selectionRange ? state.selectionRange.count : ( $( '#dkbce-selected-only' ).checked ? Math.max( 0, state.count - state.excludedIds.size ) : state.count );
+		const startedAt = window.performance.now();
+		const heading = document.createElement( 'h3' );
+		heading.textContent = DKBCE.csv.exporting;
 		const status = document.createElement( 'p' );
+		status.className = 'dkbce-progress-count';
+		const track = document.createElement( 'div' );
+		track.className = 'dkbce-progress-track is-active';
+		const progress = document.createElement( 'progress' );
+		progress.max = Math.max( 1, total );
+		progress.setAttribute( 'aria-label', DKBCE.i18n.progressLabel );
+		const highlight = document.createElement( 'span' );
+		highlight.className = 'dkbce-progress-highlight';
+		highlight.setAttribute( 'aria-hidden', 'true' );
+		const percentage = document.createElement( 'span' );
+		percentage.className = 'dkbce-progress-percentage';
+		percentage.setAttribute( 'aria-hidden', 'true' );
+		track.append( progress, highlight, percentage );
+		const time = document.createElement( 'p' );
+		time.className = 'dkbce-operation-time';
+		time.setAttribute( 'aria-live', 'off' );
 		const cancel = document.createElement( 'button' );
 		cancel.type = 'button';
 		cancel.className = 'button';
 		cancel.textContent = DKBCE.csv.cancel;
 		cancel.addEventListener( 'click', () => { cancelled = true; cancel.disabled = true; } );
-		operationPanel.replaceChildren( status, cancel );
+		operationPanel.replaceChildren( heading, status, track, time, cancel );
 		operationPanel.hidden = false;
+		const renderProgress = ( done = false ) => {
+			const elapsed = Math.floor( ( window.performance.now() - startedAt ) / 1000 );
+			const percent = done ? 100 : Math.floor( Math.min( 100, ( count / Math.max( 1, total ) ) * 100 ) );
+			status.textContent = DKBCE.i18n.progressSummary
+				.replace( '%1$s', count.toLocaleString() )
+				.replace( '%2$s', total.toLocaleString() );
+			progress.value = done ? progress.max : Math.min( count, progress.max );
+			highlight.style.width = percent + '%';
+			percentage.textContent = percent + '%';
+			const remaining = done ? formatDuration( 0 ) : count > 0 ? formatDuration( ( elapsed / count ) * Math.max( 0, total - count ) ) : DKBCE.i18n.estimatingTime;
+			time.replaceChildren();
+			[ [ DKBCE.i18n.elapsedTime, formatDuration( elapsed ) ], [ DKBCE.i18n.remainingTime, remaining ] ].forEach( ( [ template, duration ] ) => {
+				const parts = template.split( '%s' );
+				const value = document.createElement( 'strong' );
+				value.className = 'dkbce-duration';
+				value.textContent = duration;
+				time.append( document.createTextNode( parts[ 0 ] ), value, document.createTextNode( parts.slice( 1 ).join( '%s' ) ) );
+			} );
+		};
+		renderProgress();
 		const excluded = $( '#dkbce-selected-only' ).checked ? Array.from( state.excludedIds ) : [];
 		const rangeToken = state.selectionRange ? state.selectionRange.token : '';
 		setBusy( true, applyButton, DKBCE.csv.exporting );
+		const timer = window.setInterval( () => renderProgress(), 1000 );
 		try {
 			while ( ! cancelled ) {
-				status.textContent = DKBCE.csv.exporting + ' ' + count;
 				const batch = await request( 'csv_export', { preview_id: state.previewId, columns, after, excluded_ids: JSON.stringify( excluded ), range_token: rangeToken } );
 				if ( cancelled ) {
 					break;
@@ -339,19 +379,21 @@
 				parts.push( batch.csv );
 				count += batch.count;
 				after = batch.after;
+				renderProgress( batch.done );
 				if ( batch.done ) {
 					downloadCSV( parts, 'product-cogs.csv' );
-					status.textContent = DKBCE.csv.downloaded + ' ' + count;
+					heading.textContent = DKBCE.csv.downloaded;
 					break;
 				}
 			}
 			if ( cancelled ) {
-				status.textContent = DKBCE.csv.cancelled;
+				heading.textContent = DKBCE.csv.cancelled;
 			}
 		} catch ( error ) {
-			status.textContent = error.message;
+			heading.textContent = error.message;
 			setNotice( error.message, 'error' );
 		} finally {
+			window.clearInterval( timer );
 			cancel.remove();
 			setBusy( false, applyButton );
 		}
@@ -1196,27 +1238,17 @@
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
 		}
-		const exportLabel = $( '#dkbce-confirm-export-label' );
-		const exportCheck = $( '#dkbce-confirm-export' );
 		const confirmButton = $( '#dkbce-confirm-apply' );
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
-		exportLabel.hidden = ! exporting;
-		exportLabel.lastChild.textContent = ' ' + DKBCE.i18n.confirmExportLabel;
-		exportCheck.checked = false;
-		confirmButton.disabled = exporting;
-		confirmButton.textContent = exporting ? DKBCE.i18n.confirmExportButton : DKBCE.i18n.confirmButton;
+		confirmButton.disabled = false;
+		confirmButton.textContent = exporting ? DKBCE.csv.export : DKBCE.i18n.confirmButton;
 		$( '#dkbce-confirm-text' ).textContent = ( exporting ? DKBCE.i18n.confirmExportText : DKBCE.i18n.confirmText ).replace( '%d', String( count ) );
 		modal.hidden = false;
-		( exporting ? exportCheck : $( '#dkbce-confirm-cancel' ) ).focus();
+		$( '#dkbce-confirm-cancel' ).focus();
 	}
-
-	$( '#dkbce-confirm-export' ).addEventListener( 'change', ( event ) => {
-		$( '#dkbce-confirm-apply' ).disabled = ! event.target.checked;
-	} );
 
 	function confirmAction() {
 		if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
-			if ( ! $( '#dkbce-confirm-export' ).checked ) { return; }
 			modal.hidden = true;
 			exportCSV();
 			return;
