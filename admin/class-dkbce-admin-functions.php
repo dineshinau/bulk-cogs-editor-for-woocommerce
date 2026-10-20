@@ -642,6 +642,10 @@ class DKBCE_Admin_Functions {
 		if ( is_wp_error( $filters ) ) {
 			wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
 		}
+		if ( 'export' === $mode && ! empty( $filters['search'] ) ) {
+			// Freeze matches for this authorized preview token; a new preview resolves a fresh set.
+			$filters['search_ids'] = $this->service->search_product_ids( $filters['search'] );
+		}
 		$preview = array(
 			'user_id'   => get_current_user_id(),
 			'filters'   => $filters,
@@ -960,6 +964,10 @@ class DKBCE_Admin_Functions {
 
 		$filters              = $request['filters'] ?? array();
 		$filters['operation'] = $request['operation'] ?? array();
+		if ( ! empty( $filters['search'] ) ) {
+			// Preview pages reuse matches for this token; starting a new preview refreshes them.
+			$filters['search_ids'] = $this->service->search_product_ids( $filters['search'] );
+		}
 		$filters['page_no']   = 1;
 		$filters['page_size'] = $page_size;
 
@@ -969,7 +977,7 @@ class DKBCE_Admin_Functions {
 			'dkbce_preview_' . $token,
 			array(
 				'user_id'   => get_current_user_id(),
-				'filters'   => $request['filters'],
+				'filters'   => $filters,
 				'operation' => $request['operation'],
 				'total'     => $result['count'],
 				'page_size' => $result['page_size'],
@@ -1263,6 +1271,8 @@ class DKBCE_Admin_Functions {
 		if ( $selected_only && $exclude_mode ) {
 			$state['filters']['excluded_ids'] = $excluded_ids;
 		}
+		// The worker persists its snapshot search IDs separately from operation progress.
+		unset( $state['filters']['search_ids'] );
 
 		if ( $selected_only && ! $exclude_mode ) {
 			$raw_selected_ids = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each selected ID is validated as digits and converted with absint below.
@@ -1295,6 +1305,9 @@ class DKBCE_Admin_Functions {
 		}
 
 		$this->store->save( $state );
+		if ( isset( $preview['filters']['search_ids'] ) ) {
+			$this->store->save_search_ids( $operation_id, $preview['filters']['search_ids'] );
+		}
 		if ( $import_job ) {
 			$import_job['applied_operation'] = $operation_id;
 			$import_job['selected_total']    = $counts['valid'];

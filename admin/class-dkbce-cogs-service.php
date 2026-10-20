@@ -20,6 +20,13 @@ class DKBCE_COGS_Service {
 	const MAX_AMOUNT            = '999999999999';
 
 	/**
+	 * Search results reused during the current request.
+	 *
+	 * @var array
+	 */
+	private $search_cache = array();
+
+	/**
 	 * Whether WooCommerce COGS is available and enabled.
 	 *
 	 * @return bool
@@ -381,8 +388,12 @@ class DKBCE_COGS_Service {
 	 * @return array
 	 */
 	public function search_product_ids( $search ) {
-		$data_store = WC_Data_Store::load( 'product' );
-		return array_map( 'absint', $data_store->search_products( $search, '', true, true ) );
+		if ( array_key_exists( $search, $this->search_cache ) ) {
+			return $this->search_cache[ $search ];
+		}
+		$data_store                    = WC_Data_Store::load( 'product' );
+		$this->search_cache[ $search ] = array_map( 'absint', $data_store->search_products( $search, '', true, true ) );
+		return $this->search_cache[ $search ];
 	}
 
 	/**
