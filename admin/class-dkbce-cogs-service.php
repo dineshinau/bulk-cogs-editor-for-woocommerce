@@ -396,10 +396,10 @@ class DKBCE_COGS_Service {
 		$args = array(
 			'type'     => $this->selected_types( $filters ),
 			'return'   => 'ids',
-			'limit'    => -1,
+			'limit'    => 1,
 			'orderby'  => 'ID',
 			'order'    => 'ASC',
-			'paginate' => false,
+			'paginate' => true,
 		);
 
 		// Exclusions are validated against the user's preview before snapshotting.
@@ -447,10 +447,9 @@ class DKBCE_COGS_Service {
 		}
 
 		$total_count = 0;
-
-		if ( empty( $filters['get_ids'] ) ) {
-			$ids         = wc_get_products( $args );
-			$total_count = is_array( $ids ) ? count( $ids ) : 0;
+		if ( ! empty( $filters['count'] ) ) {
+			$count_result = wc_get_products( $args );
+			$total_count  = is_object( $count_result ) && isset( $count_result->total ) ? (int) $count_result->total : 0;
 		}
 
 		if ( $filters['count'] ?? false ) {
@@ -483,18 +482,21 @@ class DKBCE_COGS_Service {
 			$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
 		}
 
-		$args['limit'] = $page_size;
-		$args['page']  = $page_no;
+		$args['limit']    = $page_size;
+		$args['page']     = $page_no;
+		$args['paginate'] = empty( $filters['get_ids'] );
 		if ( isset( $filters['after_id'] ) && ! empty( $filters['get_ids'] ) ) {
 			$args['dkbce_after_id'] = absint( $filters['after_id'] );
 			$args['page']           = 1;
 		}
 
-		$product_ids = wc_get_products( $args );
+		$page_result = wc_get_products( $args );
 
 		if ( $filters['get_ids'] ?? false ) {
-			return $product_ids;
+			return $page_result;
 		}
+		$total_count = is_object( $page_result ) && isset( $page_result->total ) ? (int) $page_result->total : $total_count;
+		$product_ids = is_object( $page_result ) && isset( $page_result->products ) ? $page_result->products : array();
 
 		$rows      = array();
 		$operation = $filters['operation'] ?? array();
@@ -506,8 +508,8 @@ class DKBCE_COGS_Service {
 			}
 			$rows[] = $this->preview_row( $product, $operation );
 			unset( $product );
-			$this->free_memory();
 		}
+		$this->free_memory();
 
 		return array(
 			'count'       => $total_count,
