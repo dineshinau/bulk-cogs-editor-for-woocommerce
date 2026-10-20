@@ -132,6 +132,31 @@ class DKBCE_CSV_Service {
 	 */
 	private function sku_ids( $sku ) {
 		global $wpdb;
+		$lookup_table = isset( $wpdb->wc_product_meta_lookup ) ? $wpdb->wc_product_meta_lookup : '';
+		if ( $lookup_table && 100 > strlen( $sku ) && ! get_option( 'woocommerce_product_lookup_table_is_generating' ) ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Indexed lookup candidates are verified against product objects; fall back to source metadata when lookup data is incomplete.
+			$lookup_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT posts.ID FROM %i AS lookup INNER JOIN %i AS posts ON posts.ID = lookup.product_id WHERE lookup.sku = %s AND posts.post_type IN ('product', 'product_variation') AND posts.post_status NOT IN ('trash', 'auto-draft') ORDER BY posts.ID LIMIT 2",
+					$lookup_table,
+					$wpdb->posts,
+					$sku
+				)
+			);
+			if ( $lookup_ids ) {
+				$verified_ids = array();
+				foreach ( $lookup_ids as $lookup_id ) {
+					$product = wc_get_product( $lookup_id );
+					if ( $product && $sku === $product->get_sku() ) {
+						$verified_ids[] = (int) $lookup_id;
+					}
+				}
+				if ( count( $verified_ids ) === count( $lookup_ids ) ) {
+					return $verified_ids;
+				}
+			}
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Bounded validation must detect duplicate current SKUs.
 		return $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT p.ID FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} m ON p.ID = m.post_id WHERE m.meta_key = '_sku' AND m.meta_value = %s AND p.post_type IN ('product', 'product_variation') AND p.post_status NOT IN ('trash', 'auto-draft') LIMIT 2", $sku ) );
 	}
