@@ -201,7 +201,7 @@ class DKBCE_Download_Processor {
 			return $rows;
 		}
 		$imports = new DKBCE_Import_Store();
-		$rows    = $state['results'] ? $imports->results( $state['source_id'], $state['cursor'] ) : $imports->rows( $state['source_id'], self::BATCH_SIZE, 0, $state['cursor'], true );
+		$rows    = $state['results'] ? $imports->results( $state['source_id'], $state['cursor'], $state['source_operation_id'] ?? '' ) : $imports->rows( $state['source_id'], self::BATCH_SIZE, 0, $state['cursor'], true );
 		$output  = array();
 		foreach ( $rows as $row ) {
 			$message  = $state['results'] ? ( $row['result_message'] ? $row['result_message'] : __( 'Not processed before the operation stopped.', 'bulk-cogs-editor-for-woocommerce' ) ) : $row['error'];

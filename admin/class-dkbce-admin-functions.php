@@ -782,21 +782,24 @@ class DKBCE_Admin_Functions {
 		if ( ! $job || 'import_preview' !== $job['action'] || get_current_user_id() !== (int) $job['user_id'] || 'ready' !== $job['status'] ) {
 			wp_send_json_error( array( 'message' => __( 'This import report has expired or is not ready.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
 		}
-		$after   = isset( $_POST['after'] ) && is_scalar( $_POST['after'] ) ? absint( wp_unslash( $_POST['after'] ) ) : 0;
-		$results = isset( $_POST['results'] ) && '1' === $_POST['results'];
+		$after        = isset( $_POST['after'] ) && is_scalar( $_POST['after'] ) ? absint( wp_unslash( $_POST['after'] ) ) : 0;
+		$results      = isset( $_POST['results'] ) && '1' === $_POST['results'];
+		$operation_id = '';
 		if ( $results ) {
 			$operation = empty( $job['applied_operation'] ) ? false : $this->store->get( $job['applied_operation'] );
 			if ( ! $operation || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors', 'cancelled', 'failed' ), true ) ) {
 				wp_send_json_error( array( 'message' => __( 'Wait for the import to finish before downloading its results.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 			}
+			$operation_id = $job['applied_operation'];
 		}
 		try {
 			$download = ( new DKBCE_Download_Processor() )->start(
 				array(
-					'user_id'   => get_current_user_id(),
-					'mode'      => 'report',
-					'source_id' => $id,
-					'results'   => $results,
+					'user_id'             => get_current_user_id(),
+					'mode'                => 'report',
+					'source_id'           => $id,
+					'source_operation_id' => $operation_id,
+					'results'             => $results,
 				)
 			);
 			wp_send_json_success(

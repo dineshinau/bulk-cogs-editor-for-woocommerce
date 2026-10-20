@@ -233,46 +233,34 @@ class DKBCE_Import_Store {
 	}
 
 	/**
-	 * Persist a durable product outcome for a paged results report.
-	 *
-	 * @param string $job Import job.
-	 * @param int    $id Product ID.
-	 * @param array  $outcome Worker result.
-	 * @return void
-	 * @throws RuntimeException When results cannot be saved.
-	 */
-	public function outcome( $job, $id, $outcome ) {
-		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Match the durable worker outcome without caching private report data.
-		if ( false === $wpdb->update(
-			$wpdb->prefix . 'dkbce_import_rows',
-			array(
-				'result_status'  => $outcome['status'],
-				'result_message' => $outcome['message'],
-			),
-			array(
-				'job_id'     => $job,
-				'row_type'   => 0,
-				'product_id' => $id,
-			),
-			array( '%s', '%s' ),
-			array( '%s', '%d', '%d' )
-		) ) {
-			throw new RuntimeException( esc_html__( 'The import result could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
-		}
-	}
-
-	/**
 	 * Fetch a bounded page of unsuccessful or unprocessed import results.
 	 *
-	 * @param string $job Import job.
-	 * @param int    $after Row cursor.
+	 * @param string $job          Import job.
+	 * @param int    $after        Row cursor.
+	 * @param string $operation_id Applied operation UUID for outcome lookup.
 	 * @return array
 	 */
-	public function results( $job, $after ) {
+	public function results( $job, $after, $operation_id = '' ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded report cursor over selected staged rows.
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND selected = 1 AND error = '' AND result_status <> 'success' AND row_no > %d ORDER BY row_no LIMIT 100", $wpdb->prefix . 'dkbce_import_rows', $job, $after ), ARRAY_A );
+		if ( $operation_id ) {
+			$operations = new DKBCE_Operation_Store();
+			$operations->ensure_outcomes_table();
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded report cursor joins the authoritative durable outcome.
+			$rows = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT staged.*, COALESCE(NULLIF(outcomes.status, ''), staged.result_status) AS result_status, COALESCE(outcomes.message, staged.result_message) AS result_message FROM %i AS staged LEFT JOIN %i AS outcomes ON outcomes.operation_id = %s AND outcomes.product_id = staged.product_id WHERE staged.job_id = %s AND staged.row_type = 0 AND staged.selected = 1 AND staged.error = '' AND COALESCE(NULLIF(outcomes.status, ''), staged.result_status) <> 'success' AND staged.row_no > %d ORDER BY staged.row_no LIMIT 100",
+					$wpdb->prefix . 'dkbce_import_rows',
+					$wpdb->prefix . 'dkbce_operation_outcomes',
+					sanitize_key( $operation_id ),
+					$job,
+					$after
+				),
+				ARRAY_A
+			);
+		} else {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded compatibility query for reports created before outcome storage was upgraded.
+			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND selected = 1 AND error = '' AND result_status <> 'success' AND row_no > %d ORDER BY row_no LIMIT 100", $wpdb->prefix . 'dkbce_import_rows', $job, $after ), ARRAY_A );
+		}
 		$this->check_error();
 		return $rows;
 	}

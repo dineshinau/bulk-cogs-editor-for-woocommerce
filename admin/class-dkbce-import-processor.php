@@ -193,6 +193,9 @@ class DKBCE_Import_Processor {
 		wp_delete_file( $state['file'] );
 		delete_transient( 'dkbce_preview_' . $id );
 		$rows = new DKBCE_Import_Store();
+		if ( ! empty( $state['applied_operation'] ) ) {
+			$store->delete_outcomes( $state['applied_operation'] );
+		}
 		if ( $rows->delete_batch( $id ) ) {
 			as_enqueue_async_action( 'dkbce_cleanup_import', array( $id ), DKBCE_Bulk_Processor::GROUP );
 		} else {

@@ -12,6 +12,50 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_Operation_Store {
 	/**
+	 * Get the operation outcomes table name.
+	 *
+	 * @return string
+	 */
+	private function outcomes_table() {
+		global $wpdb;
+		return $wpdb->prefix . 'dkbce_operation_outcomes';
+	}
+
+	/**
+	 * Install the indexed, per-product outcome storage when first needed.
+	 *
+	 * @return void
+	 * @throws RuntimeException When the outcomes table cannot be created.
+	 */
+	public function ensure_outcomes_table() {
+		global $wpdb;
+
+		if ( '1' === get_option( 'dkbce_operation_outcomes_schema' ) ) {
+			return;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$table   = $this->outcomes_table();
+		$collate = $wpdb->get_charset_collate();
+		dbDelta(
+			"CREATE TABLE $table (
+			operation_id varchar(36) NOT NULL,
+			product_id bigint unsigned NOT NULL,
+			status varchar(20) NOT NULL,
+			message text NOT NULL,
+			PRIMARY KEY  (operation_id,product_id)
+		) $collate;"
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify private operation storage after dbDelta.
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) !== $table ) {
+			throw new RuntimeException( esc_html__( 'Bulk operation outcome storage could not be created.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+
+		update_option( 'dkbce_operation_outcomes_schema', '1', false );
+	}
+
+	/**
 	 * Get the operation option name.
 	 *
 	 * @param string $operation_id Operation UUID.
@@ -122,6 +166,7 @@ class DKBCE_Operation_Store {
 	 * @return void
 	 */
 	public function save_chunk( $operation_id, $chunk_number, $ids ) {
+		$this->ensure_outcomes_table();
 		$key = $this->chunk_key( $operation_id, $chunk_number );
 		add_option(
 			$key,
@@ -140,40 +185,94 @@ class DKBCE_Operation_Store {
 	 * @param string $operation_id Operation UUID.
 	 * @param int    $chunk_number One-based batch number.
 	 * @return array|false
+	 * @throws RuntimeException When durable outcomes cannot be read.
 	 */
 	public function get_chunk( $operation_id, $chunk_number ) {
+		global $wpdb;
+
 		$chunk = get_option( $this->chunk_key( $operation_id, $chunk_number ), false );
-		return is_array( $chunk ) ? $chunk : false;
+		if ( ! is_array( $chunk ) ) {
+			return false;
+		}
+
+		$this->ensure_outcomes_table();
+		$product_ids = array_values( array_unique( array_filter( array_map( 'absint', $chunk['ids'] ) ) ) );
+		if ( ! $product_ids ) {
+			return $chunk;
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $product_ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- The arguments include one replacement for each bounded product ID.
+		$query = $wpdb->prepare(
+			"SELECT product_id, status, message FROM %i WHERE operation_id = %s AND product_id IN ($placeholders) ORDER BY product_id", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholder list is generated from bounded absolute product IDs.
+			array_merge( array( $this->outcomes_table(), sanitize_key( $operation_id ) ), $product_ids )
+		);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list is prepared above.
+		$rows = $wpdb->get_results( $query, ARRAY_A );
+		if ( ! is_array( $rows ) ) {
+			throw new RuntimeException( esc_html__( 'Bulk operation outcomes could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+
+		foreach ( $rows as $row ) {
+			$chunk['results'][ (int) $row['product_id'] ] = array(
+				'status'  => $row['status'],
+				'message' => $row['message'],
+			);
+		}
+		ksort( $chunk['results'], SORT_NUMERIC );
+
+		return $chunk;
 	}
 
 	/**
-	 * Save per-product outcomes for a snapshot chunk.
+	 * Persist one immutable product outcome, idempotently.
 	 *
 	 * @param string $operation_id Operation UUID.
-	 * @param int    $chunk_number One-based batch number.
-	 * @param array  $chunk Batch data.
+	 * @param int    $product_id Product ID.
+	 * @param array  $outcome Product outcome.
 	 * @return void
-	 * @throws RuntimeException When the product outcome cannot be persisted.
+	 * @throws RuntimeException When the outcome cannot be persisted consistently.
 	 */
-	public function update_chunk( $operation_id, $chunk_number, $chunk ) {
+	public function save_outcome( $operation_id, $product_id, $outcome ) {
 		global $wpdb;
 
-		$key   = $this->chunk_key( $operation_id, $chunk_number );
-		$value = maybe_serialize( $chunk );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Internal non-autoloaded state; invalidate its option cache below.
-		$updated = $wpdb->update( $wpdb->options, array( 'option_value' => $value ), array( 'option_name' => $key ), array( '%s' ), array( '%s' ) );
-		wp_cache_delete( $key, 'options' );
-		if ( 0 === $updated ) {
-			// An identical retry is valid, but a missing snapshot must not lose an outcome.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Confirm durable state after a zero-row update.
-			$stored = $wpdb->get_var( $wpdb->prepare( 'SELECT option_value FROM %i WHERE option_name = %s', $wpdb->options, $key ) );
-			if ( $value === $stored ) {
-				return;
-			}
+		$this->ensure_outcomes_table();
+		$operation_id = sanitize_key( $operation_id );
+		$product_id   = absint( $product_id );
+		$table        = $this->outcomes_table();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The primary key makes each durable product outcome idempotent.
+		$inserted = $wpdb->query(
+			$wpdb->prepare(
+				'INSERT IGNORE INTO %i (operation_id, product_id, status, message) VALUES (%s, %d, %s, %s)',
+				$table,
+				$operation_id,
+				$product_id,
+				$outcome['status'],
+				$outcome['message']
+			)
+		);
+		if ( 1 === $inserted ) {
+			return;
 		}
-		if ( ! $updated ) {
-			throw new RuntimeException( 'Could not persist the bulk COGS product outcome.' );
+		if ( 0 !== $inserted ) {
+			throw new RuntimeException( esc_html__( 'The bulk product outcome could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify an identical retry against the unique outcome key.
+		$stored = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT status, message FROM %i WHERE operation_id = %s AND product_id = %d',
+				$table,
+				$operation_id,
+				$product_id
+			),
+			ARRAY_A
+		);
+		if ( is_array( $stored ) && $stored['status'] === $outcome['status'] && $stored['message'] === $outcome['message'] ) {
+			return;
+		}
+
+		throw new RuntimeException( esc_html__( 'A conflicting bulk product outcome already exists.', 'bulk-cogs-editor-for-woocommerce' ) );
 	}
 
 	/**
@@ -280,14 +379,41 @@ class DKBCE_Operation_Store {
 	 *
 	 * @param string $operation_id Operation UUID.
 	 * @param int    $chunk_count Number of persisted chunks.
+	 * @param bool   $preserve_outcomes Keep outcomes needed by an import report.
 	 * @return void
 	 */
-	public function delete_chunks( $operation_id, $chunk_count ) {
+	public function delete_chunks( $operation_id, $chunk_count, $preserve_outcomes = false ) {
 		for ( $chunk_number = 1; $chunk_number <= $chunk_count; $chunk_number++ ) {
 			delete_option( $this->chunk_key( $operation_id, $chunk_number ) );
 		}
+		if ( ! $preserve_outcomes ) {
+			$this->delete_outcomes( $operation_id );
+		}
 		delete_option( $this->cancellation_key( $operation_id ) );
 		delete_option( 'dkbce_search_' . sanitize_key( $operation_id ) );
+	}
+
+	/**
+	 * Delete every outcome owned by one completed operation.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return void
+	 * @throws RuntimeException When operation outcomes cannot be removed.
+	 */
+	public function delete_outcomes( $operation_id ) {
+		global $wpdb;
+
+		if ( '1' !== get_option( 'dkbce_operation_outcomes_schema' ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Remove only outcomes owned by this completed operation.
+		$deleted = $wpdb->query(
+			$wpdb->prepare( 'DELETE FROM %i WHERE operation_id = %s', $this->outcomes_table(), sanitize_key( $operation_id ) )
+		);
+		if ( false === $deleted ) {
+			throw new RuntimeException( esc_html__( 'Bulk operation outcomes could not be removed.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
 	}
 
 	/**

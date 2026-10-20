@@ -468,9 +468,8 @@ class DKBCE_Bulk_Processor {
 				}
 				return false;
 			}
+			$this->store->save_outcome( $state['operation_id'], $product_id, $outcome );
 			$chunk['results'][ $key ] = $outcome;
-			// Keep each outcome durable; only the aggregate counters are buffered.
-			$this->store->update_chunk( $state['operation_id'], $chunk_number, $chunk );
 			$this->record_outcome( $state, $product_id, $outcome );
 			++$since_checkpoint;
 			$checkpoint_due = $since_checkpoint >= self::PROGRESS_INTERVAL || microtime( true ) - $checkpoint_at >= self::PROGRESS_TIME_LIMIT;
@@ -506,10 +505,6 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	private function record_outcome( &$state, $product_id, $outcome ) {
-		if ( ! empty( $state['operation']['source_id'] ) ) {
-			$imports = new DKBCE_Import_Store();
-			$imports->outcome( $state['operation']['source_id'], $product_id, $outcome );
-		}
 		++$state['processed'];
 		++$state['counted_chunk_results'];
 		if ( 'success' === $outcome['status'] ) {
@@ -611,7 +606,7 @@ class DKBCE_Bulk_Processor {
 			}
 		}
 		$this->store->save( $state );
-		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'] );
+		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'], ! empty( $state['operation']['source_id'] ) );
 		$duration = isset( $state['requested_at'] ) ? microtime( true ) - $state['requested_at'] : 0;
 		dkbce_wc_log(
 			sprintf(
