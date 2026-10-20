@@ -63,22 +63,16 @@ define( 'DKBCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  */
 define( 'DKBCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
+// Register the prefix-based loader before plugin classes are first referenced.
+require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-autoloader.php';
+DKBCE_Autoloader::register();
+
 /**
  * Load plugin classes and initialize after all plugins are loaded.
  *
  * @return void
  */
 function dkbce_load_plugin_files(): void {
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-cogs-service.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-csv-service.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-operation-store.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-store.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-reader.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-processor.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-download-processor.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-bulk-processor.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-functions.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-hooks.php';
 	DKBCE_Admin_Hooks::get_instance();
 }
 add_action( 'plugins_loaded', 'dkbce_load_plugin_files' );
