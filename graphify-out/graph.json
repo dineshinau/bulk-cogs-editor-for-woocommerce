@@ -394,7 +394,7 @@
       "file_type": "code",
       "norm_label": ".filter_category_where()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L528"
+      "source_location": "L530"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_free_memory",
@@ -406,7 +406,7 @@
       "file_type": "code",
       "norm_label": ".free_memory()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L570"
+      "source_location": "L572"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_get_brand_taxonomy",
@@ -466,7 +466,7 @@
       "file_type": "code",
       "norm_label": ".range_clause()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L586"
+      "source_location": "L588"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_scan_matches",
@@ -4123,7 +4123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L507",
+      "source_location": "L509",
       "weight": 1.0
     },
     {
@@ -4135,7 +4135,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L509",
+      "source_location": "L512",
       "weight": 1.0
     },
     {
@@ -8313,17 +8313,6 @@
     },
     {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
-      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L528",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_get_brand_taxonomy",
       "relation": "method",
       "_origin": "ast",
@@ -8335,13 +8324,24 @@
     },
     {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L530",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_free_memory",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L570",
+      "source_location": "L572",
       "weight": 1.0
     },
     {
@@ -8352,7 +8352,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L586",
+      "source_location": "L588",
       "weight": 1.0
     },
     {
@@ -9379,5 +9379,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9f2e5b3d8b3bf01ef1e7f24177d46e4a6945ba78"
+  "built_at_commit": "3c50210c1042f2f6a0563356f34598b725157c9a"
 }
