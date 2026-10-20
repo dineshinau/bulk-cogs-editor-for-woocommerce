@@ -161,12 +161,13 @@ class DKBCE_Import_Reader {
 	 * @throws RuntimeException When a worksheet row cannot be decoded.
 	 */
 	public function xlsx_batch( &$state, $store, $service, $deadline ) {
-		$strings = 'import_strings' === $state['stage'];
-		$reader  = $this->xml( $state['file'], $strings ? $state['strings'] : $state['sheet'] );
-		$tag     = $strings ? 'si' : 'row';
-		$index   = 0;
-		$count   = 0;
-		$csv     = new DKBCE_CSV_Service();
+		$strings  = 'import_strings' === $state['stage'];
+		$reader   = $this->xml( $state['file'], $strings ? $state['strings'] : $state['sheet'] );
+		$tag      = $strings ? 'si' : 'row';
+		$index    = 0;
+		$count    = 0;
+		$max_rows = max( 1, absint( $state['batch_size'] ) ) * 4;
+		$csv      = new DKBCE_CSV_Service();
 		try {
 			while ( $this->read( $reader ) ) {
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Native DOM/XMLReader property.
@@ -211,7 +212,7 @@ class DKBCE_Import_Reader {
 				$state['cursor'] = $index;
 				++$count;
 				unset( $node );
-				if ( $count >= $state['batch_size'] || microtime( true ) >= $deadline ) {
+				if ( $count >= $max_rows || microtime( true ) >= $deadline ) {
 					return false;
 				}
 			}
