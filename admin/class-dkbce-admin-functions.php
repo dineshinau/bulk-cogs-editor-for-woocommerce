@@ -1341,6 +1341,7 @@ class DKBCE_Admin_Functions {
 			'counted_chunk_results' => 0,
 			'batch_size'            => $this->processor->get_batch_size(),
 			'cancel_requested'      => false,
+			'preview_claim_token'   => $token,
 			'errors'                => array(),
 			'error_summary'         => '',
 		);
@@ -1382,6 +1383,12 @@ class DKBCE_Admin_Functions {
 		}
 
 		$this->store->save( $state );
+		$claim_key = 'dkbce_preview_claim_' . $token;
+		$claim     = get_option( $claim_key, false );
+		if ( is_array( $claim ) ) {
+			$claim['operation_id'] = $operation_id;
+			update_option( $claim_key, $claim, false );
+		}
 		if ( isset( $preview['filters']['search_ids'] ) ) {
 			$this->store->save_search_ids( $operation_id, $preview['filters']['search_ids'] );
 		}

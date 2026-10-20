@@ -101,6 +101,8 @@ XLSX imports read the first worksheet's raw cell values. Replace formulas with v
 
 Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to resume its progress display. Once ready, review paged products, download validation errors, select products and explicitly apply the changes. Preparation can be cancelled independently of an applied update. Original uploads are deleted when preparation ends; staged previews and reports expire through scheduled cleanup after approximately 24 hours, with retention extended while an applied update is active.
 
+Completed bulk operation history and linked one-use preview claims are retained for at least 30 days, then removed by a bounded daily cleanup. Active operations and staged imports that still support a report are retained until their work and report dependencies are finished. Preview claims without a linked operation are also kept for at least 30 days to protect against replay and concurrent Apply requests.
+
 The WP-CLI command below processes both preview preparation and confirmed updates. Preview workers must run on the upload server as the same operating-system user as PHP, because original uploads are stored in private temporary files. If your shell uses a different user, ask your host to run the command as the PHP user; ordinary product updates do not need the uploaded file. During preparation, worker logs report the stage, checked row count and batch size. The total and remaining row counts are unknown until reading finishes.
 
 = Run background updates with WP-CLI =
