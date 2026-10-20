@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1792527008.4808955,
-    "seen": 1792527028.5061803,
-    "ast_hash": "e2dfe0893b01ec24ee880e42f1440447",
+    "mtime": 1792527167.6234512,
+    "seen": 1792527216.5600338,
+    "ast_hash": "e6d6d65766eb92a6b9a670a955afe495",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -42,9 +42,9 @@
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
   },
   "admin/class-dkbce-bulk-processor.php": {
-    "mtime": 1792432371.7042372,
-    "seen": 1792432489.9010503,
-    "ast_hash": "371e2c4709b1e46d9d7fe071468e0609",
+    "mtime": 1792527185.6728857,
+    "seen": 1792527216.5600488,
+    "ast_hash": "bffcb3d4dee4fae9ccdfed785d169455",
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {
@@ -132,15 +132,15 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-reader.php": {
-    "mtime": 1792526692.2063596,
-    "seen": 1792526697.0059664,
-    "ast_hash": "da33b253f3b32cb97d5d029d27dac619",
+    "mtime": 1792527163.935646,
+    "seen": 1792527216.5600607,
+    "ast_hash": "6e59a08e74ae3083f5df6a40fa0752ee",
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-store.php": {
-    "mtime": 1792432451.1849034,
-    "seen": 1792432489.9010625,
-    "ast_hash": "3a8b261aad5ff7c889474a499484eac3",
+    "mtime": 1792527202.7568853,
+    "seen": 1792527216.5600626,
+    "ast_hash": "4f327246703ba0972e85bc4bbe926bd8",
     "semantic_hash": ""
   }
 }
