@@ -30,6 +30,19 @@
       "source_location": "L13"
     },
     {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
+      "label": "DKBCE_Admin_Hooks",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_admin_hooks",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "label": "DKBCE_COGS_Service",
       "_callable": true,
@@ -53,6 +66,19 @@
       "file_type": "code",
       "norm_label": "dkbce_admin_functions",
       "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor",
+      "label": "DKBCE_Download_Processor",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": "dkbce_download_processor",
+      "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L13"
     },
     {
@@ -108,29 +134,16 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
-      "label": "DKBCE_Admin_Hooks",
+      "id": "admin_class_dkbce_autoloader_dkbce_autoloader",
+      "label": "DKBCE_Autoloader",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 8,
-      "community_name": "DKBCE_Download_Processor",
+      "community_name": "DKBCE_Autoloader",
       "file_type": "code",
-      "norm_label": "dkbce_admin_hooks",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor",
-      "label": "DKBCE_Download_Processor",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_download_processor",
-      "source_file": "admin/class-dkbce-download-processor.php",
+      "norm_label": "dkbce_autoloader",
+      "source_file": "admin/class-dkbce-autoloader.php",
       "source_location": "L13"
     },
     {
@@ -362,6 +375,30 @@
       "source_location": "L248"
     },
     {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L60"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
       "label": ".calculate()",
       "_callable": true,
@@ -528,6 +565,30 @@
       "norm_label": ".validate_optional_amount()",
       "source_file": "admin/class-dkbce-cogs-service.php",
       "source_location": "L197"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
+      "label": "dkbce_declare_hpos_compatibility()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_declare_hpos_compatibility()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L86"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
+      "label": "dkbce_load_plugin_files()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_load_plugin_files()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L75"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_apply",
@@ -890,6 +951,42 @@
       "source_location": "L556"
     },
     {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
+      "label": ".batch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".batch()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L169"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_process",
+      "label": ".process()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".process()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L77"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_write_all",
+      "label": ".write_all()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".write_all()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L150"
+    },
+    {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_operation_lock",
       "label": ".acquire_operation_lock()",
       "_callable": true,
@@ -1127,7 +1224,7 @@
       "file_type": "code",
       "norm_label": "dkbce_wc_log()",
       "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L110"
+      "source_location": "L104"
     },
     {
       "id": "src_bulk_cogs_editor_actionlabel",
@@ -1682,6 +1779,18 @@
       "source_location": "L1602"
     },
     {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_cleanup",
+      "label": ".cleanup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 188,
+      "community_name": "DKBCE_Operation_Store",
+      "file_type": "code",
+      "norm_label": ".cleanup()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L221"
+    },
+    {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_acquire_product_lock",
       "label": ".acquire_product_lock()",
       "_callable": true,
@@ -2162,100 +2271,28 @@
       "source_location": "L135"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
-      "label": ".__construct()",
+      "id": "admin_class_dkbce_autoloader_dkbce_autoloader_load",
+      "label": ".load()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
-      "community_name": "DKBCE_Download_Processor",
+      "community_name": "DKBCE_Autoloader",
       "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L24"
+      "norm_label": ".load()",
+      "source_file": "admin/class-dkbce-autoloader.php",
+      "source_location": "L32"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
-      "label": ".get_instance()",
+      "id": "admin_class_dkbce_autoloader_dkbce_autoloader_register",
+      "label": ".register()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
-      "community_name": "DKBCE_Download_Processor",
+      "community_name": "DKBCE_Autoloader",
       "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L60"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
-      "label": ".batch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": ".batch()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L169"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_cleanup",
-      "label": ".cleanup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": ".cleanup()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L221"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_process",
-      "label": ".process()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": ".process()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L77"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_write_all",
-      "label": ".write_all()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": ".write_all()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L150"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
-      "label": "dkbce_declare_hpos_compatibility()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_declare_hpos_compatibility()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L92"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
-      "label": "dkbce_load_plugin_files()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_load_plugin_files()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L71"
+      "norm_label": ".register()",
+      "source_file": "admin/class-dkbce-autoloader.php",
+      "source_location": "L19"
     },
     {
       "id": "scripts_php_quality",
@@ -2654,17 +2691,6 @@
       "source_location": "L23"
     },
     {
-      "id": "ref_playwright_test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "concept",
-      "norm_label": "@playwright/test",
-      "source_file": "package.json",
-      "source_location": "L24"
-    },
-    {
       "id": "ref_woocommerce_dependency_extraction_webpack_plugin",
       "label": "@woocommerce/dependency-extraction-webpack-plugin",
       "_origin": "ast",
@@ -2687,6 +2713,17 @@
       "source_location": "L20"
     },
     {
+      "id": "admin_class_dkbce_admin_hooks",
+      "label": "class-dkbce-admin-hooks.php",
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-admin-hooks.php",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_cogs_service",
       "label": "class-dkbce-cogs-service.php",
       "_origin": "ast",
@@ -2698,6 +2735,17 @@
       "source_location": "L1"
     },
     {
+      "id": "bulk_cogs_editor_for_woocommerce",
+      "label": "bulk-cogs-editor-for-woocommerce.php",
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_admin_functions",
       "label": "class-dkbce-admin-functions.php",
       "_origin": "ast",
@@ -2706,6 +2754,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-admin-functions.php",
       "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor",
+      "label": "class-dkbce-download-processor.php",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": "class-dkbce-download-processor.php",
+      "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L1"
     },
     {
@@ -3050,6 +3109,17 @@
       "source_location": "L5"
     },
     {
+      "id": "ref_playwright_test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "concept",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L24"
+    },
+    {
       "id": "admin_index",
       "label": "admin/index.php",
       "_origin": "ast",
@@ -3204,36 +3274,14 @@
       "source_location": "L12"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks",
-      "label": "class-dkbce-admin-hooks.php",
+      "id": "admin_class_dkbce_autoloader",
+      "label": "class-dkbce-autoloader.php",
       "_origin": "ast",
       "community": 8,
-      "community_name": "DKBCE_Download_Processor",
+      "community_name": "DKBCE_Autoloader",
       "file_type": "code",
-      "norm_label": "class-dkbce-admin-hooks.php",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor",
-      "label": "class-dkbce-download-processor.php",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": "class-dkbce-download-processor.php",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce",
-      "label": "bulk-cogs-editor-for-woocommerce.php",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "DKBCE_Download_Processor",
-      "file_type": "code",
-      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "norm_label": "class-dkbce-autoloader.php",
+      "source_file": "admin/class-dkbce-autoloader.php",
       "source_location": "L1"
     },
     {
@@ -6801,6 +6849,17 @@
       "weight": 1.0
     },
     {
+      "source": "admin_class_dkbce_autoloader",
+      "target": "admin_class_dkbce_autoloader_dkbce_autoloader",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-autoloader.php",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "admin_class_dkbce_bulk_processor",
       "target": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
       "relation": "contains",
@@ -6995,7 +7054,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L110",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -7006,7 +7065,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L71",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -7017,7 +7076,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L92",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -8272,6 +8331,28 @@
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_autoloader_dkbce_autoloader",
+      "target": "admin_class_dkbce_autoloader_dkbce_autoloader_register",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-autoloader.php",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_autoloader_dkbce_autoloader",
+      "target": "admin_class_dkbce_autoloader_dkbce_autoloader_load",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-autoloader.php",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -9819,7 +9900,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L82",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -9836,5 +9917,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "89dcfc782af4a6fa364b1d8ecf49d497ab72f638"
+  "built_at_commit": "d66541c2c08ec8c9c4a3e79a624a2df02eaa2b4a"
 }

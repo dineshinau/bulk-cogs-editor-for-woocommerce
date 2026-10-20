@@ -18,9 +18,9 @@
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1792527458.9368935,
-    "seen": 1792527691.7736392,
-    "ast_hash": "212703bd3cf0715af49363fb873fb179",
+    "mtime": 1792527983.7408924,
+    "seen": 1792528002.751139,
+    "ast_hash": "9fefcb03ff0873a78f593e107c90f86e",
     "semantic_hash": ""
   },
   "index.php": {
@@ -147,6 +147,12 @@
     "mtime": 1792527614.3608913,
     "seen": 1792527691.7736104,
     "ast_hash": "e2e2987b7d904882da8b0597153f137c",
+    "semantic_hash": ""
+  },
+  "admin/class-dkbce-autoloader.php": {
+    "mtime": 1792527983.6688924,
+    "seen": 1792528002.7511122,
+    "ast_hash": "58d72816d5a65732c84d8078b96cf12a",
     "semantic_hash": ""
   }
 }
