@@ -238,11 +238,27 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 = 1.1.2 (2026-10-20) =
 
+* Fixed: Report import preview errors instead of leaving preparation failures unclear.
+* Fixed: Copy uploads into private import storage so background preparation can reopen them after the upload request ends.
+* Improved: Count matching products and variations through paginated database totals without loading every matching product ID into PHP.
+* Improved: Resolve import SKUs through WooCommerce's indexed lookup storage when available, verify candidates against product objects, and retain metadata fallback for unsupported or incomplete lookup data while preserving ambiguity checks.
+* Improved: Reuse WooCommerce search matches within a request and the authorized preview lifetime, and persist search matches for applied operations rather than repeating broad searches for each batch.
+* Improved: Process multiple bounded XLSX batches with one open XML reader per worker request, subject to the cooperative deadline, reducing repeated reader setup and prefix traversal within that request.
+* Improved: Reuse staged import values in previews, read update values once per chunk, cache repeated XLSX shared strings within a bounded cache, and prepare product caches in batches for previews and exports.
+* Improved: Save one durable outcome per operation and product in an indexed table instead of repeatedly rewriting growing chunk results, preserving retry protection and compatibility with existing chunk-backed operations.
+* Improved: Reuse indexed outcome summaries during finalization and clean up completed chunks and outcomes in resumable background batches while preserving import report data.
+* Improved: Acquire and release private product locks without invalidating unrelated WordPress negative-option cache entries, retaining atomic ownership and expiry checks.
+* Improved: Refine import and export controls and progress displays, and include processed counts, remaining work, batch size, counter changes, and operation stage in worker timing logs and WP-CLI output.
+* Updated: Refresh the translation template, import and worker documentation, QA and performance review reports, and development code graph.
 * Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
-* Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values, then preview changes before applying them.
-* Added: Prepare import previews in background batches, with validation progress, downloadable error reports, and the option to cancel preparation.
-* Improved: Show export progress and refine the import and export controls in the editor.
-* Fixed: Report import preview errors and improve the export progress display.
+* Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values with up to six decimal places, then preview changes before explicitly applying them. Continue accepting the legacy `cogs` header when `new_cogs` is absent.
+* Added: Prepare import previews in background batches, with validation progress, paginated results, product selection, downloadable validation and update reports, and independent cancellation of preparation.
+* Added: Store import rows in an indexed staging table, delete original uploads when preparation ends, and schedule staged preview and report cleanup after approximately 24 hours, extending retention while an applied update is active.
+* Added: Generate CSV exports and import reports asynchronously on the server, with progress, cancellation, private download files, interruption checkpoints, and scheduled download cleanup after two days.
+* Added: Remove finished bulk operation history and linked preview claims through bounded daily cleanup after at least 30 days, preserving active operations, import report dependencies, and preview replay protection.
+* Added: Upgrade import and outcome database tables using `DKBCE_DB_VERSION`, version comparison, and WordPress `dbDelta()` when the stored schema version is older.
+* Added: Load plugin classes on demand through a `DKBCE_` prefix autoloader.
+* Added: Provide a development WP-CLI profiler for generated range-query SQL, EXPLAIN plans, installed indexes, repeated timings, and ordered-ID comparisons. Document local findings without changing runtime range predicates, indexes, or pagination.
 
 = 1.1.1 (2026-10-20) =
 
@@ -263,6 +279,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 * Fixed: Admin notices appearing between the page title and description.
 * Fixed: Alignment of the top and bottom select-all checkboxes with product row checkboxes.
+* Fixed: Match variations through their parent product's categories, including when filtering for variations only.
 * Improved: Progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
 * Added: A message during background updates explaining that you can close the browser and return later to view the results.
 * Added: Keep the latest completed operation visible when returning to the editor.
@@ -271,7 +288,6 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Added: Separate product and variation counts in matching results.
 * Added: Documentation and video links in the plugin row and editor help section, with clearer COGS setup and usage instructions.
 * Added: Clear cancelled updates from the editor using the Refresh now link.
-* Fixed: Match variations through their parent product's categories, including when filtering for variations only.
 
 = 1.0.0 (2026-10-10) =
 
