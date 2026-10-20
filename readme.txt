@@ -42,7 +42,8 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 **Filtering**
 
 * Filter by title or SKU, category, product type, stock status, brand, current price, and current COGS. Filters are combined to narrow the matching products.
-* Select multiple values in each filter dropdown, or use "Select all" to select or clear every option. A partially selected checkbox indicates that only some options are selected.
+* Search within filter dropdowns, select multiple values, and see a selected-option count. Use "Select all" to select or clear every option; a partially selected checkbox indicates that only some options are selected.
+* Keep Search, Category, and Product type visible, with Brand, Stock status, Price, and COGS ranges under More filters. Remove individual filters with chips or use Clear filters. Collapse Product filters while keeping the filter summary and Find products available.
 * Category options show product counts in parentheses. Parent and child categories are available, and selecting a parent category also includes its child categories.
 * Category filtering matches variations through their parent product's categories, including when only the Variation product type is selected.
 * Brand filtering appears only when a public brand taxonomy is registered for products.
@@ -54,15 +55,26 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 * Increase or decrease COGS by a percentage.
 * Increase or decrease COGS by a fixed amount.
 * Clear COGS.
+* Compact Set, Adjust, and Clear controls show only the fields needed for the chosen action, with an illustrative before-and-after example and a warning when clearing costs.
 * Values use store decimal precision with half-up rounding, and decreases stop at zero.
 
 **Preview and selection**
 
 * See the total number of matches with separate product and variation counts before previewing changes.
-* Review matching products in a paginated table with product images, edit links, current and calculated COGS, and the change.
-* Choose 10, 20, 50, or 100 products per page. The default is 20.
+* Review matching products in a paginated table with product images, edit links, right-aligned current and calculated COGS, and the change. Sticky headers and fixed selection and product columns on mobile help you keep track while scrolling.
+* Show or hide optional columns and keep your display preferences. New users start with Selection, Product, Current COGS, New COGS, and Change; SKU appears beneath the product name when its separate column is hidden.
+* Choose 10, 20, 50, or 100 products per page. The default is 20. Use the footer pagination or Go to page to navigate directly.
 * Changing the action or its value refreshes the preview automatically.
-* Select or clear all products on the current preview page. Selections are kept across preview pages, and selected-only updates support up to 500 products.
+* See the selected total across all pages. Select or clear the current page, all matching products, or the first or last number of matches. Individual selections support up to 500 products; all-matching and range selections support larger scopes.
+* Keep the selected count and action visible in a sticky summary. Review the operation, selection, and review coverage in the confirmation before applying.
+* Start a new selection to reset prior filter constraints; Clear filters only clears the current filter inputs.
+
+**CSV and XLSX workflow**
+
+* Use separate Import and Export guidance, preview headings, and confirmation labels.
+* Download a sample CSV beside the upload field, review expandable file requirements, and replace or remove the selected file before validation.
+* Review import validation errors before applying selected products. Completed CSV exports provide an explicit download link.
+* Expand Recent activity to inspect the latest completed operation.
 
 **Safe background processing**
 
@@ -249,6 +261,11 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Reuse indexed outcome summaries during finalization and clean up completed chunks and outcomes in resumable background batches while preserving import report data.
 * Improved: Acquire and release private product locks without invalidating unrelated WordPress negative-option cache entries, retaining atomic ownership and expiry checks.
 * Improved: Refine import and export controls and progress displays, and include processed counts, remaining work, batch size, counter changes, and operation stage in worker timing logs and WP-CLI output.
+* Improved: Clarify Bulk edit, Import, and Export guidance with task-specific previews, upload details, a nearby CSV template, structured confirmation, explicit export downloads, and expandable recent activity.
+* Improved: Unify product selection with cross-page totals, page/all/range/clear controls, and a sticky action summary while preserving server-validated selection limits.
+* Improved: Replace action cards with compact Set, Adjust, and Clear controls, contextual fields, cost examples, and a visible Find products prerequisite.
+* Improved: Add searchable filter menus, selected-option counts, removable filter chips, Clear filters, and collapsible primary and advanced filters.
+* Improved: Prioritize product and cost comparisons, retain optional columns and saved preferences, keep table headers and mobile product identity visible while scrolling, and group page size and direct page navigation in the footer.
 * Updated: Refresh the translation template, import and worker documentation, QA and performance review reports, and development code graph.
 * Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
 * Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values with up to six decimal places, then preview changes before explicitly applying them. Continue accepting the legacy `cogs` header when `new_cogs` is absent.

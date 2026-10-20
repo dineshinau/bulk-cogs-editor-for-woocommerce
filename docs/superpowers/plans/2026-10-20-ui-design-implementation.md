@@ -32,3 +32,25 @@ For manual review:
 5. Check the sticky summary and expandable Recent activity on desktop and mobile.
 
 Proceed to stage 3 only after the user's manual review.
+
+
+## Manual review checkpoint: stage 3
+
+Stage 3 is implemented following the user's request to continue. Stage 4 remains pending manual review.
+
+Completed: native Set/Adjust/Clear configuration with contextual direction, unit and amount fields; an illustrative cost calculation and clear-cost warning; a visible prerequisite instead of interaction blocking and button animation. Existing backend action keys are preserved.
+
+Search, Category and Product type remain prominent. More filters contains Stock, Brand and numeric ranges. Filter menus support text search and selected-count summaries. Removable chips and Clear filters expose the current filter inputs; Start a new selection still resets the earlier selection constraints. The filter panel can collapse while chips and Find products remain visible.
+
+The table puts Selection, Product, Current cost, New cost and Change first. New users start with ID, SKU and Type hidden; saved column choices retain their original keys. SKU appears beneath the product name when its separate column is hidden. Monetary values align right, New cost is emphasized, headers remain visible within the scroll area, and selection/product identity remain fixed during mobile horizontal scrolling. Columns joins the selection toolbar; page size and a direct page jump sit with pagination.
+
+Validation: PHP formatting and syntax passed; PHPCS has zero errors and the existing `meta_query` warning. Production assets rebuilt successfully. Read-only browser inspection covered category search, selected-count summaries, removable chips, Clear filters, page jumps, percentage adjustment, Clear cost, collapsed filters, CSV export preview, and CSV import layout. Bulk edit at 390 px and CSV at tablet width had no page-wide overflow. Existing saved column preferences were retained. Actual updates, imports and export generation were not executed; no automated tests were added or run.
+
+For manual review:
+
+1. Find products and try Set, Adjust (both directions and units), and Clear. Compare the example and actual table values; open confirmation and cancel.
+2. Search within Category or Brand, select multiple values, remove chips, and compare Clear filters with Start a new selection. Collapse Product filters and expand More filters.
+3. Review column order, optional columns, SKU placement, footer page size and Go to page. Reload and check that saved column choices persist.
+4. Check table scrolling on mobile and repeat the filter/table inspection in CSV Export. Check that Import retains its file-specific controls.
+
+Pause here before stage 4: visual tokens, responsive polish, stable stale-preview/loading states, and progress/error presentation.
