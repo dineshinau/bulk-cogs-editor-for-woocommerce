@@ -313,7 +313,8 @@ class DKBCE_COGS_Service {
 
 		return array(
 			'current' => $current,
-			'new'     => (float) $new_value,
+			// WooCommerce normalizes zero costs to an unset COGS value.
+			'new'     => 0.0 === (float) $new_value ? null : (float) $new_value,
 			'status'  => 'success',
 		);
 	}
@@ -382,6 +383,25 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Fingerprint the values and outcome presented for a reviewed product.
+	 *
+	 * @param array $result Calculation result or preview row.
+	 * @return string
+	 */
+	public function preview_signature( $result ) {
+		return hash(
+			'sha256',
+			wp_json_encode(
+				array(
+					null === $result['current'] ? null : (float) $result['current'],
+					null === $result['new'] ? null : (float) $result['new'],
+					$result['status'],
+				)
+			)
+		);
+	}
+
+	/**
 	 * Resolve WooCommerce text, SKU and global identifier search matches once.
 	 *
 	 * @param string $search Search term.
@@ -404,58 +424,7 @@ class DKBCE_COGS_Service {
 	 * @return array|int
 	 */
 	public function scan_matches( $filters ) {
-		$args = array(
-			'type'     => $this->selected_types( $filters ),
-			'return'   => 'ids',
-			'limit'    => 1,
-			'orderby'  => 'ID',
-			'order'    => 'ASC',
-			'paginate' => true,
-		);
-
-		// Exclusions are validated against the user's preview before snapshotting.
-		if ( ! empty( $filters['selection_range'] ) ) {
-			$args['dkbce_selection_range'] = array( $filters['selection_range']['min'], $filters['selection_range']['max'] );
-		}
-		if ( ! empty( $filters['excluded_ids'] ) ) {
-			$args['exclude'] = array_map( 'absint', $filters['excluded_ids'] );
-		}
-
-		if ( ! empty( $filters['search'] ) ) {
-			$search_ids      = $filters['search_ids'] ?? $this->search_product_ids( $filters['search'] );
-			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
-		}
-
-		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {
-			$args['stock_status'] = $filters['stock_status'];
-		}
-		if ( $filters['category'] ) {
-			$args['dkbce_category_ids'] = $filters['category'];
-		}
-
-		if ( $filters['brand'] ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'product_brand',
-				'field'    => 'term_id',
-				'terms'    => $filters['brand'],
-			);
-		}
-
-		// Price and COGS ranges.
-		$meta_query = array();
-		foreach ( array(
-			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
-			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
-		) as $key => $range ) {
-			$clause = $this->range_clause( $key, $range[0], $range[1] );
-			if ( $clause ) {
-				$meta_query[] = $clause;
-			}
-		}
-
-		if ( $meta_query ) {
-			$args['dkbce_meta_query'] = $meta_query;
-		}
+		$args = $this->matching_args( $filters );
 
 		$total_count = 0;
 		if ( ! empty( $filters['count'] ) ) {
@@ -532,6 +501,97 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Build matching arguments, intersecting any earlier selection filters.
+	 *
+	 * @param array $filters Normalized filters from an authorized preview.
+	 * @return array
+	 */
+	private function matching_args( $filters ) {
+		$args = array(
+			'type'     => $this->selected_types( $filters ),
+			'return'   => 'ids',
+			'limit'    => 1,
+			'orderby'  => 'ID',
+			'order'    => 'ASC',
+			'paginate' => true,
+		);
+
+		// Exclusions are validated against the user's preview before snapshotting.
+		if ( ! empty( $filters['selection_range'] ) ) {
+			$args['dkbce_selection_range'] = array( $filters['selection_range']['min'], $filters['selection_range']['max'] );
+		}
+		if ( ! empty( $filters['excluded_ids'] ) ) {
+			$args['exclude'] = array_map( 'absint', $filters['excluded_ids'] );
+		}
+
+		if ( ! empty( $filters['search'] ) ) {
+			$search_ids      = $filters['search_ids'] ?? $this->search_product_ids( $filters['search'] );
+			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+		}
+
+		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {
+			$args['stock_status'] = $filters['stock_status'];
+		}
+		if ( $filters['category'] ) {
+			$args['dkbce_category_ids'] = $filters['category'];
+		}
+
+		if ( $filters['brand'] ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'product_brand',
+				'field'    => 'term_id',
+				'terms'    => $filters['brand'],
+			);
+		}
+
+		// Price and COGS ranges.
+		$meta_query = array();
+		foreach ( array(
+			'_price'            => array( $filters['price_min'], $filters['price_max'] ),
+			'_cogs_total_value' => array( $filters['cogs_min'], $filters['cogs_max'] ),
+		) as $key => $range ) {
+			$clause = $this->range_clause( $key, $range[0], $range[1] );
+			if ( $clause ) {
+				$meta_query[] = $clause;
+			}
+		}
+
+		if ( $meta_query ) {
+			$args['dkbce_meta_query'] = $meta_query;
+		}
+
+		$groups = empty( $args['dkbce_category_ids'] ) ? array() : array( $args['dkbce_category_ids'] );
+		foreach ( $filters['selection_filters'] ?? array() as $previous ) {
+			$prior = $this->matching_args( $previous );
+			$types = array_values( array_intersect( $args['type'], $prior['type'] ) );
+			if ( ! $types ) {
+				$args['include'] = array( 0 );
+			} else {
+				$args['type'] = $types;
+			}
+			if ( isset( $prior['include'] ) ) {
+				$ids             = isset( $args['include'] ) ? array_intersect( $args['include'], $prior['include'] ) : $prior['include'];
+				$args['include'] = $ids ? array_values( $ids ) : array( 0 );
+			}
+			if ( isset( $prior['stock_status'] ) ) {
+				$stock = isset( $args['stock_status'] ) ? array_intersect( (array) $args['stock_status'], (array) $prior['stock_status'] ) : $prior['stock_status'];
+				if ( ! $stock ) {
+					$args['include'] = array( 0 );
+				} else {
+					$args['stock_status'] = array_values( (array) $stock );
+				}
+			}
+			$groups = array_merge( $groups, $prior['dkbce_category_groups'] );
+			foreach ( array( 'tax_query', 'dkbce_meta_query' ) as $key ) {
+				$args[ $key ] = array_merge( $args[ $key ] ?? array(), $prior[ $key ] ?? array() );
+			}
+		}
+		$args['dkbce_category_groups'] = $groups;
+		unset( $args['dkbce_category_ids'] );
+		return $args;
+	}
+
+	/**
 	 * Apply the snapshot cursor and match product or parent categories.
 	 *
 	 * @param string   $where Existing query conditions.
@@ -550,30 +610,32 @@ class DKBCE_COGS_Service {
 			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", absint( $after_id ) );
 		}
 
-		$category_ids = $query->get( 'dkbce_category_ids' );
-		if ( empty( $category_ids ) ) {
-			return $where;
+		$groups = $query->get( 'dkbce_category_groups' );
+		if ( ! is_array( $groups ) ) {
+			$category_ids = $query->get( 'dkbce_category_ids' );
+			$groups       = $category_ids ? array( $category_ids ) : array();
 		}
-
-		$tax_query = new WP_Tax_Query(
-			array(
+		foreach ( $groups as $category_ids ) {
+			$tax_query = new WP_Tax_Query(
 				array(
-					'taxonomy'         => 'product_cat',
-					'field'            => 'term_id',
-					'terms'            => array_map( 'absint', (array) $category_ids ),
-					'include_children' => true,
-				),
-			)
-		);
-		$sql       = $tax_query->get_sql( 'dkbce_category_product', 'ID' );
+					array(
+						'taxonomy'         => 'product_cat',
+						'field'            => 'term_id',
+						'terms'            => array_map( 'absint', (array) $category_ids ),
+						'include_children' => true,
+					),
+				)
+			);
+			$sql       = $tax_query->get_sql( 'dkbce_category_product', 'ID' );
 
-		// EXISTS preserves one result per record even when several categories match.
-		$where .= " AND EXISTS (SELECT 1 FROM {$wpdb->posts} AS dkbce_category_product {$sql['join']}
+			// EXISTS preserves one result per record even when several categories match.
+			$where .= " AND EXISTS (SELECT 1 FROM {$wpdb->posts} AS dkbce_category_product {$sql['join']}
 			WHERE dkbce_category_product.ID = CASE
 				WHEN {$wpdb->posts}.post_type = 'product_variation' THEN {$wpdb->posts}.post_parent
 				ELSE {$wpdb->posts}.ID END
 			AND dkbce_category_product.post_type = 'product' {$sql['where']})";
 
+		}
 		return $where;
 	}
 

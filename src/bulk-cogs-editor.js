@@ -11,12 +11,16 @@
 		count: 0,
 		hasQuery: false,
 		previewId: '',
+		previewNeedsRefresh: false,
 		rows: [],
 		pageData: null,
 		page: 1,
 		loadingPage: false,
 		pageRequestId: 0,
 		excludedIds: new Set(),
+		selectionPreviewId: '',
+		selectedCount: 0,
+		selectionFiltersChanged: false,
 		selectionRange: null,
 		busy: false,
 		previewTimer: null,
@@ -26,6 +30,8 @@
 		operationStartedAt: null,
 		operationTimer: null,
 		pollTimer: null,
+		progressRequestId: 0,
+		progressError: false,
 	};
 
 	const notice = $( '#dkbce-alert' );
@@ -71,6 +77,7 @@
 		if ( rangeDirection.value === 'all' ) {
 			state.selectionRange = null;
 			state.excludedIds.clear();
+			state.selectedCount = state.count;
 			renderPreview( state.pageData );
 			setNotice( DKBCE.i18n.rangeSelected.replace( '%d', state.count ), 'info' );
 			return;
@@ -87,6 +94,7 @@
 					return;
 				}
 				state.selectionRange = data.range;
+				state.selectedCount = data.range.count;
 				state.excludedIds.clear();
 				$( '#dkbce-selected-only' ).checked = true;
 				renderPreview( state.pageData );
@@ -456,6 +464,7 @@
 			if ( state.busy || state.loadingPage || isOperationRunning() ) {
 				return;
 			}
+			resetSelection();
 			state.mode = button.dataset.dkbceMode;
 			window.clearTimeout( state.previewTimer );
 			invalidatePreview( true );
@@ -603,6 +612,7 @@
 				if ( ! response.ok ) {
 					const error = new Error( payload.data && payload.data.message ? payload.data.message : DKBCE.csv.requestFailed );
 					error.status = response.status;
+					error.refreshPreview = Boolean( payload.data && payload.data.refresh_preview );
 					throw error;
 				}
 				return payload;
@@ -709,16 +719,21 @@
 	}
 
 	function invalidatePreview( filtersChanged ) {
+		if ( ! csvMode() && state.previewId ) {
+			state.selectionPreviewId = state.previewId;
+		}
 		state.previewId = '';
 		state.rows = [];
 		state.pageData = null;
 		state.page = 1;
 		state.loadingPage = false;
 		state.pageRequestId++;
-		state.excludedIds.clear();
-		state.selectionRange = null;
+		if ( csvMode() ) {
+			resetSelection();
+		}
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
+			state.selectionFiltersChanged = true;
 			state.hasQuery = false;
 			state.count = 0;
 			$( '#dkbce-product-count' ).textContent = DKBCE.i18n.filtersChanged;
@@ -728,6 +743,18 @@
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
 		pageSizeSelect.disabled = state.busy;
+	}
+
+	function resetSelection() {
+		state.previewNeedsRefresh = false;
+		state.previewId = '';
+		state.selectionPreviewId = '';
+		state.excludedIds.clear();
+		state.selectionRange = null;
+		state.selectedCount = 0;
+		state.selectionFiltersChanged = false;
+		rangeDirection.value = 'all';
+		rangeCount.value = '';
 	}
 
 	function isOperationRunning() {
@@ -761,7 +788,7 @@
 			} );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
-			! state.previewId || ! state.count || ! state.rows.length;
+			! state.previewId || state.previewNeedsRefresh || ! state.count || ! state.rows.length;
 		document.querySelectorAll( 'input[name="dkbce-action"], #dkbce-value, #dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
@@ -957,6 +984,9 @@
 
 	function setPageSelection( selected ) {
 		previewContent.querySelectorAll( '.dkbce-product-select' ).forEach( ( checkbox ) => {
+			if ( checkbox.checked !== selected ) {
+				state.selectedCount += selected ? 1 : -1;
+			}
 			checkbox.checked = selected;
 			if ( selected ) {
 				state.excludedIds.delete( checkbox.value );
@@ -967,8 +997,17 @@
 		updatePageSelectionControls();
 	}
 
-	function renderPreview( data ) {
+	function renderPreview( data, restoreSelection = false ) {
+		if ( data !== state.pageData ) {
+			state.previewNeedsRefresh = false;
+		}
 		state.previewId = data.preview_id;
+		if ( restoreSelection && data.selected_count !== undefined ) {
+			state.selectedCount = data.selected_count;
+			state.selectionPreviewId = data.preview_id;
+			state.excludedIds = new Set( data.excluded_ids.map( String ) );
+			state.selectionRange = data.selection_range || null;
+		}
 		state.count = data.count;
 		state.rows = data.rows;
 		state.pageData = data;
@@ -984,6 +1023,16 @@
 				? DKBCE.i18n.productOne
 				: DKBCE.i18n.productMany );
 		previewContent.appendChild( summary );
+		if ( ! csvMode() ) {
+			const freshness = document.createElement( 'p' );
+			freshness.textContent = DKBCE.i18n.previewFreshness;
+			previewContent.appendChild( freshness );
+		}
+		if ( data.rows.some( ( item ) => item.status === 'success' && item.new === null ) ) {
+			const clearing = document.createElement( 'p' );
+			clearing.textContent = DKBCE.i18n.zeroClears;
+			previewContent.appendChild( clearing );
+		}
 
 		if ( ! data.rows.length ) {
 			const empty = document.createElement( 'p' );
@@ -1251,7 +1300,11 @@
 		setBusy( true, getButton, DKBCE.i18n.previewLoading );
 		toggleSpinner( previewSpinner, true );
 		const requestedFilters = filters();
+		const previousPreviewId = state.selectionPreviewId;
 		request( 'preview', {
+			previous_preview_id: previousPreviewId,
+			excluded_ids: JSON.stringify( Array.from( state.excludedIds ) ),
+			range_token: state.selectionRange ? state.selectionRange.token : '',
 			filters: requestedFilters,
 			action_type: action,
 			action_value: value,
@@ -1267,8 +1320,11 @@
 				) {
 					return;
 				}
-				state.excludedIds.clear();
-				renderPreview( data );
+				renderPreview( data, true );
+				if ( state.selectionFiltersChanged && previousPreviewId ) {
+					setNotice( DKBCE.i18n.selectionPreserved.replace( '%d', String( state.selectedCount ) ), 'info' );
+				}
+				state.selectionFiltersChanged = false;
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error' ) )
 			.finally( () => {
@@ -1280,11 +1336,11 @@
 
 	function openConfirm() {
 		const exporting = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export';
-		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || state.previewNeedsRefresh || ! state.count ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
-		const selectedCount = state.selectionRange ? state.selectionRange.count : Math.max( 0, state.count - state.excludedIds.size );
+		const selectedCount = state.selectionRange ? state.selectionRange.count : ( csvMode() ? Math.max( 0, state.count - state.excludedIds.size ) : state.selectedCount );
 		const count = selectedOnly ? selectedCount : state.count;
 		if ( selectedOnly && ! count ) {
 			setNotice( DKBCE.i18n.noSelection, 'error' );
@@ -1295,6 +1351,9 @@
 		confirmButton.disabled = false;
 		confirmButton.textContent = exporting ? DKBCE.csv.export : DKBCE.i18n.confirmButton;
 		$( '#dkbce-confirm-text' ).textContent = ( exporting ? DKBCE.i18n.confirmExportText : DKBCE.i18n.confirmText ).replace( '%d', String( count ) );
+		if ( ! exporting ) {
+			$( '#dkbce-confirm-text' ).textContent += ' ' + DKBCE.i18n.zeroClears + ' ' + DKBCE.i18n.previewFreshness;
+		}
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
@@ -1351,6 +1410,7 @@
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		request( 'apply', {
+			confirmed_count: selectedOnly ? ( state.selectionRange ? state.selectionRange.count : ( csvMode() ? state.count - state.excludedIds.size : state.selectedCount ) ) : state.count,
 			preview_id: state.previewId,
 			selected_only: selectedOnly ? '1' : '',
 			selection_mode: state.selectionRange ? 'range' : 'all_except',
@@ -1369,6 +1429,30 @@
 			} )
 			.catch( ( error ) => {
 				setNotice( error.message, 'error' );
+				if ( error.refreshPreview ) {
+					state.previewNeedsRefresh = true;
+					const refresh = document.createElement( 'button' );
+					refresh.type = 'button';
+					refresh.className = 'button';
+					refresh.textContent = DKBCE.i18n.refreshPreview;
+					refresh.addEventListener( 'click', async () => {
+						if ( ! csvMode() ) {
+							preview();
+							return;
+						}
+						refresh.disabled = true;
+						try {
+							const result = await request( 'import_status', { import_id: state.importId } );
+							if ( result.preview ) { showImportPreview( result.preview ); }
+						} catch ( refreshError ) {
+							setNotice( refreshError.message, 'error' );
+						} finally {
+							refresh.disabled = false;
+							updateOperationControls();
+						}
+					} );
+					notice.appendChild( refresh );
+				}
 			} )
 			.finally( () => {
 				state.startingOperation = false;
@@ -1433,10 +1517,16 @@
 			window.clearInterval( state.operationTimer );
 		}
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
-		setApplySpinner( ! terminalStatuses.includes( operation.status ) );
 		operationPanel.replaceChildren();
 		const heading = document.createElement( 'h3' );
-		if ( 'snapshot' === operation.stage ) {
+		const terminal = terminalStatuses.includes( operation.status );
+		const delayed = ! terminal && operation.progress_age >= 120;
+		const unavailable = ! terminal && ! operation.queue_available;
+		if ( terminal ) {
+			heading.textContent = DKBCE.i18n.operationStatus.replace( '%s', operation.status.replace( /_/g, ' ' ) );
+		} else if ( unavailable || delayed || operation.status === 'pending' ) {
+			heading.textContent = DKBCE.i18n.queued;
+		} else if ( 'snapshot' === operation.stage ) {
 			heading.textContent = DKBCE.i18n.snapshotting;
 		} else if (
 			'processing' === operation.status ||
@@ -1450,6 +1540,25 @@
 			);
 		}
 		operationPanel.appendChild( heading );
+		heading.setAttribute( 'role', 'status' );
+		const checkpoint = document.createElement( 'p' );
+		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
+		operationPanel.appendChild( checkpoint );
+		if ( ! terminal ) {
+			if ( unavailable || delayed ) {
+				const recovery = document.createElement( 'p' );
+				recovery.textContent = unavailable ? DKBCE.i18n.queueUnavailable : DKBCE.i18n.queueDelayed;
+				operationPanel.appendChild( recovery );
+			}
+			const refresh = document.createElement( 'button' );
+			refresh.type = 'button';
+			refresh.className = 'button';
+			refresh.textContent = DKBCE.i18n.refreshStatus;
+			refresh.addEventListener( 'click', pollProgress );
+			operationPanel.appendChild( refresh );
+		}
+		setApplySpinner( ! terminal && ! delayed && ! unavailable );
+
 		const progress = document.createElement( 'progress' );
 		progress.max = Math.max( 1, operation.total );
 		progress.value = Math.min( operation.processed, progress.max );
@@ -1467,11 +1576,14 @@
 		text.textContent = DKBCE.i18n.progressSummary
 			.replace( '%1$s', Number( operation.processed ).toLocaleString() )
 			.replace( '%2$s', Number( operation.total ).toLocaleString() );
+		if ( operation.stage === 'snapshot' ) {
+			text.textContent = DKBCE.i18n.snapshotCount.replace( '%d', Number( operation.total ).toLocaleString() );
+		}
 		text.className = 'dkbce-progress-count';
 		operationPanel.appendChild( text );
 		const track = document.createElement( 'div' );
 		track.className = 'dkbce-progress-track';
-		track.classList.toggle( 'is-active', ! terminalStatuses.includes( operation.status ) );
+		track.classList.toggle( 'is-active', ! terminal && ! delayed && ! unavailable );
 		const highlight = document.createElement( 'span' );
 		highlight.className = 'dkbce-progress-highlight';
 		highlight.style.width = Math.max( 0, Math.min( 100, percent ) ) + '%';
@@ -1483,11 +1595,13 @@
 		track.append( progress, highlight, percentage );
 		operationPanel.appendChild( track );
 		if (
+			! delayed && ! unavailable &&
 			'processing' === operation.stage &&
 			[ 'pending', 'processing' ].includes( operation.status ) &&
 			! operation.cancel_requested
 		) {
 			const backgroundMessage = document.createElement( 'p' );
+			backgroundMessage.className = 'dkbce-background-message';
 			backgroundMessage.textContent = DKBCE.i18n.backgroundMessage;
 			operationPanel.appendChild( backgroundMessage );
 		}
@@ -1646,8 +1760,12 @@
 		if ( state.pollTimer ) {
 			window.clearTimeout( state.pollTimer );
 		}
+		const requestId = ++state.progressRequestId;
 		request( 'progress', { operation_id: state.operationId } )
 			.then( ( data ) => {
+				if ( requestId !== state.progressRequestId ) { return; }
+				if ( state.progressError ) { setNotice( '', 'info' ); }
+				state.progressError = false;
 				renderOperation( data.state );
 				if (
 					! [
@@ -1660,7 +1778,24 @@
 					state.pollTimer = window.setTimeout( pollProgress, 2500 );
 				}
 			} )
-			.catch( ( error ) => setNotice( error.message, 'error' ) );
+			.catch( () => {
+				if ( requestId !== state.progressRequestId ) { return; }
+				state.progressError = true;
+				setApplySpinner( false );
+				const heading = operationPanel.querySelector( 'h3' );
+				if ( heading ) { heading.textContent = DKBCE.i18n.progressUnavailable; }
+				if ( ! heading ) {
+					const message = document.createElement( 'p' );
+					message.textContent = DKBCE.i18n.progressUnavailable;
+					operationPanel.replaceChildren( message );
+				}
+				const track = operationPanel.querySelector( '.dkbce-progress-track' );
+				if ( track ) { track.classList.remove( 'is-active' ); }
+				const background = operationPanel.querySelector( '.dkbce-background-message' );
+				if ( background ) { background.remove(); }
+				setNotice( DKBCE.i18n.progressUnavailable, 'error' );
+				state.pollTimer = window.setTimeout( pollProgress, 10000 );
+			} );
 	}
 
 	function cancelOperation() {
@@ -1669,6 +1804,7 @@
 		}
 		request( 'cancel', { operation_id: state.operationId } )
 			.then( ( data ) => {
+				state.progressRequestId++;
 				renderOperation( data.state );
 				if ( state.pollTimer ) {
 					window.clearTimeout( state.pollTimer );
@@ -1685,6 +1821,7 @@
 			$( '#dkbce-selected-only' ).checked = true;
 		}
 		if ( event.target.matches( '.dkbce-product-select' ) ) {
+			state.selectedCount += event.target.checked ? 1 : -1;
 			if ( event.target.checked ) {
 				state.excludedIds.delete( event.target.value );
 			} else {
@@ -1731,6 +1868,7 @@
 		}
 	} );
 	$( '#dkbce-reset' ).addEventListener( 'click', () => {
+		resetSelection();
 		document
 			.querySelectorAll(
 				'#dkbce-search, #dkbce-price-min, #dkbce-price-max, #dkbce-cogs-min, #dkbce-cogs-max'
@@ -1760,8 +1898,6 @@
 					);
 				actionLabel();
 				invalidatePreview( false );
-				rangeDirection.value = 'all';
-				rangeCount.value = '';
 				updateOperationControls();
 				schedulePreviewRefresh();
 				} )

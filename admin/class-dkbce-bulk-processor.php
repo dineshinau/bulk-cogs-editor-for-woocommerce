@@ -403,6 +403,11 @@ class DKBCE_Bulk_Processor {
 		}
 
 		// Derive the total from durable chunks instead of fetching every ID twice.
+		if ( isset( $state['expected_total'] ) && (int) $state['expected_total'] !== (int) $state['total'] ) {
+			$state['error_summary'] = __( 'The product scope changed after confirmation. No products were updated. Prepare a fresh preview and confirm again.', 'bulk-cogs-editor-for-woocommerce' );
+			$this->finish_operation( $state, 'failed' );
+			return false;
+		}
 		$state['total_count'] = $state['total'];
 		$state['stage']       = 'processing';
 
@@ -730,6 +735,10 @@ class DKBCE_Bulk_Processor {
 		}
 
 		try {
+			if ( isset( $state['reviewed_rows'][ $product_id ] ) ) {
+				// Re-read reviewed metadata after acquiring the product lock.
+				wp_cache_delete( $product_id, 'post_meta' );
+			}
 			$product = wc_get_product( $product_id );
 			if ( ! $product ) {
 				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id );
@@ -764,6 +773,12 @@ class DKBCE_Bulk_Processor {
 				return array(
 					'status'  => 'failed',
 					'message' => __( 'COGS could not be calculated.', 'bulk-cogs-editor-for-woocommerce' ),
+				);
+			}
+			if ( isset( $state['reviewed_rows'][ $product_id ] ) && ! hash_equals( $state['reviewed_rows'][ $product_id ], $this->service->preview_signature( $result ) ) ) {
+				return array(
+					'status'  => 'failed',
+					'message' => __( 'COGS changed after the reviewed preview. This product was not updated. Prepare a fresh preview and confirm again.', 'bulk-cogs-editor-for-woocommerce' ),
 				);
 			}
 			if ( 'skipped' === $result['status'] ) {
