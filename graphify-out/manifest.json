@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1792533534.2398574,
-    "seen": 1792533634.503932,
-    "ast_hash": "abe6eace6728c78cefb51b96dca890ae",
+    "mtime": 1792534562.7143764,
+    "seen": 1792534659.900636,
+    "ast_hash": "edfdb443427e3f3b67d508926752362e",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -30,9 +30,9 @@
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "package.json": {
-    "mtime": 1792481649.4320948,
-    "seen": 1792481806.5516763,
-    "ast_hash": "46c4d58bb9b0a321cd53303ecba8888a",
+    "mtime": 1792534002.803952,
+    "seen": 1792534659.900703,
+    "ast_hash": "404d1c4a6082b30ec665c148a7285b26",
     "semantic_hash": ""
   },
   "skills-lock.json": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1792533549.1928566,
-    "seen": 1792533634.5039775,
-    "ast_hash": "f9536f2783017fc90059fe622fb8613a",
+    "mtime": 1792534640.1601913,
+    "seen": 1792534659.9007156,
+    "ast_hash": "fd33f7faee97ec552a5afe95da9cd11b",
     "semantic_hash": ""
   },
   "src/index.php": {
