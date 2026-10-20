@@ -312,10 +312,13 @@ class DKBCE_Operation_Store {
 	 * Rebuild reliable counters from recorded per-product outcomes.
 	 *
 	 * @param string $operation_id Operation UUID.
-	 * @param int    $chunk_count Number of persisted chunks.
+	 * @param int    $chunk_count Number of persisted chunks for legacy recovery.
 	 * @return array
+	 * @throws RuntimeException When durable outcomes cannot be summarized.
 	 */
 	public function summarize( $operation_id, $chunk_count ) {
+		global $wpdb;
+
 		$summary = array(
 			'processed' => 0,
 			'succeeded' => 0,
@@ -324,26 +327,69 @@ class DKBCE_Operation_Store {
 			'errors'    => array(),
 		);
 
-		for ( $chunk_number = 1; $chunk_number <= $chunk_count; $chunk_number++ ) {
-			$chunk = $this->get_chunk( $operation_id, $chunk_number );
-			if ( ! $chunk || empty( $chunk['results'] ) ) {
-				continue;
-			}
-			foreach ( $chunk['results'] as $product_id => $result ) {
-				++$summary['processed'];
-				if ( 'success' === $result['status'] ) {
-					++$summary['succeeded'];
-				} elseif ( 'skipped' === $result['status'] ) {
-					++$summary['skipped'];
-				} else {
-					++$summary['failed'];
-					if ( count( $summary['errors'] ) < 50 ) {
-						$summary['errors'][] = array(
-							'product_id' => absint( $product_id ),
-							'message'    => $result['message'],
-						);
+		$this->ensure_outcomes_table();
+		// The operation ID index supports a single aggregate across all durable outcomes.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Reconcile counters from the indexed durable outcome store.
+		$counts = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT COUNT(*) AS processed, SUM(status = 'success') AS succeeded, SUM(status = 'skipped') AS skipped FROM %i WHERE operation_id = %s",
+				$this->outcomes_table(),
+				sanitize_key( $operation_id )
+			),
+			ARRAY_A
+		);
+		if ( ! is_array( $counts ) ) {
+			throw new RuntimeException( esc_html__( 'Bulk operation outcomes could not be summarized.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$summary['processed'] = absint( $counts['processed'] );
+		$summary['succeeded'] = absint( $counts['succeeded'] );
+		$summary['skipped']   = absint( $counts['skipped'] );
+		$summary['failed']    = max( 0, $summary['processed'] - $summary['succeeded'] - $summary['skipped'] );
+		if ( 0 === $summary['processed'] && $chunk_count > 0 ) {
+			// Operations created before indexed outcomes stored results in their chunk options.
+			for ( $chunk_number = 1; $chunk_number <= $chunk_count; $chunk_number++ ) {
+				$chunk = get_option( $this->chunk_key( $operation_id, $chunk_number ), false );
+				if ( ! is_array( $chunk ) || empty( $chunk['results'] ) ) {
+					continue;
+				}
+				foreach ( $chunk['results'] as $product_id => $result ) {
+					++$summary['processed'];
+					if ( 'success' === $result['status'] ) {
+						++$summary['succeeded'];
+					} elseif ( 'skipped' === $result['status'] ) {
+						++$summary['skipped'];
+					} else {
+						++$summary['failed'];
+						if ( count( $summary['errors'] ) < 50 ) {
+							$summary['errors'][] = array(
+								'product_id' => absint( $product_id ),
+								'message'    => $result['message'],
+							);
+						}
 					}
 				}
+			}
+			return $summary;
+		}
+
+		if ( $summary['failed'] ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The bounded query retrieves only the error preview.
+			$errors = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT product_id, message FROM %i WHERE operation_id = %s AND status NOT IN ('success', 'skipped') ORDER BY product_id LIMIT 50",
+					$this->outcomes_table(),
+					sanitize_key( $operation_id )
+				),
+				ARRAY_A
+			);
+			if ( ! is_array( $errors ) ) {
+				throw new RuntimeException( esc_html__( 'Bulk operation errors could not be summarized.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			foreach ( $errors as $error ) {
+				$summary['errors'][] = array(
+					'product_id' => absint( $error['product_id'] ),
+					'message'    => $error['message'],
+				);
 			}
 		}
 
@@ -356,17 +402,43 @@ class DKBCE_Operation_Store {
 	 * @param string $operation_id Operation UUID.
 	 * @param int    $chunk_count Number of persisted chunks.
 	 * @param bool   $preserve_outcomes Keep outcomes needed by an import report.
-	 * @return void
+	 * @param int    $cursor First chunk to remove in this batch.
+	 * @param int    $limit Maximum number of chunks to remove.
+	 * @return bool Whether all cleanup work is complete.
+	 * @throws RuntimeException When durable outcomes cannot be removed.
 	 */
-	public function delete_chunks( $operation_id, $chunk_count, $preserve_outcomes = false ) {
-		for ( $chunk_number = 1; $chunk_number <= $chunk_count; $chunk_number++ ) {
+	public function delete_chunks( $operation_id, $chunk_count, $preserve_outcomes = false, $cursor = 1, $limit = 100 ) {
+		global $wpdb;
+
+		$end = min( absint( $chunk_count ), absint( $cursor ) + absint( $limit ) - 1 );
+		for ( $chunk_number = absint( $cursor ); $chunk_number <= $end; $chunk_number++ ) {
 			delete_option( $this->chunk_key( $operation_id, $chunk_number ) );
 		}
-		if ( ! $preserve_outcomes ) {
-			$this->delete_outcomes( $operation_id );
+		if ( $end < absint( $chunk_count ) ) {
+			return false;
 		}
+
+		if ( ! $preserve_outcomes ) {
+			$this->ensure_outcomes_table();
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Limit each cleanup request to a bounded number of rows.
+			$deleted = $wpdb->query(
+				$wpdb->prepare(
+					'DELETE FROM %i WHERE operation_id = %s LIMIT 500',
+					$this->outcomes_table(),
+					sanitize_key( $operation_id )
+				)
+			);
+			if ( false === $deleted ) {
+				throw new RuntimeException( esc_html__( 'Bulk operation outcomes could not be removed.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			if ( 500 === $deleted ) {
+				return false;
+			}
+		}
+
 		delete_option( $this->cancellation_key( $operation_id ) );
 		delete_option( 'dkbce_search_' . sanitize_key( $operation_id ) );
+		return true;
 	}
 
 	/**

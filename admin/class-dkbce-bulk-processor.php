@@ -19,6 +19,7 @@ class DKBCE_Bulk_Processor {
 	const OPERATION_LOCK_TTL  = 180;
 	const STALE_OPERATION_AGE = 120;
 	const HOOK                = 'dkbce_process_operation';
+	const CLEANUP_HOOK        = 'dkbce_cleanup_operation';
 	const GROUP               = 'bulk-cogs-editor';
 
 	/** Operation state store.
@@ -50,6 +51,7 @@ class DKBCE_Bulk_Processor {
 		$this->store   = $store;
 		$this->service = $service;
 		add_action( self::HOOK, array( $this, 'process_operation' ) );
+		add_action( self::CLEANUP_HOOK, array( $this, 'cleanup_operation' ) );
 		add_action( 'dkbce_cleanup_import', array( $this, 'cleanup_import' ) );
 	}
 
@@ -74,6 +76,10 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function recover_if_stale( $state ) {
+		if ( ! empty( $state['cleanup_pending'] ) ) {
+			$this->enqueue_cleanup( $state['operation_id'] );
+			return;
+		}
 		if ( in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled', 'ready', 'expired' ), true ) ) {
 			return;
 		}
@@ -88,6 +94,63 @@ class DKBCE_Bulk_Processor {
 		}
 
 		$this->enqueue( $state['operation_id'] );
+	}
+
+	/**
+	 * Queue bounded cleanup for a terminal operation.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return bool
+	 */
+	private function enqueue_cleanup( $operation_id ) {
+		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
+			return false;
+		}
+		$queued = as_enqueue_async_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP, true );
+		return (bool) $queued || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP ) );
+	}
+
+	/**
+	 * Remove a terminal operation's temporary data in bounded, retryable batches.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return void
+	 */
+	public function cleanup_operation( $operation_id ) {
+		$lock = $this->acquire_operation_lock( $operation_id );
+		if ( ! $lock ) {
+			if ( function_exists( 'as_schedule_single_action' ) ) {
+				as_schedule_single_action( time() + MINUTE_IN_SECONDS, self::CLEANUP_HOOK, array( $operation_id ), self::GROUP );
+			}
+			return;
+		}
+
+		try {
+			$state = $this->store->get( $operation_id );
+			if ( ! $state || empty( $state['cleanup_pending'] ) || ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
+				return;
+			}
+			$cursor = isset( $state['cleanup_cursor'] ) ? absint( $state['cleanup_cursor'] ) : 1;
+			$done   = $this->store->delete_chunks(
+				$operation_id,
+				$state['snapshot_chunks'],
+				! empty( $state['operation']['source_id'] ),
+				$cursor,
+				100
+			);
+			if ( $cursor <= absint( $state['snapshot_chunks'] ) ) {
+				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
+			}
+			if ( $done ) {
+				$state['cleanup_pending'] = false;
+			}
+			$this->store->save( $state );
+			if ( ! $done ) {
+				$this->enqueue_cleanup( $operation_id );
+			}
+		} finally {
+			$this->release_operation_lock( $operation_id, $lock );
+		}
 	}
 
 	/**
@@ -394,7 +457,7 @@ class DKBCE_Bulk_Processor {
 
 		if ( ! $chunk ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
-			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
+			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed', $summary );
 			return false;
 		}
 
@@ -490,7 +553,7 @@ class DKBCE_Bulk_Processor {
 		}
 		if ( $state['processed_chunks'] >= $state['snapshot_chunks'] ) {
 			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
-			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed' );
+			$this->finish_operation( $state, $summary['failed'] ? 'completed_with_errors' : 'completed', $summary );
 			return false;
 		}
 		return true;
@@ -578,10 +641,18 @@ class DKBCE_Bulk_Processor {
 	 *
 	 * @param array  $state Operation state, modified by reference.
 	 * @param string $status Terminal status.
+	 * @param array  $summary Precomputed durable outcome summary, when available.
 	 * @return void
 	 */
-	private function finish_operation( &$state, $status ) {
-		$this->apply_summary( $state );
+	private function finish_operation( &$state, $status, $summary = null ) {
+		if ( ! is_array( $summary ) ) {
+			$summary = $this->store->summarize( $state['operation_id'], $state['snapshot_chunks'] );
+		}
+		$state['processed']    = $summary['processed'];
+		$state['succeeded']    = $summary['succeeded'];
+		$state['skipped']      = $summary['skipped'];
+		$state['failed']       = $summary['failed'];
+		$state['errors']       = $summary['errors'];
 		$state['status']       = $status;
 		$state['completed_at'] = time();
 
@@ -605,8 +676,10 @@ class DKBCE_Bulk_Processor {
 				}
 			}
 		}
+		$state['cleanup_pending'] = true;
+		$state['cleanup_cursor']  = 1;
 		$this->store->save( $state );
-		$this->store->delete_chunks( $state['operation_id'], $state['snapshot_chunks'], ! empty( $state['operation']['source_id'] ) );
+		$this->enqueue_cleanup( $state['operation_id'] );
 		$duration = isset( $state['requested_at'] ) ? microtime( true ) - $state['requested_at'] : 0;
 		dkbce_wc_log(
 			sprintf(
