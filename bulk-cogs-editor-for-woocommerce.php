@@ -44,6 +44,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'DKBCE_VERSION', '1.1.2' );
 
 /**
+ * Plugin database schema version. Increase when table schemas change.
+ */
+define( 'DKBCE_DB_VERSION', '1.0.0' );
+
+/**
  * Plugin file path constant.
  */
 define( 'DKBCE_PLUGIN_FILE', __FILE__ );
@@ -76,6 +81,20 @@ function dkbce_load_plugin_files(): void {
 	DKBCE_Admin_Hooks::get_instance();
 }
 add_action( 'plugins_loaded', 'dkbce_load_plugin_files' );
+
+/**
+ * Upgrade plugin database tables after a schema version change.
+ *
+ * @return void
+ */
+function dkbce_maybe_upgrade_database(): void {
+	try {
+		DKBCE_Database_Installer::maybe_upgrade();
+	} catch ( Throwable $exception ) {
+		dkbce_wc_log( 'Database schema upgrade failed: ' . $exception->getMessage() );
+	}
+}
+add_action( 'admin_init', 'dkbce_maybe_upgrade_database' );
 
 
 /**

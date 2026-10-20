@@ -18,35 +18,7 @@ class DKBCE_Import_Store {
 	 * @throws RuntimeException When the table is unavailable.
 	 */
 	public function install() {
-		global $wpdb;
-		if ( '1' === get_option( 'dkbce_import_schema' ) ) {
-			return;
-		}
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		$table   = $wpdb->prefix . 'dkbce_import_rows';
-		$collate = $wpdb->get_charset_collate();
-		dbDelta(
-			"CREATE TABLE $table (
-			job_id varchar(36) NOT NULL,
-			row_type tinyint unsigned NOT NULL DEFAULT 0,
-			row_no bigint unsigned NOT NULL,
-			product_id bigint unsigned NOT NULL DEFAULT 0,
-			value longtext NOT NULL,
-			sku text NOT NULL,
-			error text NOT NULL,
-			selected tinyint unsigned NOT NULL DEFAULT 1,
-			result_status varchar(20) NOT NULL DEFAULT '',
-			result_message text NOT NULL,
-			PRIMARY KEY  (job_id,row_type,row_no),
-			KEY product (job_id,row_type,product_id),
-			KEY selection (job_id,row_type,selected,row_no)
-		) $collate;"
-		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify newly created private staging storage.
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) !== $table ) {
-			throw new RuntimeException( esc_html__( 'Import staging storage could not be created.', 'bulk-cogs-editor-for-woocommerce' ) );
-		}
-		update_option( 'dkbce_import_schema', '1', false );
+		DKBCE_Database_Installer::maybe_upgrade();
 	}
 
 	/**

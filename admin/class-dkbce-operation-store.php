@@ -28,31 +28,7 @@ class DKBCE_Operation_Store {
 	 * @throws RuntimeException When the outcomes table cannot be created.
 	 */
 	public function ensure_outcomes_table() {
-		global $wpdb;
-
-		if ( '1' === get_option( 'dkbce_operation_outcomes_schema' ) ) {
-			return;
-		}
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		$table   = $this->outcomes_table();
-		$collate = $wpdb->get_charset_collate();
-		dbDelta(
-			"CREATE TABLE $table (
-			operation_id varchar(36) NOT NULL,
-			product_id bigint unsigned NOT NULL,
-			status varchar(20) NOT NULL,
-			message text NOT NULL,
-			PRIMARY KEY  (operation_id,product_id)
-		) $collate;"
-		);
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify private operation storage after dbDelta.
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) !== $table ) {
-			throw new RuntimeException( esc_html__( 'Bulk operation outcome storage could not be created.', 'bulk-cogs-editor-for-woocommerce' ) );
-		}
-
-		update_option( 'dkbce_operation_outcomes_schema', '1', false );
+		DKBCE_Database_Installer::maybe_upgrade();
 	}
 
 	/**
@@ -402,10 +378,7 @@ class DKBCE_Operation_Store {
 	 */
 	public function delete_outcomes( $operation_id ) {
 		global $wpdb;
-
-		if ( '1' !== get_option( 'dkbce_operation_outcomes_schema' ) ) {
-			return;
-		}
+		$this->ensure_outcomes_table();
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Remove only outcomes owned by this completed operation.
 		$deleted = $wpdb->query(
