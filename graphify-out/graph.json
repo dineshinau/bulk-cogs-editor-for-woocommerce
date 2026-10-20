@@ -202,7 +202,7 @@
       "file_type": "code",
       "norm_label": ".line()",
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L145"
+      "source_location": "L170"
     },
     {
       "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
@@ -262,7 +262,7 @@
       "file_type": "code",
       "norm_label": ".cells()",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L290"
+      "source_location": "L291"
     },
     {
       "id": "admin_class_dkbce_import_reader_dkbce_import_reader_csv_batch",
@@ -298,7 +298,7 @@
       "file_type": "code",
       "norm_label": ".read()",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L254"
+      "source_location": "L255"
     },
     {
       "id": "admin_class_dkbce_import_reader_dkbce_import_reader_text",
@@ -310,7 +310,7 @@
       "file_type": "code",
       "norm_label": ".text()",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L269"
+      "source_location": "L270"
     },
     {
       "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xlsx_batch",
@@ -334,7 +334,7 @@
       "file_type": "code",
       "norm_label": ".xml()",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L237"
+      "source_location": "L238"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
@@ -4219,7 +4219,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L330",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -4255,7 +4255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L255",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -4279,7 +4279,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L171",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -4291,7 +4291,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L189",
+      "source_location": "L190",
       "weight": 1.0
     },
     {
@@ -4303,7 +4303,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L200",
+      "source_location": "L201",
       "weight": 1.0
     },
     {
@@ -8396,7 +8396,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L145",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -8473,7 +8473,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L237",
+      "source_location": "L238",
       "weight": 1.0
     },
     {
@@ -8495,7 +8495,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L254",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -8506,7 +8506,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L269",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -8517,7 +8517,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L290",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -9350,7 +9350,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L169",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -9379,5 +9379,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3c50210c1042f2f6a0563356f34598b725157c9a"
+  "built_at_commit": "aca0fc176164683646f38d31868fe89c3ffaa379"
 }
