@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-20)
 
 ## Corpus Check
-- 26 files · ~37,001 words
+- 26 files · ~37,473 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 296 nodes · 555 edges · 18 communities (7 shown, 11 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.85)
+- 298 nodes · 564 edges · 18 communities (8 shown, 10 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d66541c2`
+- Built from commit: `59c6912c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -34,9 +34,9 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `DKBCE_Admin_Functions` - 34 edges
-2. `DKBCE_Operation_Store` - 24 edges
-3. `DKBCE_Import_Store` - 23 edges
-4. `DKBCE_Bulk_Processor` - 21 edges
+2. `DKBCE_Operation_Store` - 28 edges
+3. `DKBCE_Bulk_Processor` - 21 edges
+4. `DKBCE_Import_Store` - 21 edges
 5. `DKBCE_COGS_Service` - 18 edges
 6. `setNotice()` - 14 edges
 7. `request()` - 14 edges
@@ -53,11 +53,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (18 total, 11 thin omitted)
+## Communities (18 total, 10 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.16
 Nodes (14): argparse, os, pathlib, changed_files(), main(), php_files(), Include staged, unstaged, and untracked PHP paths, excluding deletions., Format and check selected project PHP files without running tests. (+6 more)
+
+### Community 1 - "DKBCE_CSV_Service"
+Cohesion: 0.12
+Nodes (3): DKBCE_CSV_Service, DKBCE_Download_Processor, DKBCE_Import_Reader
 
 ### Community 2 - "bulk-cogs-editor.spec.cjs"
 Cohesion: 0.06
@@ -80,27 +84,27 @@ Cohesion: 0.13
 Nodes (3): DKBCE_Admin_Hooks, DKBCE_COGS_Service, dkbce_load_plugin_files()
 
 ### Community 188 - "DKBCE_Operation_Store"
-Cohesion: 0.13
+Cohesion: 0.14
 Nodes (3): DKBCE_Operation_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ## Knowledge Gaps
 - **53 isolated node(s):** `$schema`, `landingPage`, `php`, `wp`, `networking` (+48 more)
-  These have ≤1 connection - possible missing edges. (Counts symbols only; 109 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges. (Counts symbols only; 108 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_CSV_Service`, `DKBCE_Import_Store`?**
+  _High betweenness centrality (0.076) - this node is a cross-community bridge._
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_Operation_Store`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.071) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_CSV_Service`, `DKBCE_Admin_Functions`, `DKBCE_Import_Store`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `DKBCE_Import_Store` connect `DKBCE_Import_Store` to `DKBCE_Admin_Functions`, `DKBCE_COGS_Service`, `DKBCE_Bulk_Processor`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Are the 7 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**
-  _`DKBCE_Operation_Store` has 7 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 11 inferred relationships involving `DKBCE_Import_Store` (e.g. with `.ajax_apply()` and `.ajax_import_status()`) actually correct?**
-  _`DKBCE_Import_Store` has 11 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `DKBCE_Import_Store` connect `DKBCE_Import_Store` to `DKBCE_CSV_Service`, `DKBCE_Admin_Functions`, `DKBCE_COGS_Service`, `DKBCE_Bulk_Processor`?**
+  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Are the 8 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**
+  _`DKBCE_Operation_Store` has 8 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 10 inferred relationships involving `DKBCE_Import_Store` (e.g. with `.ajax_apply()` and `.ajax_import_status()`) actually correct?**
+  _`DKBCE_Import_Store` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 3 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
   _`DKBCE_COGS_Service` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `landingPage`, `php` to the rest of the system?**
