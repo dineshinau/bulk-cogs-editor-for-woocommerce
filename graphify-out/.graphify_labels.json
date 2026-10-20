@@ -10,7 +10,7 @@
   "8": "DKBCE_Autoloader",
   "9": "ref_anthropic_ai_sdk",
   "10": "scripts",
-  "11": "DKBCE_Database_Installer",
+  "11": "DKBCE_Retention_Processor",
   "12": "DKBCE_Admin_Functions",
   "17": "bulk-cogs-editor.js",
   "20": "admin/index.php",

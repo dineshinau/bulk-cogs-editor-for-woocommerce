@@ -49,23 +49,23 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
       "norm_label": "dkbce_admin_hooks",
       "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_database_installer_dkbce_database_installer",
-      "label": "DKBCE_Database_Installer",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "label": "DKBCE_Retention_Processor",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": "dkbce_database_installer",
-      "source_file": "admin/class-dkbce-database-installer.php",
+      "norm_label": "dkbce_retention_processor",
+      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L13"
     },
     {
@@ -118,6 +118,19 @@
       "file_type": "code",
       "norm_label": "dkbce_operation_store",
       "source_file": "admin/class-dkbce-operation-store.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_database_installer_dkbce_database_installer",
+      "label": "DKBCE_Database_Installer",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DKBCE_Import_Store",
+      "file_type": "code",
+      "norm_label": "dkbce_database_installer",
+      "source_file": "admin/class-dkbce-database-installer.php",
       "source_location": "L13"
     },
     {
@@ -352,18 +365,6 @@
       "source_location": "L150"
     },
     {
-      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
-      "label": ".process()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "DKBCE_CSV_Service",
-      "file_type": "code",
-      "norm_label": ".process()",
-      "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L105"
-    },
-    {
       "id": "admin_class_dkbce_import_reader_dkbce_import_reader_cells",
       "label": ".cells()",
       "_callable": true,
@@ -453,7 +454,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
       "norm_label": ".__construct()",
       "source_file": "admin/class-dkbce-admin-hooks.php",
@@ -465,83 +466,95 @@
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
       "norm_label": ".get_instance()",
       "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L60"
+      "source_location": "L61"
     },
     {
-      "id": "admin_class_dkbce_database_installer_dkbce_database_installer_maybe_upgrade",
-      "label": ".maybe_upgrade()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "label": ".cleanup()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": ".maybe_upgrade()",
-      "source_file": "admin/class-dkbce-database-installer.php",
-      "source_location": "L20"
+      "norm_label": ".cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L48"
     },
     {
-      "id": "admin_class_dkbce_import_store_dkbce_import_store_install",
-      "label": ".install()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "label": ".cleanup_claim_option()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": ".install()",
-      "source_file": "admin/class-dkbce-import-store.php",
-      "source_location": "L20"
+      "norm_label": ".cleanup_claim_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L140"
     },
     {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
-      "label": "dkbce_declare_hpos_compatibility()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "label": ".cleanup_operation_option()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": "dkbce_declare_hpos_compatibility()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L105"
+      "norm_label": ".cleanup_operation_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L101"
     },
     {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
-      "label": "dkbce_load_plugin_files()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
+      "label": ".__construct()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": "dkbce_load_plugin_files()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L80"
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L23"
     },
     {
-      "id": "bulk_cogs_editor_for_woocommerce_dkbce_maybe_upgrade_database",
-      "label": "dkbce_maybe_upgrade_database()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
+      "label": ".enqueue_operation_cleanup()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": "dkbce_maybe_upgrade_database()",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
-      "source_location": "L90"
+      "norm_label": ".enqueue_operation_cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L192"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
-      "label": ".get_instance()",
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "label": ".is_expired_operation()",
       "_callable": true,
       "_origin": "ast",
-      "community": 117,
-      "community_name": "DKBCE_COGS_Service",
+      "community": 11,
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1605"
+      "norm_label": ".is_expired_operation()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L162"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
+      "label": ".schedule()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_Retention_Processor",
+      "file_type": "code",
+      "norm_label": ".schedule()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L33"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
@@ -733,7 +746,7 @@
       "file_type": "code",
       "norm_label": ".ajax_cancel()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1439"
+      "source_location": "L1446"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_clear_cancelled",
@@ -745,7 +758,7 @@
       "file_type": "code",
       "norm_label": ".ajax_clear_cancelled()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1465"
+      "source_location": "L1472"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_csv_export",
@@ -877,7 +890,7 @@
       "file_type": "code",
       "norm_label": ".ajax_progress()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1417"
+      "source_location": "L1424"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_select_range",
@@ -889,7 +902,7 @@
       "file_type": "code",
       "norm_label": ".ajax_select_range()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1500"
+      "source_location": "L1507"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_authorize_ajax",
@@ -913,7 +926,7 @@
       "file_type": "code",
       "norm_label": ".can_view_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1491"
+      "source_location": "L1498"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_construct",
@@ -961,7 +974,7 @@
       "file_type": "code",
       "norm_label": ".extend_product_query()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1581"
+      "source_location": "L1588"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_action_description",
@@ -1033,7 +1046,7 @@
       "file_type": "code",
       "norm_label": ".public_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1551"
+      "source_location": "L1558"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_register_submenu_page",
@@ -1322,6 +1335,42 @@
       "norm_label": ".update_batch()",
       "source_file": "admin/class-dkbce-bulk-processor.php",
       "source_location": "L426"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
+      "label": "dkbce_declare_hpos_compatibility()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_declare_hpos_compatibility()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L105"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
+      "label": "dkbce_load_plugin_files()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_load_plugin_files()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L80"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce_dkbce_maybe_upgrade_database",
+      "label": "dkbce_maybe_upgrade_database()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_maybe_upgrade_database()",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "source_location": "L90"
     },
     {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
@@ -1876,6 +1925,18 @@
       "source_location": "L231"
     },
     {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 188,
+      "community_name": "DKBCE_Operation_Store",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L1612"
+    },
+    {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_acquire_product_lock",
       "label": ".acquire_product_lock()",
       "_callable": true,
@@ -1909,7 +1970,7 @@
       "file_type": "code",
       "norm_label": ".chunk_key()",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L471"
+      "source_location": "L469"
     },
     {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_delete_chunks",
@@ -1921,7 +1982,7 @@
       "file_type": "code",
       "norm_label": ".delete_chunks()",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L410"
+      "source_location": "L408"
     },
     {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_delete_outcomes",
@@ -1933,7 +1994,7 @@
       "file_type": "code",
       "norm_label": ".delete_outcomes()",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L451"
+      "source_location": "L449"
     },
     {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_ensure_outcomes_table",
@@ -2029,7 +2090,7 @@
       "file_type": "code",
       "norm_label": ".release_product_lock()",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L302"
+      "source_location": "L301"
     },
     {
       "id": "admin_class_dkbce_operation_store_dkbce_operation_store_request_cancellation",
@@ -2101,7 +2162,7 @@
       "file_type": "code",
       "norm_label": ".summarize()",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L319"
+      "source_location": "L317"
     },
     {
       "id": "tests_e2e_fixtures_closure_1",
@@ -2224,6 +2285,18 @@
       "source_location": "L18"
     },
     {
+      "id": "admin_class_dkbce_database_installer_dkbce_database_installer_maybe_upgrade",
+      "label": ".maybe_upgrade()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DKBCE_Import_Store",
+      "file_type": "code",
+      "norm_label": ".maybe_upgrade()",
+      "source_file": "admin/class-dkbce-database-installer.php",
+      "source_location": "L20"
+    },
+    {
       "id": "admin_class_dkbce_import_processor_dkbce_import_processor_cleanup",
       "label": ".cleanup()",
       "_callable": true,
@@ -2234,6 +2307,18 @@
       "norm_label": ".cleanup()",
       "source_file": "admin/class-dkbce-import-processor.php",
       "source_location": "L166"
+    },
+    {
+      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
+      "label": ".process()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DKBCE_Import_Store",
+      "file_type": "code",
+      "norm_label": ".process()",
+      "source_file": "admin/class-dkbce-import-processor.php",
+      "source_location": "L105"
     },
     {
       "id": "admin_class_dkbce_import_processor_dkbce_import_processor_upload",
@@ -2294,6 +2379,18 @@
       "norm_label": ".exclude()",
       "source_file": "admin/class-dkbce-import-store.php",
       "source_location": "L182"
+    },
+    {
+      "id": "admin_class_dkbce_import_store_dkbce_import_store_install",
+      "label": ".install()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DKBCE_Import_Store",
+      "file_type": "code",
+      "norm_label": ".install()",
+      "source_file": "admin/class-dkbce-import-store.php",
+      "source_location": "L20"
     },
     {
       "id": "admin_class_dkbce_import_store_dkbce_import_store_put",
@@ -2813,32 +2910,21 @@
       "label": "class-dkbce-admin-hooks.php",
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
       "norm_label": "class-dkbce-admin-hooks.php",
       "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L1"
     },
     {
-      "id": "admin_class_dkbce_database_installer",
-      "label": "class-dkbce-database-installer.php",
+      "id": "admin_class_dkbce_retention_processor",
+      "label": "class-dkbce-retention-processor.php",
       "_origin": "ast",
       "community": 11,
-      "community_name": "DKBCE_Database_Installer",
+      "community_name": "DKBCE_Retention_Processor",
       "file_type": "code",
-      "norm_label": "class-dkbce-database-installer.php",
-      "source_file": "admin/class-dkbce-database-installer.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "bulk_cogs_editor_for_woocommerce",
-      "label": "bulk-cogs-editor-for-woocommerce.php",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_Database_Installer",
-      "file_type": "code",
-      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
-      "source_file": "bulk-cogs-editor-for-woocommerce.php",
+      "norm_label": "class-dkbce-retention-processor.php",
+      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L1"
     },
     {
@@ -2872,6 +2958,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-bulk-processor.php",
       "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "bulk_cogs_editor_for_woocommerce",
+      "label": "bulk-cogs-editor-for-woocommerce.php",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "bulk-cogs-editor-for-woocommerce.php",
+      "source_file": "bulk-cogs-editor-for-woocommerce.php",
       "source_location": "L1"
     },
     {
@@ -3249,6 +3346,17 @@
       "source_location": "L1"
     },
     {
+      "id": "admin_class_dkbce_database_installer",
+      "label": "class-dkbce-database-installer.php",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DKBCE_Import_Store",
+      "file_type": "code",
+      "norm_label": "class-dkbce-database-installer.php",
+      "source_file": "admin/class-dkbce-database-installer.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_import_processor",
       "label": "class-dkbce-import-processor.php",
       "_origin": "ast",
@@ -3607,7 +3715,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1407",
+      "source_location": "L1414",
       "weight": 1.0
     },
     {
@@ -3619,7 +3727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1441",
+      "source_location": "L1448",
       "weight": 1.0
     },
     {
@@ -3631,7 +3739,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1443",
+      "source_location": "L1450",
       "weight": 1.0
     },
     {
@@ -3643,7 +3751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1449",
+      "source_location": "L1456",
       "weight": 1.0
     },
     {
@@ -3655,7 +3763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1457",
+      "source_location": "L1464",
       "weight": 1.0
     },
     {
@@ -3667,7 +3775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1467",
+      "source_location": "L1474",
       "weight": 1.0
     },
     {
@@ -3679,7 +3787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1469",
+      "source_location": "L1476",
       "weight": 1.0
     },
     {
@@ -3967,7 +4075,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1419",
+      "source_location": "L1426",
       "weight": 1.0
     },
     {
@@ -3979,7 +4087,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1421",
+      "source_location": "L1428",
       "weight": 1.0
     },
     {
@@ -3991,7 +4099,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1427",
+      "source_location": "L1434",
       "weight": 1.0
     },
     {
@@ -4003,7 +4111,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1431",
+      "source_location": "L1438",
       "weight": 1.0
     },
     {
@@ -4015,7 +4123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1502",
+      "source_location": "L1509",
       "weight": 1.0
     },
     {
@@ -4027,7 +4135,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1504",
+      "source_location": "L1511",
       "weight": 1.0
     },
     {
@@ -4795,7 +4903,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L415",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -4807,7 +4915,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L422",
+      "source_location": "L420",
       "weight": 1.0
     },
     {
@@ -4819,7 +4927,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L427",
+      "source_location": "L425",
       "weight": 1.0
     },
     {
@@ -4831,7 +4939,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L439",
+      "source_location": "L437",
       "weight": 1.0
     },
     {
@@ -4843,7 +4951,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L453",
+      "source_location": "L451",
       "weight": 1.0
     },
     {
@@ -4855,7 +4963,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L457",
+      "source_location": "L455",
       "weight": 1.0
     },
     {
@@ -5011,7 +5119,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L330",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -5023,7 +5131,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L336",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -5035,7 +5143,67 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L351",
+      "source_location": "L349",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -7246,6 +7414,17 @@
       "weight": 1.0
     },
     {
+      "source": "admin_class_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "blueprint_blueprint",
       "target": "blueprint_blueprint_steps",
       "relation": "contains",
@@ -8309,7 +8488,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1417",
+      "source_location": "L1424",
       "weight": 1.0
     },
     {
@@ -8320,7 +8499,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1439",
+      "source_location": "L1446",
       "weight": 1.0
     },
     {
@@ -8331,7 +8510,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1465",
+      "source_location": "L1472",
       "weight": 1.0
     },
     {
@@ -8342,7 +8521,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1491",
+      "source_location": "L1498",
       "weight": 1.0
     },
     {
@@ -8353,7 +8532,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1500",
+      "source_location": "L1507",
       "weight": 1.0
     },
     {
@@ -8364,7 +8543,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1551",
+      "source_location": "L1558",
       "weight": 1.0
     },
     {
@@ -8375,7 +8554,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1581",
+      "source_location": "L1588",
       "weight": 1.0
     },
     {
@@ -8386,7 +8565,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1605",
+      "source_location": "L1612",
       "weight": 1.0
     },
     {
@@ -8628,7 +8807,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -9486,7 +9665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L302",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -9497,7 +9676,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L319",
+      "source_location": "L317",
       "weight": 1.0
     },
     {
@@ -9519,7 +9698,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L410",
+      "source_location": "L408",
       "weight": 1.0
     },
     {
@@ -9530,7 +9709,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L451",
+      "source_location": "L449",
       "weight": 1.0
     },
     {
@@ -9541,7 +9720,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
-      "source_location": "L471",
+      "source_location": "L469",
       "weight": 1.0
     },
     {
@@ -9586,6 +9765,83 @@
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-operation-store.php",
       "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -9857,7 +10113,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1607",
+      "source_location": "L1614",
       "weight": 1.0
     },
     {
@@ -9869,7 +10125,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1608",
+      "source_location": "L1615",
       "weight": 1.0
     },
     {
@@ -9881,7 +10137,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1609",
+      "source_location": "L1616",
       "weight": 1.0
     },
     {
@@ -9918,6 +10174,18 @@
       "context": "call",
       "source_file": "admin/class-dkbce-admin-hooks.php",
       "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "target": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -10269,6 +10537,30 @@
       "weight": 1.0
     },
     {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "target": "bulk_cogs_editor_for_woocommerce_dkbce_wc_log",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "target": "admin_class_dkbce_operation_store_dkbce_operation_store",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
       "source": "bulk_cogs_editor_for_woocommerce_dkbce_load_plugin_files",
       "target": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
       "relation": "calls",
@@ -10306,5 +10598,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b5dc5c23a22023ada2552e5adcfe49cf6885fa72"
+  "built_at_commit": "7fccd557ba9caf4828a41fef463bbf8915be9c79"
 }
