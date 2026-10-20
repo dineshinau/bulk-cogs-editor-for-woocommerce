@@ -166,5 +166,11 @@
     "seen": 1792529755.4013453,
     "ast_hash": "8dfcd6e6cde13f17a74fc428bc9841cf",
     "semantic_hash": ""
+  },
+  "scripts/class-dkbce-range-query-profiler.php": {
+    "mtime": 1792530281.1448889,
+    "seen": 1792530384.6659298,
+    "ast_hash": "44b79c438ecb481286af69dbd2ff8f8a",
+    "semantic_hash": ""
   }
 }

@@ -12,6 +12,7 @@
   "10": "scripts",
   "11": "DKBCE_Retention_Processor",
   "12": "DKBCE_Admin_Functions",
+  "13": "DKBCE_Range_Query_Profiler",
   "17": "bulk-cogs-editor.js",
   "20": "admin/index.php",
   "21": "index.php",
