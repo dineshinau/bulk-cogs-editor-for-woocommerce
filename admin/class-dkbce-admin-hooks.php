@@ -32,6 +32,9 @@ class DKBCE_Admin_Hooks {
 		add_action( 'wp_ajax_dkbce_get_products', array( $admin_functions, 'ajax_get_products' ) );
 		add_action( 'wp_ajax_dkbce_import_status', array( $admin_functions, 'ajax_import_status' ) );
 		add_action( 'wp_ajax_dkbce_import_report', array( $admin_functions, 'ajax_import_report' ) );
+		add_action( 'wp_ajax_dkbce_download_status', array( $admin_functions, 'ajax_download_status' ) );
+		add_action( 'wp_ajax_dkbce_download_cancel', array( $admin_functions, 'ajax_download_cancel' ) );
+		add_action( 'wp_ajax_dkbce_download_file', array( $admin_functions, 'ajax_download_file' ) );
 		add_action( 'wp_ajax_dkbce_csv_preview', array( $admin_functions, 'ajax_csv_preview' ) );
 		add_action( 'wp_ajax_dkbce_csv_export', array( $admin_functions, 'ajax_csv_export' ) );
 		add_action( 'wp_ajax_dkbce_preview', array( $admin_functions, 'ajax_preview' ) );
@@ -44,6 +47,9 @@ class DKBCE_Admin_Hooks {
 		add_action( 'wp_ajax_dkbce_clear_cancelled', array( $admin_functions, 'ajax_clear_cancelled' ) );
 		add_action( 'wp_ajax_dkbce_clear_operation', array( $admin_functions, 'ajax_clear_cancelled' ) );
 		add_action( 'woocommerce_product_data_store_cpt_get_products_query', array( $admin_functions, 'extend_product_query' ), 10, 2 );
+		$downloads = new DKBCE_Download_Processor();
+		add_action( DKBCE_Download_Processor::HOOK, array( $downloads, 'process' ) );
+		add_action( DKBCE_Download_Processor::CLEANUP_HOOK, array( $downloads, 'cleanup' ) );
 	}
 
 	/**

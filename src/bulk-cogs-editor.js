@@ -218,19 +218,27 @@
 	async function downloadImportReport( source, results, button ) {
 		button.disabled = true;
 		try {
-			const parts = [];
-			let after = 0;
-			let batch;
-			do {
-				batch = await request( 'import_report', { import_id: source, results: results ? '1' : '0', after } );
-				parts.push( batch.csv );
-				after = batch.after;
-			} while ( ! batch.done );
-			downloadCSV( parts, results ? 'cogs-import-results.csv' : 'cogs-import-errors.csv' );
+			const job = await request( 'import_report', { import_id: source, results: results ? '1' : '0' } );
+			const download = await waitForDownload( job.download_id );
+			window.location.href = download.url;
 		} catch ( error ) {
 			setNotice( error.message, 'error' );
 		} finally {
 			button.disabled = false;
+		}
+	}
+
+	async function waitForDownload( downloadId, onStatus = () => {} ) {
+		while ( true ) {
+			const status = await request( 'download_status', { download_id: downloadId } );
+			onStatus( status );
+			if ( 'completed' === status.status && status.url ) {
+				return status;
+			}
+			if ( 'failed' === status.status || 'cancelled' === status.status ) {
+				throw new Error( status.message || DKBCE.csv.downloadFailed );
+			}
+			await new Promise( ( resolve ) => window.setTimeout( resolve, 1500 ) );
 		}
 	}
 
@@ -352,10 +360,9 @@
 			return;
 		}
 		window.clearTimeout( state.pollTimer );
-		const parts = [];
-		let after = 0;
 		let count = 0;
 		let cancelled = false;
+		let downloadId = '';
 		const total = state.selectionRange ? state.selectionRange.count : ( $( '#dkbce-selected-only' ).checked ? Math.max( 0, state.count - state.excludedIds.size ) : state.count );
 		const startedAt = window.performance.now();
 		const heading = document.createElement( 'h3' );
@@ -381,7 +388,13 @@
 		cancel.type = 'button';
 		cancel.className = 'button';
 		cancel.textContent = DKBCE.csv.cancel;
-		cancel.addEventListener( 'click', () => { cancelled = true; cancel.disabled = true; } );
+		cancel.addEventListener( 'click', () => {
+			cancelled = true;
+			cancel.disabled = true;
+			if ( downloadId ) {
+				request( 'download_cancel', { download_id: downloadId } ).catch( ( error ) => setNotice( error.message, 'error' ) );
+			}
+		} );
 		operationPanel.replaceChildren( heading, status, track, time, cancel );
 		operationPanel.hidden = false;
 		const renderProgress = ( done = false ) => {
@@ -415,23 +428,18 @@
 		setBusy( true, applyButton, DKBCE.csv.exporting );
 		const timer = window.setInterval( () => renderProgress(), 1000 );
 		try {
-			while ( ! cancelled ) {
-				const batch = await request( 'csv_export', { preview_id: state.previewId, columns, after, excluded_ids: JSON.stringify( excluded ), range_token: rangeToken } );
-				if ( cancelled ) {
-					break;
-				}
-				parts.push( batch.csv );
-				count += batch.count;
-				after = batch.after;
-				renderProgress( batch.done );
-				if ( batch.done ) {
-					downloadCSV( parts, 'product-cogs.csv' );
-					heading.textContent = DKBCE.csv.downloaded;
-					break;
-				}
-			}
+			const job = await request( 'csv_export', { preview_id: state.previewId, columns, excluded_ids: JSON.stringify( excluded ), range_token: rangeToken } );
+			downloadId = job.download_id;
 			if ( cancelled ) {
+				await request( 'download_cancel', { download_id: downloadId } );
 				heading.textContent = DKBCE.csv.cancelled;
+			} else {
+				const download = await waitForDownload( downloadId, ( status ) => {
+					count = status.rows;
+					renderProgress( 'completed' === status.status );
+				} );
+				window.location.href = download.url;
+				heading.textContent = DKBCE.csv.downloaded;
 			}
 		} catch ( error ) {
 			heading.textContent = error.message;

@@ -177,6 +177,7 @@ class DKBCE_Admin_Functions {
 					'exporting'       => __( 'Preparing CSV… Keep this page open.', 'bulk-cogs-editor-for-woocommerce' ),
 					'downloaded'      => __( 'CSV download ready.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelled'       => __( 'Export cancelled. No file was downloaded.', 'bulk-cogs-editor-for-woocommerce' ),
+					'downloadFailed'  => __( 'The download failed. Please try again.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancel'          => __( 'Cancel export', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 				'i18n'           => array(
@@ -767,7 +768,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Download a bounded page of validation or final import errors.
+	 * Start an asynchronous validation or final import report download.
 	 *
 	 * @return void
 	 */
@@ -789,22 +790,108 @@ class DKBCE_Admin_Functions {
 				wp_send_json_error( array( 'message' => __( 'Wait for the import to finish before downloading its results.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 			}
 		}
-		$imports = new DKBCE_Import_Store();
-		$rows    = $results ? $imports->results( $id, $after ) : $imports->rows( $id, 100, 0, $after, true );
-		$csv     = new DKBCE_CSV_Service();
-		$output  = 0 === $after ? $csv->line( array( 'row', 'id', 'sku', 'new_cogs', 'error' ) ) : '';
-		foreach ( $rows as $row ) {
-			$message = $results ? ( $row['result_message'] ? $row['result_message'] : __( 'Not processed before the operation stopped.', 'bulk-cogs-editor-for-woocommerce' ) ) : $row['error'];
-			$output .= $csv->line( array( $row['row_no'], $row['product_id'], $row['sku'], $row['value'], $message ) );
-			$after   = (int) $row['row_no'];
+		try {
+			$download = ( new DKBCE_Download_Processor() )->start(
+				array(
+					'user_id'   => get_current_user_id(),
+					'mode'      => 'report',
+					'source_id' => $id,
+					'results'   => $results,
+				)
+			);
+			wp_send_json_success(
+				array(
+					'download_id' => $download['operation_id'],
+					'status'      => $download['status'],
+				)
+			);
+		} catch ( Throwable $exception ) {
+			wp_send_json_error( array( 'message' => $exception->getMessage() ), 503 );
 		}
-		wp_send_json_success(
-			array(
-				'csv'   => $output,
-				'after' => $after,
-				'done'  => count( $rows ) < 100,
-			)
+	}
+
+	/**
+	 * Poll an authorized private download job.
+	 *
+	 * @return void
+	 */
+	public function ajax_download_status() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		if ( ! current_user_can( 'edit_others_products' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to manage product COGS.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
+		}
+		$id    = isset( $_POST['download_id'] ) && is_string( $_POST['download_id'] ) ? sanitize_text_field( wp_unslash( $_POST['download_id'] ) ) : '';
+		$state = preg_match( '/\\A[0-9a-f-]{36}\\z/i', $id ) ? $this->store->get( $id ) : false;
+		if ( ! $state || 'server_download' !== $state['action'] || get_current_user_id() !== (int) $state['user_id'] ) {
+			wp_send_json_error( array( 'message' => __( 'This download has expired or is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		if ( time() - (int) $state['created_at'] > DKBCE_Download_Processor::RETENTION ) {
+			( new DKBCE_Download_Processor() )->cleanup( $id );
+			wp_send_json_error( array( 'message' => __( 'This download has expired.', 'bulk-cogs-editor-for-woocommerce' ) ), 410 );
+		}
+		$response = array(
+			'status' => $state['status'],
+			'rows'   => (int) $state['rows'],
 		);
+		if ( 'completed' === $state['status'] && is_readable( $state['file'] ) ) {
+			$response['url'] = add_query_arg(
+				array(
+					'action'      => 'dkbce_download_file',
+					'download_id' => $id,
+					'nonce'       => wp_create_nonce( self::NONCE ),
+				),
+				admin_url( 'admin-ajax.php' )
+			);
+		}
+		if ( 'failed' === $state['status'] ) {
+			$response['message'] = $state['error_summary'] ?? __( 'The download failed.', 'bulk-cogs-editor-for-woocommerce' );
+		} elseif ( 'cancelled' === $state['status'] ) {
+			$response['message'] = __( 'The download was cancelled.', 'bulk-cogs-editor-for-woocommerce' );
+		}
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Cancel an owned private download job.
+	 *
+	 * @return void
+	 */
+	public function ajax_download_cancel() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		if ( ! current_user_can( 'edit_others_products' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to manage product COGS.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
+		}
+		$id    = isset( $_POST['download_id'] ) && is_string( $_POST['download_id'] ) ? sanitize_text_field( wp_unslash( $_POST['download_id'] ) ) : '';
+		$state = preg_match( '/\\A[0-9a-f-]{36}\\z/i', $id ) ? $this->store->get( $id ) : false;
+		if ( ! $state || 'server_download' !== $state['action'] || get_current_user_id() !== (int) $state['user_id'] ) {
+			wp_send_json_error( array( 'message' => __( 'This download is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 404 );
+		}
+		$this->store->request_cancellation( $id );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Stream a completed private download to its owner.
+	 *
+	 * @return void
+	 */
+	public function ajax_download_file() {
+		$id    = isset( $_GET['download_id'] ) && is_string( $_GET['download_id'] ) ? sanitize_text_field( wp_unslash( $_GET['download_id'] ) ) : '';
+		$nonce = isset( $_GET['nonce'] ) && is_string( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+		$state = preg_match( '/\\A[0-9a-f-]{36}\\z/i', $id ) ? $this->store->get( $id ) : false;
+		if ( ! wp_verify_nonce( $nonce, self::NONCE ) || ! current_user_can( 'edit_others_products' ) || ! $state || 'server_download' !== $state['action'] || 'completed' !== $state['status'] || get_current_user_id() !== (int) $state['user_id'] || time() - (int) $state['created_at'] > DKBCE_Download_Processor::RETENTION || ! is_readable( $state['file'] ) ) {
+			wp_die( esc_html__( 'This download is unavailable.', 'bulk-cogs-editor-for-woocommerce' ), '', array( 'response' => 404 ) );
+		}
+		nocache_headers();
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="' . ( 'export' === $state['mode'] ? 'product-cogs.csv' : ( $state['results'] ? 'cogs-import-results.csv' : 'cogs-import-errors.csv' ) ) . '"' );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile -- Stream an authorized private temporary file.
+		readfile( $state['file'] );
+		exit;
 	}
 
 	/**
@@ -867,7 +954,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Export a bounded read-only batch from an authorized preview.
+	 * Start an asynchronous export from an authorized preview.
 	 *
 	 * @return void
 	 */
@@ -885,7 +972,6 @@ class DKBCE_Admin_Functions {
 		if ( ! $columns || array_diff( $columns, DKBCE_CSV_Service::COLUMNS ) ) {
 			wp_send_json_error( array( 'message' => __( 'Choose valid CSV columns.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
-		$after       = isset( $_POST['after'] ) && is_scalar( $_POST['after'] ) ? absint( wp_unslash( $_POST['after'] ) ) : 0;
 		$filters     = $preview['filters'];
 		$range_token = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
 		if ( '' !== $range_token ) {
@@ -905,45 +991,24 @@ class DKBCE_Admin_Functions {
 			}
 		}
 		$filters['excluded_ids'] = array_map( 'absint', $excluded );
-		$filters['get_ids']      = true;
-		$filters['page_size']    = 100;
-		$filters['after_id']     = $after;
-		$ids                     = $this->service->scan_matches( $filters );
-		_prime_post_caches( $ids, true, true );
-		$csv      = new DKBCE_CSV_Service();
-		$output   = 0 === $after ? $csv->line( array_merge( $columns, array( 'new_cogs' ) ) ) : '';
-		$exported = 0;
-		foreach ( $ids as $id ) {
-			$product = wc_get_product( $id );
-			if ( ! $product || ! current_user_can( 'edit_post', $id ) ) {
-				continue;
-			}
-			$values = array(
-				'id'            => $id,
-				'sku'           => $product->get_sku(),
-				'name'          => $product->get_name(),
-				'cogs'          => $product->get_cogs_value(),
-				'regular_price' => $product->get_regular_price(),
-				'sale_price'    => $product->get_sale_price(),
-				'type'          => $product->get_type(),
+		try {
+			$download = ( new DKBCE_Download_Processor() )->start(
+				array(
+					'user_id' => get_current_user_id(),
+					'mode'    => 'export',
+					'filters' => $filters,
+					'columns' => $columns,
+				)
 			);
-			$cells  = array();
-			foreach ( $columns as $column ) {
-				$cells[] = $values[ $column ];
-			}
-			$cells[] = ''; // The editable new_cogs column is always last and starts blank.
-			$output .= $csv->line( $cells );
-			++$exported;
+			wp_send_json_success(
+				array(
+					'download_id' => $download['operation_id'],
+					'status'      => $download['status'],
+				)
+			);
+		} catch ( Throwable $exception ) {
+			wp_send_json_error( array( 'message' => $exception->getMessage() ), 503 );
 		}
-		set_transient( 'dkbce_preview_' . $token, $preview, 10 * MINUTE_IN_SECONDS );
-		wp_send_json_success(
-			array(
-				'csv'   => $output,
-				'after' => $ids ? max( $ids ) : $after,
-				'done'  => count( $ids ) < 100,
-				'count' => $exported,
-			)
-		);
 	}
 
 	/**

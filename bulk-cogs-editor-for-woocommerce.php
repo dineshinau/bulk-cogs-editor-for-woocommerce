@@ -75,6 +75,7 @@ function dkbce_load_plugin_files(): void {
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-store.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-reader.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-import-processor.php';
+	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-download-processor.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-bulk-processor.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-functions.php';
 	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-hooks.php';
