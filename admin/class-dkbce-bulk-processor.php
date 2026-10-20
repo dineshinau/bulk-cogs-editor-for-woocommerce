@@ -414,10 +414,15 @@ class DKBCE_Bulk_Processor {
 			}
 		}
 
-		$pending_ids = array_diff( $chunk['ids'], array_keys( $chunk['results'] ) );
+		$pending_ids   = array_diff( $chunk['ids'], array_keys( $chunk['results'] ) );
+		$import_values = array();
 		if ( $pending_ids && microtime( true ) < $deadline ) {
 			// Batch post, term and metadata reads; WooCommerce still owns all writes.
 			_prime_post_caches( $pending_ids, true, true );
+			if ( ! empty( $state['operation']['source_id'] ) ) {
+				$imports       = new DKBCE_Import_Store();
+				$import_values = $imports->values( $state['operation']['source_id'], $pending_ids );
+			}
 			$parent_ids = array();
 			foreach ( $pending_ids as $product_id ) {
 				$parent_id = wp_get_post_parent_id( $product_id );
@@ -449,7 +454,7 @@ class DKBCE_Bulk_Processor {
 				return false;
 			}
 
-			$outcome = $this->process_product( $product_id, $state );
+			$outcome = $this->process_product( $product_id, $state, $import_values );
 			if ( 'deferred' === $outcome['status'] ) {
 				if ( ! $this->save_progress( $state ) ) {
 					return false;
@@ -641,11 +646,12 @@ class DKBCE_Bulk_Processor {
 	/**
 	 * Safely apply the operation to a single product.
 	 *
-	 * @param int   $product_id Product ID.
-	 * @param array $state Operation state.
+	 * @param int   $product_id    Product ID.
+	 * @param array $state          Operation state.
+	 * @param array $import_values  Trusted staged values keyed by product ID.
 	 * @return array
 	 */
-	private function process_product( $product_id, $state ) {
+	private function process_product( $product_id, $state, $import_values = array() ) {
 		$lock = $this->store->acquire_product_lock( $product_id, $state['operation_id'] );
 		if ( false === $lock ) {
 			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id );
@@ -679,7 +685,12 @@ class DKBCE_Bulk_Processor {
 					'message' => __( 'This operation cannot update this product.', 'bulk-cogs-editor-for-woocommerce' ),
 				);
 			}
-			$result = $this->service->calculate( $product, $state['operation'] );
+			$operation = $state['operation'];
+			if ( ! empty( $operation['source_id'] ) ) {
+				$operation['values'] = isset( $import_values[ $product_id ] ) ? array( $product_id => $import_values[ $product_id ] ) : array();
+				unset( $operation['source_id'] );
+			}
+			$result = $this->service->calculate( $product, $operation );
 			if ( is_wp_error( $result ) ) {
 				dkbce_wc_log( 'Product could not be calculated for product ID: ' . $product_id );
 				return array(

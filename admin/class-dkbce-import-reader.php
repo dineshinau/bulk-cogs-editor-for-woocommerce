@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_Import_Reader {
 	/**
+	 * Bounded shared-string cache for the current XLSX batch request.
+	 *
+	 * @var array
+	 */
+	private $shared_string_cache = array();
+
+	/**
 	 * Read the next CSV records using a durable byte cursor.
 	 *
 	 * @param array              $state Import state, updated after durable rows.
@@ -161,7 +168,10 @@ class DKBCE_Import_Reader {
 	 * @throws RuntimeException When a worksheet row cannot be decoded.
 	 */
 	public function xlsx_batch( &$state, $store, $service, $deadline ) {
-		$strings  = 'import_strings' === $state['stage'];
+		$strings = 'import_strings' === $state['stage'];
+		if ( ! $strings ) {
+			$this->shared_string_cache = array();
+		}
 		$reader   = $this->xml( $state['file'], $strings ? $state['strings'] : $state['sheet'] );
 		$tag      = $strings ? 'si' : 'row';
 		$index    = 0;
@@ -323,7 +333,18 @@ class DKBCE_Import_Reader {
 				}
 			}
 			if ( 's' === $type ) {
-				$value = ctype_digit( $value ) ? $store->value( $state['operation_id'], (int) $value, 1 ) : null;
+				$string_id = ctype_digit( $value ) ? (int) $value : -1;
+				if ( array_key_exists( $string_id, $this->shared_string_cache ) ) {
+					$value = $this->shared_string_cache[ $string_id ];
+				} else {
+					$value = -1 < $string_id ? $store->value( $state['operation_id'], $string_id, 1 ) : null;
+					if ( null !== $value ) {
+						if ( 512 <= count( $this->shared_string_cache ) ) {
+							unset( $this->shared_string_cache[ array_key_first( $this->shared_string_cache ) ] );
+						}
+						$this->shared_string_cache[ $string_id ] = $value;
+					}
+				}
 				if ( null === $value ) {
 					throw new RuntimeException( esc_html__( 'The XLSX file references a missing shared string.', 'bulk-cogs-editor-for-woocommerce' ) );
 				}

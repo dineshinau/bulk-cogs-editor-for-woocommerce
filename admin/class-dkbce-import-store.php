@@ -126,6 +126,35 @@ class DKBCE_Import_Store {
 	}
 
 	/**
+	 * Fetch trusted staged values for a bounded product batch.
+	 *
+	 * @param string $job Import job.
+	 * @param array  $product_ids Product IDs.
+	 * @return array Values keyed by product ID.
+	 */
+	public function values( $job, $product_ids ) {
+		global $wpdb;
+		$product_ids = array_values( array_unique( array_filter( array_map( 'absint', $product_ids ) ) ) );
+		if ( ! $product_ids ) {
+			return array();
+		}
+		$placeholders = implode( ', ', array_fill( 0, count( $product_ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Placeholder count is generated from the bounded, absolute product IDs below.
+		$query = $wpdb->prepare(
+			"SELECT product_id, value FROM %i WHERE job_id = %s AND row_type = 0 AND error = '' AND selected = 1 AND product_id IN ($placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The placeholder list is generated from the bounded, absolute product IDs below.
+			array_merge( array( $wpdb->prefix . 'dkbce_import_rows', $job ), $product_ids )
+		);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list above is prepared with absolute IDs and the table identifier.
+		$rows = $wpdb->get_results( $query, ARRAY_A );
+		$this->check_error();
+		$values = array();
+		foreach ( $rows as $row ) {
+			$values[ (int) $row['product_id'] ] = $row['value'];
+		}
+		return $values;
+	}
+
+	/**
 	 * Fetch a bounded preview page or cursor batch.
 	 *
 	 * @param string $job Job ID.

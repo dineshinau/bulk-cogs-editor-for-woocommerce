@@ -817,6 +817,7 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	private function csv_preview_page( $preview, $token, $page, $size ) {
+		$operation = $preview['operation'];
 		if ( 'csv_import' === $preview['operation']['action'] ) {
 			$rows = array();
 			if ( ! empty( $preview['operation']['source_id'] ) ) {
@@ -824,15 +825,22 @@ class DKBCE_Admin_Functions {
 				if ( ! $source || 'ready' !== $source['status'] ) {
 					wp_send_json_error( array( 'message' => __( 'The import preview has expired. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) ), 410 );
 				}
-				$imports = new DKBCE_Import_Store();
-				$ids     = array_map( 'intval', wp_list_pluck( $imports->rows( $preview['operation']['source_id'], $size, ( $page - 1 ) * $size ), 'product_id' ) );
+				$imports             = new DKBCE_Import_Store();
+				$staged_rows         = $imports->rows( $preview['operation']['source_id'], $size, ( $page - 1 ) * $size );
+				$ids                 = array_map( 'intval', wp_list_pluck( $staged_rows, 'product_id' ) );
+				$operation['values'] = array();
+				foreach ( $staged_rows as $staged_row ) {
+					$operation['values'][ (int) $staged_row['product_id'] ] = $staged_row['value'];
+				}
+				unset( $operation['source_id'] );
 			} else {
 				$ids = array_slice( array_keys( $preview['operation']['values'] ), ( $page - 1 ) * $size, $size );
 			}
+			_prime_post_caches( $ids, true, true );
 			foreach ( $ids as $id ) {
 				$product = wc_get_product( $id );
 				if ( $product ) {
-					$rows[] = $this->service->preview_row( $product, $preview['operation'] );
+					$rows[] = $this->service->preview_row( $product, $operation );
 				}
 			}
 			$result = array(
@@ -901,9 +909,10 @@ class DKBCE_Admin_Functions {
 		$filters['page_size']    = 100;
 		$filters['after_id']     = $after;
 		$ids                     = $this->service->scan_matches( $filters );
-		$csv                     = new DKBCE_CSV_Service();
-		$output                  = 0 === $after ? $csv->line( array_merge( $columns, array( 'new_cogs' ) ) ) : '';
-		$exported                = 0;
+		_prime_post_caches( $ids, true, true );
+		$csv      = new DKBCE_CSV_Service();
+		$output   = 0 === $after ? $csv->line( array_merge( $columns, array( 'new_cogs' ) ) ) : '';
+		$exported = 0;
 		foreach ( $ids as $id ) {
 			$product = wc_get_product( $id );
 			if ( ! $product || ! current_user_can( 'edit_post', $id ) ) {
