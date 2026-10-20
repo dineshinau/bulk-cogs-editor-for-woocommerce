@@ -516,6 +516,9 @@ class DKBCE_COGS_Service {
 			'paginate' => true,
 		);
 
+		if ( array_key_exists( 'selected_ids', $filters ) ) {
+			$args['include'] = $filters['selected_ids'] ? array_map( 'absint', $filters['selected_ids'] ) : array( 0 );
+		}
 		// Exclusions are validated against the user's preview before snapshotting.
 		if ( ! empty( $filters['selection_range'] ) ) {
 			$args['dkbce_selection_range'] = array( $filters['selection_range']['min'], $filters['selection_range']['max'] );
@@ -526,7 +529,8 @@ class DKBCE_COGS_Service {
 
 		if ( ! empty( $filters['search'] ) ) {
 			$search_ids      = $filters['search_ids'] ?? $this->search_product_ids( $filters['search'] );
-			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+			$search_ids      = isset( $args['include'] ) ? array_intersect( $args['include'], $search_ids ) : $search_ids;
+			$args['include'] = $search_ids ? array_values( $search_ids ) : array( 0 ); // array(0) forces an empty result.
 		}
 
 		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {

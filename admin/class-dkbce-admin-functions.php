@@ -148,6 +148,54 @@ class DKBCE_Admin_Functions {
 				'previewLimit'   => DKBCE_COGS_Service::PREVIEW_LIMIT,
 				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
 				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
+				'ui'             => array(
+					'bulkTitle'     => __( 'Review cost changes', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportTitle'   => __( 'Preview export', 'bulk-cogs-editor-for-woocommerce' ),
+					'importTitle'   => __( 'Review import', 'bulk-cogs-editor-for-woocommerce' ),
+					'bulkEmpty'     => __( 'Choose products to preview your cost changes.', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportEmpty'   => __( 'Choose products to preview your export.', 'bulk-cogs-editor-for-woocommerce' ),
+					'importEmpty'   => __( 'Upload a file to preview your cost changes.', 'bulk-cogs-editor-for-woocommerce' ),
+					'emptyTitle'    => __( 'Your preview will appear here', 'bulk-cogs-editor-for-woocommerce' ),
+					'review'        => __( 'Review changes', 'bulk-cogs-editor-for-woocommerce' ),
+					'createCSV'     => __( 'Create CSV', 'bulk-cogs-editor-for-woocommerce' ),
+					'downloadCSV'   => __( 'Download CSV', 'bulk-cogs-editor-for-woocommerce' ),
+					'operation'     => __( 'Operation', 'bulk-cogs-editor-for-woocommerce' ),
+					'scope'         => __( 'Selection', 'bulk-cogs-editor-for-woocommerce' ),
+					'coverage'      => __( 'Review coverage', 'bulk-cogs-editor-for-woocommerce' ),
+					'persistence'   => __( 'Saved changes remain if you stop remaining updates.', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'reviewed'      => __( '%d selected products reviewed; other selected products are calculated during processing.', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'updateCount'   => __( 'Update %d products', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'reviewCount'   => __( 'Review %d changes', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'selected'      => __( '%d selected across all pages', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'pageSelected'  => __( '%d selected on this page', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of matching products. */
+					'all'           => __( 'Select all %d matching products', 'bulk-cogs-editor-for-woocommerce' ),
+					'allReviewed'   => __( 'All selected products have been reviewed.', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportTask'    => __( 'File export', 'bulk-cogs-editor-for-woocommerce' ),
+					'clear'         => __( 'Clear selection', 'bulk-cogs-editor-for-woocommerce' ),
+					'narrowed'      => __( 'Selection includes previous filter constraints.', 'bulk-cogs-editor-for-woocommerce' ),
+					'set'           => __( 'Set cost', 'bulk-cogs-editor-for-woocommerce' ),
+					'clearCost'     => __( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ),
+					'increase'      => __( 'Increase', 'bulk-cogs-editor-for-woocommerce' ),
+					'decrease'      => __( 'Decrease', 'bulk-cogs-editor-for-woocommerce' ),
+					'recent'        => __( 'Recent activity', 'bulk-cogs-editor-for-woocommerce' ),
+					'details'       => __( 'View details', 'bulk-cogs-editor-for-woocommerce' ),
+					'bulkTask'      => __( 'Bulk cost update', 'bulk-cogs-editor-for-woocommerce' ),
+					'importTask'    => __( 'File import', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: %d: number of products or selected options. */
+					'completed'     => __( '%d products updated', 'bulk-cogs-editor-for-woocommerce' ),
+					'stale'         => __( 'Preview needs refreshing', 'bulk-cogs-editor-for-woocommerce' ),
+					'manualLimit'   => __( 'Select up to 500 individual products, or use all matching products or a range.', 'bulk-cogs-editor-for-woocommerce' ),
+					'fileColumns'   => __( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ),
+					'format'        => __( 'CSV with a blank new_cogs column', 'bulk-cogs-editor-for-woocommerce' ),
+					'page'          => __( 'Page', 'bulk-cogs-editor-for-woocommerce' ),
+					'downloadReady' => __( 'Your CSV is ready. Download it below.', 'bulk-cogs-editor-for-woocommerce' ),
+				),
 				'csv'            => array(
 					'requestFailed'   => __( 'Request failed. Check the server upload limit or reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ),
 					'preparing'       => __( 'Preparing import preview in the background. You can return to this page later.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -164,8 +212,8 @@ class DKBCE_Admin_Functions {
 					'importStopped'   => __( 'Import preparation stopped or this preview was already applied. Upload again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
 					'selection'       => __( 'Only include products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
 					'exportHelp'      => __( 'Review the products, then download the selected CSV columns. Export does not change costs. Keep this page open until the download is ready.', 'bulk-cogs-editor-for-woocommerce' ),
-					'export'          => __( 'Generate and download CSV', 'bulk-cogs-editor-for-woocommerce' ),
-					'previewImport'   => __( 'Preview import', 'bulk-cogs-editor-for-woocommerce' ),
+					'export'          => __( 'Create CSV', 'bulk-cogs-editor-for-woocommerce' ),
+					'previewImport'   => __( 'Validate file', 'bulk-cogs-editor-for-woocommerce' ),
 					'apply'           => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'file'            => __( 'Choose a CSV or XLSX file within the WordPress upload limit.', 'bulk-cogs-editor-for-woocommerce' ),
 					'columns'         => __( 'Select at least one CSV column.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -249,7 +297,7 @@ class DKBCE_Admin_Functions {
 					/* translators: %s: approximate remaining duration or an estimating message. */
 					'remainingTime'       => __( 'Approx. time remaining: %s', 'bulk-cogs-editor-for-woocommerce' ),
 					'estimatingTime'      => __( 'Calculating…', 'bulk-cogs-editor-for-woocommerce' ),
-					'cancelOperation'     => __( 'Cancel operation', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelOperation'     => __( 'Stop remaining updates', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'          => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'            => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: selected products remaining after a filter refresh. */
@@ -275,7 +323,7 @@ class DKBCE_Admin_Functions {
 					'cogsLabel'           => __( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ),
 					'noSku'               => __( '—', 'bulk-cogs-editor-for-woocommerce' ),
 					'filtersChanged'      => __( 'Filters changed. Get products again to refresh the matching set.', 'bulk-cogs-editor-for-woocommerce' ),
-					'getProducts'         => __( 'Get products', 'bulk-cogs-editor-for-woocommerce' ),
+					'getProducts'         => __( 'Find products', 'bulk-cogs-editor-for-woocommerce' ),
 					'filtersReset'        => __( 'All filters reset.', 'bulk-cogs-editor-for-woocommerce' ),
 					'selectAll'           => __( 'Select all', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: positive formatted currency amount. */
@@ -317,12 +365,21 @@ class DKBCE_Admin_Functions {
 			)
 		) : array();
 		$types          = $this->service->get_product_types();
+		$column_labels  = array(
+			'id'            => __( 'Product ID', 'bulk-cogs-editor-for-woocommerce' ),
+			'sku'           => __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ),
+			'name'          => __( 'Product name', 'bulk-cogs-editor-for-woocommerce' ),
+			'cogs'          => __( 'Current cost', 'bulk-cogs-editor-for-woocommerce' ),
+			'regular_price' => __( 'Regular price', 'bulk-cogs-editor-for-woocommerce' ),
+			'sale_price'    => __( 'Sale price', 'bulk-cogs-editor-for-woocommerce' ),
+			'type'          => __( 'Product type', 'bulk-cogs-editor-for-woocommerce' ),
+		);
 		?>
 		<div class="wrap dkbce-wrap">
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
-				<div><h1><?php esc_html_e( 'Bulk Cost of Goods Sold (COGS) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Update cost of goods for your WooCommerce products quickly and safely.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
-				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Use the filters to find the products you want to update, then click Get products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Set an exact cost, increase or decrease costs by an amount or percentage, or choose Clear COGS to remove costs. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Compare current and new costs in the preview. No changes are saved until you apply and confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'By default, the update includes all matching products across all preview pages. To update specific products, check them in the preview and enable the option to apply only to checked products. Click Apply changes, then confirm.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol>
+				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Use the filters to find the products you want to update, then click Get products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Set an exact cost, increase or decrease costs by an amount or percentage, or choose Clear COGS to remove costs. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Compare current and new costs in the preview. No changes are saved until you apply and confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'All matching products are selected initially. Use the table checkboxes to change your selection, review the selected count, then confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol>
 					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<p><a href="<?php echo esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/R-kw_6g2JIg' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
 				</div></details>
@@ -354,7 +411,7 @@ class DKBCE_Admin_Functions {
 				<button type="button" class="button" data-dkbce-mode="csv" aria-pressed="false"><?php esc_html_e( 'CSV import / export', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 			</div>
 			<section id="dkbce-csv" class="dkbce-section dkbce-csv-section" hidden aria-labelledby="dkbce-csv-title">
-				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-media-spreadsheet" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-csv-title"><?php esc_html_e( 'CSV Action', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Choose whether to export matching products or import updated costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
+				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-media-spreadsheet" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-csv-title"><?php esc_html_e( 'File transfer', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Choose whether to export matching products or import updated costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
 				<div class="dkbce-actions">
 					<fieldset class="dkbce-csv-action">
 						<legend class="screen-reader-text"><?php esc_html_e( 'CSV action', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
@@ -363,16 +420,17 @@ class DKBCE_Admin_Functions {
 					</fieldset>
 				</div>
 				<div id="dkbce-csv-export-options">
-					<p><button type="button" class="button-link" id="dkbce-csv-template"><?php esc_html_e( 'Download sample CSV', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
+
 					<p><?php esc_html_e( 'Use the filters below to choose products. Product type controls whether variable parents and variations are included. Export includes all matching pages. A blank new_cogs column is always added last. Enter your new costs there before importing.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<fieldset class="dkbce-csv-columns"><legend><?php esc_html_e( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
 					<?php foreach ( DKBCE_CSV_Service::COLUMNS as $column ) : ?>
-						<label><input type="checkbox" name="dkbce-csv-column" value="<?php echo esc_attr( $column ); ?>" checked> <?php echo esc_html( $column ); ?></label>
+						<label><input type="checkbox" name="dkbce-csv-column" value="<?php echo esc_attr( $column ); ?>" checked> <?php echo esc_html( $column_labels[ $column ] ); ?></label>
 					<?php endforeach; ?>
 					</fieldset>
 				</div>
 				<div id="dkbce-csv-import-options" hidden>
-					<p><?php esc_html_e( 'UTF-8 CSV or XLSX (first worksheet, formulas replaced with values). No plugin row limit. Preview preparation runs in the background; review the paged results before applying. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. Older files without new_cogs can still use cogs. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+					<p><button type="button" class="button-link" id="dkbce-csv-template"><?php esc_html_e( 'Download template', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
+					<p><?php esc_html_e( 'CSV or XLSX. Include new_cogs and either id or sku. Validate your file before changing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></p><details class="dkbce-file-requirements"><summary><?php esc_html_e( 'File requirements', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><p><?php esc_html_e( 'UTF-8 CSV or XLSX (first worksheet, formulas replaced with values). No plugin row limit. Preview preparation runs in the background; review the paged results before applying. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. Older files without new_cogs can still use cogs. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank costs are skipped; zero follows WooCommerce empty-cost behavior.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></details>
 					<p>
 					<?php
 					/* translators: %s: site maximum upload size. */
@@ -380,14 +438,14 @@ class DKBCE_Admin_Functions {
 					?>
 					</p>
 					<div id="dkbce-import-progress" class="dkbce-operation" hidden><p id="dkbce-import-status" role="status" aria-live="polite"></p><p id="dkbce-import-count" class="dkbce-progress-count"></p><div id="dkbce-import-progress-track" class="dkbce-progress-track is-active"><progress id="dkbce-import-progress-bar" max="100" value="0" aria-label="<?php esc_attr_e( 'Import preview progress', 'bulk-cogs-editor-for-woocommerce' ); ?>"></progress><span class="dkbce-progress-highlight" aria-hidden="true"></span><span id="dkbce-import-percentage" class="dkbce-progress-percentage" aria-hidden="true">0%</span></div><div class="dkbce-operation-metrics"><p id="dkbce-import-time" class="dkbce-operation-time" aria-live="off"></p></div><button type="button" class="button"><?php esc_html_e( 'Cancel preparation', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div>
-					<label id="dkbce-csv-drop" for="dkbce-csv-file"><?php esc_html_e( 'Drop a CSV or XLSX file here or choose a file', 'bulk-cogs-editor-for-woocommerce' ); ?><input type="file" id="dkbce-csv-file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+					<label id="dkbce-csv-drop" for="dkbce-csv-file"><?php esc_html_e( 'Drop a CSV or XLSX file here or choose a file', 'bulk-cogs-editor-for-woocommerce' ); ?><input type="file" id="dkbce-csv-file" accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label><div id="dkbce-file-details" hidden><span></span><button type="button" class="button-link" id="dkbce-file-replace"><?php esc_html_e( 'Replace file', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-file-remove"><?php esc_html_e( 'Remove file', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div>
 				</div>
-				<p id="dkbce-csv-preview-wrap"><button type="button" class="button button-primary" id="dkbce-csv-preview"><?php esc_html_e( 'Preview import', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
+				<p id="dkbce-csv-preview-wrap"><button type="button" class="button button-primary" id="dkbce-csv-preview"><?php esc_html_e( 'Validate file', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
 				<div id="dkbce-csv-errors" hidden></div>
 			</section>
 
 			<section class="dkbce-section dkbce-filters-section" aria-labelledby="dkbce-filters-title">
-				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-filter" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-filters-title"><?php esc_html_e( 'Select products', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p id="dkbce-filter-help"><?php esc_html_e( 'Select one or more values per filter. Leave a filter empty to include all values.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-actions dkbce-filter-actions"><button type="button" class="button button-primary" id="dkbce-get-products" <?php disabled( ! $available ); ?>><?php esc_html_e( 'Get products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-reset"><?php esc_html_e( 'Reset filters', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span class="dkbce-product-status"><span id="dkbce-products-loading" role="status"></span><span id="dkbce-products-spinner" class="spinner" aria-hidden="true"></span><span id="dkbce-product-count" aria-live="polite"></span></span></div></div>
+				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-filter" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-filters-title"><?php esc_html_e( 'Select products', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p id="dkbce-filter-help"><?php esc_html_e( 'Select one or more values per filter. Leave a filter empty to include all values.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div><div class="dkbce-actions dkbce-filter-actions"><button type="button" class="button button-primary" id="dkbce-get-products" <?php disabled( ! $available ); ?>><?php esc_html_e( 'Find products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-reset"><?php esc_html_e( 'Start a new selection', 'bulk-cogs-editor-for-woocommerce' ); ?></button><span class="dkbce-product-status"><span id="dkbce-products-loading" role="status"></span><span id="dkbce-products-spinner" class="spinner" aria-hidden="true"></span><span id="dkbce-product-count" aria-live="polite"></span></span></div></div>
 				<div class="dkbce-grid dkbce-filter-grid">
 					<p><label for="dkbce-search"><?php esc_html_e( 'Search', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-search" type="search" maxlength="100" aria-describedby="dkbce-search-help" placeholder="<?php esc_attr_e( 'Name, SKU or product identifier', 'bulk-cogs-editor-for-woocommerce' ); ?>"><span id="dkbce-search-help" class="description"><?php esc_html_e( 'Search by name, SKU, GTIN, ISBN, EAN or UPC.', 'bulk-cogs-editor-for-woocommerce' ); ?></span></p>
 					<p><label for="dkbce-category"><?php esc_html_e( 'Product category', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-category" class="dkbce-multi-select" multiple size="4"><option value="0"><?php esc_html_e( 'All categories', 'bulk-cogs-editor-for-woocommerce' ); ?></option>
@@ -429,6 +487,7 @@ class DKBCE_Admin_Functions {
 
 			<section class="dkbce-section dkbce-action-section" aria-labelledby="dkbce-action-title">
 				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-admin-generic" aria-hidden="true"></i><span aria-hidden="true">2</span><div><h2 id="dkbce-action-title"><?php esc_html_e( 'Choose COGS update action', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Select how you want to update COGS for matching products.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
+
 				<div class="dkbce-action-grid">
 					<?php
 					$action_labels = array(
@@ -464,21 +523,21 @@ class DKBCE_Admin_Functions {
 				foreach ( DKBCE_COGS_Service::PREVIEW_PAGE_SIZES as $page_size ) :
 					?>
 					<option value="<?php echo esc_attr( $page_size ); ?>" <?php selected( DKBCE_COGS_Service::PREVIEW_PAGE_SIZE, $page_size ); ?>><?php echo esc_html( $page_size ); ?></option><?php endforeach; ?></select><details class="dkbce-columns"><summary><?php esc_html_e( 'Manage columns', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Manage columns', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><button type="button" class="dkbce-popover-close" aria-label="<?php esc_attr_e( 'Close column controls', 'bulk-cogs-editor-for-woocommerce' ); ?>">×</button><div id="dkbce-column-options"></div></div></details></div></div>
-				<div id="dkbce-preview-content" hidden></div>
+				<div id="dkbce-selection-toolbar" hidden><strong id="dkbce-selection-count" aria-live="polite"></strong><span id="dkbce-page-selection-count"></span><button type="button" class="button-link" id="dkbce-select-all"><?php esc_html_e( 'Select all matching products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-select-none"><?php esc_html_e( 'Clear selection', 'bulk-cogs-editor-for-woocommerce' ); ?></button><details id="dkbce-range-menu"><summary><?php esc_html_e( 'Select a range…', 'bulk-cogs-editor-for-woocommerce' ); ?></summary></details></div><p id="dkbce-selection-context" hidden></p><div id="dkbce-preview-content" hidden></div>
 				<div class="dkbce-preview-empty"><span class="dashicons dashicons-list-view" aria-hidden="true"></span><h3><?php esc_html_e( 'Your changes start here', 'bulk-cogs-editor-for-woocommerce' ); ?></h3><p><?php esc_html_e( 'Get your products, then choose an action and enter a value to see the new costs before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p><span class="dkbce-empty-note"><?php esc_html_e( 'Preview first. Apply when you are ready.', 'bulk-cogs-editor-for-woocommerce' ); ?></span></div>
 			</section>
 
 			<section class="dkbce-section dkbce-apply-section" aria-labelledby="dkbce-apply-title">
 				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-yes-alt" aria-hidden="true"></i><span aria-hidden="true">4</span><div><h2 id="dkbce-apply-title"><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Review your preview, choose which products to include, then confirm your update.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
-				<p class="dkbce-selection-option"><label><input type="checkbox" id="dkbce-selected-only"> <?php esc_html_e( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ); ?></label></p>
-				<p><span id="dkbce-apply-spinner" class="spinner" aria-hidden="true"></span><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
+				<p class="dkbce-selection-option" hidden><label><input type="checkbox" id="dkbce-selected-only" checked> <?php esc_html_e( 'Only apply to products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ); ?></label></p>
+				<p id="dkbce-action-summary" aria-live="polite"></p><p><span id="dkbce-apply-spinner" class="spinner" aria-hidden="true"></span><button type="button" class="button button-primary" id="dkbce-apply" disabled><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
 			</section>
 
 			<div id="dkbce-operation" class="dkbce-operation" hidden aria-live="polite"></div>
 
 			</div>
 
-			<div id="dkbce-confirm" class="dkbce-dialog" role="dialog" aria-modal="true" aria-labelledby="dkbce-confirm-title" aria-describedby="dkbce-confirm-text" hidden><div class="dkbce-dialog-panel"><h2 id="dkbce-confirm-title"><?php esc_html_e( 'Confirm COGS changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p id="dkbce-confirm-text"></p><div class="dkbce-actions"><button type="button" class="button" id="dkbce-confirm-cancel"><?php esc_html_e( 'Cancel', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button button-primary" id="dkbce-confirm-apply"><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div></div></div>
+			<div id="dkbce-confirm" class="dkbce-dialog" role="dialog" aria-modal="true" aria-labelledby="dkbce-confirm-title" aria-describedby="dkbce-confirm-text" hidden><div class="dkbce-dialog-panel"><h2 id="dkbce-confirm-title"><?php esc_html_e( 'Confirm COGS changes', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p id="dkbce-confirm-text"></p><dl id="dkbce-confirm-summary"></dl><p id="dkbce-confirm-warning"></p><div class="dkbce-actions"><button type="button" class="button" id="dkbce-confirm-cancel"><?php esc_html_e( 'Cancel', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button button-primary" id="dkbce-confirm-apply"><?php esc_html_e( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div></div></div>
 		</div>
 		<?php
 	}
@@ -973,6 +1032,31 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Validate a bounded explicit selection against rows in an owned preview.
+	 *
+	 * @param array $preview Owned preview.
+	 * @return array Validated product IDs.
+	 */
+	private function explicit_preview_ids( $preview ) {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$raw     = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? wp_unslash( $_POST['selected_ids'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Strict decimal IDs are validated against owned preview rows below.
+		$allowed = array_merge( $preview['row_ids'], array_map( 'absint', array_keys( $preview['reviewed_rows'] ?? array() ) ) );
+		$ids     = array();
+		if ( count( $raw ) > DKBCE_COGS_Service::MAX_SELECTED_PRODUCTS ) {
+			wp_send_json_error( array( 'message' => __( 'Select up to 500 individual products, or use all matching products or a range.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		foreach ( $raw as $id ) {
+			if ( ! is_scalar( $id ) || ! preg_match( '/\A[1-9][0-9]*\z/', (string) $id ) || ! in_array( absint( $id ), $allowed, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'The selected products do not match the preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			$ids[] = absint( $id );
+		}
+		return array_values( array_unique( $ids ) );
+	}
+
+	/**
 	 * Start an asynchronous export from an authorized preview.
 	 *
 	 * @return void
@@ -1010,6 +1094,13 @@ class DKBCE_Admin_Functions {
 			}
 		}
 		$filters['excluded_ids'] = array_map( 'absint', $excluded );
+		if ( isset( $_POST['selection_mode'] ) && 'explicit' === $_POST['selection_mode'] ) {
+			$ids = $this->explicit_preview_ids( $preview );
+			if ( ! $ids ) {
+				wp_send_json_error( array( 'message' => __( 'Select at least one product.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			$filters['selected_ids'] = $ids;
+		}
 		try {
 			$download = ( new DKBCE_Download_Processor() )->start(
 				array(
@@ -1072,7 +1163,21 @@ class DKBCE_Admin_Functions {
 		if ( $selection['range'] ) {
 			$selected_filters['selection_range'] = $selection['range'];
 		}
-		$selected_count = $this->service->scan_matches( $selected_filters );
+		$selected_ids = null;
+		if ( isset( $_POST['selection_mode'] ) && 'explicit' === $_POST['selection_mode'] && ! empty( $selection['previous'] ) ) {
+			$selected_filters['selected_ids'] = $this->explicit_preview_ids( $selection['previous'] );
+			$selected_ids                     = $this->service->scan_matches(
+				array_merge(
+					$selected_filters,
+					array(
+						'count'     => false,
+						'get_ids'   => true,
+						'page_size' => DKBCE_COGS_Service::MAX_SELECTED_PRODUCTS,
+					)
+				)
+			);
+		}
+		$selected_count = null !== $selected_ids ? count( $selected_ids ) : $this->service->scan_matches( $selected_filters );
 		if ( $selection['range'] ) {
 			$selection['range']['count'] = $selected_count;
 		}
@@ -1096,6 +1201,7 @@ class DKBCE_Admin_Functions {
 		wp_send_json_success(
 			array(
 				'selected_count'  => $selected_count,
+				'selected_ids'    => $selected_ids,
 				'excluded_ids'    => $selection['excluded_ids'],
 				'selection_range' => $selection['range'],
 				'preview_id'      => $token,
@@ -1143,6 +1249,7 @@ class DKBCE_Admin_Functions {
 				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 		}
+		$selection['previous']     = $previous;
 		$selection['row_ids']      = $previous['row_ids'];
 		$selection['excluded_ids'] = array_values( array_unique( array_map( 'absint', $excluded ) ) );
 		$range_token               = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
@@ -1470,10 +1577,14 @@ class DKBCE_Admin_Functions {
 				if ( $selected_only ) {
 					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Every JSON ID is checked against private staged rows by exclude().
 					$excluded = isset( $_POST['excluded_ids'] ) && is_string( $_POST['excluded_ids'] ) ? json_decode( wp_unslash( $_POST['excluded_ids'] ), true ) : null;
-					if ( ! $exclude_mode || $range_mode || ! is_array( $excluded ) ) {
-						throw new RuntimeException( esc_html__( 'Choose import products using the preview checkboxes.', 'bulk-cogs-editor-for-woocommerce' ) );
+					if ( isset( $_POST['selection_mode'] ) && 'explicit' === $_POST['selection_mode'] ) {
+						$imports->select_only( $import_job['operation_id'], $this->explicit_preview_ids( $preview ) );
+					} else {
+						if ( ! $exclude_mode || $range_mode || ! is_array( $excluded ) ) {
+							throw new RuntimeException( esc_html__( 'Choose import products using the preview checkboxes.', 'bulk-cogs-editor-for-woocommerce' ) );
+						}
+						$imports->exclude( $import_job['operation_id'], array_unique( $excluded, SORT_REGULAR ) );
 					}
-					$imports->exclude( $import_job['operation_id'], array_unique( $excluded, SORT_REGULAR ) );
 				}
 				$counts = $imports->counts( $import_job['operation_id'] );
 				if ( ! $counts['valid'] ) {
@@ -1746,6 +1857,8 @@ class DKBCE_Admin_Functions {
 	 */
 	private function public_operation( $state ) {
 		return array(
+			'action'           => $state['action'],
+			'completed_at'     => (int) ( $state['completed_at'] ?? 0 ),
 			'last_progress_at' => (int) ( $state['updated_at'] ?? $state['created_at'] ),
 			'progress_age'     => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
 			'queue_available'  => function_exists( 'as_enqueue_async_action' ),

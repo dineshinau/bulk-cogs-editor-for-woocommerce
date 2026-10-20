@@ -205,6 +205,30 @@ class DKBCE_Import_Store {
 	}
 
 	/**
+	 * Freeze a bounded explicit selection from validated staging rows.
+	 *
+	 * @param string $job Claimed import job.
+	 * @param array  $ids Authorized product IDs.
+	 * @return void
+	 * @throws RuntimeException When the selection is missing or cannot be saved.
+	 */
+	public function select_only( $job, $ids ) {
+		global $wpdb;
+		if ( ! $ids || count( $this->values( $job, $ids ) ) !== count( $ids ) ) {
+			throw new RuntimeException( esc_html__( 'Select at least one valid product to import.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$placeholders = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- One bounded placeholder per validated product ID.
+		$query = $wpdb->prepare(
+			"UPDATE %i SET selected = (product_id IN ($placeholders)) WHERE job_id = %s AND row_type = 0 AND error = ''", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only the generated placeholder list is interpolated.
+			array_merge( array( $wpdb->prefix . 'dkbce_import_rows' ), $ids, array( $job ) )
+		);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- Prepared selection update for an owned, claimed import.
+		$wpdb->query( $query );
+		$this->check_error();
+	}
+
+	/**
 	 * Fetch a bounded page of unsuccessful or unprocessed import results.
 	 *
 	 * @param string $job          Import job.
