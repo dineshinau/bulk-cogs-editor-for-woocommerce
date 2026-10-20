@@ -269,7 +269,8 @@ class DKBCE_Operation_Store {
 				'token'        => wp_generate_uuid4(),
 			)
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Unique option_name provides atomic exclusion; cache invalidated on acquisition.
+		// Product locks are private records accessed exclusively through direct SQL.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Unique option_name provides atomic exclusion; lock records do not use the option cache.
 		$inserted = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO %i (option_name, option_value, autoload) VALUES (%s, %s, %s)', $wpdb->options, $key, $value, 'off' ) );
 		if ( false === $inserted ) {
 			return false;
@@ -287,8 +288,6 @@ class DKBCE_Operation_Store {
 				return false;
 			}
 		}
-		wp_cache_delete( $key, 'options' );
-		wp_cache_delete( 'notoptions', 'options' );
 		return $value;
 	}
 
@@ -303,9 +302,8 @@ class DKBCE_Operation_Store {
 		global $wpdb;
 
 		$key = 'dkbce_product_lock_' . absint( $product_id );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Conditional deletion prevents expired workers releasing replacement locks.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Conditional deletion prevents expired workers releasing replacement locks; lock records do not use the option cache.
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $key, $lock ) );
-		wp_cache_delete( $key, 'options' );
 	}
 
 	/**
