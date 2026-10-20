@@ -18,9 +18,9 @@
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1792527983.7408924,
-    "seen": 1792528002.751139,
-    "ast_hash": "9fefcb03ff0873a78f593e107c90f86e",
+    "mtime": 1792528998.0008762,
+    "seen": 1792529029.1011717,
+    "ast_hash": "772a3dc8eac1d9972d64ed7a0e39c30d",
     "semantic_hash": ""
   },
   "index.php": {
@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-operation-store.php": {
-    "mtime": 1792528580.348893,
-    "seen": 1792528593.7142494,
-    "ast_hash": "0c026ba24a5011181683f6b2c0301652",
+    "mtime": 1792528998.0608761,
+    "seen": 1792529029.1011562,
+    "ast_hash": "751155d23d5662f8a888a0e6bb86b855",
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
@@ -138,9 +138,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-store.php": {
-    "mtime": 1792528515.396893,
-    "seen": 1792528530.008379,
-    "ast_hash": "00b60c5cba2b8e4bf13337851d9f4364",
+    "mtime": 1792528998.108876,
+    "seen": 1792529029.1011522,
+    "ast_hash": "c7d2585a6c3cbe393ee9455d07247e55",
     "semantic_hash": ""
   },
   "admin/class-dkbce-download-processor.php": {
@@ -153,6 +153,12 @@
     "mtime": 1792527983.6688924,
     "seen": 1792528002.7511122,
     "ast_hash": "58d72816d5a65732c84d8078b96cf12a",
+    "semantic_hash": ""
+  },
+  "admin/class-dkbce-database-installer.php": {
+    "mtime": 1792529006.3996308,
+    "seen": 1792529029.1011312,
+    "ast_hash": "cf58e2700a7bdda36e1bf6578936c44b",
     "semantic_hash": ""
   }
 }
