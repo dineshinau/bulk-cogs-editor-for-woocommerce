@@ -234,6 +234,14 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
+= 1.1.2 (2026-10-20) =
+
+* Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
+* Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values, then preview changes before applying them.
+* Added: Prepare import previews in background batches, with validation progress, downloadable error reports, and the option to cancel preparation.
+* Improved: Show export progress and refine the import and export controls in the editor.
+* Fixed: Report import preview errors and improve the export progress display.
+
 = 1.1.1 (2026-10-20) =
 
 * Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.

@@ -45,12 +45,12 @@ class DKBCE_Import_Processor {
 		}
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod -- Restrict the private temporary upload before retaining it.
 		$private = chmod( $path, 0600 );
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_move_uploaded_file -- Move only a PHP-verified upload into a server-generated private temporary path.
-		if ( ! $private || ! move_uploaded_file( $upload['tmp_name'], $path ) ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy -- Copy a verified upload into a private temporary path, including across mounts.
+		if ( ! $private || ! copy( $upload['tmp_name'], $path ) ) {
 			wp_delete_file( $path );
 			throw new RuntimeException( esc_html__( 'The import file could not be stored.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
-		// Moving an upload can replace the destination mode.
+		// Keep the destination private after copying the upload.
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod -- This file must remain private.
 		if ( ! chmod( $path, 0600 ) ) {
 			wp_delete_file( $path );
