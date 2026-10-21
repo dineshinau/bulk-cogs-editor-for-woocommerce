@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 * **Save time when supplier prices change.** Raise or lower costs for a whole category, brand, or group of products in one pass instead of editing products one by one.
 * **Preview before you apply.** See the current COGS, the calculated COGS, and the exact change for every product. Previewing never changes your store data.
 * **Built for large catalogs.** Updates run in Action Scheduler batches, with live progress and the option to cancel.
-* **Faster bulk updates.** A reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
+* **Faster bulk updates.** The latest reported WP-CLI benchmark updated 10,000 products in 15 minutes 24 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
 * **Review and reverse recorded updates.** Find past operations in History, inspect recorded product costs and results, and review a rollback to retained original costs.
 * **Choose your rollback policy.** Restore original costs even after later edits, or skip products whose costs changed afterward. Set the history retention period to suit your store.
 * **Your prices stay untouched.** The plugin only changes the Cost of Goods Sold value.
@@ -124,9 +124,9 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 
 Bulk processing has been improved by reducing repeated product scans and counts, preparing product and variation-parent caches in batches, and grouping WooCommerce product cache cleanup. Progress counters are checkpointed while each product's outcome is saved for recovery. COGS updates continue to use WooCommerce's CRUD/data layer, preserving its hooks and cache handling.
 
-In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes. The latest reported run updated **10,000 products in 21 minutes 34 seconds, with zero skipped and zero failed** — about 57–64% less time than the initial implementation.
+In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes. The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
 
-The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
+The supplied completion screenshot records an editor operation elapsed time of **00:15:24**, not a separately measured end-to-end CLI runtime. The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
 = Import CSV and XLSX files =
 
@@ -323,6 +323,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Simplify editor styling and improve mobile touch targets, stacked controls, scrollable help, and safe-area spacing for the sticky summary.
 * Improved: Reuse review tables and progress/result rendering across bulk updates and history; use consistent numbered pagination, page-size controls, Go to page, and inline Show entries controls.
 * Improved: Collect remaining rollback product IDs through bounded cursor reads without repeating a full history-product count per batch.
+* Improved: The latest reported WP-CLI benchmark updated 10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed, compared with 50–60 minutes initially. This single run records editor operation elapsed time; results vary by store and require repeat benchmarking.
 * Updated: Refresh the translation template, import and worker documentation, QA and performance review reports, and development code graph.
 * Updated: Document History, rollback policies, retention settings, and recovery behavior, with refreshed screenshots from the wpdev development store.
 * Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
@@ -348,7 +349,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Explain how to refresh an expired preview and scroll to the notice so the instructions are visible.
 * Improved: Collect matching products using a product ID cursor, cache search matches per operation, and recover saved snapshot chunks after interruptions.
 * Improved: Group WooCommerce product transient invalidations within each update batch to reduce repeated cache cleanup.
-* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. The latest reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
+* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. A reported benchmark for this version updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
 * Added: Select the first or last number of products across all matching results, or choose all results.
 * Added: Clear a finished operation when using the Refresh now link.
 

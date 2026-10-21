@@ -257,9 +257,11 @@ Import preview workers must run on the upload server as the same operating-syste
 
 ### Performance
 
-The developer’s [reported benchmark](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12) updated **10,000 products in 21 minutes 34 seconds**, with zero skipped and zero failed, compared with 50–60 minutes in the initial implementation.
+The latest reported **WP-CLI benchmark** updated **10,000 products in 15 minutes 24 seconds**, with **zero skipped and zero failed**, compared with 50–60 minutes in the initial implementation — approximately **69–74% less elapsed time**.
 
-This is a reported single run, not a guaranteed completion time. Results depend on hosting, database speed, product mix, installed extensions, and worker availability. Repeated runs and larger-catalog benchmarks are still needed.
+![WP-CLI benchmark result showing 10,000 products updated, zero skipped, zero failed, and an editor elapsed time of 00:15:24](docs/screenshots/2026-10-21_02-04-27-10k-15-Minutes-WP-CLI.png)
+
+The screenshot records the editor’s operation elapsed time, not a separately measured end-to-end CLI runtime. This is a reported single run, not a guaranteed completion time. Results depend on hosting, database speed, product mix, installed extensions, and worker availability. Repeated runs and larger-catalog benchmarks are still needed.
 
 ## Frequently asked questions
 
