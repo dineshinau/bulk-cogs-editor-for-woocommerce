@@ -51,6 +51,7 @@ class DKBCE_Admin_Hooks {
 		add_action( DKBCE_Download_Processor::HOOK, array( $downloads, 'process' ) );
 		add_action( DKBCE_Download_Processor::CLEANUP_HOOK, array( $downloads, 'cleanup' ) );
 		new DKBCE_Retention_Processor();
+		new DKBCE_History_Controller();
 	}
 
 	/**

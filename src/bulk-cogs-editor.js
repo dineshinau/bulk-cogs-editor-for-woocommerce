@@ -118,6 +118,325 @@
 	$( '.dkbce-action-fields' ).appendChild( $( '#dkbce-value-wrap' ) );
 	$( '.dkbce-filters-section' ).appendChild( $( '.dkbce-filter-actions' ) );
 
+	const historyText = DKBCE.history;
+	const historyState = { page: 1, size: 10, operationId: '', productPage: 1, productSize: 10, review: false, token: '', requestId: 0, detailRequestId: 0, loading: false };
+	const historyRoot = $( '#dkbce-history' );
+	const settingsRoot = $( '#dkbce-settings' );
+	const operationAnchor = document.createComment( 'operation panel' );
+	operationPanel.before( operationAnchor );
+
+	function historyElement( tag, text = '', className = '' ) {
+		const element = document.createElement( tag );
+		element.textContent = text;
+		element.className = className;
+		return element;
+	}
+
+	function historyButton( text, callback, primary = false ) {
+		const button = historyElement( 'button', text, 'button' + ( primary ? ' button-primary' : '' ) );
+		button.type = 'button';
+		button.addEventListener( 'click', callback );
+		return button;
+	}
+
+	function historySection( title, number, help = '' ) {
+		const section = historyElement( 'section', '', 'dkbce-section' );
+		const heading = historyElement( 'div', '', 'dkbce-section-heading' );
+		const text = historyElement( 'div' );
+		text.appendChild( historyElement( 'h2', title ) );
+		if ( help ) { text.appendChild( historyElement( 'p', help ) ); }
+		heading.append( historyElement( 'span', String( number ) ), text );
+		section.appendChild( heading );
+		return section;
+	}
+
+	function historyField( label, input ) {
+		const wrapper = historyElement( 'label', '', 'dkbce-history-field' );
+		wrapper.append( historyElement( 'span', label ), input );
+		return wrapper;
+	}
+
+	function historySelect( entries, initial = '' ) {
+		const select = document.createElement( 'select' );
+		entries.forEach( ( [ value, text ] ) => select.add( new Option( text, value ) ) );
+		select.value = initial;
+		return select;
+	}
+
+	function historyTable( headers ) {
+		const wrap = historyElement( 'div', '', 'dkbce-table-wrap' );
+		const table = historyElement( 'table', '', 'widefat striped dkbce-preview-table dkbce-history-table' );
+		const head = document.createElement( 'thead' );
+		const row = document.createElement( 'tr' );
+		headers.forEach( ( title ) => {
+			const cell = historyElement( 'th', title );
+			cell.scope = 'col';
+			row.appendChild( cell );
+		} );
+		head.appendChild( row );
+		const body = document.createElement( 'tbody' );
+		table.append( head, body );
+		wrap.appendChild( table );
+		return { wrap, body };
+	}
+
+	function createPagination( currentPage, totalPages, onPage, jumpId ) {
+		const pagination = document.createElement( 'nav' );
+		pagination.className = 'dkbce-pagination';
+		pagination.setAttribute( 'aria-label', DKBCE.i18n.paginationLabel );
+		const addPageButton = ( label, page, disabled = false ) => {
+			const button = document.createElement( 'button' );
+			button.type = 'button';
+			button.className = 'button';
+			button.textContent = label;
+			button.disabled = disabled;
+			button.setAttribute( 'aria-label', DKBCE.i18n.pageNumber
+				.replace( '%1$d', String( page ) )
+				.replace( '%2$d', String( totalPages ) ) );
+			if ( String( page ) === label && page === currentPage ) {
+				button.setAttribute( 'aria-current', 'page' );
+			}
+			button.addEventListener( 'click', () => onPage( page ) );
+			pagination.appendChild( button );
+		};
+		addPageButton( '«', 1, currentPage === 1 );
+		addPageButton( '‹', Math.max( 1, currentPage - 1 ), currentPage === 1 );
+		const pages = new Set( [ 1, totalPages ] );
+		const start = Math.max( 1, Math.min( currentPage - 2, totalPages - 4 ) );
+		for ( let page = start; page <= Math.min( totalPages, start + 4 ); page++ ) {
+			pages.add( page );
+		}
+		let previousPage = 0;
+		Array.from( pages ).sort( ( a, b ) => a - b ).forEach( ( page ) => {
+			if ( previousPage && page > previousPage + 1 ) {
+				const gap = document.createElement( 'span' );
+				gap.textContent = '…';
+				pagination.appendChild( gap );
+			}
+			addPageButton( String( page ), page );
+			previousPage = page;
+		} );
+		addPageButton( '›', Math.min( totalPages, currentPage + 1 ), currentPage === totalPages );
+		addPageButton( '»', totalPages, currentPage === totalPages );
+		const jump = document.createElement( 'form' );
+		jump.className = 'dkbce-page-jump';
+		const label = document.createElement( 'label' );
+		label.htmlFor = jumpId;
+		label.textContent = DKBCE.ui.goToPage;
+		const input = document.createElement( 'input' );
+		input.id = jumpId;
+		input.type = 'number';
+		input.min = '1';
+		input.max = String( totalPages );
+		input.step = '1';
+		input.required = true;
+		input.value = String( currentPage );
+		const go = document.createElement( 'button' );
+		go.type = 'submit';
+		go.className = 'button';
+		go.textContent = DKBCE.ui.go;
+		jump.append( label, input, go );
+		jump.addEventListener( 'submit', ( event ) => {
+			event.preventDefault();
+			if ( input.reportValidity() ) { onPage( Number( input.value ) ); }
+		} );
+		return { pagination, jump };
+	}
+
+	function historyPagination( total, page, size, onPage, onSize, jumpId = 'dkbce-history-jump-page' ) {
+		const footer = historyElement( 'div', '', 'dkbce-table-footer' );
+		const sizes = historySelect( [ 10, 20, 50, 100 ].map( ( value ) => [ String( value ), String( value ) ] ), String( size ) );
+		sizes.addEventListener( 'change', () => onSize( Number( sizes.value ) ) );
+		const pages = Math.max( 1, Math.ceil( total / size ) );
+		footer.appendChild( historyField( historyText.show, sizes ) );
+		if ( pages > 1 ) {
+			const { pagination, jump } = createPagination( page, pages, onPage, jumpId );
+			footer.append( pagination, jump );
+		}
+		footer.appendChild( historyElement( 'p', historyText.page.replace( '%1$d', page ).replace( '%2$d', pages ).replace( '%3$d', total ), 'description dkbce-page-summary' ) );
+		return footer;
+	}
+
+	function historyAction( operation ) {
+		const action = historyText.actions[ operation.action ] || operation.action;
+		if ( operation.value === '' || operation.value == null ) { return action; }
+		return action + ' · ' + ( operation.action.includes( 'percent' ) ? operation.value + '%' : money( operation.value ) );
+	}
+
+	function historyStatus( status ) {
+		return historyElement( 'span', historyText.statuses[ status ] || status, 'dkbce-history-status is-' + status );
+	}
+
+	const historyList = historySection( historyText.history, 1, historyText.historyHelp );
+	const historyFilters = historyElement( 'form', '', 'dkbce-history-filters' );
+	const historyInputs = {};
+	[ [ 'status', historyText.allStatuses, historyText.statuses ], [ 'action_type', historyText.allActions, historyText.actions ] ].forEach( ( [ name, label, entries ] ) => {
+		const select = historySelect( [ [ '', label ], ...Object.entries( entries ) ] );
+		historyInputs[ name ] = select;
+		historyFilters.appendChild( historyField( label, select ) );
+	} );
+	historyInputs.user_id = historySelect( [ [ '', historyText.allUsers ] ] );
+	historyFilters.appendChild( historyField( historyText.user, historyInputs.user_id ) );
+	[ [ 'from', 'date', 'from' ], [ 'to', 'date', 'to' ], [ 'search', 'search', 'search' ] ].forEach( ( [ name, type, label ] ) => {
+		const input = document.createElement( 'input' );
+		input.type = type;
+		if ( type === 'number' ) { input.min = '1'; input.step = '1'; }
+		if ( type === 'search' ) { input.placeholder = historyText.search; }
+		historyInputs[ name ] = input;
+		historyFilters.appendChild( historyField( historyText[ label ], input ) );
+	} );
+	const historyFilterButton = historyButton( historyText.filter, () => {} , true );
+	historyFilterButton.type = 'submit';
+	historyFilters.appendChild( historyFilterButton );
+	historyFilters.addEventListener( 'submit', ( event ) => { event.preventDefault(); historyState.page = 1; loadHistory(); } );
+	const historyRows = historyElement( 'div' );
+	const historyDetails = historyElement( 'div' );
+	const historyProgress = historySection( historyText.progress, 5 );
+	historyProgress.hidden = true;
+	historyList.append( historyFilters, historyRows );
+	historyRoot.append( historyList, historyDetails, historyProgress );
+	const noteInput = document.createElement( 'input' );
+	noteInput.type = 'text';
+	noteInput.id = 'dkbce-operation-note';
+	noteInput.maxLength = 500;
+	$( '#dkbce-action-summary' ).before( historyField( historyText.noteHelp, noteInput ) );
+
+	async function loadHistory() {
+		const requestId = ++historyState.requestId;
+		historyFilterButton.disabled = true;
+		historyRows.setAttribute( 'aria-busy', 'true' );
+		try {
+			const values = Object.fromEntries( Object.entries( historyInputs ).map( ( [ name, input ] ) => [ name, input.value ] ) );
+			const data = await request( 'history', { ...values, page: historyState.page, size: historyState.size } );
+			if ( requestId !== historyState.requestId ) { return; }
+			const selectedUser = historyInputs.user_id.value;
+			historyInputs.user_id.replaceChildren( new Option( historyText.allUsers, '' ) );
+			data.users.forEach( ( user ) => historyInputs.user_id.add( new Option( user.display_name || historyText.userId + ' ' + user.user_id, user.user_id ) ) );
+			historyInputs.user_id.value = selectedUser;
+			historyRows.replaceChildren();
+			if ( ! data.indexed ) {
+				historyRows.appendChild( historyElement( 'p', historyText.indexing ) );
+				window.setTimeout( () => { if ( state.mode === 'history' ) { loadHistory(); } }, 500 );
+			}
+			const { wrap, body } = historyTable( [ historyText.id, historyText.date, historyText.action, historyText.products, historyText.status, historyText.user, historyText.note, historyText.view ] );
+			data.rows.forEach( ( operation ) => {
+				const row = document.createElement( 'tr' );
+				appendCell( row, operation.operation_id );
+				// UUIDs remain copyable without stretching the table.
+				row.firstChild.classList.add( 'dkbce-history-id' );
+				appendCell( row, new Date( operation.created_at * 1000 ).toLocaleString() );
+				appendCell( row, historyAction( operation ) );
+				appendCell( row, Number( operation.total ).toLocaleString() );
+				const status = document.createElement( 'td' ); status.appendChild( historyStatus( operation.status ) ); row.appendChild( status );
+				appendCell( row, operation.user ); appendCell( row, operation.note || '—' );
+				const action = document.createElement( 'td' );
+				action.appendChild( historyButton( historyText.view, () => { historyState.operationId = operation.operation_id; historyState.productPage = 1; historyState.review = false; loadHistoryDetails(); } ) );
+				row.appendChild( action ); body.appendChild( row );
+			} );
+			historyRows.appendChild( wrap );
+			if ( ! data.total ) { historyRows.appendChild( historyElement( 'p', historyText.empty ) ); }
+			historyRows.appendChild( historyPagination( data.total, historyState.page, historyState.size, ( page ) => { historyState.page = page; loadHistory(); }, ( size ) => { historyState.size = size; historyState.page = 1; loadHistory(); } ) );
+		} catch ( error ) { setNotice( error.message, 'error', historyList ); }
+		finally { historyFilterButton.disabled = false; historyRows.removeAttribute( 'aria-busy' ); }
+	}
+
+	async function loadHistoryDetails() {
+		const requestId = ++historyState.detailRequestId;
+		historyState.loading = true;
+		historyDetails.setAttribute( 'aria-busy', 'true' );
+		historyState.token = '';
+		try {
+			const operationId = historyState.operationId;
+			const data = await request( 'history_detail', { operation_id: operationId, page: historyState.productPage, size: historyState.productSize, review: historyState.review ? '1' : '' } );
+			if ( requestId !== historyState.detailRequestId || operationId !== historyState.operationId ) { return; }
+			historyState.token = data.review_token;
+			historyDetails.replaceChildren();
+			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
+			details.appendChild( historyButton( historyText.back, () => { historyState.operationId = ''; historyState.token = ''; historyDetails.replaceChildren(); } ) );
+			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
+			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
+			details.appendChild( metadata );
+			const products = historySection( historyState.review ? historyText.review : historyText.changes, historyState.review ? 4 : 3 );
+			if ( historyState.review ) { products.appendChild( historyElement( 'p', data.rollback_policy === 'skip_changed' ? historyText.skipWarning : historyText.warning, 'notice notice-warning inline dkbce-history-warning' ) ); }
+			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
+			data.rows.forEach( ( item ) => {
+				const row = document.createElement( 'tr' );
+				appendProductCell( row, item ); appendCell( row, item.sku || '—' ); appendCell( row, money( item.current ) ); appendCell( row, money( item.new ) ); appendChangeCell( row, item ); body.appendChild( row );
+			} );
+			products.appendChild( wrap );
+			if ( data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
+			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
+			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			if ( historyState.review ) {
+				products.appendChild( historyButton( historyText.backChanges, () => { historyState.review = false; loadHistoryDetails(); } ) );
+				const checked = document.createElement( 'input' ); checked.type = 'checkbox';
+				const confirm = historyButton( historyText.confirm, () => startRollback( confirm ), true );
+				confirm.classList.add( 'dkbce-rollback-confirm' ); confirm.disabled = true;
+				checked.addEventListener( 'change', () => { confirm.disabled = ! checked.checked || ! data.can_rollback || isOperationRunning(); } );
+				products.append( historyField( data.rollback_policy === 'skip_changed' ? historyText.skipConfirm : historyText.confirmCheck, checked ), confirm );
+			} else if ( data.can_rollback ) {
+				products.appendChild( historyButton( historyText.review, () => { historyState.review = true; historyState.productPage = 1; loadHistoryDetails(); } ) );
+			} else {
+				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
+			}
+			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => { historyState.operationId = data.rollback_id; historyState.review = false; historyState.productPage = 1; loadHistoryDetails(); } ) ); }
+			historyDetails.append( details, products );
+			const result = historySection( historyText.progress, 5 );
+			const panel = historyElement( 'div', '', 'dkbce-operation' ); result.appendChild( panel );
+			renderOperation( data.state, panel, true );
+			historyDetails.appendChild( result );
+			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
+				result.appendChild( historyButton( DKBCE.i18n.refreshStatus, loadHistoryDetails ) );
+			}
+		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { setNotice( error.message, 'error', historyList ); } }
+		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); } }
+	}
+
+	async function startRollback( button ) {
+		if ( isOperationRunning() || ! historyState.token || historyState.loading ) { return; }
+		button.disabled = true;
+		state.startingOperation = true;
+		try {
+			const data = await request( 'rollback', { operation_id: historyState.operationId, review_token: historyState.token, confirmed: '1' } );
+			historyState.token = '';
+			state.operationId = data.operation_id; state.operationStartedAt = null;
+			historyProgress.hidden = false; historyProgress.appendChild( operationPanel ); operationPanel.hidden = false;
+			renderOperation( data.state ); pollProgress();
+			invalidatePreview( false, true );
+			historyDetails.replaceChildren();
+			historyProgress.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+			loadHistory();
+		} catch ( error ) { setNotice( error.message, 'error', historyList ); button.disabled = false; }
+		finally { state.startingOperation = false; updateOperationControls(); }
+	}
+
+	const settingsSection = historySection( historyText.settings, 1 );
+	const settingsForm = historyElement( 'form', '', 'dkbce-settings-form' );
+	const retentionChoice = historySelect( [ [ '30', historyText.days30 ], [ '90', historyText.days90 ], [ 'custom', historyText.custom ] ], '30' );
+	const retentionDays = document.createElement( 'input' ); retentionDays.type = 'number'; retentionDays.min = '1'; retentionDays.max = '36500'; retentionDays.step = '1'; retentionDays.required = true; retentionDays.value = '30';
+	const customRetention = historyField( historyText.days, retentionDays ); customRetention.hidden = true;
+	retentionChoice.addEventListener( 'change', () => { customRetention.hidden = retentionChoice.value !== 'custom'; if ( retentionChoice.value !== 'custom' ) { retentionDays.value = retentionChoice.value; } } );
+	const rollbackPolicy = historySelect( [ [ 'overwrite', historyText.overwrite ], [ 'skip_changed', historyText.skipChanged ] ], 'overwrite' );
+	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
+	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
+	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
+	async function loadSettings() {
+		saveSettings.disabled = true;
+		try {
+			const data = await request( 'settings' );
+			rollbackPolicy.value = data.rollback_policy;
+			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
+		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
+		finally { saveSettings.disabled = false; }
+	}
+	settingsForm.addEventListener( 'submit', async ( event ) => {
+		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
+		saveSettings.disabled = true;
+		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value } ); setNotice( historyText.saved, 'success', settingsSection ); }
+		catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
+		finally { saveSettings.disabled = false; }
+	} );
+
 	function csvMode() {
 		return state.mode === 'csv';
 	}
@@ -183,6 +502,18 @@
 			button.setAttribute( 'aria-pressed', String( selected ) );
 			button.classList.toggle( 'button-primary', selected );
 		} );
+		const extra = [ 'history', 'settings' ].includes( state.mode );
+		$( '#dkbce-history' ).hidden = state.mode !== 'history';
+		$( '#dkbce-settings' ).hidden = state.mode !== 'settings';
+		if ( extra ) {
+			document.querySelectorAll( '.dkbce-workspace > section' ).forEach( ( section ) => { section.hidden = true; } );
+		}
+		if ( state.mode === 'history' ) {
+			historyProgress.appendChild( operationPanel ); historyProgress.hidden = operationPanel.hidden;
+		} else { operationAnchor.after( operationPanel ); historyProgress.hidden = true; }
+		$( '.dkbce-preview-section' ).hidden = extra;
+		$( '.dkbce-apply-section' ).hidden = extra;
+		if ( state.mode === 'settings' ) { historyProgress.appendChild( operationPanel ); }
 		updateOperationControls();
 	}
 
@@ -465,7 +796,7 @@
 
 	document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 		button.addEventListener( 'click', () => {
-			if ( state.busy || state.loadingPage || isOperationRunning() ) {
+			if ( state.busy || state.loadingPage || ( isOperationRunning() && ! [ 'history', 'settings' ].includes( button.dataset.dkbceMode ) ) ) {
 				return;
 			}
 			resetSelection();
@@ -473,6 +804,8 @@
 			window.clearTimeout( state.previewTimer );
 			invalidatePreview( true, true );
 			updateCSVMode();
+			if ( state.mode === 'history' ) { loadHistory(); }
+			if ( state.mode === 'settings' ) { loadSettings(); }
 		} );
 	} );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
@@ -824,7 +1157,7 @@
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
-			input.disabled = running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
+			input.disabled = [ 'history', 'settings' ].includes( input.dataset.dkbceMode ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
 		$( '#dkbce-action-prerequisite' ).hidden = state.hasQuery && state.count > 0;
 		document.querySelectorAll( '.dkbce-action-fields input, .dkbce-action-fields select' ).forEach( ( input ) => {
@@ -1267,65 +1600,7 @@
 		updatePageSelectionControls();
 
 		if ( data.total_pages > 1 ) {
-			const pagination = document.createElement( 'nav' );
-			pagination.className = 'dkbce-pagination';
-			pagination.setAttribute( 'aria-label', DKBCE.i18n.paginationLabel );
-			const addPageButton = ( label, page, disabled = false ) => {
-				const button = document.createElement( 'button' );
-				button.type = 'button';
-				button.className = 'button';
-				button.textContent = label;
-				button.disabled = disabled;
-				button.setAttribute( 'aria-label', DKBCE.i18n.pageNumber
-					.replace( '%1$d', String( page ) )
-					.replace( '%2$d', String( data.total_pages ) ) );
-				if ( String( page ) === label && page === data.page ) {
-					button.setAttribute( 'aria-current', 'page' );
-				}
-				button.addEventListener( 'click', () => fetchPreviewPage( page ) );
-				pagination.appendChild( button );
-			};
-			addPageButton( '«', 1, data.page === 1 );
-			addPageButton( '‹', Math.max( 1, data.page - 1 ), data.page === 1 );
-			const pages = new Set( [ 1, data.total_pages ] );
-			const start = Math.max( 1, Math.min( data.page - 2, data.total_pages - 4 ) );
-			for ( let page = start; page <= Math.min( data.total_pages, start + 4 ); page++ ) {
-				pages.add( page );
-			}
-			let previousPage = 0;
-			Array.from( pages ).sort( ( a, b ) => a - b ).forEach( ( page ) => {
-				if ( previousPage && page > previousPage + 1 ) {
-					const gap = document.createElement( 'span' );
-					gap.textContent = '…';
-					pagination.appendChild( gap );
-				}
-				addPageButton( String( page ), page );
-				previousPage = page;
-			} );
-			addPageButton( '›', Math.min( data.total_pages, data.page + 1 ), data.page === data.total_pages );
-			addPageButton( '»', data.total_pages, data.page === data.total_pages );
-			const jump = document.createElement( 'form' );
-			jump.className = 'dkbce-page-jump';
-			const label = document.createElement( 'label' );
-			label.htmlFor = 'dkbce-jump-page';
-			label.textContent = DKBCE.ui.goToPage;
-			const input = document.createElement( 'input' );
-			input.id = 'dkbce-jump-page';
-			input.type = 'number';
-			input.min = '1';
-			input.max = String( data.total_pages );
-			input.step = '1';
-			input.required = true;
-			input.value = String( data.page );
-			const go = document.createElement( 'button' );
-			go.type = 'submit';
-			go.className = 'button';
-			go.textContent = DKBCE.ui.go;
-			jump.append( label, input, go );
-			jump.addEventListener( 'submit', ( event ) => {
-				event.preventDefault();
-				if ( input.reportValidity() ) { fetchPreviewPage( Number( input.value ) ); }
-			} );
+			const { pagination, jump } = createPagination( data.page, data.total_pages, fetchPreviewPage, 'dkbce-jump-page' );
 			footer.insertBefore( pagination, pageSummary );
 			footer.insertBefore( jump, pageSummary );
 		}
@@ -1608,6 +1883,7 @@
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		request( 'apply', {
+			note: noteInput.value,
 			confirmed_count: selectionCount(),
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
 			preview_id: state.previewId,
@@ -1685,7 +1961,7 @@
 		} );
 	}
 
-	function renderOperation( operation ) {
+	function renderOperation( operation, operationPanel = $( '#dkbce-operation' ), historyView = false ) {
 		const completionMessage = {
 			completed: DKBCE.i18n.completedStatus,
 			completed_with_errors: DKBCE.i18n.withErrorsStatus,
@@ -1693,12 +1969,14 @@
 			cancelled: DKBCE.i18n.cancelledStatus,
 		};
 		const focusedControl = operationPanel.contains( document.activeElement ) ? document.activeElement.dataset.operationControl : '';
-		state.operationStatus = operation.status;
-		updateOperationControls();
-		if ( null === state.operationStartedAt ) {
+		if ( ! historyView ) {
+			state.operationStatus = operation.status; updateOperationControls();
+			if ( state.mode === 'history' ) { historyProgress.hidden = false; }
+		}
+		if ( ! historyView && null === state.operationStartedAt ) {
 			state.operationStartedAt = window.performance.now() - operation.elapsed_seconds * 1000;
 		}
-		if ( state.operationTimer ) {
+		if ( ! historyView && state.operationTimer ) {
 			window.clearInterval( state.operationTimer );
 		}
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
@@ -1706,7 +1984,7 @@
 		const heading = document.createElement( 'h3' );
 		const terminal = terminalStatuses.includes( operation.status );
 		operationPanel.classList.toggle( 'is-history', terminal );
-		operationPanel.dataset.task = operation.action === 'csv_import' ? DKBCE.ui.importTask : DKBCE.ui.bulkTask;
+		operationPanel.dataset.task = operation.action === 'rollback' ? historyText.rollback : operation.action === 'csv_import' ? DKBCE.ui.importTask : DKBCE.ui.bulkTask;
 		const delayed = ! terminal && operation.progress_age >= 120;
 		const unavailable = ! terminal && ! operation.queue_available;
 		if ( terminal ) {
@@ -1743,10 +2021,10 @@
 			refresh.className = 'button';
 			refresh.dataset.operationControl = 'refresh';
 			refresh.textContent = DKBCE.i18n.refreshStatus;
-			refresh.addEventListener( 'click', pollProgress );
+			refresh.addEventListener( 'click', historyView ? loadHistoryDetails : pollProgress );
 			operationPanel.appendChild( refresh );
 		}
-		setApplySpinner( ! terminal && ! delayed && ! unavailable );
+		if ( ! historyView ) { setApplySpinner( ! terminal && ! delayed && ! unavailable ); }
 
 		const progress = document.createElement( 'progress' );
 		progress.max = Math.max( 1, operation.total );
@@ -1820,8 +2098,8 @@
 		time.className = 'dkbce-operation-time';
 		time.setAttribute( 'aria-live', 'off' );
 		metrics.appendChild( time );
-		updateOperationTime( operation, time );
-		if ( ! terminalStatuses.includes( operation.status ) ) {
+		if ( historyView ) { time.textContent = DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) ); } else { updateOperationTime( operation, time ); }
+		if ( ! historyView && ! terminalStatuses.includes( operation.status ) ) {
 			state.operationTimer = window.setInterval(
 				() => updateOperationTime( operation, time ),
 				1000
@@ -1837,7 +2115,7 @@
 			cancelled.textContent = operation.cancelled_note;
 			operationPanel.appendChild( cancelled );
 		}
-		if ( 'cancelled' === operation.status ) {
+		if ( ! historyView && 'cancelled' === operation.status ) {
 			const clearButton = document.createElement( 'button' );
 			clearButton.type = 'button';
 			clearButton.className = 'button-link';
@@ -1895,15 +2173,15 @@
 			cancelButton.dataset.operationControl = 'cancel';
 			cancelButton.textContent = operation.cancel_requested
 				? DKBCE.i18n.cancelling
-				: DKBCE.i18n.cancelOperation;
+				: operation.action === 'rollback' ? historyText.cancelRollback : DKBCE.i18n.cancelOperation;
 			cancelButton.disabled = operation.cancel_requested;
-			cancelButton.addEventListener( 'click', cancelOperation );
+			cancelButton.addEventListener( 'click', historyView ? async () => { cancelButton.disabled = true; try { await request( 'cancel', { operation_id: operation.operation_id } ); loadHistoryDetails(); } catch ( error ) { setNotice( error.message, 'error', operationPanel ); cancelButton.disabled = false; } } : cancelOperation );
 			operationPanel.appendChild( cancelButton );
 			const persistence = document.createElement( 'p' );
 			persistence.textContent = DKBCE.ui.persistence;
 			operationPanel.appendChild( persistence );
-		} else {
-			if ( 'completed' === operation.status ) {
+		} else if ( ! historyView ) {
+			if ( ! historyView && 'completed' === operation.status ) {
 				const refreshNotice = document.createElement( 'div' );
 				refreshNotice.className = 'notice notice-success inline dkbce-refresh-notice';
 				refreshNotice.setAttribute( 'role', 'status' );
@@ -1942,6 +2220,7 @@
 		}
 		if ( terminal ) {
 			const details = document.createElement( 'details' );
+			details.open = historyView;
 			const summary = document.createElement( 'summary' );
 			summary.textContent = DKBCE.ui.details;
 			details.appendChild( summary );
@@ -2137,6 +2416,7 @@
 	actionLabel();
 	updateCSVMode();
 	updateOperationControls();
+	if ( DKBCE.operationMode === 'rollback' ) { state.mode = 'history'; updateCSVMode(); loadHistory(); }
 	if ( state.importId || DKBCE.operationMode === 'csv_import' ) {
 		state.mode = 'csv';
 		$( 'input[name="dkbce-csv-action"][value="import"]' ).checked = true;

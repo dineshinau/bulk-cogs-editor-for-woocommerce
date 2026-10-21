@@ -18,6 +18,15 @@ class DKBCE_Retention_Processor {
 	const CURSOR_OPTION = 'dkbce_retention_cursor';
 
 	/**
+	 * Get the configured retention duration, keeping invalid legacy values safe.
+	 *
+	 * @return int
+	 */
+	public static function retention_seconds() {
+		return min( 36500, max( 1, (int) get_option( 'dkbce_retention_days', 30 ) ) ) * DAY_IN_SECONDS;
+	}
+
+	/**
 	 * Register the recurring cleanup and its scheduling callback.
 	 */
 	public function __construct() {
@@ -108,17 +117,19 @@ class DKBCE_Retention_Processor {
 			return;
 		}
 
-		if ( ! array_key_exists( 'cleanup_cursor', $state ) ) {
-			$state['cleanup_pending'] = true;
-			$state['cleanup_cursor']  = 1;
-			$store                    = new DKBCE_Operation_Store();
+		if ( ! array_key_exists( 'cleanup_cursor', $state ) || empty( $state['history_cleanup_complete'] ) ) {
+			$state['cleanup_pending']         = true;
+			$state['cleanup_cursor']          = 1;
+			$state['history_cleanup_pending'] = true;
+			$store                            = new DKBCE_Operation_Store();
 			$store->save( $state );
 			$this->enqueue_operation_cleanup( $state['operation_id'] );
 			return;
 		}
 
 		$operation_id = sanitize_key( $state['operation_id'] );
-		$claim_token  = sanitize_text_field( $state['preview_claim_token'] ?? '' );
+		delete_option( 'dkbce_rollback_' . $operation_id );
+		$claim_token = sanitize_text_field( $state['preview_claim_token'] ?? '' );
 		delete_option( $option_name );
 		delete_option( 'dkbce_search_' . $operation_id );
 		delete_option( 'dkbce_cancel_' . $operation_id );
@@ -138,7 +149,7 @@ class DKBCE_Retention_Processor {
 	 * @return void
 	 */
 	private function cleanup_claim_option( $option_name, $claim ) {
-		if ( ! is_array( $claim ) || empty( $claim['created_at'] ) || time() - absint( $claim['created_at'] ) < self::RETENTION ) {
+		if ( ! is_array( $claim ) || empty( $claim['created_at'] ) || time() - absint( $claim['created_at'] ) < self::retention_seconds() ) {
 			return;
 		}
 
@@ -169,7 +180,12 @@ class DKBCE_Retention_Processor {
 		}
 
 		$finished_at = absint( $state['completed_at'] ?? $state['created_at'] ?? 0 );
-		if ( ! $finished_at || time() - $finished_at < self::RETENTION ) {
+		if ( ! $finished_at || time() - $finished_at < self::retention_seconds() ) {
+			return false;
+		}
+		$rollback_id = get_option( 'dkbce_rollback_' . sanitize_key( $state['operation_id'] ), '' );
+		$rollback    = $rollback_id ? get_option( 'dkbce_operation_' . sanitize_key( $rollback_id ), false ) : false;
+		if ( is_array( $rollback ) && ! in_array( $rollback['status'], $terminal_statuses, true ) ) {
 			return false;
 		}
 

@@ -28,6 +28,26 @@ class DKBCE_Database_Installer {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$collate = $wpdb->get_charset_collate();
 		$tables  = array(
+			$wpdb->prefix . 'dkbce_history'            => "CREATE TABLE {$wpdb->prefix}dkbce_history (
+				operation_id varchar(36) NOT NULL,
+				created_at bigint unsigned NOT NULL,
+				user_id bigint unsigned NOT NULL,
+				action varchar(32) NOT NULL,
+				status varchar(32) NOT NULL,
+				note text NOT NULL,
+				PRIMARY KEY  (operation_id),
+				KEY created (created_at,operation_id),
+				KEY owner (user_id,created_at)
+			) $collate;",
+			$wpdb->prefix . 'dkbce_history_products'   => "CREATE TABLE {$wpdb->prefix}dkbce_history_products (
+				operation_id varchar(36) NOT NULL,
+				product_id bigint unsigned NOT NULL,
+				original_value varchar(64) DEFAULT NULL,
+				target_value varchar(64) DEFAULT NULL,
+				status varchar(20) NOT NULL DEFAULT 'prepared',
+				PRIMARY KEY  (operation_id,product_id),
+				KEY product (product_id)
+			) $collate;",
 			$wpdb->prefix . 'dkbce_import_rows'        => "CREATE TABLE {$wpdb->prefix}dkbce_import_rows (
 				job_id varchar(36) NOT NULL,
 				row_type tinyint unsigned NOT NULL DEFAULT 0,

@@ -137,6 +137,7 @@ class DKBCE_Admin_Functions {
 			'dkbce-admin',
 			'DKBCE',
 			array(
+				'history'        => DKBCE_History_Controller::labels(),
 				'importId'       => $import_id,
 				'maxUploadSize'  => wp_max_upload_size(),
 				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
@@ -447,7 +448,13 @@ class DKBCE_Admin_Functions {
 			<div class="dkbce-mode-switch" role="group" aria-label="<?php esc_attr_e( 'Editor mode', 'bulk-cogs-editor-for-woocommerce' ); ?>">
 				<button type="button" class="button button-primary" data-dkbce-mode="bulk" aria-pressed="true"><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<button type="button" class="button" data-dkbce-mode="csv" aria-pressed="false"><?php esc_html_e( 'CSV import / export', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
+				<button type="button" class="button" data-dkbce-mode="history" aria-pressed="false"><?php esc_html_e( 'History', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
+				<?php if ( current_user_can( 'manage_woocommerce' ) ) : ?>
+				<button type="button" class="button" data-dkbce-mode="settings" aria-pressed="false"><?php esc_html_e( 'Settings', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
+				<?php endif; ?>
 			</div>
+			<div id="dkbce-history" hidden></div>
+			<div id="dkbce-settings" hidden></div>
 			<section id="dkbce-csv" class="dkbce-section dkbce-csv-section" hidden aria-labelledby="dkbce-csv-title">
 				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-media-spreadsheet" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-csv-title"><?php esc_html_e( 'File transfer', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Choose whether to export matching products or import updated costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
 				<div class="dkbce-actions">
@@ -1627,6 +1634,7 @@ class DKBCE_Admin_Functions {
 			'skipped'               => 0,
 			'failed'                => 0,
 			'action'                => $preview['operation']['action'],
+			'note'                  => isset( $_POST['note'] ) && is_string( $_POST['note'] ) ? substr( sanitize_text_field( wp_unslash( $_POST['note'] ) ), 0, 500 ) : '',
 			'value'                 => $preview['operation']['value'],
 			'operation'             => $preview['operation'],
 			'filters'               => $preview['filters'],
@@ -1855,7 +1863,7 @@ class DKBCE_Admin_Functions {
 	 * @param array $state Operation state.
 	 * @return array
 	 */
-	private function public_operation( $state ) {
+	public function public_operation( $state ) {
 		return array(
 			'action'           => $state['action'],
 			'completed_at'     => (int) ( $state['completed_at'] ?? 0 ),

@@ -141,6 +141,14 @@ class DKBCE_Bulk_Processor {
 			if ( $cursor <= absint( $state['snapshot_chunks'] ) ) {
 				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
 			}
+			if ( $done && ! empty( $state['history_cleanup_pending'] ) ) {
+				$history = new DKBCE_History_Store();
+				$done    = $history->delete( $operation_id );
+				if ( $done ) {
+					$state['history_cleanup_complete'] = true;
+					unset( $state['history_cleanup_pending'] );
+				}
+			}
 			if ( $done ) {
 				$state['cleanup_pending'] = false;
 			}
@@ -388,6 +396,10 @@ class DKBCE_Bulk_Processor {
 		if ( ! empty( $state['operation']['source_id'] ) ) {
 			$imports     = new DKBCE_Import_Store();
 			$product_ids = $next_chunk ? $next_chunk['ids'] : array_map( 'intval', wp_list_pluck( $imports->rows( $state['operation']['source_id'], $state['batch_size'], 0, $state['snapshot_after_id'] ), 'product_id' ) );
+		} elseif ( 'rollback' === $state['action'] ) {
+			$history     = new DKBCE_History_Store();
+			$changes     = $history->products( $state['rollback_source'], $state['batch_size'], 0, $state['snapshot_after_id'] );
+			$product_ids = $next_chunk ? $next_chunk['ids'] : array_map( 'absint', wp_list_pluck( $changes['rows'], 'product_id' ) );
 		} else {
 			$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
 		}
@@ -662,7 +674,9 @@ class DKBCE_Bulk_Processor {
 		$state['completed_at'] = time();
 
 		if ( 'cancelled' === $status ) {
-			$state['cancelled_note'] = __( 'Already processed products remain changed; no rollback was performed.', 'bulk-cogs-editor-for-woocommerce' );
+			$state['cancelled_note'] = 'rollback' === $state['action']
+				? __( 'Already restored products keep their restored costs. Remaining products were not rolled back.', 'bulk-cogs-editor-for-woocommerce' )
+				: __( 'Already processed products remain changed; no rollback was performed.', 'bulk-cogs-editor-for-woocommerce' );
 		}
 
 		if ( 'csv_import' === $state['operation']['action'] && empty( $state['operation']['source_id'] ) ) {
@@ -734,8 +748,9 @@ class DKBCE_Bulk_Processor {
 			);
 		}
 
+		$product_saved = false;
 		try {
-			if ( isset( $state['reviewed_rows'][ $product_id ] ) ) {
+			if ( 'rollback' === $state['action'] || isset( $state['reviewed_rows'][ $product_id ] ) ) {
 				// Re-read reviewed metadata after acquiring the product lock.
 				wp_cache_delete( $product_id, 'post_meta' );
 			}
@@ -749,6 +764,9 @@ class DKBCE_Bulk_Processor {
 			}
 
 			if ( $state['operation_id'] === $product->get_meta( '_dkbce_last_bulk_cogs_operation', true ) ) {
+				$product_saved = true;
+				$history       = new DKBCE_History_Store();
+				$history->confirm( $state['operation_id'], $product_id );
 				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id );
 				return array(
 					'status'  => 'success',
@@ -763,11 +781,49 @@ class DKBCE_Bulk_Processor {
 				);
 			}
 			$operation = $state['operation'];
+			$history   = new DKBCE_History_Store();
+			$recorded  = $history->product( $state['operation_id'], $product_id );
+			if ( $recorded && 'success' === $recorded['status'] ) {
+				// A later operation may have replaced the product's last-operation marker.
+				return array(
+					'status'  => 'success',
+					'message' => '',
+				);
+			}
 			if ( ! empty( $operation['source_id'] ) ) {
 				$operation['values'] = isset( $import_values[ $product_id ] ) ? array( $product_id => $import_values[ $product_id ] ) : array();
 				unset( $operation['source_id'] );
 			}
-			$result = $this->service->calculate( $product, $operation );
+			if ( 'rollback' === $state['action'] ) {
+				$original = $history->product( $state['rollback_source'], $product_id );
+				if ( ! $original || 'success' !== $original['status'] || ! user_can( $state['user_id'], 'edit_post', $product_id ) ) {
+					return array(
+						'status'  => 'failed',
+						'message' => __( 'The original cost is unavailable or this product cannot be edited.', 'bulk-cogs-editor-for-woocommerce' ),
+					);
+				}
+				$current  = $product->get_cogs_value();
+				$expected = null === $original['target_value'] ? null : (float) $original['target_value'];
+				if ( 'skip_changed' === ( $state['rollback_policy'] ?? 'overwrite' ) && $current !== $expected ) {
+					return array(
+						'status'  => 'skipped',
+						'message' => __( 'COGS changed after the original operation. The product was not rolled back.', 'bulk-cogs-editor-for-woocommerce' ),
+					);
+				}
+				$result = array(
+					'current' => $product->get_cogs_value(),
+					'new'     => null === $original['original_value'] ? null : (float) $original['original_value'],
+					'status'  => 'success',
+				);
+			} elseif ( $recorded ) {
+				$result = array(
+					'current' => null === $recorded['original_value'] ? null : (float) $recorded['original_value'],
+					'new'     => null === $recorded['target_value'] ? null : (float) $recorded['target_value'],
+					'status'  => 'success',
+				);
+			} else {
+				$result = $this->service->calculate( $product, $operation );
+			}
 			if ( is_wp_error( $result ) ) {
 				dkbce_wc_log( 'Product could not be calculated for product ID: ' . $product_id );
 				return array(
@@ -775,7 +831,10 @@ class DKBCE_Bulk_Processor {
 					'message' => __( 'COGS could not be calculated.', 'bulk-cogs-editor-for-woocommerce' ),
 				);
 			}
-			if ( isset( $state['reviewed_rows'][ $product_id ] ) && ! hash_equals( $state['reviewed_rows'][ $product_id ], $this->service->preview_signature( $result ) ) ) {
+			$review_changed = isset( $state['reviewed_rows'][ $product_id ] ) && ( $recorded
+				? $product->get_cogs_value() !== ( null === $recorded['original_value'] ? null : (float) $recorded['original_value'] )
+				: ! hash_equals( $state['reviewed_rows'][ $product_id ], $this->service->preview_signature( $result ) ) );
+			if ( isset( $state['reviewed_rows'][ $product_id ] ) && $review_changed ) {
 				return array(
 					'status'  => 'failed',
 					'message' => __( 'COGS changed after the reviewed preview. This product was not updated. Prepare a fresh preview and confirm again.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -789,7 +848,11 @@ class DKBCE_Bulk_Processor {
 				);
 			}
 
-			$product->set_cogs_value( $result['new'] );
+			// Record WooCommerce's normalized target, including zero becoming unset.
+			$product->set_cogs_value( null === $result['new'] ? null : (float) $result['new'] );
+			$result['new'] = $product->get_cogs_value();
+			$journal       = $history->prepare( $state['operation_id'], $product_id, $result );
+			$product->set_cogs_value( null === $journal['target_value'] ? null : (float) $journal['target_value'] );
 			$product->update_meta_data( '_dkbce_last_bulk_cogs_operation', $state['operation_id'] );
 			if ( empty( $product->get_changes() ) ) {
 				// Let WooCommerce normalize COGS, then persist retry protection without a full save.
@@ -797,12 +860,21 @@ class DKBCE_Bulk_Processor {
 			} else {
 				$product->save();
 			}
+			$product_saved = true;
+			$history->confirm( $state['operation_id'], $product_id );
 			return array(
 				'status'  => 'success',
 				'message' => '',
 			);
 		} catch ( Throwable $exception ) {
 			dkbce_wc_log( 'Operation id: ' . $state['operation_id'] . ', Product ID: ' . $product_id . ' Error: ' . $exception->getMessage() );
+			if ( $product_saved ) {
+				// Retry journal confirmation instead of losing a successfully saved cost.
+				return array(
+					'status'  => 'deferred',
+					'message' => '',
+				);
+			}
 
 			return array(
 				'status'  => 'failed',

@@ -46,7 +46,7 @@ define( 'DKBCE_VERSION', '1.1.2' );
 /**
  * Plugin database schema version. Increase when table schemas change.
  */
-define( 'DKBCE_DB_VERSION', '1.0.0' );
+define( 'DKBCE_DB_VERSION', '1.1.0' );
 
 /**
  * Plugin file path constant.

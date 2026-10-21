@@ -1,0 +1,273 @@
+<?php
+/**
+ * Indexed operation history and immutable product cost journals.
+ *
+ * @package BulkCOGSEditor
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Retains operation summaries separately from transient worker chunks.
+ */
+class DKBCE_History_Store {
+	/**
+	 * Get the configured policy for costs changed after the original operation.
+	 *
+	 * @return string
+	 */
+	public static function rollback_policy() {
+		return 'skip_changed' === get_option( 'dkbce_rollback_policy', 'overwrite' ) ? 'skip_changed' : 'overwrite';
+	}
+
+	/**
+	 * Read a bounded list of users represented in visible operation history.
+	 *
+	 * @param int $owner Limit non-manager choices to their own account.
+	 * @return array
+	 */
+	public function users( $owner = 0 ) {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Only users represented in authorized history are listed.
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT DISTINCT h.user_id, u.display_name FROM %i h LEFT JOIN %i u ON h.user_id = u.ID WHERE (%d = 0 OR h.user_id = %d) ORDER BY u.display_name LIMIT 100', $wpdb->prefix . 'dkbce_history', $wpdb->users, $owner, $owner ), ARRAY_A );
+		return is_array( $rows ) ? $rows : array();
+	}
+	/**
+	 * Index a supported operation for filtering and pagination.
+	 *
+	 * @param array $state Operation state.
+	 * @return void
+	 * @throws RuntimeException When the summary cannot be saved.
+	 */
+	public function index( $state ) {
+		global $wpdb;
+		if ( ! empty( $state['history_cleanup_complete'] ) ) {
+			return;
+		}
+		if ( ! in_array( $state['action'] ?? '', array( 'set', 'clear', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'csv_import', 'rollback' ), true ) ) {
+			return;
+		}
+		DKBCE_Database_Installer::maybe_upgrade();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Private indexed history is updated alongside durable worker state.
+		$result = $wpdb->replace(
+			$wpdb->prefix . 'dkbce_history',
+			array(
+				'operation_id' => $state['operation_id'],
+				'created_at'   => $state['created_at'],
+				'user_id'      => $state['user_id'],
+				'action'       => $state['action'],
+				'status'       => $state['status'],
+				'note'         => $state['note'] ?? '',
+			),
+			array( '%s', '%d', '%d', '%s', '%s', '%s' )
+		);
+		if ( false === $result ) {
+			throw new RuntimeException( esc_html__( 'Operation history could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+	}
+
+	/**
+	 * Index one bounded page of operations created before history was available.
+	 *
+	 * @return bool Whether legacy indexing is complete.
+	 */
+	public function backfill() {
+		global $wpdb;
+		$cursor = (int) get_option( 'dkbce_history_index_cursor', 0 );
+		if ( -1 === $cursor ) {
+			return true;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded migration of existing operation options.
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT option_id, option_name FROM %i WHERE option_id > %d AND option_name LIKE %s ORDER BY option_id LIMIT 100', $wpdb->options, $cursor, $wpdb->esc_like( 'dkbce_operation_' ) . '%' ), ARRAY_A );
+		if ( ! is_array( $rows ) ) {
+			return false;
+		}
+		foreach ( $rows as $row ) {
+			$state = get_option( $row['option_name'] );
+			if ( is_array( $state ) ) {
+				$this->index( $state );
+			}
+			$cursor = (int) $row['option_id'];
+		}
+		$complete = count( $rows ) < 100;
+		update_option( 'dkbce_history_index_cursor', $complete ? -1 : $cursor, false );
+		return $complete;
+	}
+
+	/**
+	 * Read a paginated, authorized history list.
+	 *
+	 * @param array $filters Validated filter strings.
+	 * @param int   $page Page number.
+	 * @param int   $size Page size.
+	 * @return array
+	 * @throws RuntimeException When history cannot be read.
+	 */
+	public function operations( $filters, $page, $size ) {
+		global $wpdb;
+		DKBCE_Database_Installer::maybe_upgrade();
+		$indexed = $this->backfill();
+		$where   = '1=1';
+		$args    = array( $wpdb->prefix . 'dkbce_history' );
+		foreach ( array( 'status', 'action', 'user_id' ) as $key ) {
+			if ( '' !== ( $filters[ $key ] ?? '' ) ) {
+				$where .= " AND $key = %s";
+				$args[] = $filters[ $key ];
+			}
+		}
+		foreach ( array(
+			'from' => '>=',
+			'to'   => '<=',
+		) as $key => $comparison ) {
+			if ( ! empty( $filters[ $key ] ) ) {
+				$where .= " AND created_at $comparison %d";
+				$args[] = $filters[ $key ];
+			}
+		}
+		if ( ! empty( $filters['search'] ) ) {
+			$where .= ' AND (operation_id LIKE %s OR note LIKE %s OR operation_id IN (SELECT operation_id FROM %i WHERE product_id = %d))';
+			$args[] = '%' . $wpdb->esc_like( $filters['search'] ) . '%';
+			$args[] = '%' . $wpdb->esc_like( $filters['search'] ) . '%';
+			$args[] = $wpdb->prefix . 'dkbce_history_products';
+			$args[] = absint( $filters['search'] );
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL -- SQL fragments contain only fixed clauses and placeholders; all values are prepared.
+		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE $where", $args ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Same prepared filters, with bounded pagination.
+		$rows = $wpdb->get_col( $wpdb->prepare( "SELECT operation_id FROM %i WHERE $where ORDER BY created_at DESC, operation_id DESC LIMIT %d OFFSET %d", array_merge( $args, array( $size, ( $page - 1 ) * $size ) ) ) );
+		if ( null === $total || ! is_array( $rows ) ) {
+			throw new RuntimeException( esc_html__( 'Operation history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return array(
+			'ids'     => $rows,
+			'total'   => (int) $total,
+			'indexed' => $indexed,
+		);
+	}
+
+	/**
+	 * Read one product's immutable journal entry.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param int    $product_id Product ID.
+	 * @return array|null
+	 * @throws RuntimeException When the journal cannot be read.
+	 */
+	public function product( $operation_id, $product_id ) {
+		global $wpdb;
+		DKBCE_Database_Installer::maybe_upgrade();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- A unique journal entry must be read fresh for retry protection.
+		$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE operation_id = %s AND product_id = %d', $wpdb->prefix . 'dkbce_history_products', $operation_id, $product_id ), ARRAY_A );
+		if ( $wpdb->last_error ) {
+			throw new RuntimeException( esc_html__( 'Product history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return $row;
+	}
+
+	/**
+	 * Persist original and intended values before changing a product.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param int    $product_id Product ID.
+	 * @param array  $result Calculated current and new costs.
+	 * @return array Frozen journal entry.
+	 * @throws RuntimeException When the original values cannot be saved.
+	 */
+	public function prepare( $operation_id, $product_id, $result ) {
+		global $wpdb;
+		$row = $this->product( $operation_id, $product_id );
+		if ( $row ) {
+			return $row;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The product lock excludes competing preparations for this operation.
+		$saved = $wpdb->insert(
+			$wpdb->prefix . 'dkbce_history_products',
+			array(
+				'operation_id'   => $operation_id,
+				'product_id'     => $product_id,
+				'original_value' => $result['current'],
+				'target_value'   => $result['new'],
+				'status'         => 'prepared',
+			),
+			array( '%s', '%d', '%s', '%s', '%s' )
+		);
+		if ( false === $saved ) {
+			throw new RuntimeException( esc_html__( 'Original product costs could not be saved. The product was not changed.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return $this->product( $operation_id, $product_id );
+	}
+
+	/**
+	 * Confirm a product save, including recovery after an interrupted worker.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param int    $product_id Product ID.
+	 * @return void
+	 * @throws RuntimeException When confirmation cannot be persisted.
+	 */
+	public function confirm( $operation_id, $product_id ) {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Confirmation is idempotent and tied to the product's saved operation marker.
+		$result = $wpdb->update(
+			$wpdb->prefix . 'dkbce_history_products',
+			array( 'status' => 'success' ),
+			array(
+				'operation_id' => $operation_id,
+				'product_id'   => $product_id,
+			),
+			array( '%s' ),
+			array( '%s', '%d' )
+		);
+		if ( false === $result ) {
+			throw new RuntimeException( esc_html__( 'Product history could not be confirmed.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+	}
+
+	/**
+	 * Read a bounded page of recorded changes or rollback snapshot IDs.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param int    $size Page size.
+	 * @param int    $offset Offset for display pages.
+	 * @param int    $after_id Cursor for background snapshots; negative disables it.
+	 * @return array
+	 * @throws RuntimeException When changes cannot be read.
+	 */
+	public function products( $operation_id, $size = 20, $offset = 0, $after_id = -1 ) {
+		global $wpdb;
+		DKBCE_Database_Installer::maybe_upgrade();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Only confirmed changes are eligible for rollback; pages and snapshots are bounded.
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE operation_id = %s AND status = 'success' AND product_id > %d ORDER BY product_id LIMIT %d OFFSET %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, max( 0, $after_id ), $size, $offset ), ARRAY_A );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Indexed count for pagination and confirmation.
+		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE operation_id = %s AND status = 'success'", $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
+		if ( ! is_array( $rows ) || null === $total ) {
+			throw new RuntimeException( esc_html__( 'Product history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return array(
+			'rows'  => $rows,
+			'total' => (int) $total,
+		);
+	}
+
+	/**
+	 * Delete a bounded page of expired changes, followed by its summary.
+	 *
+	 * @param string $operation_id Expired operation UUID.
+	 * @return bool Whether cleanup completed.
+	 * @throws RuntimeException When deletion fails.
+	 */
+	public function delete( $operation_id ) {
+		global $wpdb;
+		DKBCE_Database_Installer::maybe_upgrade();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded retention deletion scoped to one expired operation.
+		$deleted = $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE operation_id = %s LIMIT 500', $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
+		if ( false === $deleted ) {
+			throw new RuntimeException( esc_html__( 'Expired history could not be removed.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		if ( 500 === $deleted ) {
+			return false;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Remove the summary only after its product rows are gone.
+		return false !== $wpdb->delete( $wpdb->prefix . 'dkbce_history', array( 'operation_id' => $operation_id ), array( '%s' ) );
+	}
+}

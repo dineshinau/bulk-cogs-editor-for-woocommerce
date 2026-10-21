@@ -104,6 +104,8 @@ class DKBCE_Operation_Store {
 	 * @return void
 	 */
 	public function save( $state ) {
+		$history = new DKBCE_History_Store();
+		$history->index( $state );
 		$key = $this->operation_key( $state['operation_id'] );
 		if ( false === get_option( $key, false ) ) {
 			add_option( $key, $state, '', false );
