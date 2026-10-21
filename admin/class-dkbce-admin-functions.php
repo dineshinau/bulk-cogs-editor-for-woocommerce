@@ -200,6 +200,7 @@ class DKBCE_Admin_Functions {
 					/* translators: %d: number of products or selected options. */
 					'completed'       => __( '%d products updated', 'bulk-cogs-editor-for-woocommerce' ),
 					'stale'           => __( 'Preview needs refreshing', 'bulk-cogs-editor-for-woocommerce' ),
+					'staleHelp'       => __( 'These are previous results. Refresh the preview before selecting products or confirming.', 'bulk-cogs-editor-for-woocommerce' ),
 					'manualLimit'     => __( 'Select up to 500 individual products, or use all matching products or a range.', 'bulk-cogs-editor-for-woocommerce' ),
 					'fileColumns'     => __( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ),
 					'format'          => __( 'CSV with a blank new_cogs column', 'bulk-cogs-editor-for-woocommerce' ),
@@ -539,6 +540,7 @@ class DKBCE_Admin_Functions {
 				foreach ( DKBCE_COGS_Service::PREVIEW_PAGE_SIZES as $page_size ) :
 					?>
 					<option value="<?php echo esc_attr( $page_size ); ?>" <?php selected( DKBCE_COGS_Service::PREVIEW_PAGE_SIZE, $page_size ); ?>><?php echo esc_html( $page_size ); ?></option><?php endforeach; ?></select><details class="dkbce-columns"><summary><?php esc_html_e( 'Manage columns', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Manage columns', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><button type="button" class="dkbce-popover-close" aria-label="<?php esc_attr_e( 'Close column controls', 'bulk-cogs-editor-for-woocommerce' ); ?>">×</button><div id="dkbce-column-options"></div></div></details></div></div>
+				<div id="dkbce-preview-state" class="dkbce-preview-state" hidden><span role="status"></span><button type="button" class="button" id="dkbce-refresh-preview"><?php esc_html_e( 'Refresh preview', 'bulk-cogs-editor-for-woocommerce' ); ?></button></div>
 				<div id="dkbce-selection-toolbar" hidden><strong id="dkbce-selection-count" aria-live="polite"></strong><span id="dkbce-page-selection-count"></span><button type="button" class="button-link" id="dkbce-select-all"><?php esc_html_e( 'Select all matching products', 'bulk-cogs-editor-for-woocommerce' ); ?></button><button type="button" class="button-link" id="dkbce-select-none"><?php esc_html_e( 'Clear selection', 'bulk-cogs-editor-for-woocommerce' ); ?></button><details id="dkbce-range-menu"><summary><?php esc_html_e( 'Select a range…', 'bulk-cogs-editor-for-woocommerce' ); ?></summary></details></div><p id="dkbce-selection-context" hidden></p><div id="dkbce-preview-content" hidden></div>
 				<div class="dkbce-preview-empty"><span class="dashicons dashicons-list-view" aria-hidden="true"></span><h3><?php esc_html_e( 'Your changes start here', 'bulk-cogs-editor-for-woocommerce' ); ?></h3><p><?php esc_html_e( 'Get your products, then choose an action and enter a value to see the new costs before applying.', 'bulk-cogs-editor-for-woocommerce' ); ?></p><span class="dkbce-empty-note"><?php esc_html_e( 'Preview first. Apply when you are ready.', 'bulk-cogs-editor-for-woocommerce' ); ?></span></div>
 			</section>

@@ -48,6 +48,8 @@
 	const applyButton = $( '#dkbce-apply' );
 	const applySpinner = $( '#dkbce-apply-spinner' );
 	const previewContent = $( '#dkbce-preview-content' );
+	const previewState = $( '#dkbce-preview-state' );
+	const refreshPreviewButton = $( '#dkbce-refresh-preview' );
 	const operationPanel = $( '#dkbce-operation' );
 	const modal = $( '#dkbce-confirm' );
 	const rangeControls = document.createElement( 'div' );
@@ -192,10 +194,10 @@
 		const mode = $( 'input[name="dkbce-csv-action"]:checked' ).value;
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
 		if ( mode === 'import' && ( ! file || file.size > DKBCE.maxUploadSize ) ) {
-			setNotice( DKBCE.csv.file, 'error' );
+			setNotice( DKBCE.csv.file, 'error', $( '#dkbce-csv' ) );
 			return;
 		}
-		invalidatePreview( 'import' === mode );
+		invalidatePreview( 'import' === mode, 'import' === mode );
 		$( '#dkbce-csv-errors' ).hidden = true;
 		setNotice( '', 'info' );
 		setBusy( true, button, DKBCE.i18n.previewLoading );
@@ -214,7 +216,7 @@
 				showImportPreview( data );
 			}
 		} catch ( error ) {
-			setNotice( error.message, 'error' );
+			setNotice( error.message, 'error', $( '#dkbce-csv' ) );
 		} finally {
 			setBusy( false, button );
 		}
@@ -332,7 +334,7 @@
 				const message = data.message || DKBCE.csv.importStopped;
 				status.textContent = message;
 				if ( [ 'failed', 'expired' ].includes( data.status ) ) {
-					setNotice( message, 'error' );
+					setNotice( message, 'error', panel );
 				}
 			}
 			updateOperationControls();
@@ -341,7 +343,7 @@
 				state.importPreparing = false;
 				cancel.hidden = true;
 				status.textContent = error.message;
-				setNotice( error.message, 'error' );
+				setNotice( error.message, 'error', panel );
 				updateOperationControls();
 				return;
 			}
@@ -361,7 +363,7 @@
 		}
 		const columns = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.value );
 		if ( ! columns.length ) {
-			setNotice( DKBCE.csv.columns, 'error' );
+			setNotice( DKBCE.csv.columns, 'error', $( '#dkbce-csv' ) );
 			return;
 		}
 		window.clearTimeout( state.pollTimer );
@@ -469,13 +471,13 @@
 			resetSelection();
 			state.mode = button.dataset.dkbceMode;
 			window.clearTimeout( state.previewTimer );
-			invalidatePreview( true );
+			invalidatePreview( true, true );
 			updateCSVMode();
 		} );
 	} );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
 		input.addEventListener( 'change', () => {
-			invalidatePreview( true );
+			invalidatePreview( true, true );
 			$( '#dkbce-csv-errors' ).hidden = true;
 			updateCSVMode();
 		} );
@@ -486,8 +488,8 @@
 		$( '#dkbce-file-details span' ).textContent = file ? file.name + ' · ' + Math.ceil( file.size / 1024 ) + ' KB' : '';
 	}
 	$( '#dkbce-file-replace' ).addEventListener( 'click', () => $( '#dkbce-csv-file' ).click() );
-	$( '#dkbce-file-remove' ).addEventListener( 'click', () => { $( '#dkbce-csv-file' ).value = ''; updateFileDetails(); invalidatePreview( true ); } );
-	$( '#dkbce-csv-file' ).addEventListener( 'change', () => { updateFileDetails(); invalidatePreview( true ); } );
+	$( '#dkbce-file-remove' ).addEventListener( 'click', () => { $( '#dkbce-csv-file' ).value = ''; updateFileDetails(); invalidatePreview( true, true ); } );
+	$( '#dkbce-csv-file' ).addEventListener( 'change', () => { updateFileDetails(); invalidatePreview( true, true ); } );
 	$( '#dkbce-csv-preview' ).addEventListener( 'click', previewCSV );
 	$( '#dkbce-csv-template' ).addEventListener( 'click', () => downloadCSV( [ 'id,sku,cogs,new_cogs\r\n,REPLACE-WITH-YOUR-SKU,10.00,12.50\r\n' ], 'cogs-template.csv' ) );
 	$( '#dkbce-csv-drop' ).addEventListener( 'dragover', ( event ) => event.preventDefault() );
@@ -496,7 +498,7 @@
 		if ( ! state.busy && ! isOperationRunning() && event.dataTransfer.files.length === 1 ) {
 			$( '#dkbce-csv-file' ).files = event.dataTransfer.files;
 			updateFileDetails();
-			invalidatePreview( true );
+			invalidatePreview( true, true );
 		}
 	} );
 
@@ -569,15 +571,13 @@
 		}
 	} );
 
-	function setNotice( message, type ) {
-		noticeParent.insertBefore( notice, noticeNextSibling );
+	function setNotice( message, type, target ) {
+		if ( target ) { target.appendChild( notice ); }
+		else { noticeParent.insertBefore( notice, noticeNextSibling ); }
 		notice.className =
 			'notice ' + ( type === 'error' ? 'notice-error' : 'notice-info' );
 		notice.querySelector( 'p' ).textContent = message;
 		notice.hidden = ! message;
-		if ( message.includes( 'Your preview has expired.' ) ) {
-			window.scrollTo( 0, 0 );
-		}
 	}
 
 	function setApplySpinner( active ) {
@@ -758,7 +758,8 @@
 		return kind === 'adjust' ? $( '#dkbce-action-direction' ).value + '_' + $( '#dkbce-action-unit' ).value : kind;
 	}
 
-	function invalidatePreview( filtersChanged ) {
+	function invalidatePreview( filtersChanged, discard = false ) {
+		const retainPreview = ! discard && ! previewContent.hidden && Boolean( previewContent.querySelector( 'table' ) );
 		if ( ! csvMode() && state.previewId ) {
 			state.selectionPreviewId = state.previewId;
 		}
@@ -772,6 +773,7 @@
 		if ( csvMode() ) {
 			resetSelection();
 		}
+		state.previewNeedsRefresh = retainPreview;
 		toggleSpinner( previewSpinner, false );
 		if ( filtersChanged ) {
 			state.selectionFiltersChanged = true;
@@ -780,8 +782,8 @@
 			$( '#dkbce-product-count' ).textContent = DKBCE.i18n.filtersChanged;
 		}
 		applyButton.disabled = true;
-		previewContent.hidden = true;
-		previewContent.replaceChildren();
+		previewContent.hidden = ! retainPreview;
+		if ( ! retainPreview ) { previewContent.replaceChildren(); }
 		previewContent.removeAttribute( 'aria-busy' );
 		pageSizeSelect.disabled = state.busy;
 		updateOperationControls();
@@ -813,6 +815,13 @@
 		renderFilterChips();
 		const running = isOperationRunning();
 		updateSelectionSummary();
+		previewContent.inert = state.previewNeedsRefresh || state.loadingPage;
+		previewContent.classList.toggle( 'is-stale', state.previewNeedsRefresh );
+		previewState.hidden = ! state.previewNeedsRefresh && ! state.loadingPage;
+		previewState.querySelector( '[role="status"]' ).textContent = state.loadingPage ? DKBCE.i18n.pageLoading
+			: state.previewNeedsRefresh ? ( state.busy ? DKBCE.i18n.previewLoading : DKBCE.ui.stale + '. ' + DKBCE.ui.staleHelp ) : '';
+		refreshPreviewButton.hidden = state.loadingPage || ( state.busy && ! state.previewNeedsRefresh );
+		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
 			input.disabled = running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
@@ -842,7 +851,7 @@
 		applyButton.disabled = running || state.busy || state.loadingPage ||
 			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length;
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
-			.forEach( ( input ) => { input.disabled = running || ( csvMode() && state.busy ); } );
+			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
@@ -1326,7 +1335,7 @@
 	}
 
 	function fetchPreviewPage( page ) {
-		if ( state.busy || state.loadingPage || ! state.previewId ) {
+		if ( state.busy || state.loadingPage || state.previewNeedsRefresh || ! state.previewId ) {
 			return;
 		}
 		const previousPage = state.pageData;
@@ -1336,14 +1345,6 @@
 		toggleSpinner( previewSpinner, true );
 		applyButton.disabled = true;
 		previewContent.setAttribute( 'aria-busy', 'true' );
-		const loading = document.createElement( 'p' );
-		loading.className = 'dkbce-preview-loading';
-		loading.setAttribute( 'role', 'status' );
-		const spinner = document.createElement( 'span' );
-		spinner.className = 'dkbce-spinner';
-		spinner.setAttribute( 'aria-hidden', 'true' );
-		loading.append( spinner, document.createTextNode( DKBCE.i18n.pageLoading ) );
-		previewContent.replaceChildren( loading );
 		pageSizeSelect.disabled = true;
 		request( 'preview_page', {
 			preview_id: state.previewId,
@@ -1363,7 +1364,7 @@
 					return;
 				}
 				state.loadingPage = false;
-				setNotice( error.message, 'error' );
+				setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
 				if ( previousPage ) {
 					pageSizeSelect.value = String( previousPage.page_size );
 					renderPreview( previousPage );
@@ -1406,10 +1407,11 @@
 						.replace( '%3$d', String( data.variation_count ) )
 					: DKBCE.i18n.noProducts;
 				if ( 0 === data.count ) {
-					setNotice( DKBCE.i18n.noProducts, 'info' );
+					invalidatePreview( false, true );
+					setNotice( DKBCE.i18n.noProducts, 'info', $( '.dkbce-filters-section' ) );
 				}
 			} )
-			.catch( ( error ) => setNotice( error.message, 'error' ) )
+			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-filters-section' ) ) )
 			.finally( () => {
 				setBusy( false, getButton );
 				if ( state.hasQuery && state.count > 0 ) {
@@ -1444,6 +1446,7 @@
 		applyButton.disabled = true;
 		setBusy( true, getButton, DKBCE.i18n.previewLoading );
 		toggleSpinner( previewSpinner, true );
+		previewContent.setAttribute( 'aria-busy', 'true' );
 		const requestedFilters = filters();
 		const previousPreviewId = state.selectionPreviewId;
 		request( 'preview', {
@@ -1475,9 +1478,10 @@
 				state.selectionFiltersChanged = false;
 				updateSelectionSummary();
 			} )
-			.catch( ( error ) => setNotice( error.message, 'error' ) )
+			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-preview-section' ) ) )
 			.finally( () => {
 				toggleSpinner( previewSpinner, false );
+				previewContent.removeAttribute( 'aria-busy' );
 				setBusy( false, getButton );
 				updateOperationControls();
 			} );
@@ -1564,8 +1568,30 @@
 		}, 350 );
 	}
 
+	refreshPreviewButton.addEventListener( 'click', async () => {
+		if ( state.busy || state.loadingPage || isOperationRunning() ) { return; }
+		if ( ! csvMode() ) {
+			if ( ! state.hasQuery ) { getProducts(); }
+			else { preview(); }
+			return;
+		}
+		if ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
+			getProducts();
+			return;
+		}
+		setBusy( true, refreshPreviewButton, DKBCE.i18n.previewLoading );
+		try {
+			const result = await request( 'import_status', { import_id: state.importId } );
+			if ( result.preview ) { showImportPreview( result.preview ); }
+		} catch ( error ) {
+			setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
+		} finally {
+			setBusy( false, refreshPreviewButton );
+		}
+	} );
+
 	function applyChanges() {
-		if ( isOperationRunning() || ! state.previewId || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -1601,30 +1627,9 @@
 				pollProgress();
 			} )
 			.catch( ( error ) => {
-				setNotice( error.message, 'error' );
+				setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
 				if ( error.refreshPreview ) {
 					state.previewNeedsRefresh = true;
-					const refresh = document.createElement( 'button' );
-					refresh.type = 'button';
-					refresh.className = 'button';
-					refresh.textContent = DKBCE.i18n.refreshPreview;
-					refresh.addEventListener( 'click', async () => {
-						if ( ! csvMode() ) {
-							preview();
-							return;
-						}
-						refresh.disabled = true;
-						try {
-							const result = await request( 'import_status', { import_id: state.importId } );
-							if ( result.preview ) { showImportPreview( result.preview ); }
-						} catch ( refreshError ) {
-							setNotice( refreshError.message, 'error' );
-						} finally {
-							refresh.disabled = false;
-							updateOperationControls();
-						}
-					} );
-					notice.appendChild( refresh );
 				}
 			} )
 			.finally( () => {
@@ -1681,6 +1686,13 @@
 	}
 
 	function renderOperation( operation ) {
+		const completionMessage = {
+			completed: DKBCE.i18n.completedStatus,
+			completed_with_errors: DKBCE.i18n.withErrorsStatus,
+			failed: DKBCE.i18n.failedStatus,
+			cancelled: DKBCE.i18n.cancelledStatus,
+		};
+		const focusedControl = operationPanel.contains( document.activeElement ) ? document.activeElement.dataset.operationControl : '';
 		state.operationStatus = operation.status;
 		updateOperationControls();
 		if ( null === state.operationStartedAt ) {
@@ -1698,7 +1710,7 @@
 		const delayed = ! terminal && operation.progress_age >= 120;
 		const unavailable = ! terminal && ! operation.queue_available;
 		if ( terminal ) {
-			heading.textContent = DKBCE.i18n.operationStatus.replace( '%s', operation.status.replace( /_/g, ' ' ) );
+			heading.textContent = completionMessage[ operation.status ];
 		} else if ( unavailable || delayed || operation.status === 'pending' ) {
 			heading.textContent = DKBCE.i18n.queued;
 		} else if ( 'snapshot' === operation.stage ) {
@@ -1714,6 +1726,7 @@
 				operation.status.replace( /_/g, ' ' )
 			);
 		}
+		if ( ! terminal ) { heading.textContent = operationPanel.dataset.task + ' · ' + heading.textContent; }
 		operationPanel.appendChild( heading );
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
@@ -1728,6 +1741,7 @@
 			const refresh = document.createElement( 'button' );
 			refresh.type = 'button';
 			refresh.className = 'button';
+			refresh.dataset.operationControl = 'refresh';
 			refresh.textContent = DKBCE.i18n.refreshStatus;
 			refresh.addEventListener( 'click', pollProgress );
 			operationPanel.appendChild( refresh );
@@ -1737,6 +1751,7 @@
 		const progress = document.createElement( 'progress' );
 		progress.max = Math.max( 1, operation.total );
 		progress.value = Math.min( operation.processed, progress.max );
+		if ( operation.stage === 'snapshot' ) { progress.removeAttribute( 'value' ); }
 		progress.setAttribute( 'aria-label', DKBCE.i18n.progressLabel );
 
 		const text = document.createElement( 'p' );
@@ -1766,6 +1781,7 @@
 		const percentage = document.createElement( 'span' );
 		percentage.className = 'dkbce-progress-percentage';
 		percentage.textContent = percent + '%';
+		percentage.hidden = operation.stage === 'snapshot';
 		percentage.setAttribute( 'aria-hidden', 'true' );
 		track.append( progress, highlight, percentage );
 		operationPanel.appendChild( track );
@@ -1876,19 +1892,17 @@
 			const cancelButton = document.createElement( 'button' );
 			cancelButton.type = 'button';
 			cancelButton.className = 'button';
+			cancelButton.dataset.operationControl = 'cancel';
 			cancelButton.textContent = operation.cancel_requested
 				? DKBCE.i18n.cancelling
 				: DKBCE.i18n.cancelOperation;
 			cancelButton.disabled = operation.cancel_requested;
 			cancelButton.addEventListener( 'click', cancelOperation );
 			operationPanel.appendChild( cancelButton );
+			const persistence = document.createElement( 'p' );
+			persistence.textContent = DKBCE.ui.persistence;
+			operationPanel.appendChild( persistence );
 		} else {
-			const completionMessage = {
-				completed: DKBCE.i18n.completedStatus,
-				completed_with_errors: DKBCE.i18n.withErrorsStatus,
-				failed: DKBCE.i18n.failedStatus,
-				cancelled: DKBCE.i18n.cancelledStatus,
-			};
 			if ( 'completed' === operation.status ) {
 				const refreshNotice = document.createElement( 'div' );
 				refreshNotice.className = 'notice notice-success inline dkbce-refresh-notice';
@@ -1922,7 +1936,7 @@
 						),
 					operation.failed || 'failed' === operation.status
 						? 'error'
-						: 'info'
+						: 'info', operationPanel
 				);
 			}
 		}
@@ -1935,9 +1949,20 @@
 			const title = document.createElement( 'h3' );
 			title.textContent = DKBCE.ui.recent + ' · ' + operationPanel.dataset.task;
 			const result = document.createElement( 'p' );
-			result.textContent = DKBCE.ui.completed.replace( '%d', operation.succeeded ) + ' · ' + new Date( ( operation.completed_at || operation.last_progress_at ) * 1000 ).toLocaleString();
-			operationPanel.append( title, result, details );
+			result.textContent = DKBCE.ui.completed.replace( '%d', Number( operation.succeeded ).toLocaleString() ) + ' · ' + new Date( ( operation.completed_at || operation.last_progress_at ) * 1000 ).toLocaleString()
+				+ ' · ' + DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) );
+			const outcome = document.createElement( 'p' );
+			outcome.className = 'dkbce-operation-outcome';
+			outcome.classList.toggle( 'has-errors', operation.failed > 0 || operation.status === 'failed' );
+			outcome.textContent = [
+				operation.status === 'completed' ? '' : completionMessage[ operation.status ],
+				operation.skipped > 0 ? Number( operation.skipped ).toLocaleString() + ' ' + DKBCE.i18n.skippedLabel : '',
+				operation.failed > 0 ? Number( operation.failed ).toLocaleString() + ' ' + DKBCE.i18n.failedLabel : '',
+			].filter( Boolean ).join( ' · ' );
+			outcome.hidden = ! outcome.textContent;
+			operationPanel.append( title, result, outcome, details );
 		}
+		if ( focusedControl ) { operationPanel.querySelector( '[data-operation-control="' + focusedControl + '"]' )?.focus(); }
 
 	}
 
@@ -1981,7 +2006,16 @@
 				if ( track ) { track.classList.remove( 'is-active' ); }
 				const background = operationPanel.querySelector( '.dkbce-background-message' );
 				if ( background ) { background.remove(); }
-				setNotice( DKBCE.i18n.progressUnavailable, 'error' );
+				setNotice( DKBCE.i18n.progressUnavailable, 'error', operationPanel );
+				if ( ! operationPanel.querySelector( '[data-operation-control="refresh"]' ) ) {
+					const refresh = document.createElement( 'button' );
+					refresh.type = 'button';
+					refresh.className = 'button';
+					refresh.dataset.operationControl = 'refresh';
+					refresh.textContent = DKBCE.i18n.refreshStatus;
+					refresh.addEventListener( 'click', pollProgress );
+					operationPanel.appendChild( refresh );
+				}
 				state.pollTimer = window.setTimeout( pollProgress, 10000 );
 			} );
 	}
@@ -1999,7 +2033,7 @@
 				}
 				state.pollTimer = window.setTimeout( pollProgress, 2500 );
 			} )
-			.catch( ( error ) => setNotice( error.message, 'error' ) );
+			.catch( ( error ) => setNotice( error.message, 'error', operationPanel ) );
 	}
 
 	getButton.addEventListener( 'click', getProducts );
@@ -2069,7 +2103,7 @@
 		invalidatePreview( true );
 	}
 	$( '#dkbce-clear-filters' ).addEventListener( 'click', clearFilters );
-	$( '#dkbce-reset' ).addEventListener( 'click', () => { resetSelection(); clearFilters(); } );
+	$( '#dkbce-reset' ).addEventListener( 'click', () => { resetSelection(); clearFilters(); invalidatePreview( true, true ); } );
 	document.querySelectorAll( '.dkbce-action-fields select' ).forEach( ( input ) => {
 		input.addEventListener( 'change', () => {
 			actionLabel();

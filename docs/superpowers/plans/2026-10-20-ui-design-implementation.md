@@ -54,3 +54,28 @@ For manual review:
 4. Check table scrolling on mobile and repeat the filter/table inspection in CSV Export. Check that Import retains its file-specific controls.
 
 Pause here before stage 4: visual tokens, responsive polish, stable stale-preview/loading states, and progress/error presentation.
+
+## Stage 4 implementation
+
+Authorized by the user's request to proceed with the remaining UI design review points.
+
+- Refine existing SCSS with one WordPress blue accent, neutral surfaces, readable secondary text, one section marker, and mobile touch targets.
+- Keep an outdated preview visible but unavailable for interaction while filters or values change. Show its stale/loading status and a nearby refresh action. Clear it when changing workflows or files.
+- Keep page contents in place during pagination, show recoverable errors beside the relevant controls, and distinguish unknown progress from measured progress.
+- Keep active task identity and cancellation behavior explicit. Summarize completion status and nonzero failures/skips above expandable details.
+
+Acceptance: stale values cannot be selected or confirmed; refreshing preserves the existing server selection contract; task switches never retain another task's preview; loading does not replace the table with an empty panel; status and recovery actions remain visible; mobile controls and popovers fit the viewport.
+
+Affected files: JavaScript, SCSS, admin UI strings/markup, generated assets, translation template, and this plan. Checks: PHP quality helper, production build, translation extraction, read-only browser inspection when available, graph refresh and bounded symbol inspection, and final diff checks. No automated tests, product updates, imports, exports, or commits.
+
+## Stage 4 completion: 21 October 2026
+
+Implemented a single WordPress blue accent, neutral surfaces, readable secondary/table text, numbered section markers without decorative icon tiles, larger mobile controls, and a bounded scrollable Help popover. Cost increases and decreases retain explicit signs without implying business success or failure through green/red styling.
+
+Filter/value changes retain the previous table with a stale notice and nearby Refresh preview action. The retained table cannot be interacted with or confirmed. Pagination retains its table during loading. Switching workflows/files or starting a new selection clears the previous table. Existing server validation and selection contracts remain in use.
+
+Recoverable preview, filter, upload, and worker-status errors appear beside the relevant controls. Active worker panels identify the task and explain that stopping updates preserves saved changes. Snapshot progress is indeterminate until a denominator is known. Recent activity includes elapsed time and highlights nonzero skipped/failed counts and incomplete outcomes above expandable details. Worker refresh/cancel controls retain keyboard focus across status redraws.
+
+Read-only browser inspection covered Bulk edit at 1440 px and 390 px, CSV Export at 1024 px, and Import at 390 px. No page-wide horizontal overflow was observed. Changing a value retained ten stale rows with interaction and confirmation blocked. A one-product selection survived a value refresh; confirmation showed one product at the updated value and was cancelled. Switching modes cleared the previous preview. Missing-file validation appeared inside the file-transfer panel without starting an import. Existing completed activity rendered with its elapsed time. Active workers and failure/cancellation outcomes were inspected in source, not executed.
+
+Production build, translation extraction, JavaScript syntax, PHP syntax, and final diff checks passed. PHPCS reports zero errors and the existing `meta_query` performance warning. The documented PHP npm shortcut is absent, so its existing `scripts/php-quality.py` helper was used directly. No automated tests, product updates, file imports, or export generation ran. These observations do not certify accessibility or measured usability improvements.
