@@ -25,11 +25,10 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 
 | Requirement | Minimum |
 | --- | --- |
-| WordPress | 6.7 |
-| WooCommerce | 10.3 |
-| PHP | 7.4 |
+| WordPress | 6.7+ |
+| WooCommerce | 10.3+ |
+| PHP | 7.4+ |
 | WooCommerce COGS | Enabled in WooCommerce settings |
-| XLSX import extensions | ZIP, XMLReader, and DOM |
 
 1. Install the plugin through WordPress, or upload the plugin folder to `wp-content/plugins/bulk-cogs-editor-for-woocommerce/`.
 2. Activate **Bulk COGS Editor for WooCommerce**.
