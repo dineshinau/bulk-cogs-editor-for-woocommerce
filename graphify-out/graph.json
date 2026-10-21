@@ -4,6 +4,32 @@
   "graph": {},
   "nodes": [
     {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service",
+      "label": "DKBCE_CSV_Service",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_csv_service",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader",
+      "label": "DKBCE_Import_Reader",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_import_reader",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
       "label": "DKBCE_Admin_Hooks",
       "_callable": true,
@@ -66,19 +92,6 @@
       "file_type": "code",
       "norm_label": "dkbce_admin_functions",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service",
-      "label": "DKBCE_CSV_Service",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "dkbce_csv_service",
-      "source_file": "admin/class-dkbce-csv-service.php",
       "source_location": "L13"
     },
     {
@@ -173,19 +186,6 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader",
-      "label": "DKBCE_Import_Reader",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": "dkbce_import_reader",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_import_store_dkbce_import_store",
       "label": "DKBCE_Import_Store",
       "_callable": true,
@@ -258,6 +258,198 @@
       "norm_label": "tool_path()",
       "source_file": "scripts/php-quality.py",
       "source_location": "L45"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_file",
+      "label": ".ajax_download_file()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_download_file()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L967"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_closure_1",
+      "label": "{closure#1}()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "{closure#1}()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L26"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_header",
+      "label": ".header()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".header()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_line",
+      "label": ".line()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".line()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L170"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
+      "label": ".sku_ids()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".sku_ids()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L133"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_valid_quoting",
+      "label": ".valid_quoting()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".valid_quoting()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L101"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_validate_row",
+      "label": ".validate_row()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".validate_row()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L47"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_start",
+      "label": ".start()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".start()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L27"
+    },
+    {
+      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
+      "label": ".process()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".process()",
+      "source_file": "admin/class-dkbce-import-processor.php",
+      "source_location": "L105"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_cells",
+      "label": ".cells()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".cells()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L301"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_csv_batch",
+      "label": ".csv_batch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".csv_batch()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L31"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_prepare_xlsx",
+      "label": ".prepare_xlsx()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".prepare_xlsx()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L78"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_read",
+      "label": ".read()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".read()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L265"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_text",
+      "label": ".text()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".text()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L280"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xlsx_batch",
+      "label": ".xlsx_batch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".xlsx_batch()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L170"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xml",
+      "label": ".xml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".xml()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L248"
     },
     {
       "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
@@ -812,18 +1004,6 @@
       "source_location": "L946"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_file",
-      "label": ".ajax_download_file()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".ajax_download_file()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L967"
-    },
-    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_status",
       "label": ".ajax_download_status()",
       "_callable": true,
@@ -1148,78 +1328,6 @@
       "source_location": "L636"
     },
     {
-      "id": "admin_class_dkbce_csv_service_closure_1",
-      "label": "{closure#1}()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "{closure#1}()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L26"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_header",
-      "label": ".header()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".header()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L24"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_line",
-      "label": ".line()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".line()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L170"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
-      "label": ".sku_ids()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".sku_ids()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L133"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_valid_quoting",
-      "label": ".valid_quoting()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".valid_quoting()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L101"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_validate_row",
-      "label": ".validate_row()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".validate_row()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L47"
-    },
-    {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
       "label": ".batch()",
       "_callable": true,
@@ -1254,18 +1362,6 @@
       "norm_label": ".process()",
       "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L77"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_start",
-      "label": ".start()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".start()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L27"
     },
     {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_write_all",
@@ -3008,18 +3104,6 @@
       "source_location": "L166"
     },
     {
-      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
-      "label": ".process()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".process()",
-      "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L105"
-    },
-    {
       "id": "admin_class_dkbce_import_processor_dkbce_import_processor_upload",
       "label": ".upload()",
       "_callable": true,
@@ -3030,90 +3114,6 @@
       "norm_label": ".upload()",
       "source_file": "admin/class-dkbce-import-processor.php",
       "source_location": "L21"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_cells",
-      "label": ".cells()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".cells()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L301"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_csv_batch",
-      "label": ".csv_batch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".csv_batch()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L31"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_prepare_xlsx",
-      "label": ".prepare_xlsx()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".prepare_xlsx()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L78"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_read",
-      "label": ".read()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".read()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L265"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_text",
-      "label": ".text()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".text()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L280"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xlsx_batch",
-      "label": ".xlsx_batch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".xlsx_batch()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L170"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xml",
-      "label": ".xml()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".xml()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L248"
     },
     {
       "id": "admin_class_dkbce_import_store_dkbce_import_store_check_error",
@@ -3325,6 +3325,28 @@
       "norm_label": "find project, path, or user composer tools; respect explicit overrides.",
       "source_file": "scripts/php-quality.py",
       "source_location": "L46"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service",
+      "label": "class-dkbce-csv-service.php",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-csv-service.php",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader",
+      "label": "class-dkbce-import-reader.php",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-import-reader.php",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L1"
     },
     {
       "id": "package",
@@ -3646,17 +3668,6 @@
       "source_location": "L23"
     },
     {
-      "id": "ref_playwright_test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "concept",
-      "norm_label": "@playwright/test",
-      "source_file": "package.json",
-      "source_location": "L24"
-    },
-    {
       "id": "ref_woocommerce_dependency_extraction_webpack_plugin",
       "label": "@woocommerce/dependency-extraction-webpack-plugin",
       "_origin": "ast",
@@ -3734,17 +3745,6 @@
       "source_location": "L1"
     },
     {
-      "id": "admin_class_dkbce_csv_service",
-      "label": "class-dkbce-csv-service.php",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "class-dkbce-csv-service.php",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L1"
-    },
-    {
       "id": "admin_class_dkbce_download_processor",
       "label": "class-dkbce-download-processor.php",
       "_origin": "ast",
@@ -3777,7 +3777,7 @@
       "node_kind": "heading",
       "norm_label": "background processing and recovery",
       "source_file": "README.md",
-      "source_location": "L159"
+      "source_location": "L234"
     },
     {
       "id": "readme_bulk_cogs_editor_for_woocommerce",
@@ -3801,7 +3801,7 @@
       "node_kind": "heading",
       "norm_label": "bulk editing workflow",
       "source_file": "README.md",
-      "source_location": "L92"
+      "source_location": "L100"
     },
     {
       "id": "readme_can_i_preview_without_changing_my_store",
@@ -3813,7 +3813,7 @@
       "node_kind": "heading",
       "norm_label": "can i preview without changing my store?",
       "source_file": "README.md",
-      "source_location": "L195"
+      "source_location": "L270"
     },
     {
       "id": "readme_can_i_update_variations_without_changing_their_parents",
@@ -3825,7 +3825,19 @@
       "node_kind": "heading",
       "norm_label": "can i update variations without changing their parents?",
       "source_file": "README.md",
-      "source_location": "L207"
+      "source_location": "L282"
+    },
+    {
+      "id": "readme_can_rollback_overwrite_a_later_cost_edit",
+      "label": "Can rollback overwrite a later cost edit?",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "can rollback overwrite a later cost edit?",
+      "source_file": "README.md",
+      "source_location": "L295"
     },
     {
       "id": "readme_contents",
@@ -3849,7 +3861,7 @@
       "node_kind": "heading",
       "norm_label": "csv and excel import",
       "source_file": "README.md",
-      "source_location": "L117"
+      "source_location": "L125"
     },
     {
       "id": "readme_csv_export",
@@ -3861,7 +3873,7 @@
       "node_kind": "heading",
       "norm_label": "csv export",
       "source_file": "README.md",
-      "source_location": "L103"
+      "source_location": "L111"
     },
     {
       "id": "readme_development_and_support",
@@ -3873,7 +3885,7 @@
       "node_kind": "heading",
       "norm_label": "development and support",
       "source_file": "README.md",
-      "source_location": "L219"
+      "source_location": "L312"
     },
     {
       "id": "readme_does_the_plugin_send_store_data_to_external_services",
@@ -3885,7 +3897,7 @@
       "node_kind": "heading",
       "norm_label": "does the plugin send store data to external services?",
       "source_file": "README.md",
-      "source_location": "L215"
+      "source_location": "L308"
     },
     {
       "id": "readme_does_this_replace_woocommerce_s_native_cogs_feature",
@@ -3897,7 +3909,7 @@
       "node_kind": "heading",
       "norm_label": "does this replace woocommerce\u2019s native cogs feature?",
       "source_file": "README.md",
-      "source_location": "L191"
+      "source_location": "L266"
     },
     {
       "id": "readme_features",
@@ -3909,7 +3921,7 @@
       "node_kind": "heading",
       "norm_label": "features",
       "source_file": "README.md",
-      "source_location": "L40"
+      "source_location": "L42"
     },
     {
       "id": "readme_file_format",
@@ -3921,7 +3933,7 @@
       "node_kind": "heading",
       "norm_label": "file format",
       "source_file": "README.md",
-      "source_location": "L123"
+      "source_location": "L131"
     },
     {
       "id": "readme_find_the_products_you_need",
@@ -3933,7 +3945,7 @@
       "node_kind": "heading",
       "norm_label": "find the products you need",
       "source_file": "README.md",
-      "source_location": "L42"
+      "source_location": "L49"
     },
     {
       "id": "readme_frequently_asked_questions",
@@ -3945,7 +3957,7 @@
       "node_kind": "heading",
       "norm_label": "frequently asked questions",
       "source_file": "README.md",
-      "source_location": "L189"
+      "source_location": "L264"
     },
     {
       "id": "readme_guidance_and_responsive_controls",
@@ -3957,7 +3969,31 @@
       "node_kind": "heading",
       "norm_label": "guidance and responsive controls",
       "source_file": "README.md",
-      "source_location": "L82"
+      "source_location": "L90"
+    },
+    {
+      "id": "readme_history_and_rollback",
+      "label": "History and rollback",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "history and rollback",
+      "source_file": "README.md",
+      "source_location": "L167"
+    },
+    {
+      "id": "readme_is_cancellation_the_same_as_rollback",
+      "label": "Is cancellation the same as rollback?",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "is cancellation the same as rollback?",
+      "source_file": "README.md",
+      "source_location": "L290"
     },
     {
       "id": "readme_optional_wp_cli_runner",
@@ -3969,7 +4005,7 @@
       "node_kind": "heading",
       "norm_label": "optional wp-cli runner",
       "source_file": "README.md",
-      "source_location": "L171"
+      "source_location": "L246"
     },
     {
       "id": "readme_performance",
@@ -3981,7 +4017,7 @@
       "node_kind": "heading",
       "norm_label": "performance",
       "source_file": "README.md",
-      "source_location": "L183"
+      "source_location": "L258"
     },
     {
       "id": "readme_preview_and_choose_your_update_scope",
@@ -3993,7 +4029,7 @@
       "node_kind": "heading",
       "norm_label": "preview and choose your update scope",
       "source_file": "README.md",
-      "source_location": "L68"
+      "source_location": "L75"
     },
     {
       "id": "readme_product_and_variation_support",
@@ -4005,7 +4041,7 @@
       "node_kind": "heading",
       "norm_label": "product and variation support",
       "source_file": "README.md",
-      "source_location": "L88"
+      "source_location": "L96"
     },
     {
       "id": "readme_requirements_and_installation",
@@ -4017,7 +4053,19 @@
       "node_kind": "heading",
       "norm_label": "requirements and installation",
       "source_file": "README.md",
-      "source_location": "L24"
+      "source_location": "L26"
+    },
+    {
+      "id": "readme_review_and_confirm_a_rollback",
+      "label": "Review and confirm a rollback",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "review and confirm a rollback",
+      "source_file": "README.md",
+      "source_location": "L184"
     },
     {
       "id": "readme_set_adjust_or_clear_costs",
@@ -4029,7 +4077,19 @@
       "node_kind": "heading",
       "norm_label": "set, adjust, or clear costs",
       "source_file": "README.md",
-      "source_location": "L53"
+      "source_location": "L60"
+    },
+    {
+      "id": "readme_settings",
+      "label": "Settings",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "settings",
+      "source_file": "README.md",
+      "source_location": "L209"
     },
     {
       "id": "readme_validate_review_then_apply",
@@ -4041,7 +4101,7 @@
       "node_kind": "heading",
       "norm_label": "validate, review, then apply",
       "source_file": "README.md",
-      "source_location": "L146"
+      "source_location": "L154"
     },
     {
       "id": "readme_why_are_some_preview_controls_disabled",
@@ -4053,7 +4113,7 @@
       "node_kind": "heading",
       "norm_label": "why are some preview controls disabled?",
       "source_file": "README.md",
-      "source_location": "L211"
+      "source_location": "L286"
     },
     {
       "id": "readme_why_did_a_percentage_or_fixed_adjustment_skip_some_products",
@@ -4065,7 +4125,7 @@
       "node_kind": "heading",
       "norm_label": "why did a percentage or fixed adjustment skip some products?",
       "source_file": "README.md",
-      "source_location": "L199"
+      "source_location": "L274"
     },
     {
       "id": "readme_why_does_selecting_every_category_differ_from_leaving_the_category_filter_empty",
@@ -4077,7 +4137,19 @@
       "node_kind": "heading",
       "norm_label": "why does selecting every category differ from leaving the category filter empty?",
       "source_file": "README.md",
-      "source_location": "L203"
+      "source_location": "L278"
+    },
+    {
+      "id": "readme_why_is_rollback_unavailable_for_an_older_operation",
+      "label": "Why is rollback unavailable for an older operation?",
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "Bulk COGS Editor for WooCommerce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "why is rollback unavailable for an older operation?",
+      "source_file": "README.md",
+      "source_location": "L301"
     },
     {
       "id": "admin_class_dkbce_bulk_processor",
@@ -4465,6 +4537,17 @@
       "source_location": "L5"
     },
     {
+      "id": "ref_playwright_test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "bulk-cogs-editor.spec.cjs",
+      "file_type": "concept",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L24"
+    },
+    {
       "id": "admin_index",
       "label": "admin/index.php",
       "_origin": "ast",
@@ -4506,17 +4589,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-import-processor.php",
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader",
-      "label": "class-dkbce-import-reader.php",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": "class-dkbce-import-reader.php",
-      "source_file": "admin/class-dkbce-import-reader.php",
       "source_location": "L1"
     },
     {
@@ -10719,7 +10791,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L171",
+      "source_location": "L246",
       "weight": 1.0
     },
     {
@@ -10730,7 +10802,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L183",
+      "source_location": "L258",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_bulk_cogs_editor_for_woocommerce",
+      "target": "readme_bulk_editing_workflow",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -10741,7 +10824,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L103",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -10752,7 +10835,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L117",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -10768,35 +10851,35 @@
     },
     {
       "source": "readme_bulk_cogs_editor_for_woocommerce",
+      "target": "readme_history_and_rollback",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_bulk_cogs_editor_for_woocommerce",
+      "target": "readme_settings",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_bulk_cogs_editor_for_woocommerce",
       "target": "readme_background_processing_and_recovery",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L159",
-      "weight": 1.0
-    },
-    {
-      "source": "readme_bulk_cogs_editor_for_woocommerce",
-      "target": "readme_frequently_asked_questions",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "L189",
-      "weight": 1.0
-    },
-    {
-      "source": "readme_bulk_cogs_editor_for_woocommerce",
-      "target": "readme_development_and_support",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "L219",
+      "source_location": "L234",
       "weight": 1.0
     },
     {
@@ -10807,7 +10890,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L24",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_bulk_cogs_editor_for_woocommerce",
+      "target": "readme_frequently_asked_questions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L264",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_bulk_cogs_editor_for_woocommerce",
+      "target": "readme_development_and_support",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
@@ -10818,18 +10923,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L40",
-      "weight": 1.0
-    },
-    {
-      "source": "readme_bulk_cogs_editor_for_woocommerce",
-      "target": "readme_bulk_editing_workflow",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "L92",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -10840,7 +10934,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L123",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -10851,7 +10945,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L146",
+      "source_location": "L154",
       "weight": 1.0
     },
     {
@@ -10862,7 +10956,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L42",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -10873,7 +10967,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L53",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -10884,7 +10978,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L68",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -10895,7 +10989,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L82",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -10906,7 +11000,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L88",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -10917,7 +11011,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L191",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -10928,7 +11022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L195",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -10939,7 +11033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L199",
+      "source_location": "L274",
       "weight": 1.0
     },
     {
@@ -10950,7 +11044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L203",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -10961,7 +11055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L207",
+      "source_location": "L282",
       "weight": 1.0
     },
     {
@@ -10972,7 +11066,40 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L211",
+      "source_location": "L286",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_frequently_asked_questions",
+      "target": "readme_is_cancellation_the_same_as_rollback",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L290",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_frequently_asked_questions",
+      "target": "readme_can_rollback_overwrite_a_later_cost_edit",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L295",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_frequently_asked_questions",
+      "target": "readme_why_is_rollback_unavailable_for_an_older_operation",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -10983,7 +11110,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L215",
+      "source_location": "L308",
+      "weight": 1.0
+    },
+    {
+      "source": "readme_history_and_rollback",
+      "target": "readme_review_and_confirm_a_rollback",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -13612,7 +13750,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L181",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -14757,5 +14895,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "512687729ee693e9188e64c19a71a8b4189a773d"
+  "built_at_commit": "65a1b272e31ab5908b2f102e80ddcab7bdd194ea"
 }
