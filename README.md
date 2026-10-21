@@ -2,7 +2,7 @@
 
 Review and update product costs in bulk, or transfer costs with CSV and Excel files, directly from your WooCommerce admin.
 
-Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)** feature. Find the right products, preview the exact changes, choose which records to update, and explicitly confirm before background processing starts. Product selling prices stay untouched.
+Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)** feature. Find the right products, preview the exact changes, choose which records to update, and explicitly confirm before background processing starts. Product selling prices stay untouched. Inspect past operations in **History**, review a rollback to recorded original costs, and choose retention and rollback behavior in **Settings**.
 
 **Version:** 1.1.2 · **License:** GPLv3 · **HPOS compatible**
 
@@ -17,6 +17,8 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 - [Bulk editing workflow](#bulk-editing-workflow)
 - [CSV export](#csv-export)
 - [CSV and Excel import](#csv-and-excel-import)
+- [History and rollback](#history-and-rollback)
+- [Settings](#settings)
 - [Background processing and recovery](#background-processing-and-recovery)
 - [Frequently asked questions](#frequently-asked-questions)
 - [Development and support](#development-and-support)
@@ -38,6 +40,11 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 If COGS is unavailable or disabled, the editor explains what is required. Use a packaged plugin build when installing a ZIP; a source checkout needs its dependencies and compiled assets for development.
 
 ## Features
+
+Version **1.1.2** adds CSV and Excel transfer workflows, a searchable **History**
+tab with reviewed background rollbacks, and a **Settings** tab for retention and
+rollback policy. Recovery fixes preserve recorded changes, allow retries for
+remaining rollback products, and keep editor drafts when switching tabs.
 
 ### Find the products you need
 
@@ -67,7 +74,8 @@ Relative adjustments skip products without a saved cost. Use **Set exact cost** 
 
 ### Preview and choose your update scope
 
-- Compare current COGS, new COGS, and the amount and percentage of each change before applying.
+- Compare current COGS, new COGS, and the amount and percentage of each change before applying. Increases are green and decreases red, with directional arrows.
+- Keep your preview and selection when visiting History or Settings and returning to the same editor.
 - Identify products through images, names, SKUs, and product edit links.
 - Show or hide optional columns and retain display preferences.
 - Browse 10, 20, 50, or 100 records per page, or jump directly to a page.
@@ -156,6 +164,73 @@ Preparing an import preview does not update products. Preparation can be cancell
 
 Original uploads are deleted when preparation ends. Staged previews and reports expire through scheduled cleanup after approximately **24 hours**, with retention extended while an applied update is active. Generated export and report download files have scheduled cleanup after **two days**.
 
+## History and rollback
+
+The third tab, **History**, keeps bulk updates, imports, and rollback operations
+in one place. Filter by status, operation type, user, and date range, or search
+by operation ID, note, or product ID. Use numbered pages, page-size choices, or
+**Go to page** to navigate. An optional note entered before starting an update
+helps identify it later.
+
+![History tab with operation filters, statuses, product counts, and numbered pagination](docs/screenshots/history.png)
+
+Choose **View details** to inspect the action, user, filters, note, timestamps,
+duration, outcome counts, and recorded original and updated product costs.
+Active historical details refresh automatically and use the existing
+stale-worker recovery path.
+
+![Existing operation details with completion results and the summary-only history notice](docs/screenshots/operation-details.png)
+
+### Review and confirm a rollback
+
+1. Open **History** and choose **View details** for the source update.
+2. Choose **Review rollback** when retained original costs are available.
+3. Compare current costs with the original values to restore and check the
+   displayed rollback policy.
+4. Check the confirmation and choose **Confirm rollback**.
+5. Follow background progress and inspect updated, skipped, and failed counts.
+
+A rollback restores only products with confirmed original-cost records. It uses
+WooCommerce's COGS APIs, including restoring an unset original cost. Cancelling
+stops remaining work; already restored values stay saved.
+
+After a rollback is cancelled or finishes with failures or skips, return to the
+source operation and review a new attempt for **remaining products only**.
+Products already restored by a successful attempt are excluded, even if someone
+edits their costs later. Repeated confirmation of the same attempt reuses that
+attempt rather than creating another concurrent rollback.
+
+**Older operations can have summary history only.** They cannot be rolled back
+without recorded originals. Expired or deleted original values are unavailable
+for rollback too. The wpdev store used for these screenshots currently has only
+summary records, so its details screenshot shows that actual limitation; no
+sample operations or product updates were created for the screenshots.
+
+## Settings
+
+The fourth tab, **Settings**, controls retained history and the policy applied to
+new rollbacks.
+
+![Settings tab with 30-day, 90-day, and custom retention plus rollback behavior choices](docs/screenshots/settings.png)
+
+| Setting | Choices |
+| --- | --- |
+| History retention | 30 days (default), 90 days, or custom days from 1 to 36,500 |
+| Rollback behavior | Overwrite current costs with originals (default), or skip products whose costs changed afterward |
+
+- **Overwrite** restores recorded original costs even after a later edit.
+- **Skip changed** restores a product only when its current cost still matches
+  the value saved by the source operation. Deleted products are skipped.
+- The policy appears in rollback review and remains fixed for that attempt.
+  Changing Settings affects new attempts.
+- Retention applies to existing completed operations. Reducing it can make older
+  records expire; extending it cannot recover records already deleted.
+- Queued history cleanup rechecks retention before deleting. Active operations
+  and their required source history are preserved until work is finished.
+
+Choose **Save settings** to apply changes. Visiting this tab preserves your
+current bulk or CSV preview and selection.
+
 ## Background processing and recovery
 
 Updates run in **Action Scheduler** batches. The editor displays the task, processed count, progress, elapsed time, estimated remaining time when available, and updated, skipped, and failed counts. Preparation avoids a misleading percentage when the total is not yet known.
@@ -166,7 +241,7 @@ Updates run in **Action Scheduler** batches. The editor displays the task, proce
 - Bounded product queries, batch cache preparation, indexed outcomes, and grouped cache cleanup reduce processing overhead.
 - Expand **Recent activity** to inspect the latest completed operation, including completion time, elapsed time, and any skipped or failed records.
 
-Completed operation history and linked preview claims are retained for at least **30 days**, then removed through bounded daily cleanup. Active operations and import report dependencies are preserved until their work is finished.
+Completed operation history, original cost records, and preview claims use the **Settings** retention period: **30 days by default**, 90 days, or custom days. Bounded daily cleanup removes expired records while preserving active operations and import report dependencies until their work is finished.
 
 ### Optional WP-CLI runner
 
@@ -212,6 +287,24 @@ Yes. Filter for variations and review the resulting records. Variations have the
 
 The editor disables selection and confirmation while results are outdated or loading, and prevents conflicting changes during an active update. Refresh the preview when prompted and review the current results.
 
+### Is cancellation the same as rollback?
+
+No. Cancellation stops remaining work and keeps saved changes. Use **History →
+View details → Review rollback** to review restoring retained original costs.
+
+### Can rollback overwrite a later cost edit?
+
+Yes, with the default overwrite policy. Choose **Skip products whose costs
+changed afterward** in Settings if later edits should be left alone. Every
+attempt shows its policy before confirmation.
+
+### Why is rollback unavailable for an older operation?
+
+It may have summary-only history, no recorded original values, expired history,
+or an active rollback. Original costs cannot be reconstructed from the operation
+summary. A terminal incomplete rollback can be reviewed again for remaining
+recorded products.
+
 ### Does the plugin send store data to external services?
 
 No. Product matching, calculations, previews, imports, exports, and cost updates run on your WordPress installation.
@@ -234,4 +327,4 @@ Use the repository’s [project instructions](AGENTS.md) for contribution conven
 - [Issues and feature requests](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
 - [Performance discussion](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12)
 
-Screenshots show the plugin on a development store; product data and results are illustrative. Licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
+Screenshots were captured from the **wpdev** development store using its existing products and operation history; product data and results are illustrative. Licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
