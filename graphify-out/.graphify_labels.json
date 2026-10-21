@@ -1,6 +1,5 @@
 {
   "0": "php-quality.py",
-  "1": "DKBCE_CSV_Service",
   "2": "bulk-cogs-editor.spec.cjs",
   "3": "ref_bulk_cogs_editor_css",
   "4": "ref_node_process",
@@ -10,7 +9,7 @@
   "8": "DKBCE_Autoloader",
   "9": "ref_anthropic_ai_sdk",
   "10": "scripts",
-  "11": "DKBCE_Retention_Processor",
+  "11": "DKBCE_History_Controller",
   "12": "DKBCE_Admin_Functions",
   "13": "Bulk COGS Editor for WooCommerce",
   "14": "DKBCE_Range_Query_Profiler",
