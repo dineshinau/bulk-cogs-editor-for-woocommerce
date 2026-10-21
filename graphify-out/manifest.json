@@ -172,5 +172,11 @@
     "seen": 1792568649.1417928,
     "ast_hash": "44b79c438ecb481286af69dbd2ff8f8a",
     "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1792572134.0043795,
+    "seen": 1792572408.983134,
+    "ast_hash": "6f3b7874dde7732d8db8fdedbd4cb76a",
+    "semantic_hash": ""
   }
 }
