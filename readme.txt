@@ -290,7 +290,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Changelog ==
 
-= 1.1.2 (2026-10-20) =
+= 1.1.2 (2026-10-25) =
 
 * Fixed: Restore green increases and red decreases in the review table's Change column.
 * Fixed: Load History reliably and preserve bulk and CSV previews and selected products when visiting History or Settings.
