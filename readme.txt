@@ -64,7 +64,8 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 * Review matching products in a paginated table with product images, edit links, right-aligned current and calculated COGS, and the change. Sticky headers and fixed selection and product columns on mobile help you keep track while scrolling.
 * Show or hide optional columns and keep your display preferences. New users start with Selection, Product, Current COGS, New COGS, and Change; SKU appears beneath the product name when its separate column is hidden.
 * Choose 10, 20, 50, or 100 products per page. The default is 20. Use the footer pagination or Go to page to navigate directly.
-* Changing the action or its value refreshes the preview automatically.
+* Changing the action or its value refreshes the preview automatically. Previous rows stay visible while the preview refreshes or another page loads. Outdated results are marked, and selection and confirmation remain disabled until fresh results are ready.
+* Use Refresh preview beside the table when results need refreshing. Errors and recovery guidance appear near the relevant controls.
 * See the selected total across all pages. Select or clear the current page, all matching products, or the first or last number of matches. Individual selections support up to 500 products; all-matching and range selections support larger scopes.
 * Keep the selected count and action visible in a sticky summary. Review the operation, selection, and review coverage in the confirmation before applying.
 * Start a new selection to reset prior filter constraints; Clear filters only clears the current filter inputs.
@@ -74,12 +75,17 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 * Use separate Import and Export guidance, preview headings, and confirmation labels.
 * Download a sample CSV beside the upload field, review expandable file requirements, and replace or remove the selected file before validation.
 * Review import validation errors before applying selected products. Completed CSV exports provide an explicit download link.
-* Expand Recent activity to inspect the latest completed operation.
+* Expand Recent activity to inspect the latest completed operation, including the updated count, completion time, elapsed time, and any skipped or failed products.
+
+**In-editor guidance and mobile layout**
+
+* Help and instructions change with the selected Bulk edit tab or CSV Import or Export task, so each workflow has its own steps. Documentation and video links remain available.
+* A simplified layout emphasizes filters, cost comparisons, and the next action, with larger touch controls on mobile and a sticky summary that accounts for device safe areas.
 
 **Safe background processing**
 
 * Updates are processed in Action Scheduler batches.
-* View progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started.
+* View the task name, progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started; preparation shows an indeterminate progress indicator while the total is unknown.
 * Cancel at any time. Updates that already completed are kept.
 * Product matching uses bounded ID batches to limit memory use.
 * Batch cache preparation, fewer repeated database reads, and grouped WooCommerce cache cleanup reduce processing overhead while all COGS writes use WooCommerce CRUD APIs.
@@ -199,6 +205,15 @@ Yes. Filter the products you want, choose "Increase by percentage", enter the va
 = Can I preview changes before applying them? =
 Yes. You can preview all proposed cost changes in a paginated table showing product images, current COGS, calculated COGS, and the exact difference before confirming any update. Previewing never modifies your store data.
 
+= Do I need to read the documentation or watch the video before using the editor? =
+The editor includes Help and instructions for Bulk edit, CSV Import, and CSV Export. The steps change with your selected task. Field guidance, cost examples, previews, and a confirmation summary help you review changes before applying them. Documentation and video links are available for more detail.
+
+= Why are previous preview rows still visible but unavailable for selection? =
+The editor keeps previous rows visible while results refresh or another page loads. When results are outdated, selection and confirmation are disabled. Wait for the refresh to finish, or use Refresh preview beside the table when prompted. Review the fresh results before confirming.
+
+= Where can I see the result of my last update? =
+Expand Recent activity to see the latest completed operation, its updated count, completion time, and elapsed time. Skipped or failed products and cancellation or failure outcomes are highlighted. Cancelling an operation keeps changes that were already saved.
+
 = How does the plugin handle variable products and variations? =
 Variations are treated as individual product records. You can filter and update COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated.
 
@@ -266,6 +281,12 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Replace action cards with compact Set, Adjust, and Clear controls, contextual fields, cost examples, and a visible Find products prerequisite.
 * Improved: Add searchable filter menus, selected-option counts, removable filter chips, Clear filters, and collapsible primary and advanced filters.
 * Improved: Prioritize product and cost comparisons, retain optional columns and saved preferences, keep table headers and mobile product identity visible while scrolling, and group page size and direct page navigation in the footer.
+* Improved: Change Help and instructions to match the selected Bulk edit, CSV Import, or CSV Export task.
+* Improved: Keep previous preview rows visible during refresh and pagination, mark outdated results, and prevent selection or confirmation until fresh results are ready.
+* Improved: Place preview refresh controls, validation errors, and recovery guidance beside the relevant workflow controls.
+* Improved: Identify the active update task, avoid misleading percentages while preparation totals are unknown, clarify that cancellation keeps saved changes, and retain keyboard focus on progress controls when redrawn.
+* Improved: Summarize recent activity with updated counts, completion and elapsed times, and prominent skipped, failed, or incomplete outcomes.
+* Improved: Simplify editor styling and improve mobile touch targets, stacked controls, scrollable help, and safe-area spacing for the sticky summary.
 * Updated: Refresh the translation template, import and worker documentation, QA and performance review reports, and development code graph.
 * Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
 * Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values with up to six decimal places, then preview changes before explicitly applying them. Continue accepting the legacy `cogs` header when `new_cogs` is absent.
