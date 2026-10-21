@@ -3813,7 +3813,7 @@
       "node_kind": "heading",
       "norm_label": "can i preview without changing my store?",
       "source_file": "README.md",
-      "source_location": "L270"
+      "source_location": "L272"
     },
     {
       "id": "readme_can_i_update_variations_without_changing_their_parents",
@@ -3825,7 +3825,7 @@
       "node_kind": "heading",
       "norm_label": "can i update variations without changing their parents?",
       "source_file": "README.md",
-      "source_location": "L282"
+      "source_location": "L284"
     },
     {
       "id": "readme_can_rollback_overwrite_a_later_cost_edit",
@@ -3837,7 +3837,7 @@
       "node_kind": "heading",
       "norm_label": "can rollback overwrite a later cost edit?",
       "source_file": "README.md",
-      "source_location": "L295"
+      "source_location": "L297"
     },
     {
       "id": "readme_contents",
@@ -3885,7 +3885,7 @@
       "node_kind": "heading",
       "norm_label": "development and support",
       "source_file": "README.md",
-      "source_location": "L312"
+      "source_location": "L314"
     },
     {
       "id": "readme_does_the_plugin_send_store_data_to_external_services",
@@ -3897,7 +3897,7 @@
       "node_kind": "heading",
       "norm_label": "does the plugin send store data to external services?",
       "source_file": "README.md",
-      "source_location": "L308"
+      "source_location": "L310"
     },
     {
       "id": "readme_does_this_replace_woocommerce_s_native_cogs_feature",
@@ -3909,7 +3909,7 @@
       "node_kind": "heading",
       "norm_label": "does this replace woocommerce\u2019s native cogs feature?",
       "source_file": "README.md",
-      "source_location": "L266"
+      "source_location": "L268"
     },
     {
       "id": "readme_features",
@@ -3957,7 +3957,7 @@
       "node_kind": "heading",
       "norm_label": "frequently asked questions",
       "source_file": "README.md",
-      "source_location": "L264"
+      "source_location": "L266"
     },
     {
       "id": "readme_guidance_and_responsive_controls",
@@ -3993,7 +3993,7 @@
       "node_kind": "heading",
       "norm_label": "is cancellation the same as rollback?",
       "source_file": "README.md",
-      "source_location": "L290"
+      "source_location": "L292"
     },
     {
       "id": "readme_optional_wp_cli_runner",
@@ -4113,7 +4113,7 @@
       "node_kind": "heading",
       "norm_label": "why are some preview controls disabled?",
       "source_file": "README.md",
-      "source_location": "L286"
+      "source_location": "L288"
     },
     {
       "id": "readme_why_did_a_percentage_or_fixed_adjustment_skip_some_products",
@@ -4125,7 +4125,7 @@
       "node_kind": "heading",
       "norm_label": "why did a percentage or fixed adjustment skip some products?",
       "source_file": "README.md",
-      "source_location": "L274"
+      "source_location": "L276"
     },
     {
       "id": "readme_why_does_selecting_every_category_differ_from_leaving_the_category_filter_empty",
@@ -4137,7 +4137,7 @@
       "node_kind": "heading",
       "norm_label": "why does selecting every category differ from leaving the category filter empty?",
       "source_file": "README.md",
-      "source_location": "L278"
+      "source_location": "L280"
     },
     {
       "id": "readme_why_is_rollback_unavailable_for_an_older_operation",
@@ -4149,7 +4149,7 @@
       "node_kind": "heading",
       "norm_label": "why is rollback unavailable for an older operation?",
       "source_file": "README.md",
-      "source_location": "L301"
+      "source_location": "L303"
     },
     {
       "id": "admin_class_dkbce_bulk_processor",
@@ -10901,7 +10901,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L264",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -10912,7 +10912,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L312",
+      "source_location": "L314",
       "weight": 1.0
     },
     {
@@ -11011,7 +11011,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L266",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -11022,7 +11022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L270",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -11033,7 +11033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L274",
+      "source_location": "L276",
       "weight": 1.0
     },
     {
@@ -11044,7 +11044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L278",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -11055,7 +11055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L282",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -11066,7 +11066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L286",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -11077,7 +11077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L290",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -11088,7 +11088,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L295",
+      "source_location": "L297",
       "weight": 1.0
     },
     {
@@ -11099,7 +11099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L301",
+      "source_location": "L303",
       "weight": 1.0
     },
     {
@@ -11110,7 +11110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L308",
+      "source_location": "L310",
       "weight": 1.0
     },
     {
@@ -14895,5 +14895,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "65a1b272e31ab5908b2f102e80ddcab7bdd194ea"
+  "built_at_commit": "569fc5d988cbed869cc60c4e9cbde80302929278"
 }
