@@ -136,6 +136,10 @@
 		setNotice( '', 'info' );
 		$( '#dkbce-range-menu' ).open = false;
 		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
+		const helpMode = active ? ( importing ? 'import' : 'export' ) : 'bulk';
+		document.querySelectorAll( '[data-dkbce-help]' ).forEach( ( section ) => {
+			section.hidden = section.dataset.dkbceHelp !== helpMode;
+		} );
 		$( '#dkbce-csv' ).hidden = ! active;
 		actionSection.hidden = active;
 		$( '.dkbce-filters-section' ).hidden = importing;

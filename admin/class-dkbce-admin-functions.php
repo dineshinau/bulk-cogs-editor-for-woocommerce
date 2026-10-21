@@ -389,7 +389,34 @@ class DKBCE_Admin_Functions {
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
 				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
-				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover"><strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><ol><li><?php esc_html_e( 'Use the filters to find the products you want to update, then click Get products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Set an exact cost, increase or decrease costs by an amount or percentage, or choose Clear COGS to remove costs. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'Compare current and new costs in the preview. No changes are saved until you apply and confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li><li><?php esc_html_e( 'All matching products are selected initially. Use the table checkboxes to change your selection, review the selected count, then confirm the update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li></ol>
+				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover">
+					<div data-dkbce-help="bulk">
+						<strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
+						<ol>
+							<li><?php esc_html_e( 'Use the filters to choose products, then click Find products. Leave a filter empty to include all its values.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Choose Set exact cost, Adjust existing cost, or Clear cost. For adjustments, choose a direction and a percentage or fixed amount. Enter a value unless you are clearing costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Compare current and new costs in the preview. All matching products across all pages are selected initially. Use the checkboxes or selection controls to choose which products to include.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Use the Review button to check the selected count and update details, then confirm the update. No costs are saved before confirmation.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+						</ol>
+					</div>
+					<div data-dkbce-help="export" hidden>
+						<strong><?php esc_html_e( 'Export product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
+						<ol>
+							<li><?php esc_html_e( 'Choose Export CSV and select the columns to include. A blank new_cogs column is always added for entering updated costs later.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Use the filters to choose products, then click Find products. Use Product type to include variable products, variations, or both.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Review the export preview. All matching products across all pages are selected initially. Use the checkboxes or selection controls to adjust the export selection.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Click Create CSV, confirm the export, and keep this page open until the download is ready. Exporting does not change product costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+						</ol>
+					</div>
+					<div data-dkbce-help="import" hidden>
+						<strong><?php esc_html_e( 'Import product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
+						<ol>
+							<li><?php esc_html_e( 'Choose Import CSV. Download the template or use an exported file. Enter updated costs in new_cogs and identify each product with id or sku.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Choose a CSV or XLSX file, then click Validate file. Use decimal points without currency symbols. Blank costs are skipped; zero clears the stored cost. Open File requirements for more details.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Wait for validation, then review the current and new costs and any reported issues. Use the preview checkboxes to choose which products to update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Use the Review button to check the selected count and import details, then confirm the update. Validation alone does not save costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+						</ol>
+					</div>
 					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<p><a href="<?php echo esc_url( 'https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/R-kw_6g2JIg' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
 				</div></details>
