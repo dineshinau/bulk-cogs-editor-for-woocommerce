@@ -5,6 +5,7 @@
 	const $ = ( selector ) => document.querySelector( selector );
 	const state = {
 		mode: 'bulk',
+		editorMode: 'bulk',
 		importPreparing: false,
 		importId: DKBCE.importId || '',
 		importCancel: false,
@@ -119,7 +120,7 @@
 	$( '.dkbce-filters-section' ).appendChild( $( '.dkbce-filter-actions' ) );
 
 	const historyText = DKBCE.history;
-	const historyState = { page: 1, size: 10, operationId: '', productPage: 1, productSize: 10, review: false, token: '', requestId: 0, detailRequestId: 0, loading: false };
+	const historyState = { page: 1, size: 10, operationId: '', productPage: 1, productSize: 10, review: false, token: '', requestId: 0, detailRequestId: 0, loading: false, pollTimer: null };
 	const historyRoot = $( '#dkbce-history' );
 	const settingsRoot = $( '#dkbce-settings' );
 	const operationAnchor = document.createComment( 'operation panel' );
@@ -341,6 +342,7 @@
 	}
 
 	async function loadHistoryDetails() {
+		window.clearTimeout( historyState.pollTimer );
 		const requestId = ++historyState.detailRequestId;
 		historyState.loading = true;
 		historyDetails.setAttribute( 'aria-busy', 'true' );
@@ -352,7 +354,7 @@
 			historyState.token = data.review_token;
 			historyDetails.replaceChildren();
 			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
-			details.appendChild( historyButton( historyText.back, () => { historyState.operationId = ''; historyState.token = ''; historyDetails.replaceChildren(); } ) );
+			details.appendChild( historyButton( historyText.back, () => { window.clearTimeout( historyState.pollTimer ); historyState.detailRequestId++; historyState.operationId = ''; historyState.token = ''; historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); historyDetails.replaceChildren(); } ) );
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
 			details.appendChild( metadata );
@@ -364,7 +366,7 @@
 				appendProductCell( row, item ); appendCell( row, item.sku || '—' ); appendCell( row, money( item.current ) ); appendCell( row, money( item.new ) ); appendChangeCell( row, item ); body.appendChild( row );
 			} );
 			products.appendChild( wrap );
-			if ( data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
+			if ( ! historyState.review && data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
 			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
 			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
 			if ( historyState.review ) {
@@ -387,6 +389,7 @@
 			historyDetails.appendChild( result );
 			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
 				result.appendChild( historyButton( DKBCE.i18n.refreshStatus, loadHistoryDetails ) );
+				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
 			}
 		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { setNotice( error.message, 'error', historyList ); } }
 		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); } }
@@ -438,7 +441,7 @@
 	} );
 
 	function csvMode() {
-		return state.mode === 'csv';
+		return state.editorMode === 'csv';
 	}
 
 	function downloadCSV( contents, filename ) {
@@ -453,7 +456,7 @@
 	}
 
 	function updateCSVMode() {
-		const active = csvMode();
+		const active = state.mode === 'csv';
 		setNotice( '', 'info' );
 		$( '#dkbce-range-menu' ).open = false;
 		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
@@ -799,12 +802,17 @@
 			if ( state.busy || state.loadingPage || ( isOperationRunning() && ! [ 'history', 'settings' ].includes( button.dataset.dkbceMode ) ) ) {
 				return;
 			}
-			resetSelection();
-			state.mode = button.dataset.dkbceMode;
+			const nextMode = button.dataset.dkbceMode;
+			window.clearTimeout( historyState.pollTimer );
 			window.clearTimeout( state.previewTimer );
-			invalidatePreview( true, true );
+			state.mode = nextMode;
+			if ( [ 'bulk', 'csv' ].includes( nextMode ) && nextMode !== state.editorMode ) {
+				state.editorMode = nextMode;
+				resetSelection();
+				invalidatePreview( true, true );
+			}
 			updateCSVMode();
-			if ( state.mode === 'history' ) { loadHistory(); }
+			if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
 			if ( state.mode === 'settings' ) { loadSettings(); }
 		} );
 	} );
@@ -2419,6 +2427,7 @@
 	if ( DKBCE.operationMode === 'rollback' ) { state.mode = 'history'; updateCSVMode(); loadHistory(); }
 	if ( state.importId || DKBCE.operationMode === 'csv_import' ) {
 		state.mode = 'csv';
+		state.editorMode = 'csv';
 		$( 'input[name="dkbce-csv-action"][value="import"]' ).checked = true;
 		updateCSVMode();
 	}

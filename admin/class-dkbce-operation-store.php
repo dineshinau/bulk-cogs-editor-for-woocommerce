@@ -45,10 +45,16 @@ class DKBCE_Operation_Store {
 	 * Get an operation state.
 	 *
 	 * @param string $operation_id Operation UUID.
+	 * @param bool   $fresh Bypass request-local option caches after acquiring a lock.
 	 * @return array|false
 	 */
-	public function get( $operation_id ) {
-		$state = get_option( $this->operation_key( $operation_id ), false );
+	public function get( $operation_id, $fresh = false ) {
+		$key = $this->operation_key( $operation_id );
+		if ( $fresh ) {
+			wp_cache_delete( $key, 'options' );
+			wp_cache_delete( 'notoptions', 'options' );
+		}
+		$state = get_option( $key, false );
 		if ( ! is_array( $state ) ) {
 			return false;
 		}
@@ -102,16 +108,22 @@ class DKBCE_Operation_Store {
 	 *
 	 * @param array $state Operation state.
 	 * @return void
+	 * @throws RuntimeException When the operation cannot be persisted.
 	 */
 	public function save( $state ) {
-		$history = new DKBCE_History_Store();
-		$history->index( $state );
 		$key = $this->operation_key( $state['operation_id'] );
 		if ( false === get_option( $key, false ) ) {
 			add_option( $key, $state, '', false );
 		} else {
 			update_option( $key, $state, false );
 		}
+		wp_cache_delete( $key, 'options' );
+		wp_cache_delete( 'notoptions', 'options' );
+		if ( get_option( $key, false ) !== $state ) {
+			throw new RuntimeException( esc_html__( 'The operation could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$history = new DKBCE_History_Store();
+		$history->index( $state );
 	}
 
 	/**

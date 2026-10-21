@@ -76,6 +76,9 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function recover_if_stale( $state ) {
+		if ( 'rollback' === ( $state['action'] ?? '' ) && get_option( 'dkbce_rollback_' . $state['rollback_source'], '' ) !== $state['operation_id'] ) {
+			return;
+		}
 		if ( ! empty( $state['cleanup_pending'] ) ) {
 			$this->enqueue_cleanup( $state['operation_id'] );
 			return;
@@ -126,7 +129,7 @@ class DKBCE_Bulk_Processor {
 		}
 
 		try {
-			$state = $this->store->get( $operation_id );
+			$state = $this->store->get( $operation_id, true );
 			if ( ! $state || empty( $state['cleanup_pending'] ) || ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 				return;
 			}
@@ -142,11 +145,21 @@ class DKBCE_Bulk_Processor {
 				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
 			}
 			if ( $done && ! empty( $state['history_cleanup_pending'] ) ) {
-				$history = new DKBCE_History_Store();
-				$done    = $history->delete( $operation_id );
-				if ( $done ) {
-					$state['history_cleanup_complete'] = true;
+				$retention = new DKBCE_Retention_Processor();
+				if ( ! $retention->is_expired_operation( $state, true ) ) {
+					// Settings or an active rollback may have changed since scheduling.
 					unset( $state['history_cleanup_pending'] );
+				} else {
+					if ( empty( $state['history_cleanup_started'] ) ) {
+						$state['history_cleanup_started'] = true;
+						$this->store->save( $state );
+					}
+					$history = new DKBCE_History_Store();
+					$done    = $history->delete( $operation_id );
+					if ( $done ) {
+						$state['history_cleanup_complete'] = true;
+						unset( $state['history_cleanup_pending'] );
+					}
 				}
 			}
 			if ( $done ) {
@@ -259,8 +272,12 @@ class DKBCE_Bulk_Processor {
 	 */
 	private function process_operation_locked( $operation_id ) {
 		$deadline = microtime( true ) + self::BATCH_TIME_LIMIT;
-		$state    = $this->store->get( $operation_id );
+		$state    = $this->store->get( $operation_id, true );
 		if ( ! $state || in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled', 'ready', 'expired' ), true ) ) {
+			return;
+		}
+
+		if ( 'rollback' === $state['action'] && get_option( 'dkbce_rollback_' . $state['rollback_source'], '' ) !== $operation_id ) {
 			return;
 		}
 
@@ -318,42 +335,48 @@ class DKBCE_Bulk_Processor {
 	 * @param string $operation_id Operation UUID.
 	 * @return string|false Lock token, or false when another worker owns the lock.
 	 */
-	private function acquire_operation_lock( $operation_id ) {
-		$key        = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
-		$lock_token = wp_generate_uuid4();
-		$lock       = array(
-			'token'      => $lock_token,
-			'created_at' => time(),
+	public function acquire_operation_lock( $operation_id ) {
+		global $wpdb;
+		$key   = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		$value = maybe_serialize(
+			array(
+				'token'      => wp_generate_uuid4(),
+				'created_at' => time(),
+			)
 		);
-
-		if ( add_option( $key, $lock, '', false ) ) {
-			return $lock_token;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Unique option names provide atomic ownership; lock records bypass option caches.
+		$inserted = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO %i (option_name, option_value, autoload) VALUES (%s, %s, %s)', $wpdb->options, $key, $value, 'off' ) );
+		if ( false === $inserted ) {
+			return false;
 		}
-
-		$existing = get_option( $key, false );
-		if ( is_array( $existing ) && isset( $existing['created_at'] ) && time() - absint( $existing['created_at'] ) > self::OPERATION_LOCK_TTL ) {
-			delete_option( $key );
-			if ( add_option( $key, $lock, '', false ) ) {
-				return $lock_token;
+		if ( 0 === $inserted ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Read lock ownership fresh across requests.
+			$stored   = $wpdb->get_var( $wpdb->prepare( 'SELECT option_value FROM %i WHERE option_name = %s', $wpdb->options, $key ) );
+			$existing = maybe_unserialize( $stored );
+			if ( ! is_array( $existing ) || ! isset( $existing['created_at'] ) || time() - absint( $existing['created_at'] ) <= self::OPERATION_LOCK_TTL ) {
+				return false;
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Replace only the exact expired owner observed.
+			$replaced = $wpdb->query( $wpdb->prepare( 'UPDATE %i SET option_value = %s WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $value, $key, $stored ) );
+			if ( 1 !== $replaced ) {
+				return false;
 			}
 		}
-
-		return false;
+		return $value;
 	}
 
 	/**
-	 * Release this worker's operation lock.
+	 * Release only this request's serialized operation-lock record.
 	 *
 	 * @param string $operation_id Operation UUID.
-	 * @param string $lock_token Lock token.
+	 * @param string $lock_token Serialized ownership record.
 	 * @return void
 	 */
-	private function release_operation_lock( $operation_id, $lock_token ) {
-		$key  = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
-		$lock = get_option( $key, false );
-		if ( is_array( $lock ) && isset( $lock['token'] ) && hash_equals( $lock['token'], $lock_token ) ) {
-			delete_option( $key );
-		}
+	public function release_operation_lock( $operation_id, $lock_token ) {
+		global $wpdb;
+		$key = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Conditional deletion cannot release a replacement owner's lock.
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $key, $lock_token ) );
 	}
 
 	/**
@@ -398,8 +421,7 @@ class DKBCE_Bulk_Processor {
 			$product_ids = $next_chunk ? $next_chunk['ids'] : array_map( 'intval', wp_list_pluck( $imports->rows( $state['operation']['source_id'], $state['batch_size'], 0, $state['snapshot_after_id'] ), 'product_id' ) );
 		} elseif ( 'rollback' === $state['action'] ) {
 			$history     = new DKBCE_History_Store();
-			$changes     = $history->products( $state['rollback_source'], $state['batch_size'], 0, $state['snapshot_after_id'] );
-			$product_ids = $next_chunk ? $next_chunk['ids'] : array_map( 'absint', wp_list_pluck( $changes['rows'], 'product_id' ) );
+			$product_ids = $next_chunk ? $next_chunk['ids'] : $history->remaining_ids( $state['rollback_source'], $state['batch_size'], $state['snapshot_after_id'] );
 		} else {
 			$product_ids = $next_chunk ? $next_chunk['ids'] : $this->service->scan_matches( $filters );
 		}
@@ -749,6 +771,7 @@ class DKBCE_Bulk_Processor {
 		}
 
 		$product_saved = false;
+		$journal       = null;
 		try {
 			if ( 'rollback' === $state['action'] || isset( $state['reviewed_rows'][ $product_id ] ) ) {
 				// Re-read reviewed metadata after acquiring the product lock.
@@ -767,6 +790,9 @@ class DKBCE_Bulk_Processor {
 				$product_saved = true;
 				$history       = new DKBCE_History_Store();
 				$history->confirm( $state['operation_id'], $product_id );
+				if ( 'rollback' === $state['action'] ) {
+					$history->mark_restored( $state['rollback_source'], $product_id );
+				}
 				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id );
 				return array(
 					'status'  => 'success',
@@ -784,6 +810,9 @@ class DKBCE_Bulk_Processor {
 			$history   = new DKBCE_History_Store();
 			$recorded  = $history->product( $state['operation_id'], $product_id );
 			if ( $recorded && 'success' === $recorded['status'] ) {
+				if ( 'rollback' === $state['action'] ) {
+					$history->mark_restored( $state['rollback_source'], $product_id );
+				}
 				// A later operation may have replaced the product's last-operation marker.
 				return array(
 					'status'  => 'success',
@@ -862,12 +891,41 @@ class DKBCE_Bulk_Processor {
 			}
 			$product_saved = true;
 			$history->confirm( $state['operation_id'], $product_id );
+			if ( 'rollback' === $state['action'] ) {
+				$history->mark_restored( $state['rollback_source'], $product_id );
+			}
 			return array(
 				'status'  => 'success',
 				'message' => '',
 			);
 		} catch ( Throwable $exception ) {
 			dkbce_wc_log( 'Operation id: ' . $state['operation_id'] . ', Product ID: ' . $product_id . ' Error: ' . $exception->getMessage() );
+			if ( $journal || $product_saved ) {
+				try {
+					// A WooCommerce after-save hook can throw after the write committed.
+					wp_cache_delete( $product_id, 'post_meta' );
+					$saved   = wc_get_product( $product_id );
+					$history = new DKBCE_History_Store();
+					$record  = $history->product( $state['operation_id'], $product_id );
+					$target  = $record && null !== $record['target_value'] ? (float) $record['target_value'] : null;
+					if ( $record && $saved && $state['operation_id'] === $saved->get_meta( '_dkbce_last_bulk_cogs_operation', true ) && $saved->get_cogs_value() === $target ) {
+						$history->confirm( $state['operation_id'], $product_id );
+						if ( 'rollback' === $state['action'] ) {
+							$history->mark_restored( $state['rollback_source'], $product_id );
+						}
+						return array(
+							'status'  => 'success',
+							'message' => '',
+						);
+					}
+				} catch ( Throwable $recovery_exception ) {
+					// Unreadable storage cannot establish whether the write committed.
+					return array(
+						'status'  => 'deferred',
+						'message' => '',
+					);
+				}
+			}
 			if ( $product_saved ) {
 				// Retry journal confirmation instead of losing a successfully saved cost.
 				return array(

@@ -289,14 +289,20 @@ class DKBCE_History_Controller {
 		$this->authorize();
 		$state = $this->operation();
 		try {
-			$history = new DKBCE_History_Store();
-			$service = new DKBCE_COGS_Service();
-			$page    = max( 1, absint( $this->input( 'page', '1' ) ) );
-			$size    = min( 100, max( 1, absint( $this->input( 'size', '10' ) ) ) );
-			$review  = '1' === $this->input( 'review' );
-			$policy  = DKBCE_History_Store::rollback_policy();
-			$data    = $history->products( $state['operation_id'], $size, ( $page - 1 ) * $size );
-			$rows    = array();
+			$store     = new DKBCE_Operation_Store();
+			$processor = new DKBCE_Bulk_Processor( $store, new DKBCE_COGS_Service() );
+			$processor->recover_if_stale( $state );
+			$state     = $store->get( $state['operation_id'], true );
+			$history   = new DKBCE_History_Store();
+			$service   = new DKBCE_COGS_Service();
+			$page      = max( 1, absint( $this->input( 'page', '1' ) ) );
+			$size      = min( 100, max( 1, absint( $this->input( 'size', '10' ) ) ) );
+			$review    = '1' === $this->input( 'review' );
+			$policy    = DKBCE_History_Store::rollback_policy();
+			$attempt   = $history->rollback_state( $state['operation_id'] );
+			$data      = $history->products( $state['operation_id'], $size, ( $page - 1 ) * $size, -1, $review );
+			$remaining = $review ? $data['total'] : $history->products( $state['operation_id'], 1, 0, -1, true )['total'];
+			$rows      = array();
 			foreach ( $data['rows'] as $record ) {
 				$product                 = wc_get_product( $record['product_id'] );
 				$original                = null === $record['original_value'] ? null : (float) $record['original_value'];
@@ -330,10 +336,11 @@ class DKBCE_History_Controller {
 				}
 				$rows[] = $row;
 			}
-			$claim    = get_option( 'dkbce_rollback_' . $state['operation_id'], '' );
-			$terminal = in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
-			$eligible = $terminal && empty( $state['history_cleanup_pending'] ) && empty( $state['history_cleanup_complete'] ) && 'rollback' !== $state['action'] && $data['total'] > 0 && ! $claim && time() - (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) < DKBCE_Retention_Processor::retention_seconds();
-			$token    = '';
+			$claim          = $attempt ? $attempt['operation_id'] : '';
+			$active_attempt = $attempt && ! in_array( $attempt['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
+			$terminal       = in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
+			$eligible       = $terminal && empty( $state['history_cleanup_pending'] ) && empty( $state['history_cleanup_complete'] ) && empty( $state['history_cleanup_started'] ) && 'rollback' !== $state['action'] && $remaining > 0 && ! $active_attempt && time() - (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) < DKBCE_Retention_Processor::retention_seconds();
+			$token          = '';
 			if ( $review && $eligible ) {
 				$token = wp_generate_uuid4();
 				set_transient(
@@ -341,7 +348,7 @@ class DKBCE_History_Controller {
 					array(
 						'operation_id' => $state['operation_id'],
 						'user_id'      => get_current_user_id(),
-						'total'        => $data['total'],
+						'total'        => $remaining,
 						'policy'       => $policy,
 					),
 					15 * MINUTE_IN_SECONDS
@@ -368,40 +375,66 @@ class DKBCE_History_Controller {
 	 *
 	 * @return void
 	 * @throws RuntimeException When rollback cannot start; returned as JSON.
-	 * @throws Throwable When operation persistence fails; returned as JSON.
 	 */
 	public function ajax_rollback() {
 		$this->authorize();
 		$source = $this->operation();
 		try {
-			$service = new DKBCE_COGS_Service();
-			if ( ! $service->is_cogs_available() ) {
-				throw new RuntimeException( esc_html__( 'WooCommerce COGS is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) );
-			}
-			if ( ! function_exists( 'as_enqueue_async_action' ) ) {
-				throw new RuntimeException( esc_html__( 'Background processing is unavailable. Try again when Action Scheduler is available.', 'bulk-cogs-editor-for-woocommerce' ) );
-			}
 			$token  = $this->input( 'review_token' );
 			$review = get_transient( 'dkbce_rollback_review_' . $token );
-			if ( ! $review || $review['operation_id'] !== $source['operation_id'] || get_current_user_id() !== (int) $review['user_id'] || ( $review['policy'] ?? '' ) !== DKBCE_History_Store::rollback_policy() || '1' !== $this->input( 'confirmed' ) || ! in_array( $source['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) || 'rollback' === $source['action'] || ! empty( $source['history_cleanup_pending'] ) || ! empty( $source['history_cleanup_complete'] ) || time() - (int) ( ! empty( $source['completed_at'] ) ? $source['completed_at'] : $source['created_at'] ) >= DKBCE_Retention_Processor::retention_seconds() ) {
+			if ( ! is_array( $review ) || '1' !== $this->input( 'confirmed' ) || get_current_user_id() !== (int) $review['user_id'] || $review['operation_id'] !== $source['operation_id'] ) {
 				throw new RuntimeException( esc_html__( 'Review this rollback again before confirming.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
-			$store     = new DKBCE_Operation_Store();
-			$processor = new DKBCE_Bulk_Processor( $store, $service );
-			$id        = wp_generate_uuid4();
-			$key       = 'dkbce_rollback_' . $source['operation_id'];
-			if ( ! add_option( $key, $id, '', false ) ) {
-				$existing = $store->get( get_option( $key ) );
-				if ( $existing ) {
-					wp_send_json_success(
-						array(
-							'operation_id' => $existing['operation_id'],
-							'state'        => $this->summary( $existing ),
-						)
-					);
-				}
-				throw new RuntimeException( esc_html__( 'This rollback is already being prepared. Refresh its details.', 'bulk-cogs-editor-for-woocommerce' ) );
+			$state = $this->start_rollback( $source['operation_id'], $review, $token );
+			wp_send_json_success(
+				array(
+					'operation_id' => $state['operation_id'],
+					'state'        => $this->summary( $state ),
+				)
+			);
+		} catch ( Throwable $exception ) {
+			wp_send_json_error( array( 'message' => $exception->getMessage() ), 400 );
+		}
+	}
+
+	/**
+	 * Serialize a reviewed rollback attempt with source retention and other starts.
+	 *
+	 * @param string $source_id Source operation UUID.
+	 * @param array  $review User-bound reviewed scope and policy.
+	 * @param string $token Review UUID, also used for idempotent request retries.
+	 * @return array Persisted rollback state.
+	 * @throws RuntimeException When review, locking or scheduling fails.
+	 * @throws Throwable When persistence fails.
+	 */
+	private function start_rollback( $source_id, $review, $token ) {
+		$service   = new DKBCE_COGS_Service();
+		$store     = new DKBCE_Operation_Store();
+		$processor = new DKBCE_Bulk_Processor( $store, $service );
+		if ( ! $service->is_cogs_available() || ! function_exists( 'as_enqueue_async_action' ) ) {
+			throw new RuntimeException( esc_html__( 'COGS or background processing is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$lock = $processor->acquire_operation_lock( $source_id );
+		if ( ! $lock ) {
+			throw new RuntimeException( esc_html__( 'This operation is busy. Please try again shortly.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		try {
+			$source = $store->get( $source_id, true );
+			if ( ! $source || ( $review['policy'] ?? '' ) !== DKBCE_History_Store::rollback_policy() || ! in_array( $source['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) || 'rollback' === $source['action'] || ! empty( $source['history_cleanup_pending'] ) || ! empty( $source['history_cleanup_complete'] ) || ! empty( $source['history_cleanup_started'] ) || time() - (int) ( ! empty( $source['completed_at'] ) ? $source['completed_at'] : $source['created_at'] ) >= DKBCE_Retention_Processor::retention_seconds() ) {
+				throw new RuntimeException( esc_html__( 'Review this rollback again before confirming.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
+			$history  = new DKBCE_History_Store();
+			$existing = $history->rollback_state( $source_id );
+			if ( $existing && ( ( $existing['rollback_review_token'] ?? '' ) === $token || ! in_array( $existing['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) ) {
+				$processor->recover_if_stale( $existing );
+				return $existing;
+			}
+			$remaining = $history->products( $source_id, 1, 0, -1, true );
+			if ( ! $remaining['total'] || (int) $review['total'] !== $remaining['total'] ) {
+				throw new RuntimeException( esc_html__( 'The remaining rollback scope changed. Review it again.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			$id    = wp_generate_uuid4();
+			$key   = 'dkbce_rollback_' . $source_id;
 			$state = array(
 				'operation_id'          => $id,
 				'user_id'               => get_current_user_id(),
@@ -423,6 +456,7 @@ class DKBCE_History_Controller {
 				'filters'               => array(),
 				'rollback_source'       => $source['operation_id'],
 				'rollback_policy'       => $review['policy'],
+				'rollback_review_token' => $token,
 				'note'                  => $source['note'] ?? '',
 				'status'                => 'pending',
 				'stage'                 => 'snapshot',
@@ -435,29 +469,29 @@ class DKBCE_History_Controller {
 				'errors'                => array(),
 				'error_summary'         => '',
 			);
+			// A missing target from an interrupted startup is replaced under this lock.
+			update_option( $key, $id, false );
+			wp_cache_delete( $key, 'options' );
+			if ( get_option( $key, '' ) !== $id ) {
+				throw new RuntimeException( esc_html__( 'The rollback claim could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
 			try {
 				$store->save( $state );
 			} catch ( Throwable $exception ) {
 				delete_option( $key );
 				throw $exception;
 			}
-			update_user_meta( get_current_user_id(), 'dkbce_latest_operation', $id );
 			if ( ! $processor->enqueue( $id ) ) {
 				$state['status']        = 'failed';
 				$state['completed_at']  = time();
 				$state['error_summary'] = __( 'Background processing could not be started. No products were changed.', 'bulk-cogs-editor-for-woocommerce' );
 				$store->save( $state );
-				delete_option( $key );
 				throw new RuntimeException( esc_html( $state['error_summary'] ) );
 			}
-			wp_send_json_success(
-				array(
-					'operation_id' => $id,
-					'state'        => $this->summary( $state ),
-				)
-			);
-		} catch ( Throwable $exception ) {
-			wp_send_json_error( array( 'message' => $exception->getMessage() ), 400 );
+			update_user_meta( get_current_user_id(), 'dkbce_latest_operation', $id );
+			return $state;
+		} finally {
+			$processor->release_operation_lock( $source_id, $lock );
 		}
 	}
 

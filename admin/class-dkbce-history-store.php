@@ -224,22 +224,94 @@ class DKBCE_History_Store {
 	}
 
 	/**
+	 * Mark an original product as restored after its rollback journal is durable.
+	 *
+	 * @param string $source_id Original operation UUID.
+	 * @param int    $product_id Product ID.
+	 * @return void
+	 * @throws RuntimeException When restoration cannot be recorded.
+	 */
+	public function mark_restored( $source_id, $product_id ) {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The product lock protects this idempotent restoration checkpoint.
+		$result = $wpdb->update(
+			$wpdb->prefix . 'dkbce_history_products',
+			array( 'status' => 'restored' ),
+			array(
+				'operation_id' => $source_id,
+				'product_id'   => $product_id,
+			),
+			array( '%s' ),
+			array( '%s', '%d' )
+		);
+		if ( false === $result ) {
+			throw new RuntimeException( esc_html__( 'The restored product could not be recorded.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+	}
+
+	/**
+	 * Recover restoration checkpoints from an existing attempt, including legacy jobs.
+	 *
+	 * @param string $source_id Original operation UUID.
+	 * @return array|false Last linked rollback, or false for a missing claim target.
+	 * @throws RuntimeException When restoration checkpoints cannot be recovered.
+	 */
+	public function rollback_state( $source_id ) {
+		global $wpdb;
+		wp_cache_delete( 'dkbce_rollback_' . sanitize_key( $source_id ), 'options' );
+		wp_cache_delete( 'notoptions', 'options' );
+		$id    = get_option( 'dkbce_rollback_' . sanitize_key( $source_id ), '' );
+		$store = new DKBCE_Operation_Store();
+		$state = $id ? $store->get( $id, true ) : false;
+		if ( ! $state || ( $state['rollback_source'] ?? '' ) !== $source_id ) {
+			return false;
+		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Recover only products confirmed by the linked rollback, without changing original values.
+		$result = $wpdb->query( $wpdb->prepare( "UPDATE %i s INNER JOIN %i r ON r.product_id = s.product_id AND r.operation_id = %s AND r.status = 'success' SET s.status = 'restored' WHERE s.operation_id = %s AND s.status = 'success'", $wpdb->prefix . 'dkbce_history_products', $wpdb->prefix . 'dkbce_history_products', $id, $source_id ) );
+		if ( false === $result ) {
+			throw new RuntimeException( esc_html__( 'Rollback progress could not be recovered.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return $state;
+	}
+
+	/**
+	 * Read one cursor page of remaining rollback IDs without a full count.
+	 *
+	 * @param string $operation_id Original operation UUID.
+	 * @param int    $size Frozen worker batch size.
+	 * @param int    $after_id Last collected product ID.
+	 * @return array
+	 * @throws RuntimeException When snapshot IDs cannot be read.
+	 */
+	public function remaining_ids( $operation_id, $size, $after_id ) {
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded primary-key cursor read; reviewed totals are checked separately.
+		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT product_id FROM %i WHERE operation_id = %s AND status = 'success' AND product_id > %d ORDER BY product_id LIMIT %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, absint( $after_id ), absint( $size ) ) );
+		if ( ! is_array( $ids ) || $wpdb->last_error ) {
+			throw new RuntimeException( esc_html__( 'Rollback products could not be collected.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return array_map( 'absint', $ids );
+	}
+
+	/**
 	 * Read a bounded page of recorded changes or rollback snapshot IDs.
 	 *
 	 * @param string $operation_id Operation UUID.
 	 * @param int    $size Page size.
 	 * @param int    $offset Offset for display pages.
 	 * @param int    $after_id Cursor for background snapshots; negative disables it.
+	 * @param bool   $remaining Read only products that have not been restored.
 	 * @return array
 	 * @throws RuntimeException When changes cannot be read.
 	 */
-	public function products( $operation_id, $size = 20, $offset = 0, $after_id = -1 ) {
+	public function products( $operation_id, $size = 20, $offset = 0, $after_id = -1, $remaining = false ) {
 		global $wpdb;
 		DKBCE_Database_Installer::maybe_upgrade();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Only confirmed changes are eligible for rollback; pages and snapshots are bounded.
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE operation_id = %s AND status = 'success' AND product_id > %d ORDER BY product_id LIMIT %d OFFSET %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, max( 0, $after_id ), $size, $offset ), ARRAY_A );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Indexed count for pagination and confirmation.
-		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE operation_id = %s AND status = 'success'", $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
+		$status = $remaining ? "status = 'success'" : "status IN ('success', 'restored')";
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Status is a fixed internal clause; pages and snapshots are bounded.
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE operation_id = %s AND $status AND product_id > %d ORDER BY product_id LIMIT %d OFFSET %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, max( 0, $after_id ), $size, $offset ), ARRAY_A );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The same fixed status clause is used for the indexed count.
+		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE operation_id = %s AND $status", $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
 		if ( ! is_array( $rows ) || null === $total ) {
 			throw new RuntimeException( esc_html__( 'Product history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
