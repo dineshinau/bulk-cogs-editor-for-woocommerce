@@ -20,7 +20,7 @@ It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there i
 
 See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
 
-https://www.youtube.com/watch?v=R-kw_6g2JIg
+https://youtu.be/sOEOg0xiqYs
 
 = Why use Bulk COGS Editor? =
 
