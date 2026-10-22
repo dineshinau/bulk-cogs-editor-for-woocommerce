@@ -344,19 +344,19 @@ class DKBCE_Bulk_Processor {
 				'created_at' => time(),
 			)
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Unique option names provide atomic ownership; lock records bypass option caches.
+		// Unique option names provide atomic ownership; lock records bypass option caches.
 		$inserted = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO %i (option_name, option_value, autoload) VALUES (%s, %s, %s)', $wpdb->options, $key, $value, 'off' ) );
 		if ( false === $inserted ) {
 			return false;
 		}
 		if ( 0 === $inserted ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Read lock ownership fresh across requests.
+			// Read lock ownership fresh across requests.
 			$stored   = $wpdb->get_var( $wpdb->prepare( 'SELECT option_value FROM %i WHERE option_name = %s', $wpdb->options, $key ) );
 			$existing = maybe_unserialize( $stored );
 			if ( ! is_array( $existing ) || ! isset( $existing['created_at'] ) || time() - absint( $existing['created_at'] ) <= self::OPERATION_LOCK_TTL ) {
 				return false;
 			}
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Replace only the exact expired owner observed.
+			// Replace only the exact expired owner observed.
 			$replaced = $wpdb->query( $wpdb->prepare( 'UPDATE %i SET option_value = %s WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $value, $key, $stored ) );
 			if ( 1 !== $replaced ) {
 				return false;
@@ -375,7 +375,7 @@ class DKBCE_Bulk_Processor {
 	public function release_operation_lock( $operation_id, $lock_token ) {
 		global $wpdb;
 		$key = 'dkbce_worker_lock_' . sanitize_key( $operation_id );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Conditional deletion cannot release a replacement owner's lock.
+		// Conditional deletion cannot release a replacement owner's lock.
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $key, $lock_token ) );
 	}
 

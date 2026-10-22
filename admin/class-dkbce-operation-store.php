@@ -197,7 +197,7 @@ class DKBCE_Operation_Store {
 			"SELECT product_id, status, message FROM %i WHERE operation_id = %s AND product_id IN ($placeholders) ORDER BY product_id", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholder list is generated from bounded absolute product IDs.
 			array_merge( array( $this->outcomes_table(), sanitize_key( $operation_id ) ), $product_ids )
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list is prepared above.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list is prepared above.
 		$rows = $wpdb->get_results( $query, ARRAY_A );
 		if ( ! is_array( $rows ) ) {
 			throw new RuntimeException( esc_html__( 'Bulk operation outcomes could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -230,7 +230,7 @@ class DKBCE_Operation_Store {
 		$operation_id = sanitize_key( $operation_id );
 		$product_id   = absint( $product_id );
 		$table        = $this->outcomes_table();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The primary key makes each durable product outcome idempotent.
+		// The primary key makes each durable product outcome idempotent.
 		$inserted = $wpdb->query(
 			$wpdb->prepare(
 				'INSERT IGNORE INTO %i (operation_id, product_id, status, message) VALUES (%s, %d, %s, %s)',
@@ -248,7 +248,7 @@ class DKBCE_Operation_Store {
 			throw new RuntimeException( esc_html__( 'The bulk product outcome could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify an identical retry against the unique outcome key.
+		// Verify an identical retry against the unique outcome key.
 		$stored = $wpdb->get_row(
 			$wpdb->prepare(
 				'SELECT status, message FROM %i WHERE operation_id = %s AND product_id = %d',
@@ -284,19 +284,19 @@ class DKBCE_Operation_Store {
 			)
 		);
 		// Product locks are private records accessed exclusively through direct SQL.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Unique option_name provides atomic exclusion; lock records do not use the option cache.
+		// Unique option_name provides atomic exclusion; lock records do not use the option cache.
 		$inserted = $wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO %i (option_name, option_value, autoload) VALUES (%s, %s, %s)', $wpdb->options, $key, $value, 'off' ) );
 		if ( false === $inserted ) {
 			return false;
 		}
 		if ( 0 === $inserted ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Lock ownership must be read fresh across workers.
+			// Lock ownership must be read fresh across workers.
 			$stored   = $wpdb->get_var( $wpdb->prepare( 'SELECT option_value FROM %i WHERE option_name = %s', $wpdb->options, $key ) );
 			$existing = maybe_unserialize( $stored );
 			if ( ! is_array( $existing ) || ! isset( $existing['created_at'] ) || time() - absint( $existing['created_at'] ) <= 900 ) {
 				return false;
 			}
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Reclaim only the exact expired record observed, never a replacement owner's lock.
+			// Reclaim only the exact expired record observed, never a replacement owner's lock.
 			$replaced = $wpdb->query( $wpdb->prepare( 'UPDATE %i SET option_value = %s WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $value, $key, $stored ) );
 			if ( 1 !== $replaced ) {
 				return false;
@@ -316,7 +316,7 @@ class DKBCE_Operation_Store {
 		global $wpdb;
 
 		$key = 'dkbce_product_lock_' . absint( $product_id );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Conditional deletion prevents expired workers releasing replacement locks; lock records do not use the option cache.
+		// Conditional deletion prevents expired workers releasing replacement locks; lock records do not use the option cache.
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE option_name = %s AND BINARY option_value = BINARY %s', $wpdb->options, $key, $lock ) );
 	}
 
@@ -341,7 +341,7 @@ class DKBCE_Operation_Store {
 
 		$this->ensure_outcomes_table();
 		// The operation ID index supports a single aggregate across all durable outcomes.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Reconcile counters from the indexed durable outcome store.
+		// Reconcile counters from the indexed durable outcome store.
 		$counts = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT COUNT(*) AS processed, SUM(status = 'success') AS succeeded, SUM(status = 'skipped') AS skipped FROM %i WHERE operation_id = %s",
@@ -385,7 +385,7 @@ class DKBCE_Operation_Store {
 		}
 
 		if ( $summary['failed'] ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The bounded query retrieves only the error preview.
+			// The bounded query retrieves only the error preview.
 			$errors = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT product_id, message FROM %i WHERE operation_id = %s AND status NOT IN ('success', 'skipped') ORDER BY product_id LIMIT 50",
@@ -432,7 +432,7 @@ class DKBCE_Operation_Store {
 
 		if ( ! $preserve_outcomes ) {
 			$this->ensure_outcomes_table();
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Limit each cleanup request to a bounded number of rows.
+			// Limit each cleanup request to a bounded number of rows.
 			$deleted = $wpdb->query(
 				$wpdb->prepare(
 					'DELETE FROM %i WHERE operation_id = %s LIMIT 500',
@@ -464,7 +464,7 @@ class DKBCE_Operation_Store {
 		global $wpdb;
 		$this->ensure_outcomes_table();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Remove only outcomes owned by this completed operation.
+		// Remove only outcomes owned by this completed operation.
 		$deleted = $wpdb->query(
 			$wpdb->prepare( 'DELETE FROM %i WHERE operation_id = %s', $this->outcomes_table(), sanitize_key( $operation_id ) )
 		);

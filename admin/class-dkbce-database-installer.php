@@ -75,7 +75,7 @@ class DKBCE_Database_Installer {
 		foreach ( $tables as $table_name => $schema ) {
 			dbDelta( $schema );
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Verify the private table after dbDelta.
+			// Verify the private table after dbDelta.
 			if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table_name ) ) ) !== $table_name ) {
 				throw new RuntimeException( esc_html__( 'Bulk COGS Editor database tables could not be created or updated.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}

@@ -60,7 +60,7 @@ class DKBCE_Retention_Processor {
 		$cursor         = absint( get_option( self::CURSOR_OPTION, 0 ) );
 		$like_operation = $wpdb->esc_like( 'dkbce_operation_' ) . '%';
 		$like_claim     = $wpdb->esc_like( 'dkbce_preview_claim_' ) . '%';
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Scan only this plugin's indexed option-name prefixes, using a durable option_id cursor and a fixed page size.
+		// Scan only this plugin's indexed option-name prefixes, using a durable option_id cursor and a fixed page size.
 		$option_names = $wpdb->get_results(
 			$wpdb->prepare(
 				' SELECT option_id, option_name FROM %i WHERE option_id > %d AND (option_name LIKE %s OR option_name LIKE %s) ORDER BY option_id ASC LIMIT %d',

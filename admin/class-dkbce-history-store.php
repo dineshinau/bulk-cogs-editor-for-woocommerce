@@ -28,7 +28,7 @@ class DKBCE_History_Store {
 	 */
 	public function users( $owner = 0 ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Only users represented in authorized history are listed.
+		// Only users represented in authorized history are listed.
 		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT DISTINCT h.user_id, u.display_name FROM %i h LEFT JOIN %i u ON h.user_id = u.ID WHERE (%d = 0 OR h.user_id = %d) ORDER BY u.display_name LIMIT 100', $wpdb->prefix . 'dkbce_history', $wpdb->users, $owner, $owner ), ARRAY_A );
 		return is_array( $rows ) ? $rows : array();
 	}
@@ -48,7 +48,7 @@ class DKBCE_History_Store {
 			return;
 		}
 		DKBCE_Database_Installer::maybe_upgrade();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Private indexed history is updated alongside durable worker state.
+		// Private indexed history is updated alongside durable worker state.
 		$result = $wpdb->replace(
 			$wpdb->prefix . 'dkbce_history',
 			array(
@@ -77,7 +77,7 @@ class DKBCE_History_Store {
 		if ( -1 === $cursor ) {
 			return true;
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded migration of existing operation options.
+		// Bounded migration of existing operation options.
 		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT option_id, option_name FROM %i WHERE option_id > %d AND option_name LIKE %s ORDER BY option_id LIMIT 100', $wpdb->options, $cursor, $wpdb->esc_like( 'dkbce_operation_' ) . '%' ), ARRAY_A );
 		if ( ! is_array( $rows ) ) {
 			return false;
@@ -131,9 +131,9 @@ class DKBCE_History_Store {
 			$args[] = $wpdb->prefix . 'dkbce_history_products';
 			$args[] = absint( $filters['search'] );
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL -- SQL fragments contain only fixed clauses and placeholders; all values are prepared.
+		// phpcs:ignore WordPress.DB.PreparedSQL -- SQL fragments contain only fixed clauses and placeholders; all values are prepared.
 		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE $where", $args ) );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Same prepared filters, with bounded pagination.
+		// phpcs:ignore WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Same prepared filters, with bounded pagination.
 		$rows = $wpdb->get_col( $wpdb->prepare( "SELECT operation_id FROM %i WHERE $where ORDER BY created_at DESC, operation_id DESC LIMIT %d OFFSET %d", array_merge( $args, array( $size, ( $page - 1 ) * $size ) ) ) );
 		if ( null === $total || ! is_array( $rows ) ) {
 			throw new RuntimeException( esc_html__( 'Operation history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -156,7 +156,7 @@ class DKBCE_History_Store {
 	public function product( $operation_id, $product_id ) {
 		global $wpdb;
 		DKBCE_Database_Installer::maybe_upgrade();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- A unique journal entry must be read fresh for retry protection.
+		// A unique journal entry must be read fresh for retry protection.
 		$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE operation_id = %s AND product_id = %d', $wpdb->prefix . 'dkbce_history_products', $operation_id, $product_id ), ARRAY_A );
 		if ( $wpdb->last_error ) {
 			throw new RuntimeException( esc_html__( 'Product history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -179,7 +179,7 @@ class DKBCE_History_Store {
 		if ( $row ) {
 			return $row;
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The product lock excludes competing preparations for this operation.
+		// The product lock excludes competing preparations for this operation.
 		$saved = $wpdb->insert(
 			$wpdb->prefix . 'dkbce_history_products',
 			array(
@@ -207,7 +207,7 @@ class DKBCE_History_Store {
 	 */
 	public function confirm( $operation_id, $product_id ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Confirmation is idempotent and tied to the product's saved operation marker.
+		// Confirmation is idempotent and tied to the product's saved operation marker.
 		$result = $wpdb->update(
 			$wpdb->prefix . 'dkbce_history_products',
 			array( 'status' => 'success' ),
@@ -233,7 +233,7 @@ class DKBCE_History_Store {
 	 */
 	public function mark_restored( $source_id, $product_id ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- The product lock protects this idempotent restoration checkpoint.
+		// The product lock protects this idempotent restoration checkpoint.
 		$result = $wpdb->update(
 			$wpdb->prefix . 'dkbce_history_products',
 			array( 'status' => 'restored' ),
@@ -266,7 +266,7 @@ class DKBCE_History_Store {
 		if ( ! $state || ( $state['rollback_source'] ?? '' ) !== $source_id ) {
 			return false;
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Recover only products confirmed by the linked rollback, without changing original values.
+		// Recover only products confirmed by the linked rollback, without changing original values.
 		$result = $wpdb->query( $wpdb->prepare( "UPDATE %i s INNER JOIN %i r ON r.product_id = s.product_id AND r.operation_id = %s AND r.status = 'success' SET s.status = 'restored' WHERE s.operation_id = %s AND s.status = 'success'", $wpdb->prefix . 'dkbce_history_products', $wpdb->prefix . 'dkbce_history_products', $id, $source_id ) );
 		if ( false === $result ) {
 			throw new RuntimeException( esc_html__( 'Rollback progress could not be recovered.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -285,7 +285,7 @@ class DKBCE_History_Store {
 	 */
 	public function remaining_ids( $operation_id, $size, $after_id ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded primary-key cursor read; reviewed totals are checked separately.
+		// Bounded primary-key cursor read; reviewed totals are checked separately.
 		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT product_id FROM %i WHERE operation_id = %s AND status = 'success' AND product_id > %d ORDER BY product_id LIMIT %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, absint( $after_id ), absint( $size ) ) );
 		if ( ! is_array( $ids ) || $wpdb->last_error ) {
 			throw new RuntimeException( esc_html__( 'Rollback products could not be collected.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -308,9 +308,9 @@ class DKBCE_History_Store {
 		global $wpdb;
 		DKBCE_Database_Installer::maybe_upgrade();
 		$status = $remaining ? "status = 'success'" : "status IN ('success', 'restored')";
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Status is a fixed internal clause; pages and snapshots are bounded.
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Status is a fixed internal clause; pages and snapshots are bounded.
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE operation_id = %s AND $status AND product_id > %d ORDER BY product_id LIMIT %d OFFSET %d", $wpdb->prefix . 'dkbce_history_products', $operation_id, max( 0, $after_id ), $size, $offset ), ARRAY_A );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The same fixed status clause is used for the indexed count.
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The same fixed status clause is used for the indexed count.
 		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE operation_id = %s AND $status", $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
 		if ( ! is_array( $rows ) || null === $total ) {
 			throw new RuntimeException( esc_html__( 'Product history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -331,7 +331,7 @@ class DKBCE_History_Store {
 	public function delete( $operation_id ) {
 		global $wpdb;
 		DKBCE_Database_Installer::maybe_upgrade();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded retention deletion scoped to one expired operation.
+		// Bounded retention deletion scoped to one expired operation.
 		$deleted = $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE operation_id = %s LIMIT 500', $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
 		if ( false === $deleted ) {
 			throw new RuntimeException( esc_html__( 'Expired history could not be removed.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -339,7 +339,7 @@ class DKBCE_History_Store {
 		if ( 500 === $deleted ) {
 			return false;
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Remove the summary only after its product rows are gone.
+		// Remove the summary only after its product rows are gone.
 		return false !== $wpdb->delete( $wpdb->prefix . 'dkbce_history', array( 'operation_id' => $operation_id ), array( '%s' ) );
 	}
 }

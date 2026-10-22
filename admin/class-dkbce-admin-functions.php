@@ -1917,6 +1917,7 @@ class DKBCE_Admin_Functions {
 			);
 		}
 		if ( ! empty( $query_vars['dkbce_meta_query'] ) ) {
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- WooCommerce COGS filters require product metadata conditions supplied by the validated query service.
 			$wp_query_args['meta_query'] = array_merge(
 				isset( $wp_query_args['meta_query'] ) ? $wp_query_args['meta_query'] : array(),
 				$query_vars['dkbce_meta_query']
