@@ -8,13 +8,15 @@ Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with Action Scheduler, previews, CSV/XLSX import, CSV export, history, and rollback.
+Fast WooCommerce COGS bulk editing with CSV/XLSX import, live progress, safe previews, history, and rollback for efficient product cost management.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is built for WooCommerce's native Cost of Goods Sold (COGS) feature. Filter products, preview proposed product cost changes, and process bulk updates in background Action Scheduler batches with live progress and cancellation. Import costs from CSV or XLSX, export product cost data, and use operation history to inspect outcomes or review a rollback.
+**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Easily bulk edit WooCommerce COGS and product cost values, filter products, preview changes before applying them, and process large product catalogs using background Action Scheduler batches with live progress and cancellation.
 
-It works with the native WooCommerce COGS feature, so there is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+Looking for an efficient way to update product costs? Import product costs from CSV or Excel (XLSX), export product cost data to CSV, and use operation history to review previous updates or roll back recorded changes. Apply percentage or fixed-amount increases and decreases, set exact costs, or clear COGS values without changing product prices.
+
+It works with WooCommerce's native COGS feature, so there is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
@@ -28,7 +30,7 @@ https://youtu.be/sOEOg0xiqYs
 * **Preview before you apply.** See the current COGS, the calculated COGS, and the exact change for every product. Previewing never changes your store data.
 * **Built for large catalogs.** Updates run in Action Scheduler batches, with live progress and the option to cancel.
 * **Faster bulk updates.** The latest reported WP-CLI benchmark updated 10,000 products in 15 minutes 24 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
-* **Review and reverse recorded updates.** Find past operations in History, inspect recorded product costs and results, and review a rollback to retained original costs.
+* **Review and reverse recorded updates.** Find past operations in History, inspect recorded product cost and results, and review a rollback to retained original costs.
 * **Choose your rollback policy.** Restore original costs even after later edits, or skip products whose costs changed afterward. Set the history retention period to suit your store.
 * **Your prices stay untouched.** The plugin only changes the Cost of Goods Sold value.
 
@@ -49,13 +51,12 @@ https://youtu.be/sOEOg0xiqYs
 * Category options show product counts in parentheses. Parent and child categories are available, and selecting a parent category also includes its child categories.
 * Category filtering matches variations through their parent product's categories, including when only the Variation product type is selected.
 * Brand filtering appears only when a public brand taxonomy is registered for products.
-* Price filters use the current WooCommerce product price. Product cost and COGS filters use the supported WooCommerce COGS API.
+* Price filters use the current WooCommerce product price. Product cost filters use the WooCommerce COGS API to match products by their current Cost of Goods Sold.
 
 **Actions**
 
 * Set an exact COGS value.
-* Increase or decrease COGS by a percentage.
-* Increase or decrease COGS by a fixed amount.
+* Increase or decrease COGS by a percentage or fixed amount.
 * Clear COGS.
 * Compact Set, Adjust, and Clear controls show only the fields needed for the chosen action, with an illustrative before-and-after example and a warning when clearing costs.
 * Values use store decimal precision with half-up rounding, and decreases stop at zero.
@@ -214,7 +215,7 @@ Yes. Bulk COGS Editor is designed specifically for WooCommerce's native Cost of 
 = Which WooCommerce version do I need? =
 WooCommerce 10.3 or later, with the Cost of Goods Sold feature enabled in WooCommerce settings.
 
-= Can I increase all product costs by a percentage? =
+= Can I increase all product cost by a percentage? =
 Yes. Filter the products you want, choose "Increase by percentage", enter the value, and review the preview before applying. You can also decrease by a percentage, or increase or decrease by a fixed amount.
 
 = Can I preview changes before applying them? =
@@ -233,7 +234,7 @@ Expand Recent activity to see the latest completed operation, its updated count,
 
 Open History, select View details for the source operation, then choose Review rollback when retained original costs are available. Review the current and original values, check the confirmation, and choose Confirm rollback. Older summary-only or expired operations cannot be rolled back. Cancelling an operation keeps changes already saved; restoring them requires a separate rollback.
 
-= What if product costs changed after the original update? =
+= What if product cost changed after the original update? =
 
 Settings lets you choose whether new rollbacks overwrite current costs with the recorded original costs or skip products changed afterward. The chosen policy appears during review and remains fixed for that attempt. After a terminal incomplete rollback, review a new attempt for remaining products; products already restored are excluded even if edited again later.
 
