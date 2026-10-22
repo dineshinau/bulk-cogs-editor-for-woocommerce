@@ -8,17 +8,17 @@ Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Bulk update WooCommerce Cost of Goods Sold (COGS). Filter products, preview changes, and apply cost updates in safe background batches.
+Bulk edit WooCommerce COGS, import CSV or Excel files, export CSVs, preview safe background updates, and review or roll back changes.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
+**Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, import costs from CSV or Excel files, and export product cost data to CSV, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
 
 It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
-See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
+See how Bulk COGS Editor for WooCommerce helps you filter and preview products, apply bulk updates, import and export cost data, review operation history, and roll back recorded changes safely.
 
 https://youtu.be/sOEOg0xiqYs
 
