@@ -59,11 +59,16 @@ function dkbce_e2e_cleanup( $state ) {
 		$operation_ids[] = sanitize_text_field( $admin_latest_operation_id );
 	}
 
-	$store = new DKBCE_Operation_Store();
+	$store   = new DKBCE_Operation_Store();
+	$history = new DKBCE_History_Store();
 	foreach ( array_unique( $operation_ids ) as $operation_id ) {
 		$operation = $store->get( $operation_id );
 		if ( $operation && (int) $state['manager_id'] === (int) $operation['user_id'] ) {
 			$store->delete_chunks( $operation_id, $operation['snapshot_chunks'] );
+			$history_deleted = false;
+			while ( ! $history_deleted ) {
+				$history_deleted = $history->delete( $operation_id );
+			}
 			delete_option( 'dkbce_operation_' . sanitize_key( $operation_id ) );
 		}
 	}

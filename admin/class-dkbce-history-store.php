@@ -108,10 +108,10 @@ class DKBCE_History_Store {
 		DKBCE_Database_Installer::maybe_upgrade();
 		$indexed = $this->backfill();
 		$where   = '1=1';
-		$args    = array( $wpdb->prefix . 'dkbce_history' );
+		$args    = array( $wpdb->prefix . 'dkbce_history', $wpdb->options );
 		foreach ( array( 'status', 'action', 'user_id' ) as $key ) {
 			if ( '' !== ( $filters[ $key ] ?? '' ) ) {
-				$where .= " AND $key = %s";
+				$where .= " AND h.$key = %s";
 				$args[] = $filters[ $key ];
 			}
 		}
@@ -120,21 +120,22 @@ class DKBCE_History_Store {
 			'to'   => '<=',
 		) as $key => $comparison ) {
 			if ( ! empty( $filters[ $key ] ) ) {
-				$where .= " AND created_at $comparison %d";
+				$where .= " AND h.created_at $comparison %d";
 				$args[] = $filters[ $key ];
 			}
 		}
 		if ( ! empty( $filters['search'] ) ) {
-			$where .= ' AND (operation_id LIKE %s OR note LIKE %s OR operation_id IN (SELECT operation_id FROM %i WHERE product_id = %d))';
+			$where .= ' AND (h.operation_id LIKE %s OR h.note LIKE %s OR h.operation_id IN (SELECT operation_id FROM %i WHERE product_id = %d))';
 			$args[] = '%' . $wpdb->esc_like( $filters['search'] ) . '%';
 			$args[] = '%' . $wpdb->esc_like( $filters['search'] ) . '%';
 			$args[] = $wpdb->prefix . 'dkbce_history_products';
 			$args[] = absint( $filters['search'] );
 		}
-		// phpcs:ignore WordPress.DB.PreparedSQL -- SQL fragments contain only fixed clauses and placeholders; all values are prepared.
-		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE $where", $args ) );
+		// Exclude stale index rows whose durable operation state no longer exists.
+		// phpcs:ignore WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- SQL fragments contain only fixed clauses and placeholders; all values are prepared.
+		$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i h INNER JOIN %i o ON o.option_name = CONCAT('dkbce_operation_', h.operation_id) WHERE $where", $args ) );
 		// phpcs:ignore WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Same prepared filters, with bounded pagination.
-		$rows = $wpdb->get_col( $wpdb->prepare( "SELECT operation_id FROM %i WHERE $where ORDER BY created_at DESC, operation_id DESC LIMIT %d OFFSET %d", array_merge( $args, array( $size, ( $page - 1 ) * $size ) ) ) );
+		$rows = $wpdb->get_col( $wpdb->prepare( "SELECT h.operation_id FROM %i h INNER JOIN %i o ON o.option_name = CONCAT('dkbce_operation_', h.operation_id) WHERE $where ORDER BY h.created_at DESC, h.operation_id DESC LIMIT %d OFFSET %d", array_merge( $args, array( $size, ( $page - 1 ) * $size ) ) ) );
 		if ( null === $total || ! is_array( $rows ) ) {
 			throw new RuntimeException( esc_html__( 'Operation history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
