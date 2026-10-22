@@ -16,13 +16,15 @@ $border: #dce6f5;
 }
 .dkbce-history-metadata { display: grid; grid-template-columns: minmax(130px, 1fr) 3fr; margin: 16px 0 0; font-size: 13px; dt, dd { padding: 8px 12px; margin: 0; border-bottom: 1px solid #eef1f5; overflow-wrap: anywhere; } dt { background: #f6f7f7; font-weight: 600; } }
 .dkbce-history-warning { padding: 12px !important; margin: 12px 0 !important; }
-.dkbce-rollback-confirm { margin-top: 14px !important; background: #b32d2e !important; border-color: #b32d2e !important; }
+.dkbce-rollback-actions { display: flex; align-items: center; flex-wrap: nowrap; gap: 12px 16px; margin-top: 14px; > .button { flex: 0 0 auto; } }
+.dkbce-rollback-confirmation { display: inline-flex; flex: 1 1 auto; align-items: center; gap: 8px; min-width: 0; margin: 0; }
+.dkbce-rollback-confirm { margin: 0 !important; background: #b32d2e !important; border-color: #b32d2e !important; }
 .dkbce-settings-form { display: grid; justify-items: start; gap: 18px; max-width: 100%; .description { margin: 0; } }
 
 .dkbce-range-selection {
-	display: flex;
+	display: grid;
+	grid-template-columns: max-content auto 120px auto;
 	align-items: center;
-	flex-wrap: wrap;
 	gap: 8px;
 	input { width: 120px; }
 }
@@ -480,7 +482,8 @@ $border: #dce6f5;
 		position: absolute;
 		inset-inline-end: 0;
 		z-index: 40;
-		width: min(340px, 72vw);
+		box-sizing: border-box;
+		width: min(440px, calc(100vw - 32px));
 		padding: 16px;
 		border: 1px solid $border;
 		border-radius: 6px;
@@ -516,10 +519,20 @@ $border: #dce6f5;
 	.dkbce-progress-track, .dkbce-refresh-notice { display: none; }
 }
 @media (max-width: 600px) {
+	.dkbce-rollback-actions { flex-wrap: wrap; }
+	.dkbce-rollback-confirmation { flex-basis: 100%; }
 	#dkbce-selection-toolbar { gap: 8px 12px; }
 	#dkbce-selection-count { flex-basis: 100%; }
 	#dkbce-range-menu { margin-inline-start: 0; }
-	#dkbce-range-menu .dkbce-range-selection { inset-inline-start: 0; inset-inline-end: auto; }
+	#dkbce-range-menu .dkbce-range-selection {
+		inset-inline-start: 0;
+		inset-inline-end: auto;
+		grid-template-columns: minmax(0, 1fr) 120px;
+		width: min(320px, calc(100vw - 32px));
+		label { grid-column: 1 / -1; }
+		input { width: 100%; }
+		button { grid-column: 2; justify-self: start; }
+	}
 	.dkbce-apply-section, .dkbce-csv-workflow .dkbce-apply-section {
 		display: flex;
 		position: static;

@@ -362,7 +362,6 @@
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
 			details.appendChild( metadata );
 			const products = historySection( historyState.review ? historyText.review : historyText.changes, historyState.review ? 4 : 3 );
-			if ( historyState.review ) { products.appendChild( historyElement( 'p', data.rollback_policy === 'skip_changed' ? historyText.skipWarning : historyText.warning, 'notice notice-warning inline dkbce-history-warning' ) ); }
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
 			data.rows.forEach( ( item ) => {
 				const row = document.createElement( 'tr' );
@@ -373,12 +372,17 @@
 			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
 			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
 			if ( historyState.review ) {
-				products.appendChild( historyButton( historyText.backChanges, () => { historyState.review = false; loadHistoryDetails(); } ) );
+				products.appendChild( historyElement( 'p', data.rollback_policy === 'skip_changed' ? historyText.skipWarning : historyText.warning, 'notice notice-warning inline dkbce-history-warning' ) );
 				const checked = document.createElement( 'input' ); checked.type = 'checkbox';
 				const confirm = historyButton( historyText.confirm, () => startRollback( confirm ), true );
 				confirm.classList.add( 'dkbce-rollback-confirm' ); confirm.disabled = true;
 				checked.addEventListener( 'change', () => { confirm.disabled = ! checked.checked || ! data.can_rollback || isOperationRunning(); } );
-				products.append( historyField( data.rollback_policy === 'skip_changed' ? historyText.skipConfirm : historyText.confirmCheck, checked ), confirm );
+				const confirmation = historyElement( 'label', '', 'dkbce-rollback-confirmation' );
+				confirmation.append( checked, document.createTextNode( data.rollback_policy === 'skip_changed' ? historyText.skipConfirm : historyText.confirmCheck ) );
+				const rollbackActions = historyElement( 'div', '', 'dkbce-rollback-actions' );
+				const back = historyButton( historyText.backChanges, () => { historyState.review = false; loadHistoryDetails(); } );
+				rollbackActions.append( confirmation, confirm, back );
+				products.appendChild( rollbackActions );
 			} else if ( data.can_rollback ) {
 				products.appendChild( historyButton( historyText.review, () => { historyState.review = true; historyState.productPage = 1; loadHistoryDetails(); } ) );
 			} else {
