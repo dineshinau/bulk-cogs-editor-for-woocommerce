@@ -6,6 +6,8 @@
             "npm_install": "npm i --force",
             "start": "wp-scripts start",
             "build": "wp-scripts build",
+            "graph:update": "graphify update .",
+            "graph:query": "graphify query",
             "test:e2e": "playwright test --config=tests/e2e/playwright.config.cjs",
             "test:e2e:headed": "playwright test --config=tests/e2e/playwright.config.cjs --headed",
             "check-engines": "wp-scripts check-engines",
