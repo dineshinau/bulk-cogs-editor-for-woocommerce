@@ -1,12 +1,11 @@
 {
   "0": "php-quality.py",
-  "1": "DKBCE_CSV_Service",
+  "1": "blueprint.json",
   "2": "bulk-cogs-editor.spec.cjs",
   "3": "ref_bulk_cogs_editor_css",
   "4": "ref_node_process",
   "5": "src/index.php",
   "6": "DKBCE_Import_Store",
-  "7": "blueprint.json",
   "8": "DKBCE_Autoloader",
   "9": "ref_anthropic_ai_sdk",
   "10": "scripts",
