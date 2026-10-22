@@ -93,6 +93,11 @@ function dkbce_e2e_cleanup( $state ) {
 	} else {
 		delete_user_meta( $state['admin_id'], 'dkbce_latest_operation' );
 	}
+	if ( $state['admin_preferences_before'] ) {
+		update_user_meta( $state['admin_id'], 'dkbce_display_preferences', $state['admin_preferences_before'] );
+	} else {
+		delete_user_meta( $state['admin_id'], 'dkbce_display_preferences' );
+	}
 }
 
 $state_path = getenv( 'DKBCE_E2E_STATE_FILE' );
@@ -146,22 +151,23 @@ if ( ! $admin_user ) {
 }
 
 $state          = array(
-	'token'               => $token,
-	'manager_id'          => 0,
-	'admin_id'            => absint( $admin_user->ID ),
-	'admin_latest_before' => get_user_meta( $admin_user->ID, 'dkbce_latest_operation', true ),
-	'manager_login'       => 'dkbce_e2e_manager_' . $token,
-	'manager_password'    => wp_generate_password( 40, true, true ),
-	'customer_id'         => 0,
-	'customer_login'      => 'dkbce_e2e_customer_' . $token,
-	'customer_password'   => wp_generate_password( 40, true, true ),
-	'customer_nonce'      => '',
-	'category_id'         => 0,
-	'brand_id'            => 0,
-	'brand_taxonomy'      => '',
-	'product_ids'         => array(),
-	'products'            => array(),
-	'operation_id'        => wp_generate_uuid4(),
+	'token'                    => $token,
+	'manager_id'               => 0,
+	'admin_id'                 => absint( $admin_user->ID ),
+	'admin_latest_before'      => get_user_meta( $admin_user->ID, 'dkbce_latest_operation', true ),
+	'admin_preferences_before' => get_user_meta( $admin_user->ID, 'dkbce_display_preferences', true ),
+	'manager_login'            => 'dkbce_e2e_manager_' . $token,
+	'manager_password'         => wp_generate_password( 40, true, true ),
+	'customer_id'              => 0,
+	'customer_login'           => 'dkbce_e2e_customer_' . $token,
+	'customer_password'        => wp_generate_password( 40, true, true ),
+	'customer_nonce'           => '',
+	'category_id'              => 0,
+	'brand_id'                 => 0,
+	'brand_taxonomy'           => '',
+	'product_ids'              => array(),
+	'products'                 => array(),
+	'operation_id'             => wp_generate_uuid4(),
 );
 $setup_complete = false;
 register_shutdown_function(
@@ -416,6 +422,10 @@ $store->save(
 		'error_summary'    => '',
 	)
 );
+
+// Keep the admin browser isolated from any operation saved before this test run.
+delete_user_meta( $state['admin_id'], 'dkbce_latest_operation' );
+delete_user_meta( $state['admin_id'], 'dkbce_display_preferences' );
 
 $setup_complete = true;
 WP_CLI::line( wp_json_encode( $state ) );

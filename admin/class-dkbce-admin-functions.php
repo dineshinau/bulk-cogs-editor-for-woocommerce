@@ -243,8 +243,10 @@ class DKBCE_Admin_Functions {
 				'i18n'           => array(
 					'confirmTitle'        => __( 'Confirm COGS changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'confirmButton'       => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmTextOne'      => __( 'You are about to modify COGS for 1 product. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: number of products that will be changed. */
 					'confirmText'         => __( 'You are about to modify COGS for %d products. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmExportOne'    => __( 'The CSV will contain 1 selected product. Generating this file will not change product costs.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: number of products selected for export. */
 					'confirmExportText'   => __( 'The CSV will contain %d selected products. Generating this file will not change product costs.', 'bulk-cogs-editor-for-woocommerce' ),
 					'confirmExportTitle'  => __( 'Confirm CSV export', 'bulk-cogs-editor-for-woocommerce' ),

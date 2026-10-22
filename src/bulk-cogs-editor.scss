@@ -522,9 +522,10 @@ $border: #dce6f5;
 	#dkbce-range-menu .dkbce-range-selection { inset-inline-start: 0; inset-inline-end: auto; }
 	.dkbce-apply-section, .dkbce-csv-workflow .dkbce-apply-section {
 		display: flex;
+		position: static;
 		gap: 8px 16px;
 		padding: 12px;
-		bottom: env(safe-area-inset-bottom, 0px);
+		box-shadow: none;
 		.dkbce-section-heading { display: none; }
 		> p:last-child { margin-inline-start: auto; }
 	}

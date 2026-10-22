@@ -1803,7 +1803,10 @@
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
 		confirmButton.disabled = false;
 		confirmButton.textContent = exporting ? DKBCE.ui.createCSV : DKBCE.ui.updateCount.replace( '%d', count );
-		$( '#dkbce-confirm-text' ).textContent = ( exporting ? DKBCE.i18n.confirmExportText : DKBCE.i18n.confirmText ).replace( '%d', String( count ) );
+		const confirmText = exporting
+			? ( count === 1 ? DKBCE.i18n.confirmExportOne : DKBCE.i18n.confirmExportText )
+			: ( count === 1 ? DKBCE.i18n.confirmTextOne : DKBCE.i18n.confirmText );
+		$( '#dkbce-confirm-text' ).textContent = confirmText.replace( '%d', String( count ) );
 		const summary = $( '#dkbce-confirm-summary' );
 		summary.replaceChildren();
 		const reviewed = Array.from( state.reviewedIds ).filter( productSelected ).length;
