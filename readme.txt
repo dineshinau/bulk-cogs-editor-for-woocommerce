@@ -144,29 +144,25 @@ The WP-CLI command below processes both preview preparation and confirmed update
 
 = Run background updates with WP-CLI =
 
-If your host provides WP-CLI and permits longer CLI processes, you can use Action Scheduler's existing CLI runner to process the Bulk COGS Editor queue. It reuses the loaded WordPress process across actions and avoids the default HTTP runner's sleep between asynchronous requests. The editor continues to show progress and accept cancellation requests.
+Use Action Scheduler's CLI runner to process the plugin queue while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
 
 After uploading an import for preview or confirming an update in the editor, run this command from your WordPress directory:
 
 `wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
 
-To check Action Scheduler queue status, run:
+Check the queue with:
 
 `wp action-scheduler status --group=bulk-cogs-editor`
 
-This status report covers the site's full Action Scheduler queue. It does not filter by the Bulk COGS Editor group.
+The status report covers the site's full Action Scheduler queue. The runner handles due plugin actions for all users, exits when none remain, and does not wait for retries. `--batch-size` counts actions, not products.
 
-The command processes due actions for all Bulk COGS Editor operations on that site, not just the current user's update. It exits when no matching actions are due; it does not wait for future updates or delayed retries. The batch size here counts scheduled actions, not products. Product batches and the worker's cooperative time budget keep their existing limits.
-
-Action Scheduler allows one claimed batch by default. While the editor's background worker is processing an update, the CLI command can report `There are too many concurrent batches.` If the update is still progressing in the editor and you want the CLI runner to work alongside it, add `--force`:
+If another worker owns the available batch, wait for it to finish or run:
 
 `wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0 --force`
 
-The plugin locks each operation so two workers cannot advance the same operation at once. Forced runs can still add server load, and this command processes due Bulk COGS Editor actions for every user on the site. Use it only when concurrent processing is appropriate for your hosting capacity. Without `--force`, wait for the active Action Scheduler batch to finish and retry. Keep the normal queue runner available for delayed retries. A host-approved cron can invoke the command periodically, with a process lock to prevent overlapping CLI runs. Cron and PHP CLI resource limits depend on your hosting plan.
+Operation locks prevent simultaneous work on one operation, but `--force` increases server load. Keep the normal runner enabled for retries. A host-approved cron may invoke the command with a process lock.
 
-For a benchmark, prefix the command with `time` to include CLI startup and shutdown in its elapsed time. Also record the editor's full operation duration and final updated, skipped, and failed counts. Compare the same product mix, initial costs, filters, action, and hosting conditions. The CLI command can start after the operation has already begun, so its elapsed time alone is not the full operation duration.
-
-With plugin logging enabled, WooCommerce > Status > Logs, source `dkbce`, includes one `COGS worker timing` entry for each worker that acquired the operation lock. Each entry identifies the operation, runner, start and finish timestamps, and elapsed seconds. For a single operation, sum worker elapsed times to measure time inside the worker callbacks; subtract each previous finish timestamp from the next start timestamp to measure gaps between workers. Gaps include scheduling, request startup, and other work outside the callback. Callback time includes snapshot collection, product processing, and batch cache flushing, but excludes WordPress startup, deferred shutdown work, and the timing log write itself. Use the runner labels to identify runs where HTTP, WP-Cron, and CLI processing were mixed.
+For performance checks, prefix the command with `time`. WooCommerce > Status > Logs under source `dkbce` records worker timing and runner details.
 
 = Use cases =
 
