@@ -12,11 +12,11 @@ Fast WooCommerce COGS bulk editing with CSV/XLSX import, live progress, safe pre
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Easily bulk edit WooCommerce COGS and product cost values, filter products, preview changes before applying them, and process large product catalogs using background Action Scheduler batches with live progress and cancellation.
+**Bulk COGS Editor for WooCommerce** is the most powerful bulk editing tool for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly bulk edit WooCommerce COGS and product cost values, filter products by relevant criteria, preview proposed changes, and apply updates through background processing with live progress and cancellation.
 
-Looking for an efficient way to update product costs? Import product costs from CSV or Excel (XLSX), export product cost data to CSV, and use operation history to review previous updates or roll back recorded changes. Apply percentage or fixed-amount increases and decreases, set exact costs, or clear COGS values without changing product prices.
+Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back recorded changes. Best plugin to manage large product catalogs more efficiently without changing product prices.
 
-It works with WooCommerce's native COGS feature, so there is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
@@ -215,7 +215,7 @@ Yes. Bulk COGS Editor is designed specifically for WooCommerce's native Cost of 
 = Which WooCommerce version do I need? =
 WooCommerce 10.3 or later, with the Cost of Goods Sold feature enabled in WooCommerce settings.
 
-= Can I increase all product cost by a percentage? =
+= Can I increase all product costs by a percentage? =
 Yes. Filter the products you want, choose "Increase by percentage", enter the value, and review the preview before applying. You can also decrease by a percentage, or increase or decrease by a fixed amount.
 
 = Can I preview changes before applying them? =
