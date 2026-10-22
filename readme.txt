@@ -16,6 +16,8 @@ Bulk edit WooCommerce product costs (COGS) with CSV/XLSX import, previews, backg
 
 Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back eligible changes while original values are retained. Product prices are not changed.
 
+WooCommerce's standard product CSV importer and exporter also support COGS. This plugin adds a focused workflow for filtered cost updates, previews, background processing, XLSX imports, operation history, and eligible rollback.
+
 There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
@@ -43,83 +45,15 @@ https://youtu.be/sOEOg0xiqYs
 
 = Features =
 
-**Filtering**
+* Filter products and variations by title, SKU, category, brand, product type, stock status, current price, or current COGS.
+* Set a cost, increase or decrease it by a fixed amount or percentage, or clear it.
+* Preview current and proposed costs, select products, and confirm before applying changes.
+* Process updates in Action Scheduler background batches with progress and cancellation. Completed changes are kept if an operation is cancelled.
+* Import cost updates from CSV or XLSX using a product ID or SKU, and export matching costs to CSV.
+* Review operation outcomes and retained original values in History. Rollback depends on retention and product eligibility.
+* Update WooCommerce COGS only; product prices are not changed.
 
-* Filter by title or SKU, category, product type, stock status, brand, current price, and current COGS. Filters are combined to narrow the matching products.
-* Search within filter dropdowns, select multiple values, and see a selected-option count. Use "Select all" to select or clear every option; a partially selected checkbox indicates that only some options are selected.
-* Keep Search, Category, and Product type visible, with Brand, Stock status, Price, and COGS ranges under More filters. Remove individual filters with chips or use Clear filters. Collapse Product filters while keeping the filter summary and Find products available.
-* Category options show product counts in parentheses. Parent and child categories are available, and selecting a parent category also includes its child categories.
-* Category filtering matches variations through their parent product's categories, including when only the Variation product type is selected.
-* Brand filtering appears only when a public brand taxonomy is registered for products.
-* Price filters use the current WooCommerce product price. Product cost filters use the WooCommerce COGS API to match products by their current Cost of Goods Sold.
-
-**Actions**
-
-* Set an exact COGS value.
-* Increase or decrease COGS by a percentage or fixed amount.
-* Clear COGS.
-* Compact Set, Adjust, and Clear controls show only the fields needed for the chosen action, with an illustrative before-and-after example and a warning when clearing costs.
-* Values use store decimal precision with half-up rounding, and decreases stop at zero.
-
-**Preview and selection**
-
-* See the total number of matches with separate product and variation counts before previewing changes.
-* Identify increases in green and decreases in red, with directional arrows and exact change amounts.
-* Keep your current preview and selected products when visiting History or Settings and returning to the same editor.
-* Review matching products in a paginated table with product images, edit links, right-aligned current and calculated COGS, and the change. Sticky headers and fixed selection and product columns on mobile help you keep track while scrolling.
-* Show or hide optional columns and keep your display preferences. New users start with Selection, Product, Current COGS, New COGS, and Change; SKU appears beneath the product name when its separate column is hidden.
-* Choose 10, 20, 50, or 100 products per page. The default is 20. Use the footer pagination or Go to page to navigate directly.
-* Changing the action or its value refreshes the preview automatically. Previous rows stay visible while the preview refreshes or another page loads. Outdated results are marked, and selection and confirmation remain disabled until fresh results are ready.
-* Use Refresh preview beside the table when results need refreshing. Errors and recovery guidance appear near the relevant controls.
-* See the selected total across all pages. Select or clear the current page, all matching products, or the first or last number of matches. Individual selections support up to 500 products; all-matching and range selections support larger scopes.
-* Keep the selected count and action visible in a sticky summary. Review the operation, selection, and review coverage in the confirmation before applying.
-* Start a new selection to reset prior filter constraints; Clear filters only clears the current filter inputs.
-
-**CSV and XLSX workflow**
-
-* Use separate Import and Export guidance, preview headings, and confirmation labels.
-* Download a sample CSV beside the upload field, review expandable file requirements, and replace or remove the selected file before validation.
-* Review import validation errors before applying selected products. Completed CSV exports provide an explicit download link.
-* Expand Recent activity to inspect the latest completed operation, including the updated count, completion time, elapsed time, and any skipped or failed products.
-
-**History and rollback**
-
-* Open the third tab, History, to browse operations by status, operation type, user, date range, or a search for operation ID, note, or product ID.
-* Use numbered pagination, page-size choices, and Go to page in both the operation list and recorded product changes.
-* Inspect the operation action, user, filters, optional note, timestamps, duration, outcome counts, and recorded original and updated costs.
-* Review current costs against retained original costs before confirming a rollback. Rollback runs in background batches with progress, results, and cancellation.
-* Retry remaining products after a rollback finishes with skips or failures, or is cancelled. Products already restored are excluded from later attempts, preserving subsequent edits to them.
-* Follow active historical operations with automatic status refresh and stale-worker recovery. Older operations without retained original values remain summary-only and cannot be rolled back.
-
-**Settings**
-
-* Choose history retention of 30 days, 90 days, or a custom period from 1 to 36,500 days. The default is 30 days.
-* Choose whether new rollbacks overwrite current costs with original costs or skip products whose costs changed after the source operation. Overwrite is the default; each rollback keeps the behavior reviewed when it starts.
-* Retention applies to existing completed history too. Expired records are removed by scheduled cleanup; deleted original values cannot be recovered by extending retention afterward.
-
-**In-editor guidance and mobile layout**
-
-* Help and instructions change with the selected Bulk edit tab or CSV Import or Export task, so each workflow has its own steps. Documentation and video links remain available.
-* A simplified layout emphasizes filters, cost comparisons, and the next action, with larger touch controls on mobile and a sticky summary that accounts for device safe areas.
-
-**Safe background processing**
-
-* Updates are processed in Action Scheduler batches.
-* View the task name, progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started; preparation shows an indeterminate progress indicator while the total is unknown.
-* Cancel at any time. Updates that already completed are kept.
-* Product matching uses bounded ID batches to limit memory use.
-* Batch cache preparation, fewer repeated database reads, and grouped WooCommerce cache cleanup reduce processing overhead while all COGS writes use WooCommerce CRUD APIs.
-* Saved per-product outcomes and progress checkpoints allow interrupted operations to resume without blindly repeating completed updates.
-
-**Product types**
-
-* Uses WooCommerce CRUD APIs for simple, variable, grouped, external, and custom product types, and for variations.
-* Variations are treated as separate records, and variable parent products are not changed when only variations are selected.
-
-**Good to know**
-
-* Relative actions (percentage or fixed amount) skip products whose COGS is not set. Use "Set exact" to add costs to those products.
-* WooCommerce's product COGS API converts a value of zero to empty. Clearing uses the API's null value.
+Relative adjustments skip products without a COGS value. Use "Set exact" to add a cost to those products. WooCommerce treats a COGS value of zero as empty; clearing a cost uses the COGS API's null value.
 
 = Performance for large catalogs =
 
@@ -211,6 +145,9 @@ Go to Products > Bulk COGS Editor, filter the products you want to change, choos
 
 = Does this plugin work with WooCommerce's native Cost of Goods Sold feature? =
 Yes. Bulk COGS Editor is designed specifically for WooCommerce's native Cost of Goods Sold (COGS) feature. COGS must be supported by your installed WooCommerce version and enabled in WooCommerce settings. If it is disabled or unavailable, the editor explains what is required.
+
+= Does WooCommerce already support importing COGS? =
+Yes. WooCommerce's standard product CSV importer and exporter support COGS. This plugin adds filtered cost updates, previews, background processing, XLSX imports, operation history, and eligible rollback. It does not replace the full WooCommerce product importer.
 
 = Which WooCommerce version do I need? =
 WooCommerce 10.3 or later, with the Cost of Goods Sold feature enabled in WooCommerce settings.
