@@ -18,6 +18,15 @@ class DKBCE_Retention_Processor {
 	const CURSOR_OPTION = 'dkbce_retention_cursor';
 
 	/**
+	 * Get the configured retention duration, keeping invalid legacy values safe.
+	 *
+	 * @return int
+	 */
+	public static function retention_seconds() {
+		return min( 36500, max( 1, (int) get_option( 'dkbce_retention_days', 30 ) ) ) * DAY_IN_SECONDS;
+	}
+
+	/**
 	 * Register the recurring cleanup and its scheduling callback.
 	 */
 	public function __construct() {
@@ -51,7 +60,7 @@ class DKBCE_Retention_Processor {
 		$cursor         = absint( get_option( self::CURSOR_OPTION, 0 ) );
 		$like_operation = $wpdb->esc_like( 'dkbce_operation_' ) . '%';
 		$like_claim     = $wpdb->esc_like( 'dkbce_preview_claim_' ) . '%';
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Scan only this plugin's indexed option-name prefixes, using a durable option_id cursor and a fixed page size.
+		// Scan only this plugin's indexed option-name prefixes, using a durable option_id cursor and a fixed page size.
 		$option_names = $wpdb->get_results(
 			$wpdb->prepare(
 				' SELECT option_id, option_name FROM %i WHERE option_id > %d AND (option_name LIKE %s OR option_name LIKE %s) ORDER BY option_id ASC LIMIT %d',
@@ -99,34 +108,51 @@ class DKBCE_Retention_Processor {
 	 * @return void
 	 */
 	private function cleanup_operation_option( $option_name, $state ) {
-		if ( ! is_array( $state ) || empty( $state['operation_id'] ) || ! $this->is_expired_operation( $state, true ) ) {
+		if ( ! is_array( $state ) || empty( $state['operation_id'] ) ) {
 			return;
 		}
-
-		if ( ! empty( $state['cleanup_pending'] ) ) {
-			$this->enqueue_operation_cleanup( $state['operation_id'] );
+		$store     = new DKBCE_Operation_Store();
+		$processor = new DKBCE_Bulk_Processor( $store, new DKBCE_COGS_Service() );
+		$lock      = $processor->acquire_operation_lock( $state['operation_id'] );
+		if ( ! $lock ) {
 			return;
 		}
+		$operation_id = $state['operation_id'];
+		try {
+			$state = $store->get( $operation_id, true );
+			if ( ! is_array( $state ) || empty( $state['operation_id'] ) || ! $this->is_expired_operation( $state, true ) ) {
+				return;
+			}
 
-		if ( ! array_key_exists( 'cleanup_cursor', $state ) ) {
-			$state['cleanup_pending'] = true;
-			$state['cleanup_cursor']  = 1;
-			$store                    = new DKBCE_Operation_Store();
-			$store->save( $state );
-			$this->enqueue_operation_cleanup( $state['operation_id'] );
-			return;
-		}
+			if ( ! empty( $state['cleanup_pending'] ) ) {
+				$this->enqueue_operation_cleanup( $state['operation_id'] );
+				return;
+			}
 
-		$operation_id = sanitize_key( $state['operation_id'] );
-		$claim_token  = sanitize_text_field( $state['preview_claim_token'] ?? '' );
-		delete_option( $option_name );
-		delete_option( 'dkbce_search_' . $operation_id );
-		delete_option( 'dkbce_cancel_' . $operation_id );
-		if ( $claim_token ) {
-			delete_option( 'dkbce_preview_claim_' . $claim_token );
-		}
-		if ( ! empty( $state['user_id'] ) ) {
-			delete_user_meta( absint( $state['user_id'] ), 'dkbce_latest_operation', $operation_id );
+			if ( ! array_key_exists( 'cleanup_cursor', $state ) || empty( $state['history_cleanup_complete'] ) ) {
+				$state['cleanup_pending']         = true;
+				$state['cleanup_cursor']          = 1;
+				$state['history_cleanup_pending'] = true;
+				$store                            = new DKBCE_Operation_Store();
+				$store->save( $state );
+				$this->enqueue_operation_cleanup( $state['operation_id'] );
+				return;
+			}
+
+			$operation_id = sanitize_key( $state['operation_id'] );
+			delete_option( 'dkbce_rollback_' . $operation_id );
+			$claim_token = sanitize_text_field( $state['preview_claim_token'] ?? '' );
+			delete_option( $option_name );
+			delete_option( 'dkbce_search_' . $operation_id );
+			delete_option( 'dkbce_cancel_' . $operation_id );
+			if ( $claim_token ) {
+				delete_option( 'dkbce_preview_claim_' . $claim_token );
+			}
+			if ( ! empty( $state['user_id'] ) ) {
+				delete_user_meta( absint( $state['user_id'] ), 'dkbce_latest_operation', $operation_id );
+			}
+		} finally {
+			$processor->release_operation_lock( $operation_id, $lock );
 		}
 	}
 
@@ -138,7 +164,7 @@ class DKBCE_Retention_Processor {
 	 * @return void
 	 */
 	private function cleanup_claim_option( $option_name, $claim ) {
-		if ( ! is_array( $claim ) || empty( $claim['created_at'] ) || time() - absint( $claim['created_at'] ) < self::RETENTION ) {
+		if ( ! is_array( $claim ) || empty( $claim['created_at'] ) || time() - absint( $claim['created_at'] ) < self::retention_seconds() ) {
 			return;
 		}
 
@@ -159,7 +185,7 @@ class DKBCE_Retention_Processor {
 	 * @param bool  $include_cleanup_pending Include states that still need bounded cleanup.
 	 * @return bool
 	 */
-	private function is_expired_operation( $state, $include_cleanup_pending = false ) {
+	public function is_expired_operation( $state, $include_cleanup_pending = false ) {
 		$terminal_statuses = array( 'completed', 'completed_with_errors', 'failed', 'cancelled' );
 		if ( empty( $state['operation_id'] ) || ! in_array( $state['status'] ?? '', $terminal_statuses, true ) || ( ! $include_cleanup_pending && ! empty( $state['cleanup_pending'] ) ) ) {
 			return false;
@@ -169,7 +195,12 @@ class DKBCE_Retention_Processor {
 		}
 
 		$finished_at = absint( $state['completed_at'] ?? $state['created_at'] ?? 0 );
-		if ( ! $finished_at || time() - $finished_at < self::RETENTION ) {
+		if ( ! $finished_at || time() - $finished_at < self::retention_seconds() ) {
+			return false;
+		}
+		$rollback_id = get_option( 'dkbce_rollback_' . sanitize_key( $state['operation_id'] ), '' );
+		$rollback    = $rollback_id ? get_option( 'dkbce_operation_' . sanitize_key( $rollback_id ), false ) : false;
+		if ( is_array( $rollback ) && ! in_array( $rollback['status'], $terminal_statuses, true ) ) {
 			return false;
 		}
 

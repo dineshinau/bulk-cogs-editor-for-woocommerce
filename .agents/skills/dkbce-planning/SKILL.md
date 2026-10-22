@@ -32,5 +32,6 @@ For a substantial plan that needs more structure, read the [Superpowers planning
 - Load one process skill and only the domain guidance needed for the current step. Reuse prior findings with file references.
 - Existing authorization carries through execution. Ask only when missing information prevents a correct implementation.
 - Generic TDD, commits, worktrees, mandatory design approval, and agent dispatch are not automatic steps here. Follow `AGENTS.md` and the user's task scope.
+- When the user explicitly requests a commit, inspect and include changed tracked `languages/*.pot` files with the related product changes. Regenerate the POT first when translatable PHP strings changed.
 - Use `npm run php:quality -- <changed PHP files>` during PHP work. Tests require a user request.
 - Finish with `npm run graph:update`; report graph status and checks without claiming unmeasured speedups or unrun tests.

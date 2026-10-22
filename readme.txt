@@ -12,7 +12,7 @@ Bulk update WooCommerce Cost of Goods Sold (COGS). Filter products, preview chan
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches.
+**Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
 
 It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
@@ -20,14 +20,16 @@ It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there i
 
 See how Bulk COGS Editor for WooCommerce helps you filter products, preview COGS changes, and apply bulk updates safely.
 
-https://www.youtube.com/watch?v=R-kw_6g2JIg
+https://youtu.be/sOEOg0xiqYs
 
 = Why use Bulk COGS Editor? =
 
 * **Save time when supplier prices change.** Raise or lower costs for a whole category, brand, or group of products in one pass instead of editing products one by one.
 * **Preview before you apply.** See the current COGS, the calculated COGS, and the exact change for every product. Previewing never changes your store data.
 * **Built for large catalogs.** Updates run in Action Scheduler batches, with live progress and the option to cancel.
-* **Faster bulk updates.** A reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
+* **Faster bulk updates.** The latest reported WP-CLI benchmark updated 10,000 products in 15 minutes 24 seconds, compared with 50–60 minutes in the initial implementation. See the performance results below for context.
+* **Review and reverse recorded updates.** Find past operations in History, inspect recorded product costs and results, and review a rollback to retained original costs.
+* **Choose your rollback policy.** Restore original costs even after later edits, or skip products whose costs changed afterward. Set the history retention period to suit your store.
 * **Your prices stay untouched.** The plugin only changes the Cost of Goods Sold value.
 
 = How it works =
@@ -61,10 +63,13 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 **Preview and selection**
 
 * See the total number of matches with separate product and variation counts before previewing changes.
+* Identify increases in green and decreases in red, with directional arrows and exact change amounts.
+* Keep your current preview and selected products when visiting History or Settings and returning to the same editor.
 * Review matching products in a paginated table with product images, edit links, right-aligned current and calculated COGS, and the change. Sticky headers and fixed selection and product columns on mobile help you keep track while scrolling.
 * Show or hide optional columns and keep your display preferences. New users start with Selection, Product, Current COGS, New COGS, and Change; SKU appears beneath the product name when its separate column is hidden.
 * Choose 10, 20, 50, or 100 products per page. The default is 20. Use the footer pagination or Go to page to navigate directly.
-* Changing the action or its value refreshes the preview automatically.
+* Changing the action or its value refreshes the preview automatically. Previous rows stay visible while the preview refreshes or another page loads. Outdated results are marked, and selection and confirmation remain disabled until fresh results are ready.
+* Use Refresh preview beside the table when results need refreshing. Errors and recovery guidance appear near the relevant controls.
 * See the selected total across all pages. Select or clear the current page, all matching products, or the first or last number of matches. Individual selections support up to 500 products; all-matching and range selections support larger scopes.
 * Keep the selected count and action visible in a sticky summary. Review the operation, selection, and review coverage in the confirmation before applying.
 * Start a new selection to reset prior filter constraints; Clear filters only clears the current filter inputs.
@@ -74,12 +79,32 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 * Use separate Import and Export guidance, preview headings, and confirmation labels.
 * Download a sample CSV beside the upload field, review expandable file requirements, and replace or remove the selected file before validation.
 * Review import validation errors before applying selected products. Completed CSV exports provide an explicit download link.
-* Expand Recent activity to inspect the latest completed operation.
+* Expand Recent activity to inspect the latest completed operation, including the updated count, completion time, elapsed time, and any skipped or failed products.
+
+**History and rollback**
+
+* Open the third tab, History, to browse operations by status, operation type, user, date range, or a search for operation ID, note, or product ID.
+* Use numbered pagination, page-size choices, and Go to page in both the operation list and recorded product changes.
+* Inspect the operation action, user, filters, optional note, timestamps, duration, outcome counts, and recorded original and updated costs.
+* Review current costs against retained original costs before confirming a rollback. Rollback runs in background batches with progress, results, and cancellation.
+* Retry remaining products after a rollback finishes with skips or failures, or is cancelled. Products already restored are excluded from later attempts, preserving subsequent edits to them.
+* Follow active historical operations with automatic status refresh and stale-worker recovery. Older operations without retained original values remain summary-only and cannot be rolled back.
+
+**Settings**
+
+* Choose history retention of 30 days, 90 days, or a custom period from 1 to 36,500 days. The default is 30 days.
+* Choose whether new rollbacks overwrite current costs with original costs or skip products whose costs changed after the source operation. Overwrite is the default; each rollback keeps the behavior reviewed when it starts.
+* Retention applies to existing completed history too. Expired records are removed by scheduled cleanup; deleted original values cannot be recovered by extending retention afterward.
+
+**In-editor guidance and mobile layout**
+
+* Help and instructions change with the selected Bulk edit tab or CSV Import or Export task, so each workflow has its own steps. Documentation and video links remain available.
+* A simplified layout emphasizes filters, cost comparisons, and the next action, with larger touch controls on mobile and a sticky summary that accounts for device safe areas.
 
 **Safe background processing**
 
 * Updates are processed in Action Scheduler batches.
-* View progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started.
+* View the task name, progress, elapsed time, estimated remaining time, and success, skipped, and failed counts. The estimate appears once processing has started; preparation shows an indeterminate progress indicator while the total is unknown.
 * Cancel at any time. Updates that already completed are kept.
 * Product matching uses bounded ID batches to limit memory use.
 * Batch cache preparation, fewer repeated database reads, and grouped WooCommerce cache cleanup reduce processing overhead while all COGS writes use WooCommerce CRUD APIs.
@@ -99,9 +124,9 @@ https://www.youtube.com/watch?v=R-kw_6g2JIg
 
 Bulk processing has been improved by reducing repeated product scans and counts, preparing product and variation-parent caches in batches, and grouping WooCommerce product cache cleanup. Progress counters are checkpointed while each product's outcome is saved for recovery. COGS updates continue to use WooCommerce's CRUD/data layer, preserving its hooks and cache handling.
 
-In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes. The latest reported run updated **10,000 products in 21 minutes 34 seconds, with zero skipped and zero failed** — about 57–64% less time than the initial implementation.
+In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes. The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
 
-The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
+The supplied completion screenshot records an editor operation elapsed time of **00:15:24**, not a separately measured end-to-end CLI runtime. The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
 = Import CSV and XLSX files =
 
@@ -113,7 +138,7 @@ XLSX imports read the first worksheet's raw cell values. Replace formulas with v
 
 Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to resume its progress display. Once ready, review paged products, download validation errors, select products and explicitly apply the changes. Preparation can be cancelled independently of an applied update. Original uploads are deleted when preparation ends; staged previews and reports expire through scheduled cleanup after approximately 24 hours, with retention extended while an applied update is active.
 
-Completed bulk operation history and linked one-use preview claims are retained for at least 30 days, then removed by a bounded daily cleanup. Active operations and staged imports that still support a report are retained until their work and report dependencies are finished. Preview claims without a linked operation are also kept for at least 30 days to protect against replay and concurrent Apply requests.
+Completed bulk operation history, original cost records, and one-use preview claims use the retention period in Settings: 30 days by default, 90 days, or custom days. A bounded daily cleanup removes expired records and rechecks retention before deleting history. Active operations and staged imports that still support a report are retained until their work and report dependencies are finished. Preview claims protect against replay and concurrent Apply requests until their retention and dependency checks permit removal.
 
 The WP-CLI command below processes both preview preparation and confirmed updates. Preview workers must run on the upload server as the same operating-system user as PHP, because original uploads are stored in private temporary files. If your shell uses a different user, ask your host to run the command as the PHP user; ordinary product updates do not need the uploaded file. During preparation, worker logs report the stage, checked row count and batch size. The total and remaining row counts are unknown until reading finishes.
 
@@ -199,6 +224,27 @@ Yes. Filter the products you want, choose "Increase by percentage", enter the va
 = Can I preview changes before applying them? =
 Yes. You can preview all proposed cost changes in a paginated table showing product images, current COGS, calculated COGS, and the exact difference before confirming any update. Previewing never modifies your store data.
 
+= Do I need to read the documentation or watch the video before using the editor? =
+The editor includes Help and instructions for Bulk edit, CSV Import, and CSV Export. The steps change with your selected task. Field guidance, cost examples, previews, and a confirmation summary help you review changes before applying them. Documentation and video links are available for more detail.
+
+= Why are previous preview rows still visible but unavailable for selection? =
+The editor keeps previous rows visible while results refresh or another page loads. When results are outdated, selection and confirmation are disabled. Wait for the refresh to finish, or use Refresh preview beside the table when prompted. Review the fresh results before confirming.
+
+= Where can I see the result of my last update? =
+Expand Recent activity to see the latest completed operation, its updated count, completion time, and elapsed time. Skipped or failed products and cancellation or failure outcomes are highlighted. Cancelling an operation keeps changes that were already saved.
+
+= Can I roll back a completed update? =
+
+Open History, select View details for the source operation, then choose Review rollback when retained original costs are available. Review the current and original values, check the confirmation, and choose Confirm rollback. Older summary-only or expired operations cannot be rolled back. Cancelling an operation keeps changes already saved; restoring them requires a separate rollback.
+
+= What if product costs changed after the original update? =
+
+Settings lets you choose whether new rollbacks overwrite current costs with the recorded original costs or skip products changed afterward. The chosen policy appears during review and remains fixed for that attempt. After a terminal incomplete rollback, review a new attempt for remaining products; products already restored are excluded even if edited again later.
+
+= How long is operation history retained? =
+
+Choose 30 days, 90 days, or custom days in Settings. The default is 30 days; custom values support 1 to 36,500 days. Shortening retention also applies to existing history. Scheduled cleanup removes expired records, so extending retention cannot recover original values already deleted.
+
 = How does the plugin handle variable products and variations? =
 Variations are treated as individual product records. You can filter and update COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated.
 
@@ -234,22 +280,25 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Screenshots ==
 
-1. **The Bulk COGS Editor screen:** Select products, choose a COGS update action, review changes, and apply the update in four steps.
-2. **Filter products:** Select multiple categories and filter by name, SKU or product identifier, brand, product type, stock status, price, and current COGS. See matching product and variation counts before previewing changes.
-3. **Preview COGS changes:** Review a 5% increase in the paginated table, with product images, IDs, SKUs, types, current COGS, new COGS, and the amount and percentage of each change.
-4. **Choose which products to update:** Review the product selections, then enable "Only apply to products checked in the preview table" to limit the update to checked products.
-5. **Confirm COGS changes:** Check the number of products to be modified before choosing Apply changes or Cancel.
-6. **Collect matching products:** The update prepares the matching products and displays progress, outcome counts, elapsed time, and a Cancel operation button.
-7. **Track live progress:** See the processed product count, percentage complete, updated, skipped, and failed counts, elapsed time, and estimated time remaining. Updates continue in the background when you close the browser.
-8. **Manage preview columns:** Show or hide columns such as ID, SKU, product type, current COGS, new COGS, and change to customize the preview table.
-9. **Update completed:** View 100% progress, final updated, skipped, and failed counts, and elapsed time, with a Refresh now link to reload the page.
-10. **Request cancellation:** The progress panel shows "Cancellation requested..." while the running update responds to the request.
-11. **Update cancelled:** Review the final processed and outcome counts. Already processed products remain changed; cancellation does not roll back completed updates.
+1. **Bulk editor:** Product filters, cost actions, a preview, and explicit confirmation in the Bulk edit tab.
+2. **Product preview:** Current and proposed COGS, green increases and red decreases, cross-page selection, optional columns, and numbered pagination.
+3. **CSV export:** Output column choices and product filters for spreadsheet workflows.
+4. **CSV and Excel import:** Template download, file requirements, and CSV or XLSX upload controls.
+5. **Operation history:** Filterable operation records with statuses, outcomes, notes, and numbered page navigation.
+6. **Operation details:** Existing summary-only history with operation metadata, results, and the notice explaining that original values are unavailable.
+7. **Settings:** History retention presets and custom days, plus overwrite or skip-changed rollback behavior.
 
 == Changelog ==
 
-= 1.1.2 (2026-10-20) =
+= 1.1.2 (2026-10-25) =
 
+* Fixed: Restore green increases and red decreases in the review table's Change column.
+* Fixed: Load History reliably and preserve bulk and CSV previews and selected products when visiting History or Settings.
+* Fixed: Reconcile costs saved before an after-save exception so successfully changed products remain recorded and eligible for rollback.
+* Fixed: Allow reviewed retries after cancelled, failed, or skipped rollbacks, processing only remaining products and preserving later edits to products already restored.
+* Fixed: Repair interrupted rollback startup claims, verify operation persistence before scheduling, and prevent concurrent starts with ownership locks.
+* Fixed: Recheck configured retention before deleting queued history and prevent partially deleted records from being offered as complete rollbacks.
+* Fixed: Refresh active historical operation details and requeue stalled workers through the existing recovery path.
 * Fixed: Report import preview errors instead of leaving preparation failures unclear.
 * Fixed: Copy uploads into private import storage so background preparation can reopen them after the upload request ends.
 * Improved: Count matching products and variations through paginated database totals without loading every matching product ID into PHP.
@@ -266,13 +315,25 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Replace action cards with compact Set, Adjust, and Clear controls, contextual fields, cost examples, and a visible Find products prerequisite.
 * Improved: Add searchable filter menus, selected-option counts, removable filter chips, Clear filters, and collapsible primary and advanced filters.
 * Improved: Prioritize product and cost comparisons, retain optional columns and saved preferences, keep table headers and mobile product identity visible while scrolling, and group page size and direct page navigation in the footer.
+* Improved: Change Help and instructions to match the selected Bulk edit, CSV Import, or CSV Export task.
+* Improved: Keep previous preview rows visible during refresh and pagination, mark outdated results, and prevent selection or confirmation until fresh results are ready.
+* Improved: Place preview refresh controls, validation errors, and recovery guidance beside the relevant workflow controls.
+* Improved: Identify the active update task, avoid misleading percentages while preparation totals are unknown, clarify that cancellation keeps saved changes, and retain keyboard focus on progress controls when redrawn.
+* Improved: Summarize recent activity with updated counts, completion and elapsed times, and prominent skipped, failed, or incomplete outcomes.
+* Improved: Simplify editor styling and improve mobile touch targets, stacked controls, scrollable help, and safe-area spacing for the sticky summary.
+* Improved: Reuse review tables and progress/result rendering across bulk updates and history; use consistent numbered pagination, page-size controls, Go to page, and inline Show entries controls.
+* Improved: Collect remaining rollback product IDs through bounded cursor reads without repeating a full history-product count per batch.
+* Improved: The latest reported WP-CLI benchmark updated 10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed, compared with 50–60 minutes initially. This single run records editor operation elapsed time; results vary by store and require repeat benchmarking.
 * Updated: Refresh the translation template, import and worker documentation, QA and performance review reports, and development code graph.
+* Updated: Document History, rollback policies, retention settings, and recovery behavior, with refreshed screenshots from the wpdev development store.
 * Added: Export matching products to CSV with a blank `new_cogs` column for preparing cost updates.
 * Added: Import UTF-8 CSV and XLSX files, validate product IDs or SKUs and new COGS values with up to six decimal places, then preview changes before explicitly applying them. Continue accepting the legacy `cogs` header when `new_cogs` is absent.
 * Added: Prepare import previews in background batches, with validation progress, paginated results, product selection, downloadable validation and update reports, and independent cancellation of preparation.
 * Added: Store import rows in an indexed staging table, delete original uploads when preparation ends, and schedule staged preview and report cleanup after approximately 24 hours, extending retention while an applied update is active.
 * Added: Generate CSV exports and import reports asynchronously on the server, with progress, cancellation, private download files, interruption checkpoints, and scheduled download cleanup after two days.
-* Added: Remove finished bulk operation history and linked preview claims through bounded daily cleanup after at least 30 days, preserving active operations, import report dependencies, and preview replay protection.
+* Added: Browse and filter operation history in a third History tab, with operation details, recorded product changes, optional notes, and background rollback review, confirmation, progress, cancellation, and results.
+* Added: Configure 30-day, 90-day, or custom history retention and overwrite or skip-changed rollback behavior in a fourth Settings tab.
+* Added: Remove expired operation history, original cost records, and preview claims through bounded daily cleanup using the configured retention period, preserving active operations, import report dependencies, and preview replay protection.
 * Added: Upgrade import and outcome database tables using `DKBCE_DB_VERSION`, version comparison, and WordPress `dbDelta()` when the stored schema version is older.
 * Added: Load plugin classes on demand through a `DKBCE_` prefix autoloader.
 * Added: Provide a development WP-CLI profiler for generated range-query SQL, EXPLAIN plans, installed indexes, repeated timings, and ordered-ID comparisons. Document local findings without changing runtime range predicates, indexes, or pagination.
@@ -288,7 +349,7 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 * Improved: Explain how to refresh an expired preview and scroll to the notice so the instructions are visible.
 * Improved: Collect matching products using a product ID cursor, cache search matches per operation, and recover saved snapshot chunks after interruptions.
 * Improved: Group WooCommerce product transient invalidations within each update batch to reduce repeated cache cleanup.
-* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. The latest reported benchmark updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
+* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. A reported benchmark for this version updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
 * Added: Select the first or last number of products across all matching results, or choose all results.
 * Added: Clear a finished operation when using the Refresh now link.
 

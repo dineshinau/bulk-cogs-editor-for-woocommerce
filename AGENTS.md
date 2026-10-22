@@ -26,6 +26,7 @@ PHPCS currently checks PHP 7.4+ and WordPress 6.5; use the stricter applicable c
 - Keep changes focused. Do not edit dependencies or generated assets by hand. Refreshing `graphify-out/` under the lifecycle below is explicitly authorized.
 - Do not add or run tests unless requested. PHP formatting, syntax checks, PHPCS, and graph validation are normal completion checks.
 - Do not commit, push, change global agent configuration, or start a bulk product update merely to complete a development workflow.
+- When a commit is explicitly requested, inspect and include all changed tracked `languages/*.pot` files in the related product commit. Regenerate the POT before committing when translatable PHP strings changed.
 - Update version declarations and release notes together only when preparing a release.
 
 ## Changelog order

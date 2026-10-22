@@ -33,7 +33,7 @@ class DKBCE_Import_Store {
 	public function put( $job, $row, $type = 0 ) {
 		global $wpdb;
 		$table = $wpdb->prefix . 'dkbce_import_rows';
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Durable staging has no shared cache.
+		// Durable staging has no shared cache.
 		$written = $wpdb->replace(
 			$table,
 			array(
@@ -54,11 +54,11 @@ class DKBCE_Import_Store {
 			throw new RuntimeException( esc_html__( 'An import row could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 		if ( 0 === $type && ! empty( $row['id'] ) ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Indexed duplicate check across all batches, including retries.
+			// Indexed duplicate check across all batches, including retries.
 			$duplicate = $wpdb->get_var( $wpdb->prepare( 'SELECT row_no FROM %i WHERE job_id = %s AND row_type = 0 AND product_id = %d AND row_no <> %d LIMIT 1', $table, $job, $row['id'], $row['line'] ) );
 			$this->check_error();
 			if ( null !== $duplicate ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Invalidate every occurrence, not just the latest duplicate.
+				// Invalidate every occurrence, not just the latest duplicate.
 				$updated = $wpdb->update(
 					$table,
 					array(
@@ -91,7 +91,7 @@ class DKBCE_Import_Store {
 	public function value( $job, $id, $type = 0 ) {
 		global $wpdb;
 		$field = 1 === $type ? 'row_no' : 'product_id';
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Indexed staged data; null distinguishes a missing cell from an empty string.
+		// Indexed staged data; null distinguishes a missing cell from an empty string.
 		$value = $wpdb->get_var( $wpdb->prepare( "SELECT value FROM %i WHERE job_id = %s AND row_type = %d AND %i = %d AND error = '' AND selected = 1 LIMIT 1", $wpdb->prefix . 'dkbce_import_rows', $job, $type, $field, $id ) );
 		$this->check_error();
 		return $value;
@@ -116,7 +116,7 @@ class DKBCE_Import_Store {
 			"SELECT product_id, value FROM %i WHERE job_id = %s AND row_type = 0 AND error = '' AND selected = 1 AND product_id IN ($placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The placeholder list is generated from the bounded, absolute product IDs below.
 			array_merge( array( $wpdb->prefix . 'dkbce_import_rows', $job ), $product_ids )
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list above is prepared with absolute IDs and the table identifier.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The dynamic placeholder list above is prepared with absolute IDs and the table identifier.
 		$rows = $wpdb->get_results( $query, ARRAY_A );
 		$this->check_error();
 		$values = array();
@@ -140,18 +140,18 @@ class DKBCE_Import_Store {
 		global $wpdb;
 		$table = $wpdb->prefix . 'dkbce_import_rows';
 		if ( $errors ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded error report page.
+			// Bounded error report page.
 			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND error <> '' AND row_no > %d ORDER BY row_no LIMIT %d", $table, $job, max( 0, $after ), $limit ), ARRAY_A );
 			$this->check_error();
 			return $rows;
 		}
 		if ( $after >= 0 ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Cursor snapshot over a frozen validated selection.
+			// Cursor snapshot over a frozen validated selection.
 			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND error = '' AND selected = 1 AND product_id > %d ORDER BY product_id LIMIT %d", $table, $job, $after, $limit ), ARRAY_A );
 			$this->check_error();
 			return $rows;
 		}
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Paged preview never loads the whole import.
+		// Paged preview never loads the whole import.
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND error = '' AND selected = 1 ORDER BY row_no LIMIT %d OFFSET %d", $table, $job, $limit, $offset ), ARRAY_A );
 		$this->check_error();
 		return $rows;
@@ -165,7 +165,7 @@ class DKBCE_Import_Store {
 	 */
 	public function counts( $job ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Aggregate only, without loading row data.
+		// Aggregate only, without loading row data.
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT COUNT(*) AS total, COALESCE(SUM(error = '' AND selected = 1), 0) AS valid, COALESCE(SUM(error <> ''), 0) AS invalid FROM %i WHERE job_id = %s AND row_type = 0", $wpdb->prefix . 'dkbce_import_rows', $job ), ARRAY_A );
 		$this->check_error();
 		return array_map( 'intval', $row );
@@ -187,7 +187,7 @@ class DKBCE_Import_Store {
 			}
 		}
 		foreach ( $ids as $id ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- A claimed preview has one frozen selection.
+			// A claimed preview has one frozen selection.
 			if ( false === $wpdb->update(
 				$wpdb->prefix . 'dkbce_import_rows',
 				array( 'selected' => 0 ),
@@ -223,7 +223,7 @@ class DKBCE_Import_Store {
 			"UPDATE %i SET selected = (product_id IN ($placeholders)) WHERE job_id = %s AND row_type = 0 AND error = ''", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only the generated placeholder list is interpolated.
 			array_merge( array( $wpdb->prefix . 'dkbce_import_rows' ), $ids, array( $job ) )
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- Prepared selection update for an owned, claimed import.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared selection update for an owned, claimed import.
 		$wpdb->query( $query );
 		$this->check_error();
 	}
@@ -241,7 +241,7 @@ class DKBCE_Import_Store {
 		if ( $operation_id ) {
 			$operations = new DKBCE_Operation_Store();
 			$operations->ensure_outcomes_table();
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded report cursor joins the authoritative durable outcome.
+			// Bounded report cursor joins the authoritative durable outcome.
 			$rows = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT staged.*, COALESCE(NULLIF(outcomes.status, ''), staged.result_status) AS result_status, COALESCE(outcomes.message, staged.result_message) AS result_message FROM %i AS staged LEFT JOIN %i AS outcomes ON outcomes.operation_id = %s AND outcomes.product_id = staged.product_id WHERE staged.job_id = %s AND staged.row_type = 0 AND staged.selected = 1 AND staged.error = '' AND COALESCE(NULLIF(outcomes.status, ''), staged.result_status) <> 'success' AND staged.row_no > %d ORDER BY staged.row_no LIMIT 100",
@@ -254,7 +254,7 @@ class DKBCE_Import_Store {
 				ARRAY_A
 			);
 		} else {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Bounded compatibility query for reports created before outcome storage was upgraded.
+			// Bounded compatibility query for reports created before outcome storage was upgraded.
 			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE job_id = %s AND row_type = 0 AND selected = 1 AND error = '' AND result_status <> 'success' AND row_no > %d ORDER BY row_no LIMIT 100", $wpdb->prefix . 'dkbce_import_rows', $job, $after ), ARRAY_A );
 		}
 		$this->check_error();
@@ -269,7 +269,7 @@ class DKBCE_Import_Store {
 	 */
 	public function delete_batch( $job ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Private expired import data only.
+		// Private expired import data only.
 		$deleted = $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE job_id = %s LIMIT 1000', $wpdb->prefix . 'dkbce_import_rows', $job ) );
 		$this->check_error();
 		return (int) $deleted;
