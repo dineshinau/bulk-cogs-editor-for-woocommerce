@@ -17,7 +17,7 @@ $border: #dce6f5;
 .dkbce-history-metadata { display: grid; grid-template-columns: minmax(130px, 1fr) 3fr; margin: 16px 0 0; font-size: 13px; dt, dd { padding: 8px 12px; margin: 0; border-bottom: 1px solid #eef1f5; overflow-wrap: anywhere; } dt { background: #f6f7f7; font-weight: 600; } }
 .dkbce-history-warning { padding: 12px !important; margin: 12px 0 !important; }
 .dkbce-rollback-confirm { margin-top: 14px !important; background: #b32d2e !important; border-color: #b32d2e !important; }
-.dkbce-settings-form { display: grid; justify-items: start; gap: 18px; max-width: 650px; .description { margin: 0; } }
+.dkbce-settings-form { display: grid; justify-items: start; gap: 18px; max-width: 100%; .description { margin: 0; } }
 
 .dkbce-range-selection {
 	display: flex;
@@ -508,7 +508,7 @@ $border: #dce6f5;
 }
 #dkbce-confirm-warning { color: $muted; }
 .dkbce-dialog-panel { max-height: 85vh; overflow-y: auto; }
-.dkbce-file-requirements { margin-block: 12px; p { max-width: 80ch; } }
+.dkbce-file-requirements { margin-block: 12px; p { max-width: 100%; } }
 #dkbce-file-details { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 12px; }
 .dkbce-operation.is-history {
 	box-shadow: none;
