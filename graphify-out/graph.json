@@ -725,7 +725,7 @@
       "file_type": "code",
       "norm_label": ".get_instance()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1933"
+      "source_location": "L1934"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
@@ -12116,7 +12116,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1933",
+      "source_location": "L1934",
       "weight": 1.0
     },
     {
@@ -14085,7 +14085,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1935",
+      "source_location": "L1936",
       "weight": 1.0
     },
     {
@@ -14097,7 +14097,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1936",
+      "source_location": "L1937",
       "weight": 1.0
     },
     {
@@ -14109,7 +14109,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1937",
+      "source_location": "L1938",
       "weight": 1.0
     },
     {
@@ -14966,5 +14966,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ce76c6f6ac2c6248236e65530be8aa0525bc4639"
+  "built_at_commit": "41a97be26da6254547dd5ca07572a6816b86a8fe"
 }
