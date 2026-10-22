@@ -393,7 +393,7 @@ class DKBCE_Admin_Functions {
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
 				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
-				<details class="dkbce-help"><summary><?php esc_html_e( 'Help & instructions', 'bulk-cogs-editor-for-woocommerce' ); ?></summary><div class="dkbce-popover">
+				<details class="dkbce-help"><summary><?php esc_html_e( 'Help', 'bulk-cogs-editor-for-woocommerce' ); ?> (<span data-dkbce-help-title><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></span>)</summary><div class="dkbce-popover">
 					<div data-dkbce-help="bulk">
 						<strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
 						<ol>
@@ -419,6 +419,24 @@ class DKBCE_Admin_Functions {
 							<li><?php esc_html_e( 'Choose a CSV or XLSX file, then click Validate file. Use decimal points without currency symbols. Blank costs are skipped; zero clears the stored cost. Open File requirements for more details.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
 							<li><?php esc_html_e( 'Wait for validation, then review the current and new costs and any reported issues. Use the preview checkboxes to choose which products to update.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
 							<li><?php esc_html_e( 'Use the Review button to check the selected count and import details, then confirm the update. Validation alone does not save costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+						</ol>
+					</div>
+					<div data-dkbce-help="history" hidden>
+						<strong><?php esc_html_e( 'Review history and roll back costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
+						<ol>
+							<li><?php esc_html_e( 'Use status, operation type, user, date, or search filters to find an operation, then click Filter. Search accepts an operation ID, note, or product ID.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Click View details to inspect the operation summary, filters, timing, and recorded product cost changes.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'For an eligible operation, click Review rollback and compare Current COGS (now) with Rollback to (original). The rollback policy in Settings determines whether later cost changes are overwritten or skipped.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Read the warning, select the confirmation checkbox, and click Confirm rollback. Follow the background progress in History; the completed rollback is recorded as a separate operation.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+						</ol>
+					</div>
+					<div data-dkbce-help="settings" hidden>
+						<strong><?php esc_html_e( 'Configure history and rollback settings in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
+						<ol>
+							<li><?php esc_html_e( 'Choose how long to retain completed operation history and original product costs. Select 30 days, 90 days, or Custom days.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Remember that expired history is deleted automatically and cannot be rolled back. Reducing retention also affects existing history.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Choose whether new rollbacks overwrite current costs with recorded original costs or skip products whose costs changed after the original operation.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
+							<li><?php esc_html_e( 'Click Save settings. The selected rollback behavior appears during review and remains fixed after a rollback starts.', 'bulk-cogs-editor-for-woocommerce' ); ?></li>
 						</ol>
 					</div>
 					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>

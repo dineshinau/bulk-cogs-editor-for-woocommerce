@@ -472,10 +472,14 @@
 		setNotice( '', 'info' );
 		$( '#dkbce-range-menu' ).open = false;
 		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
-		const helpMode = active ? ( importing ? 'import' : 'export' ) : 'bulk';
+		const helpMode = [ 'history', 'settings' ].includes( state.mode ) ? state.mode : active ? ( importing ? 'import' : 'export' ) : 'bulk';
 		document.querySelectorAll( '[data-dkbce-help]' ).forEach( ( section ) => {
 			section.hidden = section.dataset.dkbceHelp !== helpMode;
 		} );
+		const modeButton = [ ...document.querySelectorAll( '[data-dkbce-mode]' ) ].find( ( button ) => button.dataset.dkbceMode === state.mode );
+		if ( modeButton ) {
+			$( '[data-dkbce-help-title]' ).textContent = modeButton.textContent.trim();
+		}
 		$( '#dkbce-csv' ).hidden = ! active;
 		actionSection.hidden = active;
 		$( '.dkbce-filters-section' ).hidden = importing;
