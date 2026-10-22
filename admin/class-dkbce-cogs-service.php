@@ -20,6 +20,13 @@ class DKBCE_COGS_Service {
 	const MAX_AMOUNT            = '999999999999';
 
 	/**
+	 * Search results reused during the current request.
+	 *
+	 * @var array
+	 */
+	private $search_cache = array();
+
+	/**
 	 * Whether WooCommerce COGS is available and enabled.
 	 *
 	 * @return bool
@@ -146,11 +153,12 @@ class DKBCE_COGS_Service {
 	/**
 	 * Validate an operation type and value.
 	 *
-	 * @param mixed $action Raw action key.
-	 * @param mixed $raw_value Raw amount.
+	 * @param mixed    $action Raw action key.
+	 * @param mixed    $raw_value Raw amount.
+	 * @param int|null $precision Optional decimal precision override.
 	 * @return array|WP_Error
 	 */
-	public function validate_action( $action, $raw_value ) {
+	public function validate_action( $action, $raw_value, $precision = null ) {
 		$action  = is_string( $action ) ? sanitize_key( wp_unslash( $action ) ) : '';
 		$actions = array( 'set', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'clear' );
 		if ( ! in_array( $action, $actions, true ) ) {
@@ -164,7 +172,7 @@ class DKBCE_COGS_Service {
 			);
 		}
 
-		$value = $this->validate_optional_amount( $raw_value );
+		$value = $this->validate_optional_amount( $raw_value, $precision );
 		if ( is_wp_error( $value ) || '' === $value ) {
 			return new WP_Error( 'invalid_amount', __( 'Enter a valid non-negative number.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
@@ -180,12 +188,13 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Parse a non-negative decimal string using store precision.
+	 * Parse a non-negative decimal string using store precision by default.
 	 *
-	 * @param mixed $raw Raw value.
+	 * @param mixed    $raw Raw value.
+	 * @param int|null $precision Optional decimal precision override.
 	 * @return string|WP_Error
 	 */
-	private function validate_optional_amount( $raw ) {
+	private function validate_optional_amount( $raw, $precision = null ) {
 		if ( '' === $raw || null === $raw ) {
 			return '';
 		}
@@ -198,13 +207,13 @@ class DKBCE_COGS_Service {
 			return new WP_Error( 'invalid_amount', 'invalid' );
 		}
 
-		$precision = wc_get_price_decimals();
-		$parts     = explode( '.', $value );
-		if ( isset( $parts[1] ) && strlen( $parts[1] ) > $precision ) {
+		$decimal_precision = null === $precision ? wc_get_price_decimals() : min( 6, absint( $precision ) );
+		$parts             = explode( '.', $value );
+		if ( isset( $parts[1] ) && strlen( $parts[1] ) > $decimal_precision ) {
 			return new WP_Error( 'invalid_precision', 'invalid' );
 		}
 
-		return wc_format_decimal( $value, $precision, false );
+		return wc_format_decimal( $value, $decimal_precision, false );
 	}
 
 	/**
@@ -229,6 +238,32 @@ class DKBCE_COGS_Service {
 	 * @return array|WP_Error
 	 */
 	public function calculate( $product, $operation ) {
+		if ( 'csv_import' === $operation['action'] ) {
+			$id = $product->get_id();
+			if ( ! empty( $operation['source_id'] ) ) {
+				$imports             = new DKBCE_Import_Store();
+				$value               = $imports->value( $operation['source_id'], $id );
+				$operation['values'] = null === $value ? array() : array( $id => $value );
+			}
+			if ( ! isset( $operation['values'][ $id ] ) ) {
+				return new WP_Error( 'csv_target', __( 'This product is not in the validated CSV.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			return $this->calculate(
+				$product,
+				array(
+					'action'             => 'set',
+					'value'              => $operation['values'][ $id ],
+					'preserve_precision' => true,
+				)
+			);
+		}
+		if ( 'csv_export' === $operation['action'] ) {
+			return array(
+				'current' => $product->get_cogs_value(),
+				'new'     => $product->get_cogs_value(),
+				'status'  => 'success',
+			);
+		}
 		$current = $product->get_cogs_value();
 		$action  = $operation['action'];
 
@@ -270,14 +305,16 @@ class DKBCE_COGS_Service {
 				return new WP_Error( 'invalid_action', __( 'Choose a supported COGS action.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
-		$new_value = wc_format_decimal( (string) round( $new_value, wc_get_price_decimals(), PHP_ROUND_HALF_UP ), wc_get_price_decimals(), false );
+		$precision = ! empty( $operation['preserve_precision'] ) ? 6 : wc_get_price_decimals();
+		$new_value = wc_format_decimal( (string) round( $new_value, $precision, PHP_ROUND_HALF_UP ), $precision, false );
 		if ( strlen( strtok( $new_value, '.' ) ) > strlen( self::MAX_AMOUNT ) ) {
 			return new WP_Error( 'amount_too_large', __( 'The calculated value exceeds the supported monetary limit.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 
 		return array(
 			'current' => $current,
-			'new'     => (float) $new_value,
+			// WooCommerce normalizes zero costs to an unset COGS value.
+			'new'     => 0.0 === (float) $new_value ? null : (float) $new_value,
 			'status'  => 'success',
 		);
 	}
@@ -346,14 +383,37 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Fingerprint the values and outcome presented for a reviewed product.
+	 *
+	 * @param array $result Calculation result or preview row.
+	 * @return string
+	 */
+	public function preview_signature( $result ) {
+		return hash(
+			'sha256',
+			wp_json_encode(
+				array(
+					null === $result['current'] ? null : (float) $result['current'],
+					null === $result['new'] ? null : (float) $result['new'],
+					$result['status'],
+				)
+			)
+		);
+	}
+
+	/**
 	 * Resolve WooCommerce text, SKU and global identifier search matches once.
 	 *
 	 * @param string $search Search term.
 	 * @return array
 	 */
 	public function search_product_ids( $search ) {
-		$data_store = WC_Data_Store::load( 'product' );
-		return array_map( 'absint', $data_store->search_products( $search, '', true, true ) );
+		if ( array_key_exists( $search, $this->search_cache ) ) {
+			return $this->search_cache[ $search ];
+		}
+		$data_store                    = WC_Data_Store::load( 'product' );
+		$this->search_cache[ $search ] = array_map( 'absint', $data_store->search_products( $search, '', true, true ) );
+		return $this->search_cache[ $search ];
 	}
 
 	/**
@@ -364,15 +424,101 @@ class DKBCE_COGS_Service {
 	 * @return array|int
 	 */
 	public function scan_matches( $filters ) {
+		$args = $this->matching_args( $filters );
+
+		$total_count = 0;
+		if ( ! empty( $filters['count'] ) ) {
+			$count_result = wc_get_products( $args );
+			$total_count  = is_object( $count_result ) && isset( $count_result->total ) ? (int) $count_result->total : 0;
+		}
+
+		if ( $filters['count'] ?? false ) {
+			if ( ! empty( $filters['count_breakdown'] ) ) {
+				$variation_count = 0;
+				if ( $total_count && in_array( 'variation', $args['type'], true ) ) {
+					$variation_args             = $args;
+					$variation_args['type']     = array( 'variation' );
+					$variation_args['limit']    = 1;
+					$variation_args['paginate'] = true;
+					$variations                 = wc_get_products( $variation_args );
+					$variation_count            = (int) $variations->total;
+				}
+
+				return array(
+					'count'           => $total_count,
+					'product_count'   => $total_count - $variation_count,
+					'variation_count' => $variation_count,
+				);
+			}
+			return $total_count;
+		}
+
+		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
+		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
+		$page_no   = max( 1, $page_no );
+		if ( ! empty( $filters['get_ids'] ) ) {
+			$page_size = max( 1, min( self::MAX_QUERY_BATCH_SIZE, absint( $page_size ) ) );
+		} else {
+			$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
+		}
+
+		$args['limit']    = $page_size;
+		$args['page']     = $page_no;
+		$args['paginate'] = empty( $filters['get_ids'] );
+		if ( isset( $filters['after_id'] ) && ! empty( $filters['get_ids'] ) ) {
+			$args['dkbce_after_id'] = absint( $filters['after_id'] );
+			$args['page']           = 1;
+		}
+
+		$page_result = wc_get_products( $args );
+
+		if ( $filters['get_ids'] ?? false ) {
+			return $page_result;
+		}
+		$total_count = is_object( $page_result ) && isset( $page_result->total ) ? (int) $page_result->total : $total_count;
+		$product_ids = is_object( $page_result ) && isset( $page_result->products ) ? $page_result->products : array();
+
+		$rows      = array();
+		$operation = $filters['operation'] ?? array();
+
+		foreach ( $product_ids as $product_id ) {
+			$product = wc_get_product( $product_id );
+			if ( ! ( $product instanceof WC_Product ) ) {
+				continue;
+			}
+			$rows[] = $this->preview_row( $product, $operation );
+			unset( $product );
+		}
+		$this->free_memory();
+
+		return array(
+			'count'       => $total_count,
+			'rows'        => $rows,
+			'page'        => $page_no,
+			'page_size'   => $page_size,
+			'total_pages' => max( 1, (int) ceil( $total_count / $page_size ) ),
+		);
+	}
+
+	/**
+	 * Build matching arguments, intersecting any earlier selection filters.
+	 *
+	 * @param array $filters Normalized filters from an authorized preview.
+	 * @return array
+	 */
+	private function matching_args( $filters ) {
 		$args = array(
 			'type'     => $this->selected_types( $filters ),
 			'return'   => 'ids',
-			'limit'    => -1,
+			'limit'    => 1,
 			'orderby'  => 'ID',
 			'order'    => 'ASC',
-			'paginate' => false,
+			'paginate' => true,
 		);
 
+		if ( array_key_exists( 'selected_ids', $filters ) ) {
+			$args['include'] = $filters['selected_ids'] ? array_map( 'absint', $filters['selected_ids'] ) : array( 0 );
+		}
 		// Exclusions are validated against the user's preview before snapshotting.
 		if ( ! empty( $filters['selection_range'] ) ) {
 			$args['dkbce_selection_range'] = array( $filters['selection_range']['min'], $filters['selection_range']['max'] );
@@ -383,7 +529,8 @@ class DKBCE_COGS_Service {
 
 		if ( ! empty( $filters['search'] ) ) {
 			$search_ids      = $filters['search_ids'] ?? $this->search_product_ids( $filters['search'] );
-			$args['include'] = $search_ids ? $search_ids : array( 0 ); // array(0) forces an empty result.
+			$search_ids      = isset( $args['include'] ) ? array_intersect( $args['include'], $search_ids ) : $search_ids;
+			$args['include'] = $search_ids ? array_values( $search_ids ) : array( 0 ); // array(0) forces an empty result.
 		}
 
 		if ( ! empty( $filters['stock_status'] ) && 'any' !== $filters['stock_status'] ) {
@@ -417,76 +564,35 @@ class DKBCE_COGS_Service {
 			$args['dkbce_meta_query'] = $meta_query;
 		}
 
-		$total_count = 0;
-
-		if ( empty( $filters['get_ids'] ) ) {
-			$ids         = wc_get_products( $args );
-			$total_count = is_array( $ids ) ? count( $ids ) : 0;
-		}
-
-		if ( $filters['count'] ?? false ) {
-			if ( ! empty( $filters['count_breakdown'] ) ) {
-				$variation_count = 0;
-				if ( $total_count && in_array( 'variation', $args['type'], true ) ) {
-					$variation_args             = $args;
-					$variation_args['type']     = array( 'variation' );
-					$variation_args['limit']    = 1;
-					$variation_args['paginate'] = true;
-					$variations                 = wc_get_products( $variation_args );
-					$variation_count            = (int) $variations->total;
+		$groups = empty( $args['dkbce_category_ids'] ) ? array() : array( $args['dkbce_category_ids'] );
+		foreach ( $filters['selection_filters'] ?? array() as $previous ) {
+			$prior = $this->matching_args( $previous );
+			$types = array_values( array_intersect( $args['type'], $prior['type'] ) );
+			if ( ! $types ) {
+				$args['include'] = array( 0 );
+			} else {
+				$args['type'] = $types;
+			}
+			if ( isset( $prior['include'] ) ) {
+				$ids             = isset( $args['include'] ) ? array_intersect( $args['include'], $prior['include'] ) : $prior['include'];
+				$args['include'] = $ids ? array_values( $ids ) : array( 0 );
+			}
+			if ( isset( $prior['stock_status'] ) ) {
+				$stock = isset( $args['stock_status'] ) ? array_intersect( (array) $args['stock_status'], (array) $prior['stock_status'] ) : $prior['stock_status'];
+				if ( ! $stock ) {
+					$args['include'] = array( 0 );
+				} else {
+					$args['stock_status'] = array_values( (array) $stock );
 				}
-
-				return array(
-					'count'           => $total_count,
-					'product_count'   => $total_count - $variation_count,
-					'variation_count' => $variation_count,
-				);
 			}
-			return $total_count;
-		}
-
-		$page_no   = empty( $filters['page_no'] ) ? 0 : absint( $filters['page_no'] );
-		$page_size = $filters['page_size'] ?? self::PREVIEW_PAGE_SIZE;
-		$page_no   = max( 1, $page_no );
-		if ( ! empty( $filters['get_ids'] ) ) {
-			$page_size = max( 1, min( self::MAX_QUERY_BATCH_SIZE, absint( $page_size ) ) );
-		} else {
-			$page_size = in_array( absint( $page_size ), self::PREVIEW_PAGE_SIZES, true ) ? absint( $page_size ) : self::PREVIEW_PAGE_SIZE;
-		}
-
-		$args['limit'] = $page_size;
-		$args['page']  = $page_no;
-		if ( isset( $filters['after_id'] ) && ! empty( $filters['get_ids'] ) ) {
-			$args['dkbce_after_id'] = absint( $filters['after_id'] );
-			$args['page']           = 1;
-		}
-
-		$product_ids = wc_get_products( $args );
-
-		if ( $filters['get_ids'] ?? false ) {
-			return $product_ids;
-		}
-
-		$rows      = array();
-		$operation = $filters['operation'] ?? array();
-
-		foreach ( $product_ids as $product_id ) {
-			$product = wc_get_product( $product_id );
-			if ( ! ( $product instanceof WC_Product ) ) {
-				continue;
+			$groups = array_merge( $groups, $prior['dkbce_category_groups'] );
+			foreach ( array( 'tax_query', 'dkbce_meta_query' ) as $key ) {
+				$args[ $key ] = array_merge( $args[ $key ] ?? array(), $prior[ $key ] ?? array() );
 			}
-			$rows[] = $this->preview_row( $product, $operation );
-			unset( $product );
-			$this->free_memory();
 		}
-
-		return array(
-			'count'       => $total_count,
-			'rows'        => $rows,
-			'page'        => $page_no,
-			'page_size'   => $page_size,
-			'total_pages' => max( 1, (int) ceil( $total_count / $page_size ) ),
-		);
+		$args['dkbce_category_groups'] = $groups;
+		unset( $args['dkbce_category_ids'] );
+		return $args;
 	}
 
 	/**
@@ -508,30 +614,32 @@ class DKBCE_COGS_Service {
 			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", absint( $after_id ) );
 		}
 
-		$category_ids = $query->get( 'dkbce_category_ids' );
-		if ( empty( $category_ids ) ) {
-			return $where;
+		$groups = $query->get( 'dkbce_category_groups' );
+		if ( ! is_array( $groups ) ) {
+			$category_ids = $query->get( 'dkbce_category_ids' );
+			$groups       = $category_ids ? array( $category_ids ) : array();
 		}
-
-		$tax_query = new WP_Tax_Query(
-			array(
+		foreach ( $groups as $category_ids ) {
+			$tax_query = new WP_Tax_Query(
 				array(
-					'taxonomy'         => 'product_cat',
-					'field'            => 'term_id',
-					'terms'            => array_map( 'absint', (array) $category_ids ),
-					'include_children' => true,
-				),
-			)
-		);
-		$sql       = $tax_query->get_sql( 'dkbce_category_product', 'ID' );
+					array(
+						'taxonomy'         => 'product_cat',
+						'field'            => 'term_id',
+						'terms'            => array_map( 'absint', (array) $category_ids ),
+						'include_children' => true,
+					),
+				)
+			);
+			$sql       = $tax_query->get_sql( 'dkbce_category_product', 'ID' );
 
-		// EXISTS preserves one result per record even when several categories match.
-		$where .= " AND EXISTS (SELECT 1 FROM {$wpdb->posts} AS dkbce_category_product {$sql['join']}
+			// EXISTS preserves one result per record even when several categories match.
+			$where .= " AND EXISTS (SELECT 1 FROM {$wpdb->posts} AS dkbce_category_product {$sql['join']}
 			WHERE dkbce_category_product.ID = CASE
 				WHEN {$wpdb->posts}.post_type = 'product_variation' THEN {$wpdb->posts}.post_parent
 				ELSE {$wpdb->posts}.ID END
 			AND dkbce_category_product.post_type = 'product' {$sql['where']})";
 
+		}
 		return $where;
 	}
 

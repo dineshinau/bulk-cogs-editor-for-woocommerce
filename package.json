@@ -1,9 +1,9 @@
 {
       "name": "bulk-cogs-editor-for-woocommerce",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "scripts": {
             "update": "npx npm-check-updates -u",
-            "npm_install": "rm -rf package-lock.json && npm i --force",
+            "npm_install": "npm i --force",
             "start": "wp-scripts start",
             "build": "wp-scripts build",
             "test:e2e": "playwright test --config=tests/e2e/playwright.config.cjs",
@@ -17,7 +17,7 @@
       },
       "dependencies": {
             "@woocommerce/dependency-extraction-webpack-plugin": "^5.1.0",
-            "@wordpress/scripts": "^36.1.0"
+            "@wordpress/scripts": "^37.0.0"
       },
       "devDependencies": {
             "@playwright/cli": "^0.1.22",

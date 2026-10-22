@@ -10,24 +10,28 @@ const pageURL = 'wp-admin/edit.php?post_type=product&page=bulk-cogs-editor';
 async function loadPage( page ) {
 	await page.goto( pageURL );
 	await expect(
-		page.getByRole( 'heading', { name: 'Bulk Cost of Goods Sold (COGS) Editor' } )
+		page.getByRole( 'heading', { name: 'Bulk COGS Editor', exact: true } )
 	).toBeVisible();
 	await expect( page.locator( '#dkbce-get-products' ) ).toBeEnabled();
 }
 
 async function setFilters( page, values = {} ) {
 	await page.locator( '#dkbce-search' ).fill( values.search || '' );
-	if ( values.category ) {
-		await page.locator( '#dkbce-category' ).selectOption( String( values.category ) );
-	}
-	if ( values.type ) {
-		await page.locator( '#dkbce-type' ).selectOption( values.type );
-	}
-	if ( values.stock ) {
-		await page.locator( '#dkbce-stock' ).selectOption( values.stock );
-	}
-	if ( values.brand && page.locator( '#dkbce-brand' ) ) {
-		await page.locator( '#dkbce-brand' ).selectOption( String( values.brand ) );
+	for ( const [ selector, value ] of [
+		[ '#dkbce-category', values.category ],
+		[ '#dkbce-type', values.type ],
+		[ '#dkbce-stock', values.stock ],
+		[ '#dkbce-brand', values.brand ],
+	] ) {
+		const select = page.locator( selector );
+		if ( await select.count() ) {
+			await select.evaluate( ( element, selected ) => {
+				Array.from( element.options ).forEach( ( option ) => {
+					option.selected = selected !== undefined && String( selected ) === option.value;
+				} );
+				element.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			}, value );
+		}
 	}
 	for ( const [ selector, value ] of [
 		[ '#dkbce-price-min', values.priceMin ],
@@ -35,15 +39,21 @@ async function setFilters( page, values = {} ) {
 		[ '#dkbce-cogs-min', values.cogsMin ],
 		[ '#dkbce-cogs-max', values.cogsMax ],
 	] ) {
-		if ( undefined !== value ) {
-			await page.locator( selector ).fill( String( value ) );
-		}
+		await page.locator( selector ).evaluate( ( input, nextValue ) => {
+			input.value = undefined === nextValue ? '' : String( nextValue );
+			input.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+		}, value );
 	}
 }
 
 async function getProducts( page, values = {} ) {
 	await setFilters( page, values );
+	const responsePromise = page.waitForResponse( ( response ) =>
+		response.url().includes( 'admin-ajax.php' ) &&
+		response.request().postData()?.includes( 'dkbce_get_products' )
+	);
 	await page.locator( '#dkbce-get-products' ).click();
+	await responsePromise;
 	await expect( page.locator( '#dkbce-get-products' ) ).toBeEnabled();
 }
 
@@ -85,7 +95,19 @@ async function preview( page, action, value, filterValues = {} ) {
 		response.url().includes( 'admin-ajax.php' ) &&
 		response.request().postData()?.includes( 'dkbce_preview' )
 	);
-	await page.locator( `input[name="dkbce-action"][value="${ action }"]` ).check();
+	const [ kind, direction, unit ] = {
+		set: [ 'set', 'increase', 'percent' ],
+		increase_percent: [ 'adjust', 'increase', 'percent' ],
+		decrease_percent: [ 'adjust', 'decrease', 'percent' ],
+		increase_fixed: [ 'adjust', 'increase', 'fixed' ],
+		decrease_fixed: [ 'adjust', 'decrease', 'fixed' ],
+		clear: [ 'clear', 'increase', 'percent' ],
+	}[ action ];
+	await page.locator( '#dkbce-action-kind' ).selectOption( kind );
+	if ( 'adjust' === kind ) {
+		await page.locator( '#dkbce-action-direction' ).selectOption( direction );
+		await page.locator( '#dkbce-action-unit' ).selectOption( unit );
+	}
 	if ( 'clear' !== action ) {
 		await page.locator( '#dkbce-value' ).fill( String( value ) );
 	}
@@ -115,27 +137,35 @@ test.beforeEach( async ( { page } ) => {
 
 test( 'loads admin page with six actions and accessible filter controls', async ( { page } ) => {
 	await expect( page.getByLabel( 'Search', { exact: true } ) ).toBeVisible();
-	await expect( page.getByLabel( 'Product category' ) ).toBeVisible();
-	await expect( page.getByLabel( 'Product type' ) ).toBeVisible();
-	await expect( page.getByLabel( 'Stock status' ) ).toBeVisible();
-	await expect( page.locator( 'input[name="dkbce-action"]' ) ).toHaveCount( 6 );
-	await expect( page.locator( '#dkbce-preview' ) ).toBeDisabled();
+	await expect( page.locator( '#dkbce-category-summary' ) ).toBeVisible();
+	await expect( page.locator( '#dkbce-type-summary' ) ).toBeVisible();
+	await page.locator( 'details.dkbce-more-filters' ).evaluate( ( details ) => { details.open = true; } );
+	await expect( page.locator( '#dkbce-stock-summary' ) ).toBeVisible();
+	await expect( page.locator( '#dkbce-action-kind option' ) ).toHaveCount( 3 );
+	await expect( page.locator( '#dkbce-action-direction option' ) ).toHaveCount( 2 );
+	await expect( page.locator( '#dkbce-action-unit option' ) ).toHaveCount( 2 );
 	await expect( page.locator( '#dkbce-apply' ) ).toBeDisabled();
 	if ( fixtures.brand_id ) {
-		await expect( page.locator( '#dkbce-brand' ) ).toBeVisible();
+		await expect( page.locator( '#dkbce-brand-summary' ) ).toBeVisible();
 	} else {
 		await expect( page.locator( '#dkbce-brand' ) ).toHaveCount( 0 );
 	}
 } );
 
+test( 'keeps the apply panel in document flow on mobile', async ( { page } ) => {
+	await page.setViewportSize( { width: 390, height: 844 } );
+	await expect( page.locator( '.dkbce-apply-section' ) ).toHaveCSS( 'position', 'static' );
+	await expect( page.locator( '.dkbce-apply-section' ) ).toHaveCSS( 'box-shadow', 'none' );
+} );
+
 test( 'search matches product title and SKU and reset clears filters', async ( { page } ) => {
 	await getProducts( page, { search: `Simple ${ fixtures.token }` } );
-	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 	await getProducts( page, { search: fixtureSku( 'SIMPLE' ) } );
-	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 	await page.locator( '#dkbce-reset' ).click();
 	await expect( page.locator( '#dkbce-search' ) ).toHaveValue( '' );
-	await expect( page.locator( '#dkbce-category' ) ).toHaveValue( '0' );
+	await expect( page.locator( '#dkbce-category-summary' ) ).toHaveText( /All categories/ );
 } );
 
 test( 'filters by category, price range, COGS range, and combined AND conditions', async ( { page } ) => {
@@ -147,7 +177,7 @@ test( 'filters by category, price range, COGS range, and combined AND conditions
 		cogsMin: '9',
 		cogsMax: '11',
 	} );
-	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 	await getProducts( page, {
 		search: fixtureSku( 'SIMPLE' ),
 		priceMin: '21',
@@ -164,7 +194,7 @@ test( 'filters simple, variable, variation, grouped, and external products', asy
 		[ 'external', 'EXTERNAL' ],
 	] ) {
 		await getProducts( page, { type, search: fixtureSku( key ) } );
-		await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+		await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 	}
 } );
 
@@ -175,7 +205,7 @@ test( 'filters all stock states', async ( { page } ) => {
 		[ 'onbackorder', 'BACKORDER' ],
 	] ) {
 		await getProducts( page, { stock, search: fixtureSku( key ) } );
-		await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+		await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 	}
 } );
 
@@ -185,7 +215,7 @@ test( 'filters by supported brand taxonomy when available', async ( { page } ) =
 		search: fixtureSku( 'SIMPLE' ),
 		brand: fixtures.brand_id,
 	} );
-	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matching products' );
+	await expect( page.locator( '#dkbce-product-count' ) ).toContainText( '1 matches:' );
 } );
 
 test( 'previews all six actions without modifying the current COGS value', async ( { page } ) => {
@@ -204,8 +234,8 @@ test( 'previews all six actions without modifying the current COGS value', async
 		} );
 		expect( result.count ).toBe( 1 );
 		const row = rowForSku( page, fixtureSku( 'SIMPLE' ) );
-		await expect( row.locator( 'td' ).nth( 5 ) ).toContainText( '10.00' );
-		await expect( row.locator( 'td' ).nth( 6 ) ).toContainText( expected );
+		await expect( row.locator( '[data-column="5"]' ) ).toContainText( '10.00' );
+		await expect( row.locator( '[data-column="6"]' ) ).toContainText( expected );
 		if ( direction ) {
 			await expect( row.locator( '.dkbce-change-badge' ) ).toHaveClass(
 				new RegExp( direction )
@@ -217,11 +247,11 @@ test( 'previews all six actions without modifying the current COGS value', async
 test( 'preview shows images, edit links, increase green and decrease red', async ( { page } ) => {
 	await preview( page, 'increase_percent', '10', { search: fixtureSku( 'SIMPLE' ) } );
 	const row = rowForSku( page, fixtureSku( 'SIMPLE' ) );
-	await expect( row.locator( 'td:nth-child(2) a' ) ).toHaveAttribute(
+	await expect( row.locator( '[data-column="1"] a' ) ).toHaveAttribute(
 		'href',
 		new RegExp( `post\.php\\?post=${ fixtures.products.simple }&action=edit` )
 	);
-	await expect( row.locator( 'td:nth-child(3) img' ) ).toBeVisible();
+	await expect( row.locator( '[data-column="2"] img' ) ).toBeVisible();
 	await expect( row.locator( '.dkbce-change-badge' ) ).toHaveCSS( 'color', 'rgb(0, 138, 32)' );
 
 	await preview( page, 'decrease_fixed', '2', { search: fixtureSku( 'SIMPLE' ) } );
@@ -234,32 +264,34 @@ test( 'preview shows images, edit links, increase green and decrease red', async
 test( 'skips relative operations for empty COGS and WooCommerce-normalized zero', async ( { page } ) => {
 	await preview( page, 'increase_percent', '10', { search: fixtureSku( 'EMPTY' ) } );
 	const emptyRow = rowForSku( page, fixtureSku( 'EMPTY' ) );
-	await expect( emptyRow.locator( 'td' ).nth( 5 ) ).toHaveText( 'Empty' );
-	await expect( emptyRow.locator( 'td' ).nth( 6 ) ).toHaveText( '—' );
-	await expect( emptyRow.locator( 'td' ).nth( 7 ) ).toContainText( 'Current COGS is not set' );
+	await expect( emptyRow.locator( '[data-column="5"]' ) ).toHaveText( 'Empty' );
+	await expect( emptyRow.locator( '[data-column="6"]' ) ).toHaveText( '—' );
+	await expect( emptyRow.locator( '[data-column="7"]' ) ).toContainText( 'Current COGS is not set' );
 
+	await page.reload();
+	await loadPage( page );
 	await preview( page, 'increase_percent', '10', { search: fixtureSku( 'ZERO' ) } );
 	const zeroRow = rowForSku( page, fixtureSku( 'ZERO' ) );
-	await expect( zeroRow.locator( 'td' ).nth( 5 ) ).toHaveText( 'Empty' );
-	await expect( zeroRow.locator( 'td' ).nth( 6 ) ).toHaveText( '—' );
-	await expect( zeroRow.locator( 'td' ).nth( 7 ) ).toContainText( 'Current COGS is not set' );
+	await expect( zeroRow.locator( '[data-column="5"]' ) ).toHaveText( 'Empty' );
+	await expect( zeroRow.locator( '[data-column="6"]' ) ).toHaveText( '—' );
+	await expect( zeroRow.locator( '[data-column="7"]' ) ).toContainText( 'Current COGS is not set' );
 } );
 
 test( 'rounds calculated COGS to store precision', async ( { page } ) => {
 	await preview( page, 'increase_percent', '4', { search: fixtureSku( 'DECIMAL' ) } );
 	const row = rowForSku( page, fixtureSku( 'DECIMAL' ) );
-	await expect( row.locator( 'td' ).nth( 5 ) ).toContainText( '9.99' );
-	await expect( row.locator( 'td' ).nth( 6 ) ).toContainText( '10.39' );
+	await expect( row.locator( '[data-column="5"]' ) ).toContainText( '9.99' );
+	await expect( row.locator( '[data-column="6"]' ) ).toContainText( '10.39' );
 } );
 
-test( 'limits preview to 50 rows and reports total matching products', async ( { page } ) => {
+test( 'paginates large previews and reports total matching products', async ( { page } ) => {
 	const data = await preview( page, 'set', '2', {
 		search: `DKBCE E2E Batch ${ fixtures.token }`,
 	} );
 	expect( data.count ).toBe( 55 );
-	expect( data.rows ).toHaveLength( 50 );
+	expect( data.rows ).toHaveLength( 20 );
 	await expect( page.locator( '#dkbce-preview-content' ) ).toContainText(
-		'Showing first 50 of 55 matching products.'
+		'Showing 1–20 of 55 products.'
 	);
 } );
 
@@ -342,7 +374,7 @@ test( 'confirms apply, processes selected disposable product, and rejects replay
 	await page.locator( '#dkbce-selected-only' ).check();
 	await page.locator( '#dkbce-apply' ).click();
 	await expect( page.locator( '#dkbce-confirm' ) ).toBeVisible();
-	await expect( page.locator( '#dkbce-confirm-text' ) ).toContainText( 'modify COGS for 1 products' );
+	await expect( page.locator( '#dkbce-confirm-text' ) ).toContainText( 'modify COGS for 1 product' );
 	await page.locator( '#dkbce-confirm-cancel' ).click();
 	await expect( page.locator( '#dkbce-confirm' ) ).toBeHidden();
 
@@ -351,7 +383,7 @@ test( 'confirms apply, processes selected disposable product, and rejects replay
 	await expect( page.locator( '#dkbce-operation' ) ).toContainText( '1 of 1 products processed', {
 		timeout: 80000,
 	} );
-	await expect( page.locator( '#dkbce-operation h3' ) ).toContainText( 'completed' );
+	await expect( page.locator( '#dkbce-operation h3[role="status"]' ) ).toContainText( 'completed' );
 
 	const replay = await requestAjax( page, 'apply', {
 		preview_id: data.preview_id,
@@ -360,7 +392,9 @@ test( 'confirms apply, processes selected disposable product, and rejects replay
 	} );
 	expect( [ 400, 409 ] ).toContain( replay.status );
 
+	await page.reload();
+	await loadPage( page );
 	await preview( page, 'set', '15', { search: fixtureSku( 'SIMPLE' ) } );
 	const row = rowForSku( page, fixtureSku( 'SIMPLE' ) );
-	await expect( row.locator( 'td' ).nth( 5 ) ).toContainText( '15.00' );
+	await expect( row.locator( '[data-column="5"]' ) ).toContainText( '15.00' );
 } );

@@ -3,7 +3,7 @@
  * Plugin Name: Bulk COGS Editor for WooCommerce
  * Plugin URI: https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/
  * Description: Allow bulk Cost of Goods Editing for products in WooCommerce.
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: Dinesh Yadav
  * Author URI: https://github.com/dineshinau/
  * Text Domain: bulk-cogs-editor-for-woocommerce
@@ -41,7 +41,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version constant.
  */
-define( 'DKBCE_VERSION', '1.1.1' );
+define( 'DKBCE_VERSION', '1.2.0' );
+
+/**
+ * Plugin database schema version. Increase when table schemas change.
+ */
+define( 'DKBCE_DB_VERSION', '1.1.0' );
 
 /**
  * Plugin file path constant.
@@ -63,20 +68,33 @@ define( 'DKBCE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  */
 define( 'DKBCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
+// Register the prefix-based loader before plugin classes are first referenced.
+require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-autoloader.php';
+DKBCE_Autoloader::register();
+
 /**
  * Load plugin classes and initialize after all plugins are loaded.
  *
  * @return void
  */
 function dkbce_load_plugin_files(): void {
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-cogs-service.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-operation-store.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-bulk-processor.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-functions.php';
-	require_once DKBCE_PLUGIN_DIR . 'admin/class-dkbce-admin-hooks.php';
 	DKBCE_Admin_Hooks::get_instance();
 }
 add_action( 'plugins_loaded', 'dkbce_load_plugin_files' );
+
+/**
+ * Upgrade plugin database tables after a schema version change.
+ *
+ * @return void
+ */
+function dkbce_maybe_upgrade_database(): void {
+	try {
+		DKBCE_Database_Installer::maybe_upgrade();
+	} catch ( Throwable $exception ) {
+		dkbce_wc_log( 'Database schema upgrade failed: ' . $exception->getMessage() );
+	}
+}
+add_action( 'admin_init', 'dkbce_maybe_upgrade_database' );
 
 
 /**
