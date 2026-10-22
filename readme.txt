@@ -12,13 +12,13 @@ Bulk edit WooCommerce COGS, import CSV or Excel files, export CSVs, preview safe
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** lets you update the Cost of Goods Sold (COGS) of many products at once, import costs from CSV or Excel files, and export product cost data to CSV, right from the Products admin screen. Filter your catalog, choose an action, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
+**Bulk COGS Editor for WooCommerce** is a WooCommerce bulk editor for managing product cost and native COGS values at scale. Import costs from CSV or Excel files, export product cost data to CSV, or update many products from the Products admin screen. Filter your catalog, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
 
-It works with WooCommerce's native Cost of Goods Sold (COGS) feature, so there is nothing extra to set up beyond enabling COGS in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+It works with the native WooCommerce COGS feature, so there is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
-See how Bulk COGS Editor for WooCommerce helps you filter and preview products, apply bulk updates, import and export cost data, review operation history, and roll back recorded changes safely.
+See how this WooCommerce bulk editor helps you filter and preview products, apply bulk updates, import and export product cost data, review operation history, and roll back recorded changes safely.
 
 https://youtu.be/sOEOg0xiqYs
 
@@ -49,7 +49,7 @@ https://youtu.be/sOEOg0xiqYs
 * Category options show product counts in parentheses. Parent and child categories are available, and selecting a parent category also includes its child categories.
 * Category filtering matches variations through their parent product's categories, including when only the Variation product type is selected.
 * Brand filtering appears only when a public brand taxonomy is registered for products.
-* Price filters use the current WooCommerce product price. COGS filters use the supported COGS API.
+* Price filters use the current WooCommerce product price. Product cost and COGS filters use the supported WooCommerce COGS API.
 
 **Actions**
 
@@ -181,7 +181,7 @@ If Cost of Goods Sold is unavailable or disabled, the editor is turned off and e
 
 = Privacy =
 
-Bulk COGS Editor for WooCommerce does not send product, customer, order, or store data to external services. All COGS calculations and updates are performed locally on your WordPress/WooCommerce installation.
+Bulk COGS Editor for WooCommerce does not send product, customer, order, or store data to external services. All WooCommerce COGS calculations and updates are performed locally on your WordPress/WooCommerce installation.
 
 = Developer resources =
 
