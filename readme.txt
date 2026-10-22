@@ -8,13 +8,13 @@ Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with CSV/XLSX import, live progress, safe previews, history, and rollback for efficient product cost management.
+Bulk edit WooCommerce product costs (COGS) with CSV/XLSX import, previews, background updates, operation history, and rollback.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is the most powerful bulk editing tool for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly bulk edit WooCommerce COGS and product cost values, filter products by relevant criteria, preview proposed changes, and apply updates through background processing with live progress and cancellation.
+**Bulk COGS Editor for WooCommerce** helps you bulk edit product costs using WooCommerce's native Cost of Goods Sold (COGS) feature. Filter products, preview proposed changes, and apply updates through background processing with progress and cancellation.
 
-Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back recorded changes. Best plugin to manage large product catalogs more efficiently without changing product prices.
+Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back eligible changes while original values are retained. Product prices are not changed.
 
 There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
@@ -339,36 +339,3 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 * Added: Upgrade import and outcome database tables using `DKBCE_DB_VERSION`, version comparison, and WordPress `dbDelta()` when the stored schema version is older.
 * Added: Load plugin classes on demand through a `DKBCE_` prefix autoloader.
 * Added: Provide a development WP-CLI profiler for generated range-query SQL, EXPLAIN plans, installed indexes, repeated timings, and ordered-ID comparisons. Document local findings without changing runtime range predicates, indexes, or pagination.
-
-= 1.1.1 (2026-10-20) =
-
-* Fixed: Recover background COGS updates that stop progressing and allow cancellation cleanup from the editor.
-* Fixed: Keep matching product counts visible when changing the selected COGS action.
-* Fixed: Allow preview pagination during background updates after the preview token has been consumed, while keeping product selection disabled.
-* Improved: Scroll to the bottom of the editor when a background update starts so its progress is visible.
-* Improved: Prevent filter changes while an update is running and require products to be fetched before choosing an action. The editor guides users to Get products when they try.
-* Improved: Place the action warning in the Step 2 title row and center it on larger screens.
-* Improved: Explain how to refresh an expired preview and scroll to the notice so the instructions are visible.
-* Improved: Collect matching products using a product ID cursor, cache search matches per operation, and recover saved snapshot chunks after interruptions.
-* Improved: Group WooCommerce product transient invalidations within each update batch to reduce repeated cache cleanup.
-* Improved: Bulk update performance through batch preparation of product and variation-parent caches, fewer repeated reads, and progress checkpoints that retain durable per-product outcomes. A reported benchmark for this version updated 10,000 products in 21 minutes 34 seconds, compared with 50–60 minutes initially; results vary by store and require repeat benchmarking.
-* Added: Select the first or last number of products across all matching results, or choose all results.
-* Added: Clear a finished operation when using the Refresh now link.
-
-= 1.1.0 (2026-10-14) =
-
-* Fixed: Admin notices appearing between the page title and description.
-* Fixed: Alignment of the top and bottom select-all checkboxes with product row checkboxes.
-* Fixed: Match variations through their parent product's categories, including when filtering for variations only.
-* Improved: Progress reporting with a right-aligned processed product count, percentage indicator, and elapsed and estimated remaining time.
-* Added: A message during background updates explaining that you can close the browser and return later to view the results.
-* Added: Keep the latest completed operation visible when returning to the editor.
-* Added: Expanded page title to clarify Cost of Goods Sold (COGS).
-* Added: Select-all controls in filter dropdowns and product counts beside category names.
-* Added: Separate product and variation counts in matching results.
-* Added: Documentation and video links in the plugin row and editor help section, with clearer COGS setup and usage instructions.
-* Added: Clear cancelled updates from the editor using the Refresh now link.
-
-= 1.0.0 (2026-10-10) =
-
-* Initial release.
