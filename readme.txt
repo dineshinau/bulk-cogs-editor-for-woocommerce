@@ -8,11 +8,11 @@ Stable tag: 1.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Bulk edit WooCommerce COGS, import CSV or Excel files, export CSVs, preview safe background updates, and review or roll back changes.
+Fast WooCommerce COGS bulk editing with Action Scheduler, previews, CSV/XLSX import, CSV export, history, and rollback.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a WooCommerce bulk editor for managing product cost and native COGS values at scale. Import costs from CSV or Excel files, export product cost data to CSV, or update many products from the Products admin screen. Filter your catalog, preview every change, and apply it in background batches. Use History to inspect past operations and review a rollback, with retention and rollback behavior controlled from Settings.
+**Bulk COGS Editor for WooCommerce** is built for WooCommerce's native Cost of Goods Sold (COGS) feature. Filter products, preview proposed product cost changes, and process bulk updates in background Action Scheduler batches with live progress and cancellation. Import costs from CSV or XLSX, export product cost data, and use operation history to inspect outcomes or review a rollback.
 
 It works with the native WooCommerce COGS feature, so there is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
@@ -283,6 +283,11 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 5. **Operation history:** Filterable operation records with statuses, outcomes, notes, and numbered page navigation.
 6. **Operation details:** Existing summary-only history with operation metadata, results, and the notice explaining that original values are unavailable.
 7. **Settings:** History retention presets and custom days, plus overwrite or skip-changed rollback behavior.
+
+== Upgrade Notice ==
+
+= 1.2.0 =
+Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
 
 == Changelog ==
 
