@@ -296,6 +296,9 @@
 	historyProgress.hidden = true;
 	historyList.append( historyFilters, historyRows );
 	historyRoot.append( historyList, historyDetails, historyProgress );
+	function updateHistoryProgressVisibility() {
+		historyProgress.hidden = operationPanel.hidden || historyDetails.childElementCount > 0;
+	}
 	const noteInput = document.createElement( 'input' );
 	noteInput.type = 'text';
 	noteInput.id = 'dkbce-operation-note';
@@ -331,7 +334,7 @@
 				const status = document.createElement( 'td' ); status.appendChild( historyStatus( operation.status ) ); row.appendChild( status );
 				appendCell( row, operation.user ); appendCell( row, operation.note || '—' );
 				const action = document.createElement( 'td' );
-				action.appendChild( historyButton( historyText.view, () => { historyState.operationId = operation.operation_id; historyState.productPage = 1; historyState.review = false; loadHistoryDetails(); } ) );
+				action.appendChild( historyButton( historyText.view, () => { historyState.operationId = operation.operation_id; historyState.productPage = 1; historyState.review = false; loadHistoryDetails( true ); } ) );
 				row.appendChild( action ); body.appendChild( row );
 			} );
 			historyRows.appendChild( wrap );
@@ -341,7 +344,7 @@
 		finally { historyFilterButton.disabled = false; historyRows.removeAttribute( 'aria-busy' ); }
 	}
 
-	async function loadHistoryDetails() {
+	async function loadHistoryDetails( scrollToDetails = false ) {
 		window.clearTimeout( historyState.pollTimer );
 		const requestId = ++historyState.detailRequestId;
 		historyState.loading = true;
@@ -354,7 +357,7 @@
 			historyState.token = data.review_token;
 			historyDetails.replaceChildren();
 			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
-			details.appendChild( historyButton( historyText.back, () => { window.clearTimeout( historyState.pollTimer ); historyState.detailRequestId++; historyState.operationId = ''; historyState.token = ''; historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); historyDetails.replaceChildren(); } ) );
+			details.appendChild( historyButton( historyText.back, () => { window.clearTimeout( historyState.pollTimer ); historyState.detailRequestId++; historyState.operationId = ''; historyState.token = ''; historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); historyDetails.replaceChildren(); updateHistoryProgressVisibility(); } ) );
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
 			details.appendChild( metadata );
@@ -387,6 +390,10 @@
 			const panel = historyElement( 'div', '', 'dkbce-operation' ); result.appendChild( panel );
 			renderOperation( data.state, panel, true );
 			historyDetails.appendChild( result );
+			updateHistoryProgressVisibility();
+			if ( scrollToDetails ) {
+				historyDetails.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+			}
 			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
 				result.appendChild( historyButton( DKBCE.i18n.refreshStatus, loadHistoryDetails ) );
 				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
@@ -407,6 +414,7 @@
 			renderOperation( data.state ); pollProgress();
 			invalidatePreview( false, true );
 			historyDetails.replaceChildren();
+			updateHistoryProgressVisibility();
 			historyProgress.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			loadHistory();
 		} catch ( error ) { setNotice( error.message, 'error', historyList ); button.disabled = false; }
@@ -512,7 +520,7 @@
 			document.querySelectorAll( '.dkbce-workspace > section' ).forEach( ( section ) => { section.hidden = true; } );
 		}
 		if ( state.mode === 'history' ) {
-			historyProgress.appendChild( operationPanel ); historyProgress.hidden = operationPanel.hidden;
+			historyProgress.appendChild( operationPanel ); updateHistoryProgressVisibility();
 		} else { operationAnchor.after( operationPanel ); historyProgress.hidden = true; }
 		$( '.dkbce-preview-section' ).hidden = extra;
 		$( '.dkbce-apply-section' ).hidden = extra;
@@ -1979,7 +1987,7 @@
 		const focusedControl = operationPanel.contains( document.activeElement ) ? document.activeElement.dataset.operationControl : '';
 		if ( ! historyView ) {
 			state.operationStatus = operation.status; updateOperationControls();
-			if ( state.mode === 'history' ) { historyProgress.hidden = false; }
+			if ( state.mode === 'history' ) { updateHistoryProgressVisibility(); }
 		}
 		if ( ! historyView && null === state.operationStartedAt ) {
 			state.operationStartedAt = window.performance.now() - operation.elapsed_seconds * 1000;
