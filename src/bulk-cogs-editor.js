@@ -22,6 +22,9 @@
 		selectedIds: new Set(),
 		explicitSelection: false,
 		selectionPreviewId: '',
+		selectionOperationId: '',
+		reusedSelection: false,
+		refreshedOperationId: '',
 		selectedCount: 0,
 		selectionFiltersChanged: false,
 		selectionRange: null,
@@ -1183,6 +1186,8 @@
 		state.previewNeedsRefresh = false;
 		state.previewId = '';
 		state.selectionPreviewId = '';
+		state.selectionOperationId = '';
+		state.reusedSelection = false;
 		state.reviewedIds.clear();
 		state.excludedIds.clear();
 		state.selectedIds.clear();
@@ -1482,8 +1487,8 @@
 		if ( ! state.busy ) {
 			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
-		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed;
-		$( '#dkbce-selection-context' ).textContent = state.selectionNarrowed ? DKBCE.ui.narrowed : '';
+		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed && ! state.reusedSelection;
+		$( '#dkbce-selection-context' ).textContent = state.reusedSelection ? DKBCE.ui.reused : state.selectionNarrowed ? DKBCE.ui.narrowed : '';
 	}
 
 	function setPageSelection( selected ) {
@@ -1510,6 +1515,7 @@
 	} );
 
 	function renderPreview( data, restoreSelection = false ) {
+		if ( data.reused_selection !== undefined ) { state.reusedSelection = data.reused_selection; }
 		if ( data !== state.pageData ) {
 			state.previewNeedsRefresh = false;
 		}
@@ -1526,6 +1532,9 @@
 		}
 		if ( ! state.pageData && data.selected_count === undefined ) { state.selectedCount = data.count; }
 		state.count = data.count;
+		if ( state.reusedSelection ) {
+			$( '#dkbce-product-count' ).textContent = data.count + ' ' + ( data.count === 1 ? DKBCE.i18n.productOne : DKBCE.i18n.productMany );
+		}
 		state.rows = data.rows;
 		state.pageData = data;
 		state.page = data.page;
@@ -1718,6 +1727,12 @@
 		if ( isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
+		if ( ! csvMode() && state.reusedSelection ) {
+			invalidatePreview( false );
+			state.hasQuery = true;
+			preview();
+			return;
+		}
 		const requestedFilters = filters();
 		setNotice( '', 'info' );
 		invalidatePreview();
@@ -1758,7 +1773,7 @@
 
 	function preview() {
 		if ( csvMode() ) { return; }
-		if ( isOperationRunning() || state.busy || state.loadingPage || 0 === state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ( 0 === state.count && ! state.reusedSelection ) ) {
 			return;
 		}
 		const action = selectedAction();
@@ -1783,6 +1798,7 @@
 		const previousPreviewId = state.selectionPreviewId;
 		request( 'preview', {
 			previous_preview_id: previousPreviewId,
+			previous_operation_id: state.selectionOperationId,
 			selection_mode: state.explicitSelection ? 'explicit' : 'all_except',
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
 			excluded_ids: JSON.stringify( Array.from( state.excludedIds ) ),
@@ -1803,6 +1819,7 @@
 					return;
 				}
 				renderPreview( data, true );
+				state.selectionOperationId = '';
 				if ( state.selectionFiltersChanged && previousPreviewId ) {
 					setNotice( DKBCE.i18n.selectionPreserved.replace( '%d', String( state.selectedCount ) ), 'info' );
 				}
@@ -1893,7 +1910,7 @@
 		if ( state.previewTimer ) {
 			window.clearTimeout( state.previewTimer );
 		}
-		if ( isOperationRunning() || ! state.hasQuery || ! state.count ) {
+		if ( isOperationRunning() || ! state.hasQuery || ( ! state.count && ! state.reusedSelection ) ) {
 			return;
 		}
 		const action = selectedAction();
@@ -2053,6 +2070,19 @@
 		operationPanel.replaceChildren();
 		const heading = document.createElement( 'h3' );
 		const terminal = terminalStatuses.includes( operation.status );
+		if ( ! historyView && ! csvMode() && operation.reusable_selection && state.hasQuery && state.refreshedOperationId !== operation.operation_id &&
+			[ 'completed', 'completed_with_errors' ].includes( operation.status ) &&
+			! [ 'csv_import', 'csv_export', 'rollback' ].includes( operation.action ) ) {
+			state.refreshedOperationId = operation.operation_id;
+			invalidatePreview( false );
+			resetSelection();
+			state.previewNeedsRefresh = true;
+			state.selectionOperationId = operation.operation_id;
+			state.reusedSelection = true;
+			state.selectedCount = operation.total;
+			schedulePreviewRefresh();
+			updateOperationControls();
+		}
 		operationPanel.classList.toggle( 'is-history', terminal );
 		operationPanel.dataset.task = operation.action === 'rollback' ? historyText.rollback : operation.action === 'csv_import' ? DKBCE.ui.importTask : DKBCE.ui.bulkTask;
 		const delayed = ! terminal && operation.progress_age >= 120;

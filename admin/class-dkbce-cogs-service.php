@@ -507,6 +507,16 @@ class DKBCE_COGS_Service {
 	 * @return array
 	 */
 	private function matching_args( $filters ) {
+		// Reuse the frozen selection even when its updated costs no longer match.
+		$defaults = empty( $filters['selection_baseline'] ) ? array() : $this->validate_filters( array() );
+		foreach ( $filters['selection_baseline'] ?? array() as $key => $value ) {
+			if ( isset( $filters[ $key ] ) && $filters[ $key ] === $value ) {
+				$filters[ $key ] = $defaults[ $key ];
+				if ( 'search' === $key ) {
+					unset( $filters['search_ids'] );
+				}
+			}
+		}
 		$args = array(
 			'type'     => $this->selected_types( $filters ),
 			'return'   => 'ids',
@@ -516,6 +526,9 @@ class DKBCE_COGS_Service {
 			'paginate' => true,
 		);
 
+		if ( ! empty( $filters['selection_operation'] ) ) {
+			$args['dkbce_selection_operation'] = $filters['selection_operation'];
+		}
 		if ( array_key_exists( 'selected_ids', $filters ) ) {
 			$args['include'] = $filters['selected_ids'] ? array_map( 'absint', $filters['selected_ids'] ) : array( 0 );
 		}
@@ -566,8 +579,9 @@ class DKBCE_COGS_Service {
 
 		$groups = empty( $args['dkbce_category_ids'] ) ? array() : array( $args['dkbce_category_ids'] );
 		foreach ( $filters['selection_filters'] ?? array() as $previous ) {
-			$prior = $this->matching_args( $previous );
-			$types = array_values( array_intersect( $args['type'], $prior['type'] ) );
+			$previous['selection_baseline'] = $filters['selection_baseline'] ?? array();
+			$prior                          = $this->matching_args( $previous );
+			$types                          = array_values( array_intersect( $args['type'], $prior['type'] ) );
 			if ( ! $types ) {
 				$args['include'] = array( 0 );
 			} else {
@@ -604,6 +618,11 @@ class DKBCE_COGS_Service {
 	 */
 	public function filter_category_where( $where, $query ) {
 		global $wpdb;
+
+		$selection_operation = $query->get( 'dkbce_selection_operation' );
+		if ( $selection_operation ) {
+			$where .= $wpdb->prepare( " AND EXISTS (SELECT 1 FROM %i AS dkbce_selection WHERE dkbce_selection.operation_id = %s AND dkbce_selection.product_id = {$wpdb->posts}.ID)", $wpdb->prefix . 'dkbce_operation_outcomes', $selection_operation );
+		}
 
 		$after_id        = $query->get( 'dkbce_after_id' );
 		$selection_range = $query->get( 'dkbce_selection_range' );
