@@ -63,15 +63,45 @@ The supplied completion screenshot records an editor operation elapsed time of *
 
 = Import and export product costs with CSV or Excel =
 
-Choose CSV mode and Import on the Bulk COGS Editor page. Upload a UTF-8 CSV or an XLSX workbook. The upload limit follows WordPress's maximum upload size, shown beside the file field; the plugin does not impose a separate file-size or row-count cap. Hosting upload, memory, storage and execution limits still apply.
+### CSV and XLSX Import
 
-Exported CSV files end with a blank `new_cogs` column. Fill this column with the new costs, then import the file. Required headers are `new_cogs` and `id` or `sku`; legacy files may use `cogs` when `new_cogs` is absent. ID and SKU must agree when both are supplied. Blank costs are excluded; use decimal points without currency symbols. Duplicate product rows are excluded and included in the error report.
+Choose **CSV mode** and click **Import** on the Bulk COGS Editor page. Upload a UTF-8 CSV or XLSX file.
 
-XLSX imports read the first worksheet's raw cell values. Replace formulas with values before uploading, and store SKUs as text to preserve leading zeros. XLSX needs PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
+The upload limit follows WordPress's maximum upload size, shown beside the file field. The plugin has no separate file-size or row-count limit. Hosting upload, memory, storage and execution limits still apply.
 
-Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to resume its progress display. Once ready, review paged products, download validation errors, select products and explicitly apply the changes. Preparation can be cancelled independently of an applied update. Original uploads are deleted when preparation ends; staged previews and reports expire through scheduled cleanup after approximately 24 hours, with retention extended while an applied update is active.
+### Sample CSV
 
-Completed operation history, original cost records, and one-use preview claims follow the retention period in Settings; see the retention FAQ below. Daily cleanup rechecks retention before deleting records, preserving active operations and import report dependencies. Preview claims protect against replay and concurrent Apply requests until cleanup permits removal.
+Exported CSV files include a blank `new_cogs` column. Fill it with new costs and import the file.
+
+```csv
+id,sku,new_cogs
+123,PRODUCT-001,25.50
+124,PRODUCT-002,40.00
+```
+
+Required headers are `new_cogs` and `id` or `sku`. Older files can use `cogs` if `new_cogs` is missing.
+
+- Use either ID or SKU to identify products.
+- If both are provided, they must match.
+- Use decimal values without currency symbols.
+- Blank costs are skipped.
+- Duplicate product rows are excluded and listed in the error report.
+
+XLSX imports read raw values from the first worksheet. Replace formulas with values and store SKUs as text to preserve leading zeros. XLSX requires PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
+
+### Preview and Apply
+
+Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to check progress.
+
+When ready, review products, download validation errors, select products and click **Apply**. Preparation can be cancelled separately from an applied update.
+
+Original uploads are deleted after preparation. Staged previews and reports expire after about 24 hours. Retention extends while an applied update is active.
+
+### History and Retention
+
+Operation history, original cost records and preview claims follow the retention period set in Settings. See the retention FAQ below.
+
+Daily cleanup checks retention before deleting records. It preserves active operations and required reports. Preview claims prevent replay and concurrent Apply requests until cleanup removes them.
 
 = Run background updates with WP-CLI =
 
