@@ -483,7 +483,7 @@ $border: #dce6f5;
 		inset-inline-end: 0;
 		z-index: 40;
 		box-sizing: border-box;
-		width: min(440px, calc(100vw - 32px));
+		width: min(560px, calc(100vw - 32px));
 		padding: 16px;
 		border: 1px solid $border;
 		border-radius: 6px;
@@ -531,7 +531,7 @@ $border: #dce6f5;
 		width: min(320px, calc(100vw - 32px));
 		label { grid-column: 1 / -1; }
 		input { width: 100%; }
-		button { grid-column: 2; justify-self: start; }
+		button { grid-column: 1 / -1; justify-self: start; }
 	}
 	.dkbce-apply-section, .dkbce-csv-workflow .dkbce-apply-section {
 		display: flex;
