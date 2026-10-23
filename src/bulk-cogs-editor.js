@@ -436,18 +436,31 @@
 	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
+	let forceClearReferences = null;
 	const forceClearSection = historySection( historyText.forceClear, 2 );
-	const forceClearButton = historyButton( historyText.forceClear, async () => {
-		if ( ! clearReferences || ! window.confirm( historyText.forceClearConfirm ) ) { return; }
+	const forceClearButton = historyButton( historyText.forceClear, () => {
+		if ( ! clearReferences ) { return; }
+		forceClearReferences = { ...clearReferences };
+		$( '#dkbce-confirm-title' ).textContent = historyText.forceClear;
+		$( '#dkbce-confirm-text' ).textContent = historyText.forceClearConfirm;
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-warning' ).textContent = historyText.forceClearWarning;
+		$( '#dkbce-confirm-apply' ).textContent = historyText.forceClear;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	} );
+	async function forceClearOperation( references ) {
 		forceClearButton.disabled = true;
 		try {
-			await request( 'force_clear', { ...clearReferences, confirmed: '1' } );
+			await request( 'force_clear', { ...references, confirmed: '1' } );
 			window.location.reload();
 		} catch ( error ) {
 			setNotice( error.message, 'error', forceClearSection );
 			await loadSettings();
+			forceClearButton.focus();
 		}
-	} );
+	}
 	forceClearButton.disabled = true;
 	forceClearSection.append( historyElement( 'p', historyText.forceClearWarning, 'description' ), forceClearButton );
 	settingsRoot.appendChild( forceClearSection );
@@ -1827,6 +1840,7 @@
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
 		}
+		forceClearReferences = null;
 		const confirmButton = $( '#dkbce-confirm-apply' );
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
 		confirmButton.disabled = false;
@@ -1857,6 +1871,15 @@
 	}
 
 	function confirmAction() {
+		if ( modal.hidden ) { return; }
+		if ( forceClearReferences ) {
+			const references = forceClearReferences;
+			forceClearReferences = null;
+			modal.hidden = true;
+			forceClearOperation( references );
+			return;
+		}
+
 		if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
 			modal.hidden = true;
 			exportCSV();
@@ -2383,15 +2406,17 @@
 			fetchPreviewPage( 1 );
 		}
 	} );
-	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', () => {
+	function closeConfirm() {
 		modal.hidden = true;
-		applyButton.focus();
-	} );
+		( forceClearReferences ? forceClearButton : applyButton ).focus();
+		forceClearReferences = null;
+	}
+	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', closeConfirm );
 	$( '#dkbce-confirm-apply' ).addEventListener( 'click', confirmAction );
 	modal.addEventListener( 'keydown', ( event ) => {
 		if ( 'Escape' === event.key ) {
-			modal.hidden = true;
-			applyButton.focus();
+			event.preventDefault();
+			closeConfirm();
 		}
 		if ( 'Tab' === event.key ) {
 			const focusable = Array.from( modal.querySelectorAll( 'button:not([disabled]), input:not([disabled])' ) )
