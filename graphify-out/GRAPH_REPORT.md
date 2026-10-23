@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-23)
 
 ## Corpus Check
-- 31 files · ~58,688 words
+- 31 files · ~59,142 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 412 nodes · 868 edges · 21 communities (8 shown, 13 thin omitted)
+- 412 nodes · 873 edges · 21 communities (8 shown, 13 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 98 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a89a398d`
+- Built from commit: `6ec06800`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -45,7 +45,7 @@
 7. `loadHistoryDetails()` - 21 edges
 8. `setNotice()` - 21 edges
 9. `request()` - 19 edges
-10. `DKBCE_History_Controller` - 16 edges
+10. `renderOperation()` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `dkbce_load_plugin_files()` --calls--> `DKBCE_Admin_Hooks`  [INFERRED]
