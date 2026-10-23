@@ -1,0 +1,443 @@
+<!-- Suggested post title: How to Bulk Edit WooCommerce COGS (Cost of Goods Sold) Safely -->
+<!-- Suggested meta description: Bulk edit WooCommerce COGS, import costs from CSV or Excel, export CSV files, and review history with rollback controls. Follow the step-by-step guide. -->
+<!-- Keep the existing permalink. Paste this entire file into the WordPress post Code editor, then switch to the Visual editor to review it. The post title belongs in the title field. -->
+
+<!-- wp:paragraph -->
+<p>Need to <strong>bulk edit WooCommerce COGS</strong> after a supplier changes prices? With Bulk COGS Editor for WooCommerce, you can filter products, preview new costs, choose which products to update, and apply the changes in background batches.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can also import different costs for individual products from CSV or Excel, export current costs to CSV, and review previous operations in History. When original cost records are still available, rollback lets you review and restore eligible changes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This guide covers the complete workflow in <strong>version 1.2.0</strong>, including CSV/XLSX import, CSV export, History, rollback, and Settings. The plugin works with WooCommerce’s native Cost of Goods Sold feature and changes product costs without changing regular or sale prices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/">Download Bulk COGS Editor for WooCommerce</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What is Bulk COGS Editor for WooCommerce?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Bulk COGS Editor is a free, open-source WordPress plugin for managing WooCommerce’s native product cost values. It helps you apply one cost adjustment to a group of products or bring individual costs into your store from a spreadsheet.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, if a supplier raises costs by 5%, you can filter the affected products and preview a 5% increase. If the supplier sends a file containing different new costs for each SKU, use CSV or Excel import instead.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>What you want to do</th><th>Where to start</th></tr></thead><tbody><tr><td>Set, increase, decrease, or clear costs for a product group</td><td>Bulk edit</td></tr><tr><td>Import individual costs or export current product cost data</td><td>CSV import / export</td></tr><tr><td>Inspect previous updates or review an eligible rollback</td><td>History</td></tr><tr><td>Choose retention and rollback behavior</td><td>Settings</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-1.png" alt="Bulk COGS Editor showing product filters, cost adjustment controls, and a preview of WooCommerce product costs"/><figcaption class="wp-element-caption">The Bulk edit tab brings filtering, cost adjustments, product selection, and review into one workflow.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Before you start</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Your store needs WordPress 6.7 or later, WooCommerce 10.3 or later, and PHP 7.4 or later. Enable WooCommerce’s native <strong>Cost of Goods Sold</strong> feature in WooCommerce settings before using the editor.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To install the plugin, go to <strong>Plugins → Add New Plugin</strong>, search for <strong>Bulk COGS Editor for WooCommerce</strong>, and install and activate it. Then open <strong>Products → Bulk COGS Editor</strong>. If native COGS is unavailable or disabled, the editor explains what is required.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Before a major production update, take a current backup and check a small product group first. A preview helps you verify the intended changes, and a backup provides a separate recovery option.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How to bulk edit WooCommerce COGS</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">1. Find the products you want to update</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open the <strong>Bulk edit</strong> tab. Search by product name or SKU, or narrow the results using product categories and product types. Open <strong>More filters</strong> for additional options such as stock status, brand when available, current price, and current COGS.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Combine filters to target a particular group, then click <strong>Find products</strong>. The matching total includes a separate breakdown of products and variations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Selecting a parent category also matches products in its child categories. Variations use their parent product’s categories. Leave a filter empty when you do not want it to restrict the results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">2. Choose a cost action</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Use the <strong>Update action</strong> control to set an exact cost, adjust an existing cost, or clear it. For adjustments, choose the direction and whether to use a percentage or fixed amount.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Cost action</th><th>Example</th></tr></thead><tbody><tr><td>Set an exact cost</td><td>Assign ₹250 to each selected product</td></tr><tr><td>Increase by percentage</td><td>₹100 + 5% = ₹105</td></tr><tr><td>Decrease by percentage</td><td>₹100 − 10% = ₹90</td></tr><tr><td>Increase by fixed amount</td><td>₹100 + ₹20 = ₹120</td></tr><tr><td>Decrease by fixed amount</td><td>₹100 − ₹20 = ₹80</td></tr><tr><td>Clear cost</td><td>Remove the saved COGS value</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:paragraph -->
+<p>Percentage and fixed-amount adjustments skip products without a saved cost. Use an exact cost to assign their initial values. WooCommerce treats a zero COGS value as empty; use the clear action when you want to remove a stored value.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">3. Preview the changes and choose products</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The preview shows current COGS, proposed COGS, and the difference. Increases appear in green and decreases in red. Check several rows before continuing, especially when working with products that have different starting costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-2.png" alt="Preview of a five percent WooCommerce COGS increase with current costs, proposed costs, and product selection controls"/><figcaption class="wp-element-caption">Review calculated costs and the selected total before confirming an update.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Select individual rows, select the current page, or select all matching products. You can also clear the selection or use <strong>Select a range</strong>. The selection summary shows how many products are selected across all pages.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Use <strong>Manage columns</strong> to show or hide preview fields. This changes the information displayed in the table, without changing product data.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">4. Review, confirm, and follow progress</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Check the selected count in the action summary and add an optional note, such as “October supplier increase.” Click the review button, inspect the proposed operation, and confirm it to start the update.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Finding products and preparing a preview do not modify costs. Values shown on reviewed pages are checked again before starting and before each update. Changed reviewed products require a fresh preview and confirmation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Confirmed updates run in background batches using WooCommerce’s Action Scheduler. You can close the browser and return later to check progress. Review the updated, skipped, and failed counts when processing finishes, and expand <strong>Recent activity → View details</strong> to inspect the latest result.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Example: increase supplier costs by 5%</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Suppose a supplier increases costs across one product category. Open <strong>Bulk edit</strong>, select that category, and click <strong>Find products</strong>. Choose <strong>Adjust existing cost → Increase → Percentage</strong> and enter <strong>5</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A product with a current cost of ₹200 should show a proposed cost of ₹210. Review the matches, exclude products that should keep their current cost, and confirm the update. For other amounts, calculated results follow the store’s decimal precision.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How to export WooCommerce product costs to CSV</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Export current costs when you want to review them in a spreadsheet or prepare different new costs for individual products.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>Open <strong>CSV import / export</strong> and choose <strong>Export CSV</strong>.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Choose the output columns. Keep a product ID or SKU if you plan to import updated costs.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Filter your products, click <strong>Find products</strong>, and review the selected results.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Click <strong>Create CSV</strong> and download the file when ready. Keep the page open until the download is ready.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-3.png" alt="CSV export screen with output column choices, product filters, and a preview of WooCommerce product costs"/><figcaption class="wp-element-caption">Choose export columns and products before creating your CSV file.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The exported file includes a blank <code>new_cogs</code> column. Fill it with the costs you want to apply, keeping the product identifiers unchanged, then import the edited file.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can open the CSV in Excel. Export uses CSV format, even if an earlier import used XLSX. Creating an export does not change product costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How to import WooCommerce COGS from CSV or Excel</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Use import when different products need different new costs. The plugin accepts UTF-8 CSV and Excel <strong>XLSX</strong> files, identifying products by ID or SKU.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">1. Prepare your cost spreadsheet</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In <strong>CSV import / export</strong>, choose <strong>Import CSV</strong> and click <strong>Download template</strong>. Despite the option’s name, you can upload either CSV or XLSX.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Your file needs <code>new_cogs</code> and either <code>id</code> or <code>sku</code>. For example:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>id,sku,new_cogs
+123,PRODUCT-001,25.50
+124,PRODUCT-002,40.00</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Replace the example IDs and SKUs with products from your store. If both identifiers are provided, they must refer to the same product.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Use decimal costs without currency symbols.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Leave a cost blank to skip that row. A blank value does not clear an existing cost.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Avoid duplicate product rows. Duplicates are excluded and listed in the error report.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>For XLSX, use the first worksheet and replace formulas with values.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Store SKUs as text to preserve leading zeros.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>XLSX import requires PHP’s ZIP, XMLReader, and DOM extensions. The upload limit shown beside the file field comes from your WordPress configuration. The limit in the example screenshot belongs to that test site; your store may show a different value.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">2. Upload and validate the file</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Choose your CSV or XLSX file and click <strong>Validate file</strong>. The plugin prepares a preview in background batches without changing product costs. You can leave the page and return to check preparation progress.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-4.png" alt="CSV and Excel import screen with a template download, file requirements, upload field, and Validate file button"/><figcaption class="wp-element-caption">Upload a CSV or XLSX file and validate it before reviewing product cost changes.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">3. Review the import and confirm the update</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When preparation finishes, inspect the matched products and proposed costs. Download validation errors where available, correct affected rows, and validate the revised file if needed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Select the products to update, review the changes, and confirm the operation. Then follow the background update and check its final results. Preview preparation and the applied update have separate cancellation controls.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Prepared import previews and reports normally expire after about 24 hours, with retention extended while an applied update is active. If your preview expires, upload and validate the file again.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Review previous COGS updates in History</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The <strong>History</strong> tab helps you find previous operations and inspect their recorded results. Filter by status, operation type, user, or date range, or search by operation ID, note, or product ID.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-5.png" alt="WooCommerce COGS operation history with filters, operation types, product counts, statuses, users, and View details buttons"/><figcaption class="wp-element-caption">Find earlier cost updates and open their recorded details from History.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>View details</strong> to inspect an operation’s status, timing, and outcomes. Where original cost records are retained, you can also inspect recorded product changes and check rollback availability.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How to roll back WooCommerce COGS changes</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you applied an incorrect cost update, review a rollback to restore eligible products to their recorded original costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>Open <strong>History</strong> and find the operation.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Click <strong>View details</strong>, then <strong>Review rollback</strong> when available.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Compare current and original costs and check the rollback policy.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li>Choose <strong>Confirm rollback</strong> and monitor the results.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Rollback requires retained original values.</strong> Expired operations and older summary-only records cannot be rolled back. If the option is unavailable, check the operation’s details rather than assuming every history entry can be reversed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-6.png" alt="Older COGS operation details showing summary results and a notice that original cost values are unavailable for rollback"/><figcaption class="wp-element-caption">This older operation contains summary results without original cost records, so rollback is unavailable.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>If a rollback is cancelled or does not finish, review a new attempt for the remaining products. Already restored products are excluded, even if their costs have been edited again later.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Configure history retention and rollback in Settings</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The <strong>Settings</strong> tab controls how long operation records and original costs remain available, and how new rollbacks handle subsequent cost edits.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/assets/screenshot-7.png" alt="Bulk COGS Editor Settings tab with history retention and rollback behavior controls"/><figcaption class="wp-element-caption">Choose retention and rollback behavior, then save your settings.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">History retention</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Choose <strong>30 days</strong>, <strong>90 days</strong>, or a custom period from <strong>1 to 36,500 days</strong>. The default is 30 days. Pick a period that gives your team enough time to review completed cost updates.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Shortening retention also affects existing history. Increasing it cannot recover original costs already removed by scheduled cleanup.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Rollback behavior</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Suppose an operation changed a product’s cost from ₹100 to ₹110, and someone later edited it to ₹120. Your chosen rollback policy determines how that later edit is handled:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Overwrite current costs with original costs:</strong> restore the recorded ₹100 cost.</li>
+<!-- /wp:list-item --><!-- wp:list-item -->
+<li><strong>Skip changed products:</strong> preserve the later ₹120 edit by skipping that product.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Save settings</strong> after choosing your policy. The behavior shown during rollback review stays fixed for that attempt.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What happens if you cancel a cost update?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Cancel operation</strong> to request that processing stop. A batch may already be running, so a few more products can finish before cancellation takes effect.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cancellation keeps costs already saved. For example, if 150 products were updated before the operation stopped, those changes remain. Restoring them requires a separate rollback from History while their original values are retained.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Working with variations and large catalogs</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Variations are treated as individual product records with their own COGS values. When you select only variations, their variable parent products are not changed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For large catalogs, updates run in batches and record progress and product outcomes to support recovery after interruptions. Processing time depends on hosting resources, database speed, product types, installed extensions, and background worker availability.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You do not need to keep the browser open for import preview preparation or confirmed updates. Background workers still need to run on your site. If progress stops, check your site’s scheduled-task setup or ask your host to investigate. CSV export is different: keep its page open until the download is ready.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Frequently asked questions</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Does Bulk COGS Editor change selling prices?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>No. It updates WooCommerce’s native Cost of Goods Sold values. Regular prices and sale prices remain unchanged.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Should I use bulk edit or CSV import?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Use bulk edit when one adjustment applies to a group, such as increasing costs by 5%. Use CSV or XLSX import when individual products need different new costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Can I export WooCommerce COGS as an Excel file?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The plugin exports CSV files, which you can open in Excel. It accepts XLSX imports but does not produce XLSX exports.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Does uploading a spreadsheet immediately change costs?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>No. Uploading and validating a file prepares a preview. Product costs change only after you review and confirm the update.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Is there a fixed import row limit?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The plugin has no separate file-size or row-count limit. WordPress’s maximum upload size and your hosting’s memory, storage, and execution limits still apply. Test a representative file before planning a large import.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Can I undo every previous update?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>No. Rollback is available for eligible changes with retained original costs. Expired records and older operations containing only summary results cannot be restored through rollback.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Does the plugin send store data to an external service?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>No. The plugin performs its COGS calculations and updates locally on your WordPress/WooCommerce installation and does not send product, customer, order, or store data to external processing services.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Start managing WooCommerce product costs</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Choose a small product group, preview a cost adjustment, and check the result. When you need different values per product, prepare an import from an exported CSV or the supplied template. Review your retention and rollback settings before making larger updates.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/"><strong>Get Bulk COGS Editor for WooCommerce</strong></a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The plugin is open source. Explore the <a href="https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce">source code on GitHub</a>, check the <a href="https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/blob/main/readme.txt">plugin readme</a>, or share questions and suggestions in the <a href="https://wordpress.org/support/plugin/bulk-cogs-editor-for-woocommerce/">WordPress.org support forum</a>.</p>
+<!-- /wp:paragraph -->
