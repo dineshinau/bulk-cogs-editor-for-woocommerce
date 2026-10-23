@@ -55,7 +55,7 @@ remaining rollback products, and keep editor drafts when switching tabs.
 - Remove individual filter chips, clear filters, or start a new selection.
 - See the full matching count with separate product and variation totals.
 
-Brand filtering appears when a public product brand taxonomy is available. Category option counts come from WooCommerce’s stored product counts; the matching result count reflects the current filter combination.
+Brand filtering appears when a public product brand taxonomy is available. Category option counts come from WooCommerce’s stored product counts. They do not count variations as separate records and do not change when you adjust other filters. Choose **Find products** to see the matching total and its product and variation breakdown for the current filter combination.
 
 ### Set, adjust, or clear costs
 
@@ -84,6 +84,8 @@ Relative adjustments skip products without a saved cost. Use **Set exact cost** 
 - Review the action, selection scope, and preview review coverage in the confirmation dialog.
 
 Individual selections support up to **500 products**. All-matching and range selections support larger scopes. Outdated preview rows remain visible for context, but selection and confirmation are disabled until fresh results are ready. A nearby **Refresh preview** control helps recover when needed.
+
+Previous rows can remain visible while results refresh or another page loads. Wait for the refresh to finish, or use **Refresh preview** when prompted. Review the fresh results before confirming.
 
 ![Product preview showing current and proposed costs with cross-page selection controls](docs/screenshots/product-preview.png)
 

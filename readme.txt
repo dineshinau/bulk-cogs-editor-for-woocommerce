@@ -141,6 +141,12 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 = How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
 Go to Products > Bulk COGS Editor, filter the products you want to change, choose an action (set exact, increase or decrease by a percentage or fixed amount, or clear), review the preview, and confirm. Updates are applied in background batches.
 
+= Can I import WooCommerce product costs from CSV or Excel? =
+Yes. Upload a UTF-8 CSV file or an Excel XLSX workbook with a `new_cogs` column and an `id` or `sku` column to identify each product. If both ID and SKU are supplied, they must identify the same product. Review the validated preview, select the products, and confirm before applying changes.
+
+= Can I export product costs and import updated values? =
+Yes. Export matching products to CSV, fill the blank `new_cogs` column with the updated costs, and import the file. Keep the product IDs or SKUs so each row matches the correct product. Review the preview and explicitly confirm the update; uploading a file alone does not change product costs.
+
 = Does this plugin work with WooCommerce's native Cost of Goods Sold feature? =
 Yes. Bulk COGS Editor is designed specifically for WooCommerce's native Cost of Goods Sold (COGS) feature. COGS must be supported by your installed WooCommerce version and enabled in WooCommerce settings. If it is disabled or unavailable, the editor explains what is required.
 
@@ -155,9 +161,6 @@ Yes. You can preview all proposed cost changes in a paginated table showing prod
 
 = Do I need to read the documentation or watch the video before using the editor? =
 The editor includes Help and instructions for Bulk edit, CSV Import, and CSV Export. The steps change with your selected task. Field guidance, cost examples, previews, and a confirmation summary help you review changes before applying them. Documentation and video links are available for more detail.
-
-= Why are previous preview rows still visible but unavailable for selection? =
-The editor keeps previous rows visible while results refresh or another page loads. When results are outdated, selection and confirmation are disabled. Wait for the refresh to finish, or use Refresh preview beside the table when prompted. Review the fresh results before confirming.
 
 = Where can I see the result of my last update? =
 Expand Recent activity to see the latest completed operation, its updated count, completion time, and elapsed time. Skipped or failed products and cancellation or failure outcomes are highlighted. Cancelling an operation keeps changes that were already saved.
@@ -186,17 +189,14 @@ Selecting all categories requires products to have a category assignment. Variat
 = Are child categories included? =
 Yes. The dropdown lists both parent and child categories in a flat list. Selecting a parent category also matches products in its child categories and variations of those products.
 
-= What do the counts beside category names mean? =
-The number in parentheses is WooCommerce's stored product count for that category. It does not count variations as separate records and does not change when you adjust the other filters. Use "Get products" to see the matching total and its product and variation breakdown for your current filters.
-
 = Does the matching total include variations? =
 Yes. The result message shows the total followed by separate product and variation counts, for example: "950 matches: 300 products and 650 variations." The product count excludes variation records. The counts cover all matching results, not just the current preview page.
 
 = What happens to products without a COGS value during relative adjustments? =
 Relative actions (percentage and fixed amount increases or decreases) skip products that do not have a COGS value set. To assign costs to those products, use the "Set exact" action.
 
-= Can I safely update large catalogs without timing out? =
-Yes. Updates are processed in background batches via Action Scheduler. You can monitor live progress, elapsed time, and estimated remaining time, and you can cancel processing at any time without losing already completed updates.
+= How are large catalogs processed? =
+Updates run in background batches through Action Scheduler. Completion time depends on hosting and worker availability. Monitor progress in the editor; cancellation keeps changes already saved.
 
 = Does this plugin modify product prices? =
 No. The plugin only modifies the WooCommerce Cost of Goods Sold value.
