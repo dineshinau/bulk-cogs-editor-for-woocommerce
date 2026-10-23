@@ -4,6 +4,32 @@
   "graph": {},
   "nodes": [
     {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service",
+      "label": "DKBCE_CSV_Service",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_csv_service",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader",
+      "label": "DKBCE_Import_Reader",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_import_reader",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
       "label": "DKBCE_Admin_Hooks",
       "_callable": true,
@@ -79,19 +105,6 @@
       "file_type": "code",
       "norm_label": "dkbce_admin_functions",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service",
-      "label": "DKBCE_CSV_Service",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "dkbce_csv_service",
-      "source_file": "admin/class-dkbce-csv-service.php",
       "source_location": "L13"
     },
     {
@@ -173,19 +186,6 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader",
-      "label": "DKBCE_Import_Reader",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": "dkbce_import_reader",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_import_store_dkbce_import_store",
       "label": "DKBCE_Import_Store",
       "_callable": true,
@@ -258,6 +258,198 @@
       "norm_label": "tool_path()",
       "source_file": "scripts/php-quality.py",
       "source_location": "L45"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_file",
+      "label": ".ajax_download_file()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_download_file()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L987"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_closure_1",
+      "label": "{closure#1}()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": "{closure#1}()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L26"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_header",
+      "label": ".header()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".header()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_line",
+      "label": ".line()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".line()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L170"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
+      "label": ".sku_ids()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".sku_ids()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L133"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_valid_quoting",
+      "label": ".valid_quoting()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".valid_quoting()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L101"
+    },
+    {
+      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_validate_row",
+      "label": ".validate_row()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".validate_row()",
+      "source_file": "admin/class-dkbce-csv-service.php",
+      "source_location": "L47"
+    },
+    {
+      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_start",
+      "label": ".start()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".start()",
+      "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L27"
+    },
+    {
+      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
+      "label": ".process()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".process()",
+      "source_file": "admin/class-dkbce-import-processor.php",
+      "source_location": "L105"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_cells",
+      "label": ".cells()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".cells()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L301"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_csv_batch",
+      "label": ".csv_batch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".csv_batch()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L31"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_prepare_xlsx",
+      "label": ".prepare_xlsx()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".prepare_xlsx()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L78"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_read",
+      "label": ".read()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".read()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L265"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_text",
+      "label": ".text()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".text()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L280"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xlsx_batch",
+      "label": ".xlsx_batch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".xlsx_batch()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L170"
+    },
+    {
+      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xml",
+      "label": ".xml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "DKBCE_CSV_Service",
+      "file_type": "code",
+      "norm_label": ".xml()",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L248"
     },
     {
       "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
@@ -896,18 +1088,6 @@
       "source_location": "L966"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_file",
-      "label": ".ajax_download_file()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".ajax_download_file()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L987"
-    },
-    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_status",
       "label": ".ajax_download_status()",
       "_callable": true,
@@ -1232,78 +1412,6 @@
       "source_location": "L656"
     },
     {
-      "id": "admin_class_dkbce_csv_service_closure_1",
-      "label": "{closure#1}()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "{closure#1}()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L26"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_header",
-      "label": ".header()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".header()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L24"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_line",
-      "label": ".line()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".line()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L170"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
-      "label": ".sku_ids()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".sku_ids()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L133"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_valid_quoting",
-      "label": ".valid_quoting()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".valid_quoting()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L101"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service_dkbce_csv_service_validate_row",
-      "label": ".validate_row()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".validate_row()",
-      "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L47"
-    },
-    {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
       "label": ".batch()",
       "_callable": true,
@@ -1338,18 +1446,6 @@
       "norm_label": ".process()",
       "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L77"
-    },
-    {
-      "id": "admin_class_dkbce_download_processor_dkbce_download_processor_start",
-      "label": ".start()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".start()",
-      "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L27"
     },
     {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_write_all",
@@ -3020,18 +3116,6 @@
       "source_location": "L166"
     },
     {
-      "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
-      "label": ".process()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".process()",
-      "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L105"
-    },
-    {
       "id": "admin_class_dkbce_import_processor_dkbce_import_processor_upload",
       "label": ".upload()",
       "_callable": true,
@@ -3042,90 +3126,6 @@
       "norm_label": ".upload()",
       "source_file": "admin/class-dkbce-import-processor.php",
       "source_location": "L21"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_cells",
-      "label": ".cells()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".cells()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L301"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_csv_batch",
-      "label": ".csv_batch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".csv_batch()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L31"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_prepare_xlsx",
-      "label": ".prepare_xlsx()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".prepare_xlsx()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L78"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_read",
-      "label": ".read()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".read()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L265"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_text",
-      "label": ".text()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".text()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L280"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xlsx_batch",
-      "label": ".xlsx_batch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".xlsx_batch()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L170"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader_dkbce_import_reader_xml",
-      "label": ".xml()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": ".xml()",
-      "source_file": "admin/class-dkbce-import-reader.php",
-      "source_location": "L248"
     },
     {
       "id": "admin_class_dkbce_import_store_dkbce_import_store_check_error",
@@ -3339,103 +3339,26 @@
       "source_location": "L46"
     },
     {
-      "id": "org_assets_blueprints_blueprint",
-      "label": "blueprint.json",
+      "id": "admin_class_dkbce_csv_service",
+      "label": "class-dkbce-csv-service.php",
       "_origin": "ast",
       "community": 1,
-      "community_name": "blueprint.json",
+      "community_name": "DKBCE_CSV_Service",
       "file_type": "code",
-      "norm_label": "blueprint.json",
-      "source_file": "org-assets/blueprints/blueprint.json",
+      "norm_label": "class-dkbce-csv-service.php",
+      "source_file": "admin/class-dkbce-csv-service.php",
       "source_location": "L1"
     },
     {
-      "id": "org_assets_blueprints_blueprint_features",
-      "label": "features",
+      "id": "admin_class_dkbce_import_reader",
+      "label": "class-dkbce-import-reader.php",
       "_origin": "ast",
       "community": 1,
-      "community_name": "blueprint.json",
+      "community_name": "DKBCE_CSV_Service",
       "file_type": "code",
-      "norm_label": "features",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L8"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_features_networking",
-      "label": "networking",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "networking",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L9"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_landingpage",
-      "label": "landingPage",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "landingpage",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L3"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_preferredversions",
-      "label": "preferredVersions",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "preferredversions",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_preferredversions_php",
-      "label": "php",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "php",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L5"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_preferredversions_wp",
-      "label": "wp",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "wp",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L6"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_schema",
-      "label": "$schema",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "$schema",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L2"
-    },
-    {
-      "id": "org_assets_blueprints_blueprint_steps",
-      "label": "steps",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "blueprint.json",
-      "file_type": "code",
-      "norm_label": "steps",
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L12"
+      "norm_label": "class-dkbce-import-reader.php",
+      "source_file": "admin/class-dkbce-import-reader.php",
+      "source_location": "L1"
     },
     {
       "id": "package",
@@ -3875,17 +3798,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-admin-functions.php",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_csv_service",
-      "label": "class-dkbce-csv-service.php",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "class-dkbce-csv-service.php",
-      "source_file": "admin/class-dkbce-csv-service.php",
       "source_location": "L1"
     },
     {
@@ -4711,17 +4623,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-import-processor.php",
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_import_reader",
-      "label": "class-dkbce-import-reader.php",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DKBCE_Import_Store",
-      "file_type": "code",
-      "norm_label": "class-dkbce-import-reader.php",
-      "source_file": "admin/class-dkbce-import-reader.php",
       "source_location": "L1"
     },
     {
@@ -10524,94 +10425,6 @@
       "weight": 1.0
     },
     {
-      "source": "org_assets_blueprints_blueprint",
-      "target": "org_assets_blueprints_blueprint_steps",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint",
-      "target": "org_assets_blueprints_blueprint_schema",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint",
-      "target": "org_assets_blueprints_blueprint_landingpage",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint",
-      "target": "org_assets_blueprints_blueprint_preferredversions",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint",
-      "target": "org_assets_blueprints_blueprint_features",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint_features",
-      "target": "org_assets_blueprints_blueprint_features_networking",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint_preferredversions",
-      "target": "org_assets_blueprints_blueprint_preferredversions_php",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "org_assets_blueprints_blueprint_preferredversions",
-      "target": "org_assets_blueprints_blueprint_preferredversions_wp",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "org-assets/blueprints/blueprint.json",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
       "source": "package",
       "target": "package_name",
       "relation": "contains",
@@ -15010,5 +14823,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "efccf02cfff5d019d511439a8576aba2610acd58"
+  "built_at_commit": "fc6b67d181380948a3802adf87b563fe947265f1"
 }
