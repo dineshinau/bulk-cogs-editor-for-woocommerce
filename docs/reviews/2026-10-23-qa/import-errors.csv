@@ -1,0 +1,3 @@
+﻿"row","id","sku","new_cogs","error"
+"3","0","DOES-NOT-EXIST-QA","'-5","Product is missing, ambiguous, inaccessible, or ID and SKU disagree."
+"4","656","apparel-01-s","","Enter a non-negative decimal COGS value. Blank values are not imported."

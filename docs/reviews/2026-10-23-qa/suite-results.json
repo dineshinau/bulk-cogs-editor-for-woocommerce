@@ -1,0 +1,658 @@
+{
+  "config": {
+    "argv": [
+      "/home/dinesh/.nvm/versions/node/v26.5.1/bin/node",
+      "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/node_modules/.bin/playwright",
+      "test",
+      "--config=tests/e2e/playwright.config.cjs",
+      "--headed",
+      "--reporter=list,json"
+    ],
+    "configFile": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e/playwright.config.cjs",
+    "rootDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e/global-setup.cjs",
+    "globalTeardown": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e/global-teardown.cjs",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.cjs"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e",
+        "snapshotDir": "/var/www/html/wcdev/wp-content/plugins/bulk-cogs-editor-for-woocommerce/tests/e2e",
+        "testIgnore": [],
+        "testMatch": "*.spec.cjs",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "https://wsl.com/wcdev/",
+          "browserName": "chromium",
+          "channel": "chrome",
+          "ignoreHTTPSErrors": true,
+          "storageState": "/tmp/dkbce-playwright-e2e/manager.json",
+          "trace": "off",
+          "headless": false
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "bulk-cogs-editor.spec.cjs",
+      "file": "bulk-cogs-editor.spec.cjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "loads admin page with six actions and accessible filter controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:10.109Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-214edc0cf3582f69e2c6",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 138,
+          "column": 1
+        },
+        {
+          "title": "keeps the apply panel in document flow on mobile",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1934,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:12.668Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-4441f9e1bbca81201f4c",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 155,
+          "column": 1
+        },
+        {
+          "title": "search matches product title and SKU and reset clears filters",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2791,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:14.653Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-ada838861a85275c8ace",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "filters by category, price range, COGS range, and combined AND conditions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2791,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:17.470Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-e6ebf0837a5e5142e059",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 171,
+          "column": 1
+        },
+        {
+          "title": "filters simple, variable, variation, grouped, and external products",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:20.289Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-abd3904415eb2259cb4a",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 188,
+          "column": 1
+        },
+        {
+          "title": "filters all stock states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:23.835Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-a5a7d3083711401befe1",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 201,
+          "column": 1
+        },
+        {
+          "title": "filters by supported brand taxonomy when available",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2350,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:26.742Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-9c269b6e5107718a2f58",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 212,
+          "column": 1
+        },
+        {
+          "title": "previews all six actions without modifying the current COGS value",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8483,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:29.132Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-762558bde0f7326b2e71",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 221,
+          "column": 1
+        },
+        {
+          "title": "preview shows images, edit links, increase green and decrease red",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:37.652Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-c222d0766ce1d107e3d2",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 247,
+          "column": 1
+        },
+        {
+          "title": "skips relative operations for empty COGS and WooCommerce-normalized zero",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6516,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:41.855Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-6440a067f34eb9701a64",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 264,
+          "column": 1
+        },
+        {
+          "title": "rounds calculated COGS to store precision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2943,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:48.408Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-5f25f38e6318e490cf7a",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 280,
+          "column": 1
+        },
+        {
+          "title": "paginates large previews and reports total matching products",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3478,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:51.379Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-f2811116e304c4107538",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 287,
+          "column": 1
+        },
+        {
+          "title": "renders malicious product names as text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2828,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:54.893Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-d522468c631b358af487",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 298,
+          "column": 1
+        },
+        {
+          "title": "requires valid filters, action values, nonce, and capability",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2507,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:32:57.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-27c9379bfdd08feb1f4a",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 304,
+          "column": 1
+        },
+        {
+          "title": "cancellation request is scoped to an existing authorized operation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2593,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:33:00.286Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-58078212d507a1645f05",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 344,
+          "column": 1
+        },
+        {
+          "title": "confirms apply, processes selected disposable product, and rejects replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11349,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-23T11:33:02.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b16066060b3f89d01287-f094659a00eb50db3aac",
+          "file": "bulk-cogs-editor.spec.cjs",
+          "line": 369,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-23T11:31:15.976Z",
+    "duration": 138081.46,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
