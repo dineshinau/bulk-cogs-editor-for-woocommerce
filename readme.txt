@@ -61,23 +61,23 @@ In the developer's [reported benchmark results](https://github.com/dineshinau/bu
 
 The supplied completion screenshot records an editor operation elapsed time of **00:15:24**, not a separately measured end-to-end CLI runtime. The latest result is a single benchmark run, not a guaranteed completion time. Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
-= Import CSV and XLSX files =
+= Import and export product costs with CSV or Excel =
 
 Choose CSV mode and Import on the Bulk COGS Editor page. Upload a UTF-8 CSV or an XLSX workbook. The upload limit follows WordPress's maximum upload size, shown beside the file field; the plugin does not impose a separate file-size or row-count cap. Hosting upload, memory, storage and execution limits still apply.
 
 Exported CSV files end with a blank `new_cogs` column. Fill this column with the new costs, then import the file. Required headers are `new_cogs` and `id` or `sku`; legacy files may use `cogs` when `new_cogs` is absent. ID and SKU must agree when both are supplied. Blank costs are excluded; use decimal points without currency symbols. Duplicate product rows are excluded and included in the error report.
 
-XLSX imports read the first worksheet's raw cell values. Replace formulas with values before uploading, and store SKUs as text to preserve leading zeros. XLSX needs PHP's ZIP, XMLReader and DOM extensions. XLSX text is decoded by its XML reader; Windows-1252 is not required. CSV remains UTF-8 only. Export still produces CSV.
+XLSX imports read the first worksheet's raw cell values. Replace formulas with values before uploading, and store SKUs as text to preserve leading zeros. XLSX needs PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
 
 Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to resume its progress display. Once ready, review paged products, download validation errors, select products and explicitly apply the changes. Preparation can be cancelled independently of an applied update. Original uploads are deleted when preparation ends; staged previews and reports expire through scheduled cleanup after approximately 24 hours, with retention extended while an applied update is active.
 
-Completed bulk operation history, original cost records, and one-use preview claims use the retention period in Settings: 30 days by default, 90 days, or custom days. A bounded daily cleanup removes expired records and rechecks retention before deleting history. Active operations and staged imports that still support a report are retained until their work and report dependencies are finished. Preview claims protect against replay and concurrent Apply requests until their retention and dependency checks permit removal.
-
-The WP-CLI command below processes both preview preparation and confirmed updates. Preview workers must run on the upload server as the same operating-system user as PHP, because original uploads are stored in private temporary files. If your shell uses a different user, ask your host to run the command as the PHP user; ordinary product updates do not need the uploaded file. During preparation, worker logs report the stage, checked row count and batch size. The total and remaining row counts are unknown until reading finishes.
+Completed operation history, original cost records, and one-use preview claims follow the retention period in Settings; see the retention FAQ below. Daily cleanup rechecks retention before deleting records, preserving active operations and import report dependencies. Preview claims protect against replay and concurrent Apply requests until cleanup permits removal.
 
 = Run background updates with WP-CLI =
 
-Use Action Scheduler's CLI runner to process the plugin queue while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
+Use Action Scheduler's CLI runner for import preview preparation and confirmed updates while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
+
+Preview workers must run on the upload server as the same operating-system user as PHP, because original uploads are stored in private temporary files. If your shell uses a different user, ask your host to run the command as the PHP user; ordinary product updates do not need the uploaded file. During preparation, worker logs report the stage, checked row count and batch size. The total and remaining row counts are unknown until reading finishes.
 
 After uploading an import for preview or confirming an update in the editor, run this command from your WordPress directory:
 
@@ -139,22 +139,19 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 == Frequently Asked Questions ==
 
 = How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
-Go to Products > Bulk COGS Editor, filter the products you want to change, choose an action (set exact, increase or decrease by a percentage or fixed amount, or clear), review the preview, and confirm. Updates are applied in background batches.
+Follow the bulk editing steps above: find products, choose a cost action, review and select products, then confirm the update.
 
 = Can I import WooCommerce product costs from CSV or Excel? =
-Yes. Upload a UTF-8 CSV file or an Excel XLSX workbook with a `new_cogs` column and an `id` or `sku` column to identify each product. If both ID and SKU are supplied, they must identify the same product. Review the validated preview, select the products, and confirm before applying changes.
+Yes. Both formats support product IDs or SKUs. See the import section above for required columns, file requirements, and validation steps.
 
 = Can I export product costs and import updated values? =
-Yes. Export matching products to CSV, fill the blank `new_cogs` column with the updated costs, and import the file. Keep the product IDs or SKUs so each row matches the correct product. Review the preview and explicitly confirm the update; uploading a file alone does not change product costs.
+Yes. Fill the exported CSV's blank `new_cogs` column and import it using the workflow above. Keep product IDs or SKUs unchanged so each row matches the correct product.
 
 = Does this plugin work with WooCommerce's native Cost of Goods Sold feature? =
-Yes. Bulk COGS Editor is designed specifically for WooCommerce's native Cost of Goods Sold (COGS) feature. COGS must be supported by your installed WooCommerce version and enabled in WooCommerce settings. If it is disabled or unavailable, the editor explains what is required.
-
-= Which WooCommerce version do I need? =
-WooCommerce 10.3 or later, with the Cost of Goods Sold feature enabled in WooCommerce settings.
+Yes. It requires WooCommerce 10.3 or later with native COGS enabled. If the feature is disabled or unavailable, the editor explains what is required.
 
 = Can I increase all product costs by a percentage? =
-Yes. Filter the products you want, choose "Increase by percentage", enter the value, and review the preview before applying. You can also decrease by a percentage, or increase or decrease by a fixed amount.
+Yes. Find the products, choose Adjust existing cost and the percentage increase option, enter a value, then review and confirm.
 
 = Can I preview changes before applying them? =
 Yes. You can preview all proposed cost changes in a paginated table showing product images, current COGS, calculated COGS, and the exact difference before confirming any update. Previewing never modifies your store data.
@@ -167,11 +164,11 @@ Expand Recent activity to see the latest completed operation, its updated count,
 
 = Can I roll back a completed update? =
 
-Open History, select View details for the source operation, then choose Review rollback when retained original costs are available. Review the current and original values, check the confirmation, and choose Confirm rollback. Older summary-only or expired operations cannot be rolled back. Cancelling an operation keeps changes already saved; restoring them requires a separate rollback.
+Open History, select View details for the source operation, then choose Review rollback when retained original costs are available. Review the current and original values, check the confirmation, and choose Confirm rollback. Older summary-only or expired operations cannot be rolled back. Restoring changes saved before cancellation also requires a separate rollback.
 
 = What if product cost changed after the original update? =
 
-Settings lets you choose whether new rollbacks overwrite current costs with the recorded original costs or skip products changed afterward. The chosen policy appears during review and remains fixed for that attempt. After a terminal incomplete rollback, review a new attempt for remaining products; products already restored are excluded even if edited again later.
+Settings lets you choose whether new rollbacks overwrite current costs with the recorded original costs or skip products changed afterward. The chosen policy appears during review and remains fixed for that attempt. If a rollback is cancelled or does not finish, review a new attempt for the remaining products. Products already restored are excluded even if edited again later.
 
 = How long is operation history retained? =
 
@@ -193,16 +190,13 @@ Yes. The dropdown lists both parent and child categories in a flat list. Selecti
 Yes. The result message shows the total followed by separate product and variation counts, for example: "950 matches: 300 products and 650 variations." The product count excludes variation records. The counts cover all matching results, not just the current preview page.
 
 = What happens to products without a COGS value during relative adjustments? =
-Relative actions (percentage and fixed amount increases or decreases) skip products that do not have a COGS value set. To assign costs to those products, use the "Set exact" action.
+Relative actions skip products without a saved COGS value. Use Set exact cost to assign one. WooCommerce treats zero as empty; clearing a cost uses the COGS API's null value.
 
 = How are large catalogs processed? =
 Updates run in background batches through Action Scheduler. Completion time depends on hosting and worker availability. Monitor progress in the editor; cancellation keeps changes already saved.
 
 = Does this plugin modify product prices? =
 No. The plugin only modifies the WooCommerce Cost of Goods Sold value.
-
-= Does it use an external service? =
-No. The plugin processes product data on your WordPress/WooCommerce installation.
 
 = Where can I give feedback? =
 If you have a suggestion to improve the plugin, please [open an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/) on GitHub or use the support forum on WordPress.org.
