@@ -1,169 +1,169 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1792754718.942969,
-    "seen": 1792754814.3446813,
+    "mtime": 1792795931.071545,
+    "seen": 1792796355.9291883,
     "ast_hash": "aab1ce25bf54de9217489834a6f6c3cc",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446877,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9291942,
     "ast_hash": "60864fec1f4505019a8415cc1611ab3a",
     "semantic_hash": ""
   },
   "admin/index.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447115,
+    "mtime": 1792795931.083545,
+    "seen": 1792796355.9292173,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1792790275.0522113,
-    "seen": 1792790300.8566105,
+    "mtime": 1792795931.0889564,
+    "seen": 1792796355.9292188,
     "ast_hash": "3658a04e7e40159e38f80b5d5be10fd0",
     "semantic_hash": ""
   },
   "index.php": {
-    "mtime": 1792754719.0269692,
-    "seen": 1792754814.3447144,
+    "mtime": 1792795931.2761126,
+    "seen": 1792796355.9292202,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": "02cfd086392eb3d5db8889957f322baa"
   },
   "package.json": {
-    "mtime": 1792790304.9493158,
-    "seen": 1792790415.9645214,
+    "mtime": 1792795931.2828555,
+    "seen": 1792796355.9292216,
     "ast_hash": "d1e33221a85589d59c715ce64ae191d2",
     "semantic_hash": ""
   },
   "skills-lock.json": {
-    "mtime": 1792754719.0582535,
-    "seen": 1792754814.3447204,
+    "mtime": 1792795931.2850547,
+    "seen": 1792796355.9292262,
     "ast_hash": "89a2d97ae04fc486d74450bbaeebaea5",
     "semantic_hash": "89a2d97ae04fc486d74450bbaeebaea5"
   },
   "admin/class-dkbce-bulk-processor.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446927,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9291997,
     "ast_hash": "16358a17b630913ba6a215aa2ee1fe42",
     "semantic_hash": ""
   },
   "admin/class-dkbce-cogs-service.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446946,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292011,
     "ast_hash": "81142fe6d50099a2e7ee15bbca1e365f",
     "semantic_hash": ""
   },
   "admin/class-dkbce-operation-store.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447082,
+    "mtime": 1792795931.083545,
+    "seen": 1792796355.9292145,
     "ast_hash": "d041fe71e3b58b1661f386a2b68cc39b",
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1792790496.9540002,
-    "seen": 1792790509.4197705,
+    "mtime": 1792795931.2871695,
+    "seen": 1792796355.9292276,
     "ast_hash": "d615c5d0777e13ff706bb66c824298d1",
     "semantic_hash": ""
   },
   "src/index.php": {
-    "mtime": 1792754719.0600605,
-    "seen": 1792754814.344724,
+    "mtime": 1792795931.2880373,
+    "seen": 1792796355.9292293,
     "ast_hash": "02cfd086392eb3d5db8889957f322baa",
     "semantic_hash": ""
   },
   "webpack.config.js": {
-    "mtime": 1792754719.0615377,
-    "seen": 1792754814.344733,
+    "mtime": 1792795931.2913215,
+    "seen": 1792796355.9292376,
     "ast_hash": "34a05699174a551e9563daa75cd848ed",
     "semantic_hash": ""
   },
   "scripts/php-quality.py": {
-    "mtime": 1792754719.0582535,
-    "seen": 1792754814.3447192,
+    "mtime": 1792795931.284628,
+    "seen": 1792796355.9292245,
     "ast_hash": "ca94b568a344e5dde4648951fc8d8796",
     "semantic_hash": ""
   },
   "tests/e2e/bulk-cogs-editor.spec.cjs": {
-    "mtime": 1792754719.060758,
-    "seen": 1792754814.3447256,
+    "mtime": 1792795931.2893414,
+    "seen": 1792796355.9292307,
     "ast_hash": "6efb4ff0f9183ae9b8cae40c62fdef9b",
     "semantic_hash": ""
   },
   "tests/e2e/fixtures.php": {
-    "mtime": 1792754719.0610518,
-    "seen": 1792754814.3447268,
+    "mtime": 1792795931.2897203,
+    "seen": 1792796355.9292321,
     "ast_hash": "beb60a71ed4be74bc92c8bbcfff9ba43",
     "semantic_hash": ""
   },
   "tests/e2e/global-setup.cjs": {
-    "mtime": 1792754719.0613232,
-    "seen": 1792754814.3447282,
+    "mtime": 1792795931.2902339,
+    "seen": 1792796355.9292333,
     "ast_hash": "aa3829651e3a6e033438ec96f9d48e4a",
     "semantic_hash": ""
   },
   "tests/e2e/global-teardown.cjs": {
-    "mtime": 1792754719.0613232,
-    "seen": 1792754814.3447301,
+    "mtime": 1792795931.2905593,
+    "seen": 1792796355.929235,
     "ast_hash": "8ad0f9a616b5e5899189179930fbda98",
     "semantic_hash": ""
   },
   "tests/e2e/playwright.config.cjs": {
-    "mtime": 1792754719.0615377,
-    "seen": 1792754814.3447313,
+    "mtime": 1792795931.2909555,
+    "seen": 1792796355.9292362,
     "ast_hash": "f2b823a8e391b007cbf33060a3156544",
     "semantic_hash": ""
   },
   "admin/class-dkbce-csv-service.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.344696,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.929203,
     "ast_hash": "99771968f720b238a81b9733016e71a4",
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-processor.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447037,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292107,
     "ast_hash": "37a186ae046ba83fff41946815a2b14b",
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-reader.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.344705,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292119,
     "ast_hash": "6e59a08e74ae3083f5df6a40fa0752ee",
     "semantic_hash": ""
   },
   "admin/class-dkbce-import-store.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447068,
+    "mtime": 1792795931.083545,
+    "seen": 1792796355.9292133,
     "ast_hash": "a86d6c11240254cd0b3c024fcd83d9c7",
     "semantic_hash": ""
   },
   "admin/class-dkbce-download-processor.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446994,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292061,
     "ast_hash": "80328c16cbea52ece242e5f91e279d1d",
     "semantic_hash": ""
   },
   "admin/class-dkbce-autoloader.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446908,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9291975,
     "ast_hash": "58d72816d5a65732c84d8078b96cf12a",
     "semantic_hash": ""
   },
   "admin/class-dkbce-database-installer.php": {
-    "mtime": 1792754718.9454944,
-    "seen": 1792754814.3446977,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292047,
     "ast_hash": "b786c30029c8e4a6fb238d6ca735324d",
     "semantic_hash": ""
   },
   "admin/class-dkbce-retention-processor.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447096,
+    "mtime": 1792795931.083545,
+    "seen": 1792796355.9292157,
     "ast_hash": "c093e223575a1a936dcf8b1ebe299507",
     "semantic_hash": ""
   },
   "scripts/class-dkbce-range-query-profiler.php": {
-    "mtime": 1792754719.0575032,
-    "seen": 1792754814.3447175,
+    "mtime": 1792795931.2837043,
+    "seen": 1792796355.9292228,
     "ast_hash": "41f971b1d4a888835144edae257651dc",
     "semantic_hash": ""
   },
@@ -174,20 +174,20 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-history-controller.php": {
-    "mtime": 1792790280.3322492,
-    "seen": 1792790300.856586,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292078,
     "ast_hash": "82a705b98be3c19995dbe2c8618e339b",
     "semantic_hash": ""
   },
   "admin/class-dkbce-history-store.php": {
-    "mtime": 1792754718.9469693,
-    "seen": 1792754814.3447022,
+    "mtime": 1792795931.076168,
+    "seen": 1792796355.9292092,
     "ast_hash": "03cce1c60a10398462a6ed3debe01437",
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1792754718.948874,
-    "seen": 1792754814.344736,
+    "mtime": 1792795931.0893927,
+    "seen": 1792796355.9292421,
     "ast_hash": "2bfb6026a3de8077525f3a686b8fdaeb",
     "semantic_hash": ""
   }
