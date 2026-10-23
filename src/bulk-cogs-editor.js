@@ -435,10 +435,30 @@
 	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
 	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
+	let clearReferences = null;
+	const forceClearSection = historySection( historyText.forceClear, 2 );
+	const forceClearButton = historyButton( historyText.forceClear, async () => {
+		if ( ! clearReferences || ! window.confirm( historyText.forceClearConfirm ) ) { return; }
+		forceClearButton.disabled = true;
+		try {
+			await request( 'force_clear', { ...clearReferences, confirmed: '1' } );
+			window.location.reload();
+		} catch ( error ) {
+			setNotice( error.message, 'error', forceClearSection );
+			await loadSettings();
+		}
+	} );
+	forceClearButton.disabled = true;
+	forceClearSection.append( historyElement( 'p', historyText.forceClearWarning, 'description' ), forceClearButton );
+	settingsRoot.appendChild( forceClearSection );
 	async function loadSettings() {
 		saveSettings.disabled = true;
+		forceClearButton.disabled = true;
+		clearReferences = null;
 		try {
 			const data = await request( 'settings' );
+			clearReferences = { dkbce_latest_operation: data.dkbce_latest_operation, dkbce_latest_import: data.dkbce_latest_import };
+			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			rollbackPolicy.value = data.rollback_policy;
 			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
 		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
