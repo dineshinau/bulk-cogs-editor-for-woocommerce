@@ -1961,7 +1961,7 @@
       "file_type": "code",
       "norm_label": "canceloperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2402"
+      "source_location": "L2412"
     },
     {
       "id": "src_bulk_cogs_editor_clearfilters",
@@ -1973,7 +1973,7 @@
       "file_type": "code",
       "norm_label": "clearfilters()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2470"
+      "source_location": "L2480"
     },
     {
       "id": "src_bulk_cogs_editor_closeconfirm",
@@ -1985,7 +1985,7 @@
       "file_type": "code",
       "norm_label": "closeconfirm()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2439"
+      "source_location": "L2449"
     },
     {
       "id": "src_bulk_cogs_editor_confirmaction",
@@ -2369,7 +2369,7 @@
       "file_type": "code",
       "norm_label": "pollprogress()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2348"
+      "source_location": "L2358"
     },
     {
       "id": "src_bulk_cogs_editor_preview",
@@ -7178,7 +7178,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2406",
+      "source_location": "L2416",
       "weight": 1.0
     },
     {
@@ -7190,7 +7190,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2409",
+      "source_location": "L2419",
       "weight": 1.0
     },
     {
@@ -7202,7 +7202,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2415",
+      "source_location": "L2425",
       "weight": 1.0
     },
     {
@@ -7214,7 +7214,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2484",
+      "source_location": "L2494",
       "weight": 1.0
     },
     {
@@ -8390,7 +8390,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2356",
+      "source_location": "L2366",
       "weight": 1.0
     },
     {
@@ -8402,7 +8402,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2359",
+      "source_location": "L2369",
       "weight": 1.0
     },
     {
@@ -8414,7 +8414,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2361",
+      "source_location": "L2371",
       "weight": 1.0
     },
     {
@@ -8426,7 +8426,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2376",
+      "source_location": "L2386",
       "weight": 1.0
     },
     {
@@ -8767,6 +8767,18 @@
     },
     {
       "source": "src_bulk_cogs_editor_renderoperation",
+      "target": "src_bulk_cogs_editor_historyelement",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/bulk-cogs-editor.js",
+      "source_location": "L2109",
+      "weight": 1.0
+    },
+    {
+      "source": "src_bulk_cogs_editor_renderoperation",
       "target": "src_bulk_cogs_editor_setapplyspinner",
       "relation": "calls",
       "_origin": "ast",
@@ -8774,7 +8786,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2127",
+      "source_location": "L2137",
       "weight": 1.0
     },
     {
@@ -8786,7 +8798,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2201",
+      "source_location": "L2211",
       "weight": 1.0
     },
     {
@@ -8798,7 +8810,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2201",
+      "source_location": "L2211",
       "weight": 1.0
     },
     {
@@ -8810,7 +8822,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2225",
+      "source_location": "L2235",
       "weight": 1.0
     },
     {
@@ -8822,7 +8834,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2229",
+      "source_location": "L2239",
       "weight": 1.0
     },
     {
@@ -8834,7 +8846,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2239",
+      "source_location": "L2249",
       "weight": 1.0
     },
     {
@@ -8846,7 +8858,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2248",
+      "source_location": "L2258",
       "weight": 1.0
     },
     {
@@ -9758,7 +9770,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2348",
+      "source_location": "L2358",
       "weight": 1.0
     },
     {
@@ -11480,7 +11492,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2402",
+      "source_location": "L2412",
       "weight": 1.0
     },
     {
@@ -13868,7 +13880,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2418",
+      "source_location": "L2428",
       "weight": 1.0
     },
     {
@@ -13880,7 +13892,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2419",
+      "source_location": "L2429",
       "weight": 1.0
     },
     {
@@ -13892,7 +13904,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2444",
+      "source_location": "L2454",
       "weight": 1.0
     },
     {
@@ -13904,7 +13916,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2445",
+      "source_location": "L2455",
       "weight": 1.0
     },
     {
@@ -13916,7 +13928,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2486",
+      "source_location": "L2496",
       "weight": 1.0
     },
     {
@@ -13928,7 +13940,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2517",
+      "source_location": "L2527",
       "weight": 1.0
     },
     {
@@ -13964,7 +13976,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2413",
+      "source_location": "L2423",
       "weight": 1.0
     },
     {
@@ -15037,5 +15049,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6ec068001674c472b34a6fa59566ec9f09f1f4a9"
+  "built_at_commit": "0af996b333b560832133332db38700e2ee615ec0"
 }
