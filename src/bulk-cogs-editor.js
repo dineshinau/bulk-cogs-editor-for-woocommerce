@@ -2288,6 +2288,12 @@
 			cancelButton.disabled = operation.cancel_requested;
 			cancelButton.addEventListener( 'click', historyView ? async () => { cancelButton.disabled = true; try { await request( 'cancel', { operation_id: operation.operation_id } ); loadHistoryDetails(); } catch ( error ) { setNotice( error.message, 'error', operationPanel ); cancelButton.disabled = false; } } : cancelOperation );
 			operationPanel.appendChild( cancelButton );
+			if ( operation.cancel_requested ) {
+				const cancelSpinner = document.createElement( 'span' );
+				cancelSpinner.className = 'spinner is-active dkbce-cancel-spinner';
+				cancelSpinner.setAttribute( 'aria-hidden', 'true' );
+				operationPanel.appendChild( cancelSpinner );
+			}
 			const persistence = document.createElement( 'p' );
 			persistence.textContent = DKBCE.ui.persistence;
 			operationPanel.appendChild( persistence );

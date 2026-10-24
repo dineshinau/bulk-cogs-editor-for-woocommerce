@@ -264,6 +264,7 @@ $border: #dce6f5;
 }
 .dkbce-export-time { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 10px; > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 10px 12px; border: 1px solid $border; border-radius: 6px; background: #f6f7f7; } }
 .dkbce-preview-loading { display: flex; align-items: center; gap: 8px; min-height: 72px; }
+.dkbce-cancel-spinner { float: none; margin: 0; margin-inline-start: 8px; vertical-align: middle; }
 .dkbce-spinner { width: 18px; height: 18px; border: 2px solid $border; border-top-color: $blue; border-radius: 50%; animation: dkbce-spin 0.7s linear infinite; }
 @keyframes dkbce-spin { to { transform: rotate(360deg); } }
 .dkbce-refresh-notice { margin-top: 16px; }
