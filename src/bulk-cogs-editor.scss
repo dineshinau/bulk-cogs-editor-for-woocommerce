@@ -4,6 +4,7 @@ $muted: #566a9c;
 $border: #dce6f5;
 
 #dkbce-history, #dkbce-settings { grid-column: 1 / -1; min-width: 0; }
+#dkbce-history .dkbce-operation .dkbce-section-heading { > .dkbce-step-icon, > span { display: none; } }
 .dkbce-history-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 18px; }
 .dkbce-history-field { display: flex; flex-direction: column; gap: 5px; font-size: 13px; input[type="number"] { width: 110px; } input[type="search"] { min-width: 230px; } }
 .dkbce-table-footer > .dkbce-history-field { flex-direction: row; align-items: center; gap: 8px; }

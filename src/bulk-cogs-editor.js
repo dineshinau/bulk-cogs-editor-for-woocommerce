@@ -2241,7 +2241,8 @@
 			} );
 			operationPanel.appendChild( clearButton );
 		}
-		if ( operation.import_source && [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( operation.status ) ) {
+		const hasImportReportRows = operation.failed > 0 || operation.skipped > 0 || operation.processed < operation.total;
+		if ( hasImportReportRows && operation.import_source && [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( operation.status ) ) {
 			const report = document.createElement( 'button' );
 			report.type = 'button';
 			report.className = 'button';
@@ -2250,7 +2251,7 @@
 			operationPanel.appendChild( report );
 		}
 
-		if ( operation.csv_report ) {
+		if ( hasImportReportRows && operation.csv_report ) {
 			const report = document.createElement( 'button' );
 			report.type = 'button';
 			report.className = 'button';
