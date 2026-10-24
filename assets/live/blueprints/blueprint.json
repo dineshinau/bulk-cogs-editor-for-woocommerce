@@ -1,0 +1,65 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/edit.php?post_type=product&page=bulk-cogs-editor",
+  "preferredVersions": {
+    "php": "8.2",
+    "wp": "latest"
+  },
+  "features": {
+    "networking": true
+
+  },
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/mu-plugins/skip-woo-redirect.php",
+      "data": "<?php add_filter('woocommerce_prevent_automatic_wizard_redirect', '__return_true'); add_filter('woocommerce_enable_setup_wizard', '__return_false');"
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "woocommerce"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "bulk-cogs-editor-for-woocommerce"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "woocommerce_onboarding_profile": { "skipped": true },
+        "woocommerce_task_list_hidden": "yes",
+        "woocommerce_task_list_complete": "yes",
+        "woocommerce_show_marketplace_suggestions": "no",
+        "woocommerce_feature_cost_of_goods_sold_enabled": "yes",
+        "woocommerce_allow_tracking": "no",
+        "woocommerce_coming_soon": "no",
+        "woocommerce_store_pages_only": "no",
+        "woocommerce_currency": "INR",
+        "woocommerce_currency_pos": "left",
+        "woocommerce_enable_tax": "no",
+        "woocommerce_calc_taxes": "no"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; for ($i = 1; $i <= 25; $i++) { $p = new WC_Product_Simple(); $p->set_name('Sample Product ' . $i); $p->set_regular_price(10 * $i); $p->save(); }"
+    }
+  ]
+}
