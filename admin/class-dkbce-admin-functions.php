@@ -393,7 +393,7 @@ class DKBCE_Admin_Functions {
 		<div class="wrap dkbce-wrap">
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
-				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<div><h1><?php esc_html_e( 'Bulk COGS (Cost of Goods Sold) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
 				<details class="dkbce-help"><summary><?php esc_html_e( 'Help', 'bulk-cogs-editor-for-woocommerce' ); ?> (<span data-dkbce-help-title><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></span>)</summary><div class="dkbce-popover">
 					<div data-dkbce-help="bulk">
 						<strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
