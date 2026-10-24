@@ -1,0 +1,547 @@
+<!-- Post title: How to Bulk Edit WooCommerce COGS (Cost of Goods Sold) Safely -->
+
+<!-- Preserve slug: bulk-edit-woocommerce-cogs -->
+
+<!-- Paste into the WordPress post Code editor. Keep the existing title and permalink. Replace each image URL using its screenshot-N filename. -->
+
+<!-- wp:paragraph -->
+<p>Need to <strong>bulk edit WooCommerce COGS</strong> after a supplier changes prices? Bulk COGS Editor for WooCommerce lets you filter products, preview new costs, and apply updates in background batches without changing selling prices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><em><a href="https://youtu.be/sOEOg0xiqYs">Watch the Bulk COGS Editor video walkthrough</a> — See how to review product costs and follow the plugin’s workflow before trying it on your own store.</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>New to product cost tracking? Read the <a href="https://woocommerce.com/document/woocommerce-cost-of-goods-sold-cogs/">official WooCommerce Cost of Goods Sold guide</a> to enable native COGS and understand product and variation costs before using the bulk editor.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:embed {"url": "https://www.youtube.com/watch?v=sOEOg0xiqYs", "type": "video", "providerNameSlug": "youtube", "responsive": true, "className": "wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=sOEOg0xiqYs
+</div></figure>
+<!-- /wp:embed -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Bulk edit WooCommerce product costs</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-1 — Open the bulk editor</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Go to <strong>Products → Bulk COGS Editor</strong> and choose <strong>Bulk edit</strong>. The page separates product selection, cost actions, and review so you can check the intended changes before confirming them.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-1.png" alt="Bulk editor before finding products or preparing a cost preview."/><figcaption class="wp-element-caption"><strong>screenshot-1</strong> — Bulk editor before finding products or preparing a cost preview.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Tab</th><th>Use it for</th></tr></thead><tbody><tr><td>Bulk edit</td><td>Apply one cost action to a product group.</td></tr><tr><td>CSV import / export</td><td>Export current costs or import individual costs.</td></tr><tr><td>History</td><td>Inspect earlier operations and eligible rollbacks.</td></tr><tr><td>Settings</td><td>Configure retention, rollback behavior, and recovery controls.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-2 — Find products and choose an adjustment</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Set your filters and click <strong>Find products</strong>. Here, the editor shows <strong>13,687 matches</strong>, with <strong>5,000 selected</strong> for a <strong>5.5% increase</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-2.png" alt="Matching products and variations with a percentage cost increase selected."/><figcaption class="wp-element-caption"><strong>screenshot-2</strong> — Matching products and variations with a percentage cost increase selected.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Choose <strong>Adjust existing cost → Increase → Percentage</strong> for this example. The displayed product count includes variations as separate records.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Item in this screenshot</th><th>Value</th></tr></thead><tbody><tr><td>Matching product records</td><td>13,687</td></tr><tr><td>Products, excluding variation records</td><td>4,725</td></tr><tr><td>Variations</td><td>8,962</td></tr><tr><td>Selected for the update</td><td>5,000</td></tr><tr><td>Adjustment</td><td>Increase by 5.5%</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-3 — Choose a range and manage columns</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open <strong>Select a range</strong> to select the first or last number of matching products. Use <strong>Manage columns</strong> to show the fields you need while reviewing costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-3.png" alt="Range selection and optional columns in the COGS preview."/><figcaption class="wp-element-caption"><strong>screenshot-3</strong> — Range selection and optional columns in the COGS preview.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The example selects the first 5,000 results and shows a cost moving from <strong>$10.00 to $10.55</strong>. Add an operation note to make the update easier to identify later.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Action</th><th>Purpose</th></tr></thead><tbody><tr><td>Select a range</td><td>Choose a first or last group across matching results.</td></tr><tr><td>Select all matching products</td><td>Include the complete matching set.</td></tr><tr><td>Clear selection</td><td>Remove the current selection.</td></tr><tr><td>Manage columns</td><td>Show or hide preview fields.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-4 — Confirm the bulk cost update</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Review 5,000 changes</strong> to open the confirmation dialog. Check the action, selected total, and review coverage before clicking <strong>Update 5000 products</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-4.png" alt="Confirmation of a 5.5% increase for 5,000 selected products."/><figcaption class="wp-element-caption"><strong>screenshot-4</strong> — Confirmation of a 5.5% increase for 5,000 selected products.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Review coverage is separate from selection: this dialog shows 10 reviewed products among 5,000 selected. Other selected products are calculated during processing. Stopping later will keep changes already saved.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-5 — Follow background progress</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The progress panel shows processed products, successful updates, skips, failures, elapsed time, and an estimated remaining time. This example is halfway through: <strong>2,500 of 5,000</strong> products processed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-5.png" alt="Bulk cost update at 50 percent with 2,500 products updated."/><figcaption class="wp-element-caption"><strong>screenshot-5</strong> — Bulk cost update at 50 percent with 2,500 products updated.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Updates use <a href="https://actionscheduler.org/">Action Scheduler</a>. You can close the browser and return later, provided background workers are running on your site.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Control or counter</th><th>What it means</th></tr></thead><tbody><tr><td>Refresh status</td><td>Request the latest operation status.</td></tr><tr><td>Updated / skipped / failed</td><td>Inspect the recorded processing outcomes.</td></tr><tr><td>Approx. time remaining</td><td>An estimate that can change as processing continues.</td></tr><tr><td>Stop remaining updates</td><td>Request cancellation; saved cost changes remain.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-6 — Review a completed bulk update</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Expand <strong>Recent activity → View details</strong> to see the completed result. This screenshot records <strong>5,000 updated</strong>, no skips or failures, and <strong>00:10:54</strong> elapsed time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-6.png" alt="Completed bulk update with 5,000 products updated and no skipped or failed products."/><figcaption class="wp-element-caption"><strong>screenshot-6</strong> — Completed bulk update with 5,000 products updated and no skipped or failed products.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This is one recorded operation, not a guaranteed processing time. Different screenshots can show separate runs and product values; use them as workflow examples.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Export costs and prepare a spreadsheet</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-7 — Choose CSV export and its columns</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open <strong>CSV import / export</strong> and select <strong>Export CSV</strong>. Choose the output columns, then use the product filters to define your export.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-7.png" alt="CSV export options before preparing a product preview."/><figcaption class="wp-element-caption"><strong>screenshot-7</strong> — CSV export options before preparing a product preview.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Column</th><th>Why include it</th></tr></thead><tbody><tr><td>Product ID or SKU</td><td>Identify products when importing updates.</td></tr><tr><td>Product name and type</td><td>Recognize products and variations.</td></tr><tr><td>Current cost</td><td>Review existing COGS values.</td></tr><tr><td>Regular and sale price</td><td>Provide price context in the spreadsheet.</td></tr><tr><td>new_cogs</td><td>A blank column added for your proposed import values.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-8 — Review selected export products</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>After finding products, review the export preview and selected total. Here, <strong>10,000 products</strong> are selected from <strong>13,687 matches</strong>, with the note “10K - CSV Export.”</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-8.png" alt="Export preview with 10,000 products selected and the Create CSV button ready."/><figcaption class="wp-element-caption"><strong>screenshot-8</strong> — Export preview with 10,000 products selected and the Create CSV button ready.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Create CSV</strong> when the selection and columns are correct. Exporting reads product data without updating costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-9 — Wait while the CSV is prepared</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The export panel displays progress while preparing the file. <strong>Keep this page open</strong> until the download is ready; this instruction differs from the background cost-update workflow.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-9.png" alt="CSV export preparation with progress, elapsed time, and a cancellation control."/><figcaption class="wp-element-caption"><strong>screenshot-9</strong> — CSV export preparation with progress, elapsed time, and a cancellation control.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>At the start, remaining time can show <strong>Calculating…</strong>. Use <strong>Cancel export</strong> if you need to stop preparing the file.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-10 — Download the finished CSV</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When preparation reaches 100%, click <strong>Download CSV</strong>. This example shows <strong>10,000 of 10,000</strong> records processed and a recorded elapsed time of <strong>11 seconds</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-10.png" alt="Completed CSV export with a Download CSV button."/><figcaption class="wp-element-caption"><strong>screenshot-10</strong> — Completed CSV export with a Download CSV button.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Exports use CSV format, which opens in Excel. The screenshot’s elapsed time is specific to this export and hosting environment.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-11 — Open the exported file</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open the CSV in Excel or another spreadsheet editor. The exported data includes identifiers, current cost, optional price columns, product type, and an empty <code>new_cogs</code> column.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-11.png" alt="Exported WooCommerce product data opened in Excel with a blank new_cogs column."/><figcaption class="wp-element-caption"><strong>screenshot-11</strong> — Exported WooCommerce product data opened in Excel with a blank new_cogs column.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Keep IDs and SKUs unchanged so the updated file continues to identify the intended products.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-12 — Fill in new product costs</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Enter the costs you want to import in <code>new_cogs</code>. In this example, a current cost of <strong>10.90</strong> becomes <strong>12.12734</strong>, calculated using an <strong>11.26% increase</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-12.png" alt="Spreadsheet with new_cogs filled with 12.12734 for products currently costing 10.90."/><figcaption class="wp-element-caption"><strong>screenshot-12</strong> — Spreadsheet with new_cogs filled with 12.12734 for products currently costing 10.90.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>If you use spreadsheet formulas, replace them with values before importing XLSX. The preview may display rounded amounts according to your store’s precision.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Calculation</th><th>Example</th></tr></thead><tbody><tr><td>Original cost</td><td>10.90</td></tr><tr><td>Multiplier for an 11.26% increase</td><td>1.1126</td></tr><tr><td>New cost before display rounding</td><td>10.90 × 1.1126 = 12.12734</td></tr><tr><td>Displayed in the later preview</td><td>12.13</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:html -->
+<div role="img" aria-label="Example product cost before and after the spreadsheet adjustment" style="padding:20px;border:1px solid #cbd5e1;border-radius:8px;background-color:#f8fafc;color:#172033"><p><strong>Example product cost before and after the spreadsheet adjustment</strong></p><p style="margin-bottom:6px">Current cost: <strong>$10.90</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:72.667%;height:24px;border-radius:4px"></div></div><p style="margin-bottom:6px">Proposed cost: <strong>$12.12734</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:80.849%;height:24px;border-radius:4px"></div></div><p style="font-size:14px">Values from screenshot-12; both bars use a $0–$15 scale. Displayed amounts may be rounded by the store.</p></div>
+<!-- /wp:html -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Import WooCommerce COGS from CSV or Excel</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-13 — Upload your cost file</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Choose <strong>Import CSV</strong>, select your file, and expand <strong>File requirements</strong>. This workflow accepts CSV or XLSX and provides a downloadable template.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-13.png" alt="Selected import file with expanded CSV and XLSX requirements."/><figcaption class="wp-element-caption"><strong>screenshot-13</strong> — Selected import file with expanded CSV and XLSX requirements.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Validate file</strong> to prepare a preview. The example’s 2 MB upload limit comes from that WordPress installation; your site may show a different limit.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Requirement</th><th>What to prepare</th></tr></thead><tbody><tr><td>Required headers</td><td>new_cogs and either id or sku.</td></tr><tr><td>Both ID and SKU supplied</td><td>They must identify the same product.</td></tr><tr><td>CSV</td><td>UTF-8 encoding; decimal costs without currency symbols.</td></tr><tr><td>XLSX</td><td>First worksheet; formulas replaced with values.</td></tr><tr><td>SKU formatting</td><td>Store SKUs as text to preserve leading zeros.</td></tr><tr><td>Blank new_cogs</td><td>The row is skipped; it does not clear a cost.</td></tr><tr><td>cogs and new_cogs columns</td><td>When new_cogs is present, it supplies the imported cost.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-14 — Monitor import validation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Preview preparation runs in the background without changing product costs. This screenshot shows <strong>5,749 rows checked</strong> against an approximate total of <strong>9,815</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-14.png" alt="Import preview preparation at 58 percent with checked rows and estimated remaining time."/><figcaption class="wp-element-caption"><strong>screenshot-14</strong> — Import preview preparation at 58 percent with checked rows and estimated remaining time.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>You can return later to check progress. The total is approximate during reading; it can change as preparation continues. Use <strong>Cancel preparation</strong> to stop this stage.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-15 — Review the validated import</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Once preparation finishes, inspect current costs, proposed costs, changes, and row statuses. Here, <strong>10,000 products</strong> are selected and the visible rows show <strong>$10.90 → $12.13</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-15.png" alt="Validated import preview with 10,000 selected products and an 11.26 percent cost increase."/><figcaption class="wp-element-caption"><strong>screenshot-15</strong> — Validated import preview with 10,000 selected products and an 11.26 percent cost increase.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Choose which products to include and add a useful operation note. Validation prepares the update; it does not apply it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-16 — Confirm the import update</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>Review 10,000 changes</strong>, then check the File import confirmation. The dialog identifies the selected count and the number of products reviewed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-16.png" alt="Import confirmation for 10,000 products with review coverage information."/><figcaption class="wp-element-caption"><strong>screenshot-16</strong> — Import confirmation for 10,000 products with review coverage information.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In this example, 20 selected products have been reviewed. Click <strong>Update 10000 products</strong> only after checking the file, selection, and proposed costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-17 — Understand the collection stage</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>After confirmation, the plugin collects matching products before applying costs. This screenshot shows <strong>8,600 collected</strong> and explicitly states that product costs have not changed yet.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-17.png" alt="Import operation collecting matching products before applying cost updates."/><figcaption class="wp-element-caption"><strong>screenshot-17</strong> — Import operation collecting matching products before applying cost updates.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Collected and updated counts describe different stages. A collecting count alone is not evidence that those costs have already been saved.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-18 — Track the applied import</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The import is now updating costs. The example shows <strong>8,212 of 10,000</strong> products processed, with no skips or failures at that point.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-18.png" alt="File import processing at 82 percent with 8,212 products updated."/><figcaption class="wp-element-caption"><strong>screenshot-18</strong> — File import processing at 82 percent with 8,212 products updated.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>You can close the browser and return to the editor. <strong>Stop remaining updates</strong> requests cancellation but does not restore costs already changed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-19 — Check the final import result</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Expand the completed activity to review its totals. This import records <strong>10,000 updated</strong>, <strong>0 skipped</strong>, <strong>0 failed</strong>, and an elapsed time of <strong>00:18:25</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-19.png" alt="Completed cost import with 10,000 updates and a Download error report control."/><figcaption class="wp-element-caption"><strong>screenshot-19</strong> — Completed cost import with 10,000 updates and a Download error report control.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Use the available report controls to inspect issues when needed. Completion time depends on the file, products, server, and background workers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Stage</th><th>Does it change product costs?</th></tr></thead><tbody><tr><td>Export and spreadsheet preparation</td><td>No.</td></tr><tr><td>Upload validation and preview</td><td>No.</td></tr><tr><td>Collecting matching products</td><td>Not yet in the state shown.</td></tr><tr><td>Confirmed update processing</td><td>Yes, as individual products are saved.</td></tr><tr><td>Stopping remaining updates</td><td>Keeps changes already saved.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Review History and roll back eligible changes</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-20 — Find an earlier operation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open <strong>History</strong> to find completed, cancelled, and other recorded operations. Filter by status, operation type, user, or dates, or search by operation ID, note, or product ID.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-20.png" alt="Operation history showing imports, cost adjustments, rollbacks, and cancelled operations."/><figcaption class="wp-element-caption"><strong>screenshot-20</strong> — Operation history showing imports, cost adjustments, rollbacks, and cancelled operations.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Click <strong>View details</strong> beside the operation you want to inspect. Notes help distinguish runs that used similar actions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-21 — Inspect operation details</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The selected operation displays its type, status, user, updated count, note, timestamps, and duration. This entry is the completed <strong>10,000-product CSV import</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-21.png" alt="History details for a completed CSV import with its recorded metadata."/><figcaption class="wp-element-caption"><strong>screenshot-21</strong> — History details for a completed CSV import with its recorded metadata.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Check the operation identity and results before deciding whether to review a rollback.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-22 — Review rollback values before confirming</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The rollback review compares <strong>Current COGS (now)</strong> with <strong>Rollback to (original)</strong>. Read the overwrite warning, acknowledge it, and use <strong>Confirm rollback</strong> only when the restoration is appropriate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-22.png" alt="Rollback review with current and original costs, an acknowledgement, and a confirmation button."/><figcaption class="wp-element-caption"><strong>screenshot-22</strong> — Rollback review with current and original costs, an acknowledgement, and a confirmation button.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The visible rows in this screenshot show equal current and original values, with no displayed difference. Do not assume every rollback row changes the cost. Deleted products cannot be restored.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-23 — Follow rollback startup</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A separate rollback entry appears in History while processing starts. The progress panel shows <strong>0 of 10,000</strong> products processed, with the remaining time still calculating.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-23.png" alt="Rollback startup showing its History entry and initial progress counters."/><figcaption class="wp-element-caption"><strong>screenshot-23</strong> — Rollback startup showing its History entry and initial progress counters.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Use the detailed progress panel for the operation total. You can return later to check progress or use <strong>Cancel rollback</strong> to request a stop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-24 — Check rollback at halfway</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Here, rollback has processed <strong>5,000 of 10,000</strong> products. The panel shows 50% progress, no skips or failures, and an estimated remaining time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-24.png" alt="Rollback at 50 percent with 5,000 products processed."/><figcaption class="wp-element-caption"><strong>screenshot-24</strong> — Rollback at 50 percent with 5,000 products processed.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The elapsed and remaining times describe this run at this moment. An estimate can change as later batches finish.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-25 — Review near-complete rollback progress</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The rollback has processed <strong>9,879 of 10,000</strong> products, while the interface displays <strong>98%</strong>. Refresh the status and wait for the final result before treating the operation as complete.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-25.png" alt="Rollback nearing completion with 9,879 products processed."/><figcaption class="wp-element-caption"><strong>screenshot-25</strong> — Rollback nearing completion with 9,879 products processed.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>A rollback-unavailable notice above the progress panel does not mean this active rollback has failed. Check the operation’s actual status and final counters.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-26 — Verify the completed rollback</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The completed rollback reports <strong>10,000 updated</strong>, no skipped or failed products, and <strong>00:19:34</strong> elapsed time. Review the result and spot-check the products you intended to restore.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-26.png" alt="Completed rollback with 10,000 products processed and final outcome counts."/><figcaption class="wp-element-caption"><strong>screenshot-26</strong> — Completed rollback with 10,000 products processed and final outcome counts.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Rollback requires retained original cost records. Expired and summary-only operations cannot be restored through this workflow.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div role="img" aria-label="Rollback progress across screenshots 23–26" style="padding:20px;border:1px solid #cbd5e1;border-radius:8px;background-color:#f8fafc;color:#172033"><p><strong>Rollback progress across screenshots 23–26</strong></p><p style="margin-bottom:6px">Startup: <strong>0 / 10,000</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:0.000%;height:24px;border-radius:4px"></div></div><p style="margin-bottom:6px">Halfway: <strong>5,000 / 10,000</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:50.000%;height:24px;border-radius:4px"></div></div><p style="margin-bottom:6px">Near completion: <strong>9,879 / 10,000</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:98.790%;height:24px;border-radius:4px"></div></div><p style="margin-bottom:6px">Completed: <strong>10,000 / 10,000</strong></p><div style="background-color:#e2e8f0;height:24px;border-radius:4px"><div style="background-color:#2563eb;width:100.000%;height:24px;border-radius:4px"></div></div><p style="font-size:14px">Bars show processed-product counts, not processing speed. These are captured stages, not equally spaced time measurements.</p></div>
+<!-- /wp:html -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Configure Settings and recover a stuck operation</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-27 — Set retention and rollback behavior</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Open <strong>Settings</strong> to configure history retention and rollback behavior, then click <strong>Save settings</strong>. This screenshot shows a 30-day retention period and overwrite behavior.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-27.png" alt="Settings for history retention, rollback policy, and force-clearing a stuck operation."/><figcaption class="wp-element-caption"><strong>screenshot-27</strong> — Settings for history retention, rollback policy, and force-clearing a stuck operation.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Setting</th><th>Effect</th></tr></thead><tbody><tr><td>History retention</td><td>Controls how long operation history and original costs are kept after completion.</td></tr><tr><td>Shorter retention</td><td>Also affects existing history; expired original values cannot be rolled back.</td></tr><tr><td>Overwrite current costs</td><td>Restores recorded originals even when later cost edits exist.</td></tr><tr><td>Skip changed products</td><td>Preserves later cost edits by skipping changed products.</td></tr><tr><td>Policy during review</td><td>Remains fixed for that rollback attempt.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:paragraph -->
+<p>Use <strong>Force clear current operation</strong> only when an operation is stuck and normal cancellation does not work. It is a recovery control, not a way to undo product costs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level": 3} -->
+<h3 class="wp-block-heading">screenshot-28 — Confirm force clear only when needed</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The confirmation explains that force clear removes the saved current-operation and import references and requests cancellation. An active worker may continue briefly, and costs already changed are not restored.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"sizeSlug": "large", "linkDestination": "none"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/dineshinau/bulk-cogs-editor-for-woocommerce/assets/new-assets/screenshot-28.png" alt="Force-clear confirmation warning that saved cost changes are not undone."/><figcaption class="wp-element-caption"><strong>screenshot-28</strong> — Force-clear confirmation warning that saved cost changes are not undone.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>History and rollback data are kept. Check operation history before starting another update. For background-task diagnostics, see the <a href="https://actionscheduler.org/admin/">Action Scheduler administration guide</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table><thead><tr><th>Action</th><th>Stops or clears work?</th><th>Restores earlier costs?</th></tr></thead><tbody><tr><td>Stop remaining updates / Cancel rollback</td><td>Requests cancellation; a running batch may finish.</td><td>No.</td></tr><tr><td>Force clear current operation</td><td>Clears current references and requests cancellation.</td><td>No.</td></tr><tr><td>Reviewed, confirmed rollback</td><td>Runs a separate restoration operation.</td><td>For eligible records with retained original values, under the chosen policy.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Thank you for trying Bulk COGS Editor</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thank you for reading and supporting this open-source WooCommerce plugin. I hope this walkthrough helps you update product costs with a clearer preview, useful operation records, and a reviewed recovery process.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/"><strong>Download Bulk COGS Editor for WooCommerce</strong></a> and try the workflow with a small product group first.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can find my WordPress contributions and projects on <a href="https://profiles.wordpress.org/dineshinau/">Dinesh Yadav’s WordPress.org profile</a>. Feedback and suggestions are welcome.</p>
+<!-- /wp:paragraph -->
