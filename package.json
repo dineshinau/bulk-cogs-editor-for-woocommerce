@@ -1,6 +1,6 @@
 {
       "name": "bulk-cogs-editor-for-woocommerce",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "scripts": {
             "update": "npx npm-check-updates -u",
             "npm_install": "npm i --force",

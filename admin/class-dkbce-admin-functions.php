@@ -190,6 +190,7 @@ class DKBCE_Admin_Functions {
 					'exportTask'      => __( 'File export', 'bulk-cogs-editor-for-woocommerce' ),
 					'clear'           => __( 'Clear selection', 'bulk-cogs-editor-for-woocommerce' ),
 					'narrowed'        => __( 'Selection includes previous filter constraints.', 'bulk-cogs-editor-for-woocommerce' ),
+					'reused'          => __( 'Using the completed operation’s selection with current costs. Edit filters to narrow it, or use Reset filters to start a new selection.', 'bulk-cogs-editor-for-woocommerce' ),
 					'set'             => __( 'Set cost', 'bulk-cogs-editor-for-woocommerce' ),
 					'clearCost'       => __( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ),
 					'increase'        => __( 'Increase', 'bulk-cogs-editor-for-woocommerce' ),
@@ -392,7 +393,7 @@ class DKBCE_Admin_Functions {
 		<div class="wrap dkbce-wrap">
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
-				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<div><h1><?php esc_html_e( 'Bulk COGS (Cost of Goods Sold) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
 				<details class="dkbce-help"><summary><?php esc_html_e( 'Help', 'bulk-cogs-editor-for-woocommerce' ); ?> (<span data-dkbce-help-title><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></span>)</summary><div class="dkbce-popover">
 					<div data-dkbce-help="bulk">
 						<strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
@@ -1227,16 +1228,17 @@ class DKBCE_Admin_Functions {
 
 		wp_send_json_success(
 			array(
-				'selected_count'  => $selected_count,
-				'selected_ids'    => $selected_ids,
-				'excluded_ids'    => $selection['excluded_ids'],
-				'selection_range' => $selection['range'],
-				'preview_id'      => $token,
-				'count'           => $result['count'],
-				'page'            => $result['page'],
-				'page_size'       => $result['page_size'],
-				'total_pages'     => $result['total_pages'],
-				'rows'            => $result['rows'],
+				'selected_count'   => $selected_count,
+				'reused_selection' => ! empty( $filters['selection_operation'] ),
+				'selected_ids'     => $selected_ids,
+				'excluded_ids'     => $selection['excluded_ids'],
+				'selection_range'  => $selection['range'],
+				'preview_id'       => $token,
+				'count'            => $result['count'],
+				'page'             => $result['page'],
+				'page_size'        => $result['page_size'],
+				'total_pages'      => $result['total_pages'],
+				'rows'             => $result['rows'],
 			)
 		);
 	}
@@ -1253,12 +1255,22 @@ class DKBCE_Admin_Functions {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
 			$this->send_nonce_error();
 		}
-		$selection = array(
+		$selection    = array(
 			'row_ids'      => array(),
 			'excluded_ids' => array(),
 			'range'        => null,
 		);
-		$token     = isset( $_POST['previous_preview_id'] ) && is_string( $_POST['previous_preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_preview_id'] ) ) : '';
+		$token        = isset( $_POST['previous_preview_id'] ) && is_string( $_POST['previous_preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_preview_id'] ) ) : '';
+		$operation_id = isset( $_POST['previous_operation_id'] ) && is_string( $_POST['previous_operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_operation_id'] ) ) : '';
+		if ( '' === $token && '' !== $operation_id ) {
+			$operation = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id ) : false;
+			if ( ! $operation || get_current_user_id() !== (int) $operation['user_id'] || empty( $operation['reusable_selection'] ) || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors' ), true ) || ! empty( $operation['history_cleanup_started'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+			}
+			$filters['selection_operation'] = $operation_id;
+			$filters['selection_baseline']  = array_intersect_key( $operation['filters'], $this->service->validate_filters( array() ) );
+			return $selection;
+		}
 		if ( '' === $token ) {
 			return $selection;
 		}
@@ -1276,7 +1288,11 @@ class DKBCE_Admin_Functions {
 				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 		}
-		$selection['previous']     = $previous;
+		$selection['previous'] = $previous;
+		if ( ! empty( $previous['filters']['selection_operation'] ) ) {
+			$filters['selection_operation'] = $previous['filters']['selection_operation'];
+			$filters['selection_baseline']  = $previous['filters']['selection_baseline'];
+		}
 		$selection['row_ids']      = $previous['row_ids'];
 		$selection['excluded_ids'] = array_values( array_unique( array_map( 'absint', $excluded ) ) );
 		$range_token               = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
@@ -1668,6 +1684,7 @@ class DKBCE_Admin_Functions {
 			'batch_size'            => $this->processor->get_batch_size(),
 			'cancel_requested'      => false,
 			'preview_claim_token'   => $token,
+			'reusable_selection'    => ! in_array( $preview['operation']['action'], array( 'csv_import', 'csv_export', 'rollback' ), true ),
 			'reviewed_rows'         => $preview['reviewed_rows'] ?? array(),
 			'expected_total'        => $expected_total,
 			'errors'                => array(),
@@ -1885,29 +1902,30 @@ class DKBCE_Admin_Functions {
 	 */
 	public function public_operation( $state ) {
 		return array(
-			'action'           => $state['action'],
-			'completed_at'     => (int) ( $state['completed_at'] ?? 0 ),
-			'last_progress_at' => (int) ( $state['updated_at'] ?? $state['created_at'] ),
-			'progress_age'     => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
-			'queue_available'  => function_exists( 'as_enqueue_async_action' ),
-			'csv_report'       => $state['csv_report'] ?? '',
-			'import_source'    => $state['operation']['source_id'] ?? '',
-			'operation_id'     => $state['operation_id'],
-			'status'           => $state['status'],
-			'stage'            => $state['stage'],
-			'total'            => (int) $state['total'],
-			'processed'        => (int) $state['processed'],
-			'succeeded'        => (int) $state['succeeded'],
-			'skipped'          => (int) $state['skipped'],
-			'failed'           => (int) $state['failed'],
-			'elapsed_seconds'  => max(
+			'action'             => $state['action'],
+			'completed_at'       => (int) ( $state['completed_at'] ?? 0 ),
+			'last_progress_at'   => (int) ( $state['updated_at'] ?? $state['created_at'] ),
+			'progress_age'       => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
+			'queue_available'    => function_exists( 'as_enqueue_async_action' ),
+			'csv_report'         => $state['csv_report'] ?? '',
+			'import_source'      => $state['operation']['source_id'] ?? '',
+			'operation_id'       => $state['operation_id'],
+			'reusable_selection' => ! empty( $state['reusable_selection'] ),
+			'status'             => $state['status'],
+			'stage'              => $state['stage'],
+			'total'              => (int) $state['total'],
+			'processed'          => (int) $state['processed'],
+			'succeeded'          => (int) $state['succeeded'],
+			'skipped'            => (int) $state['skipped'],
+			'failed'             => (int) $state['failed'],
+			'elapsed_seconds'    => max(
 				0,
 				(int) ( ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : time() ) - $state['created_at'] )
 			),
-			'errors'           => $state['errors'],
-			'error_summary'    => $state['error_summary'],
-			'cancel_requested' => (bool) $state['cancel_requested'],
-			'cancelled_note'   => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
+			'errors'             => $state['errors'],
+			'error_summary'      => $state['error_summary'],
+			'cancel_requested'   => (bool) $state['cancel_requested'],
+			'cancelled_note'     => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
 		);
 	}
 
@@ -1919,6 +1937,9 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( ! empty( $query_vars['dkbce_selection_operation'] ) ) {
+			$wp_query_args['dkbce_selection_operation'] = sanitize_key( $query_vars['dkbce_selection_operation'] );
+		}
 		if ( isset( $query_vars['dkbce_after_id'] ) ) {
 			$wp_query_args['dkbce_after_id'] = absint( $query_vars['dkbce_after_id'] );
 		}

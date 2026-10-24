@@ -137,7 +137,7 @@ class DKBCE_Bulk_Processor {
 			$done   = $this->store->delete_chunks(
 				$operation_id,
 				$state['snapshot_chunks'],
-				! empty( $state['operation']['source_id'] ),
+				! empty( $state['operation']['source_id'] ) || ( ! empty( $state['reusable_selection'] ) && empty( $state['history_cleanup_pending'] ) ),
 				$cursor,
 				100
 			);
