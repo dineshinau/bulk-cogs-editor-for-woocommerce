@@ -497,7 +497,6 @@ $border: #dce6f5;
 	z-index: 20;
 	border-color: $border;
 	box-shadow: 0 -2px 8px rgb(0 0 0 / 6%);
-	.dkbce-section-heading > span, .dkbce-step-icon { display: none; }
 }
 #dkbce-action-summary { font-weight: 600; color: $ink; }
 .dkbce-wrap :where(button, input, select, summary, a) { scroll-margin-block: 100px 160px; }

@@ -295,7 +295,7 @@
 	historyFilters.addEventListener( 'submit', ( event ) => { event.preventDefault(); historyState.page = 1; loadHistory(); } );
 	const historyRows = historyElement( 'div' );
 	const historyDetails = historyElement( 'div' );
-	const historyProgress = historySection( historyText.progress, 5 );
+	const historyProgress = historySection( historyText.progress, 4 );
 	historyProgress.hidden = true;
 	historyList.append( historyFilters, historyRows );
 	historyRoot.append( historyList, historyDetails, historyProgress );
@@ -364,7 +364,7 @@
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
 			details.appendChild( metadata );
-			const products = historySection( historyState.review ? historyText.review : historyText.changes, historyState.review ? 4 : 3 );
+			const products = historySection( historyState.review ? historyText.review : historyText.changes, 3 );
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
 			data.rows.forEach( ( item ) => {
 				const row = document.createElement( 'tr' );
@@ -393,7 +393,7 @@
 			}
 			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => { historyState.operationId = data.rollback_id; historyState.review = false; historyState.productPage = 1; loadHistoryDetails(); } ) ); }
 			historyDetails.append( details, products );
-			const result = historySection( historyText.progress, 5 );
+			const result = historySection( historyText.progress, 4 );
 			const panel = historyElement( 'div', '', 'dkbce-operation' ); result.appendChild( panel );
 			renderOperation( data.state, panel, true );
 			historyDetails.appendChild( result );
@@ -2105,7 +2105,17 @@
 			);
 		}
 		if ( ! terminal ) { heading.textContent = operationPanel.dataset.task + ' · ' + heading.textContent; }
-		operationPanel.appendChild( heading );
+		if ( ! historyView && csvMode() && operation.action === 'csv_import' ) {
+			const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
+			const icon = historyElement( 'i', '', 'dkbce-step-icon dashicons dashicons-update' );
+			const number = historyElement( 'span', '4' );
+			icon.setAttribute( 'aria-hidden', 'true' );
+			number.setAttribute( 'aria-hidden', 'true' );
+			sectionHeading.append( icon, number, heading );
+			operationPanel.appendChild( sectionHeading );
+		} else {
+			operationPanel.appendChild( heading );
+		}
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
