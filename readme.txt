@@ -4,7 +4,7 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -256,6 +256,17 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
 
 == Changelog ==
+
+= 1.2.1 (2026-10-25) =
+
+* Fixed: Reuse the completed bulk operation's product selection with current costs when preparing another update, even when changed costs no longer match the original filters.
+* Fixed: Keep range selection controls within the editor layout.
+* Fixed: Restore workflow step indicators and remove duplicate step badges from History progress.
+* Fixed: Hide empty import error reports when every product succeeds, while retaining reports for failed, skipped, and unprocessed products.
+* Improved: Show a spinner while cancellation is pending.
+* Improved: Confirm force-clear recovery in an editor dialog before resetting saved operation references.
+* Updated: Clarify the editor title as Bulk COGS (Cost of Goods Sold) Editor and refresh the translation template.
+* Added: A force-clear recovery setting for stuck operations that resets the current user's saved operation and import references and requests cancellation, while retaining saved cost changes, history, and rollback data.
 
 = 1.2.0 (2026-10-24) =
 
