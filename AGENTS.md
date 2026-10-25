@@ -46,6 +46,20 @@ PHPCS currently checks PHP 7.4+ and WordPress 6.5; use the stricter applicable c
 - For performance investigations, use `wp-performance`; for frontend design or accessibility, load the corresponding existing skill only when the task needs it.
 - Use `rg` for named files/symbols. For unfamiliar relationships, use [dkbce-graphify](.agents/skills/dkbce-graphify/SKILL.md) with bounded output, then confirm findings in source.
 
+## Agent skills
+
+### Issue tracker
+
+For issue and spec operations, use GitHub Issues in `dineshinau/bulk-cogs-editor-for-woocommerce`; read [issue-tracker.md](docs/agents/issue-tracker.md).
+
+### Triage labels
+
+For triage, use the five canonical labels mapped in [triage-labels.md](docs/agents/triage-labels.md).
+
+### Domain docs
+
+Before exploring domain concepts or architecture, follow the single-context layout in [domain.md](docs/agents/domain.md).
+
 ## PHP editing loop
 
 Write to the active ruleset from the first edit. After each coherent PHP change, run:
