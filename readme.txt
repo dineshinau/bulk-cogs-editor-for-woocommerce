@@ -70,21 +70,22 @@ The upload limit follows WordPress's maximum upload size, shown beside the file 
 
 ### Sample CSV
 
-Exported CSV files include a blank `new_cogs` column. Fill it with new costs and import the file.
+Export products to CSV, fill in the blank `new_cogs` column, then import the file to preview your changes.
 
-```csv
-id,sku,new_cogs
-123,PRODUCT-001,25.50
-124,PRODUCT-002,40.00
-```
+Use this format for your CSV file, replacing the example IDs, SKUs, and costs with your product data:
 
-Required headers are `new_cogs` and `id` or `sku`. Older files can use `cogs` if `new_cogs` is missing.
+    id,sku,new_cogs
+    123,PRODUCT-001,25.50
+    124,PRODUCT-002,40.00
 
-- Use either ID or SKU to identify products.
-- If both are provided, they must match.
-- Use decimal values without currency symbols.
-- Blank costs are skipped.
+Your file must include `new_cogs` and at least one product identifier: `id` or `sku`.
+
+- You can omit either `id` or `sku`. If both are provided, they must identify the same product.
+- Enter costs as decimal numbers without currency symbols, such as `25.50`.
+- Leave a cost blank to skip that row.
 - Duplicate product rows are excluded and listed in the error report.
+
+Older files can use `cogs` when the `new_cogs` header is missing.
 
 XLSX imports read raw values from the first worksheet. Replace formulas with values and store SKUs as text to preserve leading zeros.
 
