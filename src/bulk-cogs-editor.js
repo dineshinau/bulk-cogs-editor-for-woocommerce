@@ -297,7 +297,17 @@
 	const historyDetails = historyElement( 'div' );
 	const historyProgress = historySection( historyText.progress, 4 );
 	historyProgress.hidden = true;
-	historyList.append( historyFilters, historyRows );
+	const historyLoading = historyElement( 'p', '', 'dkbce-history-loading' );
+	historyLoading.setAttribute( 'role', 'status' );
+	historyLoading.hidden = true;
+	const clearHistoryFilters = historyButton( $( '#dkbce-clear-filters' ).textContent, () => {
+		historyFilters.reset();
+		historyState.page = 1;
+		loadHistory();
+	} );
+	clearHistoryFilters.classList.add( 'dkbce-history-reset' );
+	historyFilters.appendChild( clearHistoryFilters );
+	historyList.append( historyFilters, historyLoading, historyRows );
 	historyRoot.append( historyList, historyDetails, historyProgress );
 	function updateHistoryProgressVisibility() {
 		historyProgress.hidden = operationPanel.hidden || historyDetails.childElementCount > 0;
@@ -312,6 +322,8 @@
 		const requestId = ++historyState.requestId;
 		historyFilterButton.disabled = true;
 		historyRows.setAttribute( 'aria-busy', 'true' );
+		historyLoading.textContent = historyText.loading;
+		historyLoading.hidden = false;
 		try {
 			const values = Object.fromEntries( Object.entries( historyInputs ).map( ( [ name, input ] ) => [ name, input.value ] ) );
 			const data = await request( 'history', { ...values, page: historyState.page, size: historyState.size } );
@@ -340,11 +352,22 @@
 				action.appendChild( historyButton( historyText.view, () => { historyState.operationId = operation.operation_id; historyState.productPage = 1; historyState.review = false; loadHistoryDetails( true ); } ) );
 				row.appendChild( action ); body.appendChild( row );
 			} );
-			historyRows.appendChild( wrap );
-			if ( ! data.total ) { historyRows.appendChild( historyElement( 'p', historyText.empty ) ); }
-			historyRows.appendChild( historyPagination( data.total, historyState.page, historyState.size, ( page ) => { historyState.page = page; loadHistory(); }, ( size ) => { historyState.size = size; historyState.page = 1; loadHistory(); } ) );
-		} catch ( error ) { setNotice( error.message, 'error', historyList ); }
-		finally { historyFilterButton.disabled = false; historyRows.removeAttribute( 'aria-busy' ); }
+			if ( data.total ) {
+				historyRows.appendChild( wrap );
+				historyRows.appendChild( historyPagination( data.total, historyState.page, historyState.size, ( page ) => { historyState.page = page; loadHistory(); }, ( size ) => { historyState.size = size; historyState.page = 1; loadHistory(); } ) );
+			} else {
+				historyRows.appendChild( historyElement( 'p', historyText.empty, 'dkbce-preview-empty' ) );
+			}
+		} catch ( error ) {
+			if ( requestId === historyState.requestId ) { setNotice( error.message, 'error', historyList ); }
+		}
+		finally {
+			if ( requestId === historyState.requestId ) {
+				historyFilterButton.disabled = false;
+				historyRows.removeAttribute( 'aria-busy' );
+				historyLoading.hidden = true;
+			}
+		}
 	}
 
 	async function loadHistoryDetails( scrollToDetails = false ) {
@@ -436,11 +459,27 @@
 	retentionChoice.addEventListener( 'change', () => { customRetention.hidden = retentionChoice.value !== 'custom'; if ( retentionChoice.value !== 'custom' ) { retentionDays.value = retentionChoice.value; } } );
 	const rollbackPolicy = historySelect( [ [ 'overwrite', historyText.overwrite ], [ 'skip_changed', historyText.skipChanged ] ], 'overwrite' );
 	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
-	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
+	const retentionGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	retentionGroup.appendChild( historyElement( 'legend', historyText.retention ) );
+	retentionChoice.setAttribute( 'aria-label', historyText.retention );
+	retentionChoice.setAttribute( 'aria-describedby', 'dkbce-retention-help' );
+	retentionDays.setAttribute( 'aria-describedby', 'dkbce-retention-help' );
+	const retentionHelp = historyElement( 'p', historyText.retentionHelp, 'description' );
+	retentionHelp.id = 'dkbce-retention-help';
+	retentionGroup.append( retentionChoice, customRetention, retentionHelp );
+	const policyGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	policyGroup.appendChild( historyElement( 'legend', historyText.rollbackBehavior ) );
+	rollbackPolicy.setAttribute( 'aria-label', historyText.rollbackBehavior );
+	rollbackPolicy.setAttribute( 'aria-describedby', 'dkbce-policy-help' );
+	const policyHelp = historyElement( 'p', historyText.policyHelp, 'description' );
+	policyHelp.id = 'dkbce-policy-help';
+	policyGroup.append( rollbackPolicy, policyHelp );
+	settingsForm.append( retentionGroup, policyGroup, saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
 	const forceClearSection = historySection( historyText.forceClear, 2 );
+	forceClearSection.classList.add( 'dkbce-maintenance-section' );
 	const forceClearButton = historyButton( historyText.forceClear, () => {
 		if ( ! clearReferences ) { return; }
 		forceClearReferences = { ...clearReferences };
@@ -468,7 +507,8 @@
 	forceClearSection.append( historyElement( 'p', historyText.forceClearWarning, 'description' ), forceClearButton );
 	settingsRoot.appendChild( forceClearSection );
 	async function loadSettings() {
-		saveSettings.disabled = true;
+		settingsForm.setAttribute( 'aria-busy', 'true' );
+		settingsForm.querySelectorAll( 'input, select, button' ).forEach( ( input ) => { input.disabled = true; } );
 		forceClearButton.disabled = true;
 		clearReferences = null;
 		try {
@@ -477,8 +517,9 @@
 			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			rollbackPolicy.value = data.rollback_policy;
 			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
+			settingsForm.querySelectorAll( 'input, select, button' ).forEach( ( input ) => { input.disabled = false; } );
 		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
-		finally { saveSettings.disabled = false; }
+		finally { settingsForm.removeAttribute( 'aria-busy' ); }
 	}
 	settingsForm.addEventListener( 'submit', async ( event ) => {
 		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
@@ -541,6 +582,8 @@
 		$( '.dkbce-csv-section .dkbce-step-icon' ).hidden = ! active;
 		$( '.dkbce-csv-section .dkbce-section-heading > span' ).hidden = ! active;
 		$( '.dkbce-workspace' ).classList.toggle( 'dkbce-csv-workflow', active );
+		$( '.dkbce-workspace' ).classList.toggle( 'dkbce-bulk-workflow', state.mode === 'bulk' );
+		$( '.dkbce-workflow' ).hidden = state.mode !== 'bulk';
 		$( '#dkbce-csv-preview-wrap' ).hidden = active && ! importing;
 		$( '#dkbce-csv-preview' ).textContent = DKBCE.csv.previewImport;
 		const previewHelp = $( '#dkbce-preview-help' );
@@ -1242,6 +1285,20 @@
 					delete input.dataset.disabledBeforeOperation;
 				}
 			} );
+		// Reflect the existing selection and preview state without changing its guards.
+		const hasProducts = state.hasQuery && state.count > 0;
+		const hasPreview = Boolean( state.previewId ) && ! state.previewNeedsRefresh && state.rows.length > 0;
+		const currentStep = hasPreview ? 2 : hasProducts ? 1 : 0;
+		document.querySelectorAll( '.dkbce-workflow li' ).forEach( ( step, index ) => {
+			step.classList.toggle( 'is-complete', index < currentStep );
+			if ( index === currentStep ) {
+				step.setAttribute( 'aria-current', 'step' );
+			} else {
+				step.removeAttribute( 'aria-current' );
+			}
+		} );
+		actionSection.classList.toggle( 'is-locked', ! hasProducts );
+		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
 			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length;
