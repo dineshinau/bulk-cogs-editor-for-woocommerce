@@ -595,6 +595,9 @@
 		filterHelp.textContent = active && ! importing ? DKBCE.csv.filterHelp : filterHelp.dataset.originalText;
 		updateColumnVisibility();
 		$( '.dkbce-apply-section .dkbce-section-heading > span' ).textContent = active && importing ? '3' : '4';
+		operationPanel.querySelectorAll( '.dkbce-operation-step' ).forEach( ( number ) => {
+			number.textContent = active && importing ? '4' : '5';
+		} );
 		document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 			const selected = button.dataset.dkbceMode === state.mode;
 			button.setAttribute( 'aria-pressed', String( selected ) );
@@ -832,7 +835,7 @@
 			}
 		} );
 		operationPanel.classList.remove( 'is-history' );
-		operationPanel.replaceChildren( heading, status, track, time, cancel );
+		operationPanel.replaceChildren( operationHeading( heading ), status, track, time, cancel );
 		operationPanel.hidden = false;
 		const renderProgress = ( done = false ) => {
 			const elapsed = Math.floor( ( window.performance.now() - startedAt ) / 1000 );
@@ -2105,6 +2108,15 @@
 		} );
 	}
 
+	function operationHeading( heading ) {
+		const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
+		const reviewStep = Number( $( '.dkbce-apply-section .dkbce-section-heading > span' ).textContent );
+		const number = historyElement( 'span', String( reviewStep + 1 ), 'dkbce-operation-step' );
+		number.setAttribute( 'aria-hidden', 'true' );
+		sectionHeading.append( number, heading );
+		return sectionHeading;
+	}
+
 	function renderOperation( operation, operationPanel = $( '#dkbce-operation' ), historyView = false ) {
 		const completionMessage = {
 			completed: DKBCE.i18n.completedStatus,
@@ -2162,17 +2174,7 @@
 			);
 		}
 		if ( ! terminal ) { heading.textContent = operationPanel.dataset.task + ' · ' + heading.textContent; }
-		if ( ! historyView && csvMode() && operation.action === 'csv_import' ) {
-			const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
-			const icon = historyElement( 'i', '', 'dkbce-step-icon dashicons dashicons-update' );
-			const number = historyElement( 'span', '4' );
-			icon.setAttribute( 'aria-hidden', 'true' );
-			number.setAttribute( 'aria-hidden', 'true' );
-			sectionHeading.append( icon, number, heading );
-			operationPanel.appendChild( sectionHeading );
-		} else {
-			operationPanel.appendChild( heading );
-		}
+		operationPanel.appendChild( ! historyView && ! terminal ? operationHeading( heading ) : heading );
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
@@ -2413,7 +2415,7 @@
 				operation.failed > 0 ? Number( operation.failed ).toLocaleString() + ' ' + DKBCE.i18n.failedLabel : '',
 			].filter( Boolean ).join( ' · ' );
 			outcome.hidden = ! outcome.textContent;
-			operationPanel.append( title, result, outcome, details );
+			operationPanel.append( historyView ? title : operationHeading( title ), result, outcome, details );
 		}
 		if ( focusedControl ) { operationPanel.querySelector( '[data-operation-control="' + focusedControl + '"]' )?.focus(); }
 
