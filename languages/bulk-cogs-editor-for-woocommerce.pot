@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25T20:26:58+00:00\n"
+"POT-Creation-Date: 2026-10-25T21:16:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2093,31 +2093,31 @@ msgid "Operation history could not be read."
 msgstr ""
 
 #: admin/class-dkbce-history-store.php:163
-#: admin/class-dkbce-history-store.php:317
+#: admin/class-dkbce-history-store.php:321
 msgid "Product history could not be read."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:196
+#: admin/class-dkbce-history-store.php:200
 msgid "Original product costs could not be saved. The product was not changed."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:223
+#: admin/class-dkbce-history-store.php:227
 msgid "Product history could not be confirmed."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:249
+#: admin/class-dkbce-history-store.php:253
 msgid "The restored product could not be recorded."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:273
+#: admin/class-dkbce-history-store.php:277
 msgid "Rollback progress could not be recovered."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:292
+#: admin/class-dkbce-history-store.php:296
 msgid "Rollback products could not be collected."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:338
+#: admin/class-dkbce-history-store.php:342
 msgid "Expired history could not be removed."
 msgstr ""
 
