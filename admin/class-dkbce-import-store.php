@@ -81,6 +81,80 @@ class DKBCE_Import_Store {
 	}
 
 	/**
+	 * Stage a bounded product batch and invalidate duplicates across the whole job.
+	 *
+	 * The reader advances its cursor only after both writes and duplicate marking
+	 * succeed. Replaying an interrupted batch restores the same row keys and errors.
+	 *
+	 * @param string $job Job ID.
+	 * @param array  $rows Validated product rows.
+	 * @return void
+	 * @throws RuntimeException When staging or duplicate marking fails.
+	 */
+	public function put_rows( $job, $rows ) {
+		global $wpdb;
+		if ( ! $rows ) {
+			return;
+		}
+		foreach ( $rows as $row ) {
+			if ( strlen( $row['value'] ) > 65535 || strlen( $row['sku'] ?? '' ) > 65535 || strlen( $row['error'] ?? '' ) > 65535 ) {
+				// Keep large cells on the scalar path, including wpdb's TEXT length checks.
+				foreach ( $rows as $single ) {
+					$this->put( $job, $single );
+				}
+				return;
+			}
+		}
+		$table        = $wpdb->prefix . 'dkbce_import_rows';
+		$placeholders = array();
+		$args         = array( $table );
+		$product_ids  = array();
+		foreach ( $rows as $row ) {
+			$placeholders[] = "(%s, 0, %d, %d, %s, %s, %s, '', '', %d)";
+			$args           = array_merge( $args, array( $job, $row['line'], $row['id'], $row['value'], $row['sku'], $row['error'], empty( $row['error'] ) ? 1 : 0 ) );
+			if ( $row['id'] ) {
+				$product_ids[] = (int) $row['id'];
+			}
+		}
+		$placeholders = implode( ', ', $placeholders );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Seven values per generated row plus the table identifier.
+		$query = $wpdb->prepare(
+			"REPLACE INTO %i (job_id, row_type, row_no, product_id, value, sku, error, result_status, result_message, selected) VALUES $placeholders", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only fixed placeholder tuples are interpolated.
+			$args
+		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- The bounded row tuples and all values are prepared above.
+		if ( false === $wpdb->query( $query ) ) {
+			throw new RuntimeException( esc_html__( 'An import row could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$product_ids = array_values( array_unique( $product_ids ) );
+		if ( ! $product_ids ) {
+			return;
+		}
+		$placeholders = implode( ', ', array_fill( 0, count( $product_ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- One placeholder per bounded product ID plus table and job.
+		$query = $wpdb->prepare(
+			"SELECT product_id FROM %i WHERE job_id = %s AND row_type = 0 AND product_id IN ($placeholders) GROUP BY product_id HAVING COUNT(*) > 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only generated integer placeholders are interpolated.
+			array_merge( array( $table, $job ), $product_ids )
+		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared table, job, and bounded product IDs above.
+		$duplicates = $wpdb->get_col( $query );
+		$this->check_error();
+		if ( ! $duplicates ) {
+			return;
+		}
+		$placeholders = implode( ', ', array_fill( 0, count( $duplicates ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- One placeholder per duplicate ID plus table, error, and job.
+		$query = $wpdb->prepare(
+			"UPDATE %i SET error = %s, selected = 0 WHERE job_id = %s AND row_type = 0 AND product_id IN ($placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only generated integer placeholders are interpolated.
+			array_merge( array( $table, __( 'Duplicate product in file. Remove duplicate rows and preview again.', 'bulk-cogs-editor-for-woocommerce' ), $job ), array_map( 'intval', $duplicates ) )
+		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared update for all occurrences of the duplicate product IDs.
+		if ( false === $wpdb->query( $query ) ) {
+			throw new RuntimeException( esc_html__( 'Duplicate import rows could not be marked.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+	}
+
+	/**
 	 * Read one stored scalar value.
 	 *
 	 * @param string $job Job ID.

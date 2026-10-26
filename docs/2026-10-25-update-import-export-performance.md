@@ -160,7 +160,9 @@ Approval of one step does not approve proceeding through all remaining steps.
 
 ### Step 1 implementation result
 
-Implemented and awaiting user review. Steps 2 through 7 have not started.
+Committed in `ceadca7`, with graph and translation updates in `0b8f674` and
+`f4a9681`. The user authorized proceeding to step 2. At the time of this review,
+steps 3 through 7 had not started.
 
 The worker passes its lock-protected journal lookup to `prepare()`. An existing
 entry is reused; an absent entry is inserted without repeating the lookup.
@@ -187,5 +189,58 @@ Checks completed:
   handling, failed insertion, null costs, legacy callers, and exception recovery.
   This is static review, not executed behavioral testing.
 
-Graph refresh and final diff checks are reported with the handoff. Automated
-tests and product-update benchmarks have not been run.
+Automated tests and product-update benchmarks have not been run.
+
+### Step 2 plan and acceptance
+
+Batch import validation and staging in the CSV service, import reader, and import
+store. No schema changes, new dependencies, worker scheduling changes, or product
+updates are part of this step.
+
+1. Collect up to 50 input rows, flushing when buffered cell data reaches 64 KiB.
+   A single larger record retains the existing per-record behavior.
+2. Resolve SKU candidates in bounded queries that preserve database collation,
+   per-SKU ambiguity limits, exact product verification, and metadata fallback.
+   Prime product and parent caches before row validation.
+3. Write validated rows together and detect duplicates against the whole staged
+   job, marking every occurrence. Keep the scalar path for shared strings and
+   oversized text that needs WordPress's per-column validation.
+4. Advance CSV offsets and XLSX cursors only after staging and duplicate marking
+   succeed. If the deadline interrupts validation, stage only its completed prefix.
+5. Preserve header/row errors, permission checks, ID/SKU matching, formula-safe
+   SKU handling, decimal precision, sparse XLSX rows, and replay safety.
+
+Acceptance checks: PHP formatting, syntax, PHPCS, Markdown lint, source review of
+the retry/deadline paths, graph refresh and symbol coverage, and final diff checks.
+Behavioral tests and benchmarks remain unrun unless requested. Stop for user review
+after this step; do not start recommendation 3.
+
+### Step 2 implementation and review
+
+Implemented bounded CSV/XLSX row validation and staging. The reader buffers up to
+50 rows or approximately 64 KiB of cell data, then the CSV service resolves SKU
+candidates in grouped queries, primes product/parent caches, and validates rows.
+The import store writes the batch together and finds duplicate IDs across the job,
+marking every occurrence with the existing error. Oversized text and XLSX shared
+strings retain the scalar storage path. Input cursors advance only through rows
+that were durably staged; a deadline leaves an unvalidated suffix to be retried.
+
+The lookup query keeps the prior per-SKU `LIMIT 2`, exact SKU verification,
+database collation, product status filters, and postmeta fallback. A failed or
+unavailable optional lookup table also falls back to postmeta. No schema, product
+data, worker scheduling, or dependency changes were made.
+
+PHP formatting, syntax checks, and PHPCS passed for the three changed PHP files
+with `python3 scripts/php-quality.py all admin/class-dkbce-csv-service.php
+admin/class-dkbce-import-reader.php admin/class-dkbce-import-store.php`.
+Markdownlint passed. A read-only check on local MySQL 8.0.46 confirmed the batched
+lookup and fallback query plans use their SKU/meta-key indexes; `EXPLAIN` also
+accepted the multirow staging statement without executing a write. Source review
+covered replay, duplicate rows across batches, missing lookup-table fallback,
+partial validation at the deadline, and cursor advancement. This is not behavioral
+test coverage. Runtime speedup has not been measured; automated tests and the
+planned product benchmark remain unrun.
+
+Graph refreshed successfully (419 nodes, 895 edges); the `validate_rows` symbol is
+present in the refreshed graph. Markdownlint and `git diff --check` passed. The
+graph query is navigation evidence only; source review remains authoritative.
