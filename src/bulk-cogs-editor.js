@@ -897,7 +897,7 @@
 
 	document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 		button.addEventListener( 'click', () => {
-			if ( state.busy || state.loadingPage || ( isOperationRunning() && ! [ 'history', 'settings' ].includes( button.dataset.dkbceMode ) ) ) {
+			if ( state.busy || state.loadingPage ) {
 				return;
 			}
 			const nextMode = button.dataset.dkbceMode;
@@ -1265,7 +1265,7 @@
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
-			input.disabled = [ 'history', 'settings' ].includes( input.dataset.dkbceMode ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
+			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
 		$( '#dkbce-action-prerequisite' ).hidden = state.hasQuery && state.count > 0;
 		document.querySelectorAll( '.dkbce-action-fields input, .dkbce-action-fields select' ).forEach( ( input ) => {
