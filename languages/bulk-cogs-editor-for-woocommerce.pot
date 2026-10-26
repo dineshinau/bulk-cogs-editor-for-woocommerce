@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bulk COGS Editor for WooCommerce 1.2.12\n"
+"Project-Id-Version: Bulk COGS Editor for WooCommerce 1.2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T19:49:16+00:00\n"
+"POT-Creation-Date: 2026-10-26T20:05:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1538,7 +1538,7 @@ msgid "Already processed products remain changed; no rollback was performed."
 msgstr ""
 
 #: admin/class-dkbce-bulk-processor.php:712
-#: admin/class-dkbce-download-processor.php:207
+#: admin/class-dkbce-download-processor.php:220
 msgid "Not processed before the operation stopped."
 msgstr ""
 
@@ -1673,15 +1673,15 @@ msgstr ""
 msgid "The download could not be queued."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:95
+#: admin/class-dkbce-download-processor.php:100
 msgid "The download file could not be resumed."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:113
+#: admin/class-dkbce-download-processor.php:118
 msgid "The download file could not be written."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:137
+#: admin/class-dkbce-download-processor.php:146
 msgid "The download queue stopped."
 msgstr ""
 
@@ -2259,7 +2259,7 @@ msgid "Import storage is unavailable. Try again when the database is available."
 msgstr ""
 
 #: admin/class-dkbce-operation-store.php:141
-#: admin/class-dkbce-operation-store.php:199
+#: admin/class-dkbce-operation-store.php:202
 msgid "The operation could not be saved."
 msgstr ""
 
@@ -2267,28 +2267,28 @@ msgstr ""
 msgid "The saved operation selection is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:281
+#: admin/class-dkbce-operation-store.php:284
 msgid "Bulk operation outcomes could not be read."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:326
+#: admin/class-dkbce-operation-store.php:329
 msgid "The bulk product outcome could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:343
+#: admin/class-dkbce-operation-store.php:346
 msgid "A conflicting bulk product outcome already exists."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:432
+#: admin/class-dkbce-operation-store.php:435
 msgid "Bulk operation outcomes could not be summarized."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:476
+#: admin/class-dkbce-operation-store.php:479
 msgid "Bulk operation errors could not be summarized."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:522
-#: admin/class-dkbce-operation-store.php:550
+#: admin/class-dkbce-operation-store.php:525
+#: admin/class-dkbce-operation-store.php:553
 msgid "Bulk operation outcomes could not be removed."
 msgstr ""
 

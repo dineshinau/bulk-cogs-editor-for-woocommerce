@@ -474,3 +474,46 @@ empty/final pages, memory yielding, inline/compact reads, and cleanup ordering.
 No automated tests, browser tests, or export benchmarks were run. No frontend or
 translatable strings changed. Step 6 is ready for review without a commit; step 7
 has not started.
+
+
+### Step 7 plan: reuse XLSX streams within a worker
+
+Use the existing worker's reader instance to retain the XML stream between
+batches. Reuse it only for the same job, file, package member, and exact durable
+cursor. Close and reopen when validation staged only a prefix, the stage changes,
+or the cursor differs. Close streams on EOF and in the worker's finally block.
+This avoids repeated scans within one request without introducing another file
+format or changing persisted jobs; a new worker still scans to its durable cursor.
+
+Acceptance: preserve shared-string indexes, worksheet row numbers, partial
+validation recovery, XML security checks, cancellation, and existing batch/time/
+memory limits. A live stream must never skip records beyond the durable cursor.
+Affected files: import reader and processor, plus this report. Checks: PHP
+formatting, syntax, PHPCS, Markdown lint, source review, graph refresh, and diff
+checks. No automated tests or product updates are authorized.
+
+### Step 7 implementation and review
+
+The reader retains one XMLReader and its consumed-element index. Subsequent
+batches reuse it only when job, upload path, XML member, stage, and durable cursor
+match exactly. Partial validation closes the stream when its position is ahead of
+staged rows, so the next batch replays the uncommitted input. EOF closes the stream;
+the processor also closes it in finally before restoring libxml settings or
+deleting the upload. Shared strings and worksheet rows use the same mechanism.
+The existing shared-string cache remains bounded and unchanged.
+
+This removes reopening and prefix rescanning between fully staged batches in one
+worker request. The worker can run up to ten batches, subject to its existing time
+and memory limits. A fresh worker still scans from the start to the saved cursor,
+so this does not eliminate the large-workbook cross-request scaling limitation.
+A persistent intermediate format is not implemented: it would require its own
+bounded conversion, durable offsets, recovery, and cleanup. No throughput gain is
+claimed without measurement.
+
+PHP formatting, syntax checks, and PHPCS passed using
+`python3 scripts/php-quality.py all admin/class-dkbce-import-reader.php
+admin/class-dkbce-import-processor.php`. Source review covered full and partially
+staged batches, EOF, stage and job changes, durable-cursor mismatch, cancellation,
+exception cleanup, and existing XML/row validation paths. No tests or benchmarks
+were run, and no translatable strings or frontend assets changed. This step is
+uncommitted for review.

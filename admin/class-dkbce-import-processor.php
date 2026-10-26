@@ -106,6 +106,7 @@ class DKBCE_Import_Processor {
 		if ( in_array( $state['status'], array( 'ready', 'failed', 'cancelled', 'expired' ), true ) ) {
 			return;
 		}
+		$reader          = new DKBCE_Import_Reader();
 		$previous_errors = libxml_use_internal_errors( true );
 		libxml_clear_errors();
 		try {
@@ -119,7 +120,6 @@ class DKBCE_Import_Processor {
 					throw new RuntimeException( esc_html__( 'The temporary upload is unavailable. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) );
 				}
 				$state['status'] = 'processing';
-				$reader          = new DKBCE_Import_Reader();
 				$rows            = new DKBCE_Import_Store();
 				$deadline        = microtime( true ) + 10;
 				$memory_limit    = wp_convert_hr_to_bytes( ini_get( 'memory_limit' ) );
@@ -159,6 +159,7 @@ class DKBCE_Import_Processor {
 			$state['status']        = 'failed';
 			$state['error_summary'] = $exception->getMessage();
 		} finally {
+			$reader->close_xlsx();
 			libxml_clear_errors();
 			libxml_use_internal_errors( $previous_errors );
 		}

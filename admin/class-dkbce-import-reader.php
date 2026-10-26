@@ -22,6 +22,41 @@ class DKBCE_Import_Reader {
 	private $shared_string_cache = array();
 
 	/**
+	 * Live XML stream reused only at an exact durable batch boundary.
+	 *
+	 * @var XMLReader|null
+	 */
+	private $xlsx_reader = null;
+
+	/**
+	 * Job, upload, and package member identifying the live stream.
+	 *
+	 * @var array
+	 */
+	private $xlsx_source = array();
+
+	/**
+	 * Number of row or shared-string elements consumed by the live stream.
+	 *
+	 * @var int
+	 */
+	private $xlsx_index = 0;
+
+	/**
+	 * Release the live stream before deleting an upload or leaving a worker.
+	 *
+	 * @return void
+	 */
+	public function close_xlsx() {
+		if ( null !== $this->xlsx_reader ) {
+			$this->xlsx_reader->close();
+		}
+		$this->xlsx_reader = null;
+		$this->xlsx_source = array();
+		$this->xlsx_index  = 0;
+	}
+
+	/**
 	 * Read the next CSV records using a durable byte cursor.
 	 *
 	 * @param array              $state Import state, updated after durable rows.
@@ -219,9 +254,19 @@ class DKBCE_Import_Reader {
 		if ( ! $strings ) {
 			$this->shared_string_cache = array();
 		}
-		$reader        = $this->xml( $state['file'], $strings ? $state['strings'] : $state['sheet'] );
+		$part   = $strings ? $state['strings'] : $state['sheet'];
+		$source = array( $state['operation_id'], $state['file'], $part, $state['stage'] );
+		if ( $this->xlsx_source !== $source || $this->xlsx_index !== (int) $state['cursor'] ) {
+			$this->close_xlsx();
+		}
+		if ( null === $this->xlsx_reader ) {
+			$this->xlsx_reader = $this->xml( $state['file'], $part );
+			$this->xlsx_source = $source;
+		}
+		$reader        = $this->xlsx_reader;
+		$eof           = false;
 		$tag           = $strings ? 'si' : 'row';
-		$index         = 0;
+		$index         = $this->xlsx_index;
 		$count         = 0;
 		$max_rows      = max( 1, absint( $state['batch_size'] ) ) * 4;
 		$csv           = new DKBCE_CSV_Service();
@@ -296,8 +341,13 @@ class DKBCE_Import_Reader {
 					return false;
 				}
 			}
+			$eof = true;
 		} finally {
-			$reader->close();
+			$this->xlsx_index = $index;
+			// A partially staged buffer must be replayed from its durable cursor.
+			if ( $eof || $index !== (int) $state['cursor'] ) {
+				$this->close_xlsx();
+			}
 		}
 		if ( $strings ) {
 			$state['cursor'] = 0;
