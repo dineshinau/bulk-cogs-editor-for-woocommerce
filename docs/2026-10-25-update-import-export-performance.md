@@ -244,3 +244,47 @@ planned product benchmark remain unrun.
 Graph refreshed successfully (419 nodes, 895 edges); the `validate_rows` symbol is
 present in the refreshed graph. Markdownlint and `git diff --check` passed. The
 graph query is navigation evidence only; source review remains authoritative.
+
+### Step 3 plan and acceptance
+
+Reuse each import-preview worker for up to ten existing reader batches within its
+ten-second cooperative deadline. Keep the operation's frozen batch size and the
+reader's existing per-row limits. Check independent cancellation before each
+batch, and save the staged cursor after each unfinished batch before continuing.
+Stop starting additional batches when allocated memory reaches the lower of
+32 MiB above the worker's starting allocation or 80% of PHP's configured limit.
+An unlimited PHP setting retains the 32 MiB growth ceiling. These are cooperative
+limits between batches, not hard limits on a single record's cost.
+
+Affected code: `admin/class-dkbce-import-processor.php`. Reuse the existing reader,
+operation lock, staging store, and scheduling path. Preserve ready/failed/cancelled
+handling, private upload cleanup, and XLSX stage transitions. Verify by source
+review, PHP formatting/syntax/PHPCS, Markdownlint, graph refresh and symbol review,
+and `git diff --check`. No automated tests or import benchmarks are authorized.
+Stop after this recommendation for user review.
+
+### Step 3 implementation and review
+
+Implemented the worker loop and memory ceiling in `DKBCE_Import_Processor::process()`.
+An unfinished reader batch saves its durable state before another batch starts.
+The loop checks the independent cancellation flag before every batch, and the
+existing final cancellation check still takes precedence over completion. EOF
+computes preview counts once; unfinished work follows the existing enqueue path.
+Exceptions, terminal-state cleanup, and XLSX shared-string/worksheet transitions
+retain their existing handling.
+
+With the default CSV batch size, an action can now read up to 2,500 records rather
+than 250 if time and memory allow. A 10,000-row file could therefore need about
+five actions including its header instead of 41. This is a source-based upper
+bound on work per action, not a measured speedup or an action-count guarantee.
+XLSX still rescans XML on each reader batch; recommendation 7 addresses that
+separate cost.
+
+PHPCBF, PHP syntax checks, and PHPCS passed using
+`python3 scripts/php-quality.py all admin/class-dkbce-import-processor.php`.
+The formatter's alignment changes were reviewed. Source review covered terminal
+states, cancellation before/between/after batches, checkpoints on partial reads,
+deadline expiry, finite/unlimited memory settings, workbook-stage transitions,
+and requeue failure. Behavioral tests and runtime benchmarks were not run.
+Markdown, graph, and final diff check results accompany the handoff. Recommendation
+4 has not started; this implementation is ready for user review.
