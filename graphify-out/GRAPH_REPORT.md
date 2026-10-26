@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-26)
 
 ## Corpus Check
-- 31 files · ~61,872 words
+- 31 files · ~62,524 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 422 nodes · 905 edges · 21 communities (8 shown, 13 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 99 edges (avg confidence: 0.85)
+- 424 nodes · 909 edges · 21 communities (8 shown, 13 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 100 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `14aee517`
+- Built from commit: `4809acff`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,12 +36,12 @@
 - DKBCE_Operation_Store
 
 ## God Nodes (most connected - your core abstractions)
-1. `DKBCE_Admin_Functions` - 38 edges
+1. `DKBCE_Admin_Functions` - 39 edges
 2. `DKBCE_Operation_Store` - 38 edges
 3. `DKBCE_Bulk_Processor` - 26 edges
-4. `DKBCE_COGS_Service` - 25 edges
+4. `DKBCE_COGS_Service` - 26 edges
 5. `DKBCE_History_Store` - 24 edges
-6. `DKBCE_Import_Store` - 23 edges
+6. `DKBCE_Import_Store` - 24 edges
 7. `loadHistoryDetails()` - 21 edges
 8. `setNotice()` - 21 edges
 9. `renderOperation()` - 20 edges
@@ -68,11 +68,11 @@ Nodes (14): argparse, os, pathlib, changed_files(), main(), php_files(), Include
 
 ### Community 2 - "bulk-cogs-editor.spec.cjs"
 Cohesion: 0.06
-Nodes (31): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, fs, getProducts(), os (+23 more)
+Nodes (32): ref_node_child_process, ref_node_crypto, ref_node_fs, ref_node_os, ref_node_path, @playwright/test, fs, getProducts() (+24 more)
 
 ### Community 10 - "scripts"
 Cohesion: 0.06
-Nodes (34): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+26 more)
+Nodes (33): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+25 more)
 
 ### Community 11 - "DKBCE_History_Controller"
 Cohesion: 0.13
@@ -96,7 +96,7 @@ Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_
 
 ## Knowledge Gaps
 - **75 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+70 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 149 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 150 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -104,10 +104,10 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
   _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.063) - this node is a cross-community bridge._
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_COGS_Service`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
 - **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_Range_Query_Profiler`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
+  _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
   _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**
