@@ -176,7 +176,10 @@ class DKBCE_Operation_Store {
 			$state = array_merge( $state, $this->get_context( $state['operation_id'], $state['context_fields'] ) );
 		}
 		unset( $state['context_fields'] );
-		if ( ! is_array( $previous ) || ( empty( $state['filters'] ) && empty( $state['reviewed_rows'] ) ) || in_array( $state['action'] ?? '', array( 'import_preview', 'server_download' ), true ) ) {
+		if ( ! is_array( $previous ) || ( empty( $state['filters'] ) && empty( $state['reviewed_rows'] ) ) || 'import_preview' === ( $state['action'] ?? '' ) ) {
+			return $state;
+		}
+		if ( 'server_download' === ( $state['action'] ?? '' ) && 'export' !== ( $state['mode'] ?? '' ) ) {
 			return $state;
 		}
 		$fields  = array_flip( array( 'filters', 'reviewed_rows' ) );

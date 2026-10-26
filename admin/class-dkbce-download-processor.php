@@ -80,9 +80,14 @@ class DKBCE_Download_Processor {
 		if ( ! $state || 'server_download' !== $state['action'] || 'processing' !== $state['status'] ) {
 			return;
 		}
-		$deadline = microtime( true ) + 10;
-		$csv      = new DKBCE_CSV_Service();
-		$handle   = fopen( $state['file'], 'c+b' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Private temporary file.
+		$deadline       = microtime( true ) + 10;
+		$memory_limit   = wp_convert_hr_to_bytes( ini_get( 'memory_limit' ) );
+		$memory_ceiling = memory_get_usage( true ) + 32 * MB_IN_BYTES;
+		if ( $memory_limit > 0 ) {
+			$memory_ceiling = min( $memory_ceiling, (int) ( $memory_limit * 0.8 ) );
+		}
+		$csv    = new DKBCE_CSV_Service();
+		$handle = fopen( $state['file'], 'c+b' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Private temporary file.
 		if ( ! $handle ) {
 			$state['status'] = 'failed';
 			$store->save( $state );
@@ -119,6 +124,10 @@ class DKBCE_Download_Processor {
 				unset( $state['next_cursor'] );
 				if ( empty( $state['batch_more'] ) ) {
 					$state['status'] = 'completed';
+					break;
+				}
+				// Yield between batches, retaining the existing durable file/cursor pair.
+				if ( memory_get_usage( true ) >= $memory_ceiling ) {
 					break;
 				}
 			}
@@ -172,25 +181,29 @@ class DKBCE_Download_Processor {
 			$filters['get_ids']   = true;
 			$filters['after_id']  = $state['cursor'];
 			$filters['page_size'] = self::BATCH_SIZE;
-			$ids                  = ( new DKBCE_COGS_Service() )->scan_matches( $filters );
-			_prime_post_caches( $ids, true, true );
-			$rows = array();
+			$service              = new DKBCE_COGS_Service();
+			$ids                  = $service->scan_matches( $filters );
+			$service->prime_products( $ids );
+			$getters = array(
+				'sku'           => 'get_sku',
+				'name'          => 'get_name',
+				'cogs'          => 'get_cogs_value',
+				'regular_price' => 'get_regular_price',
+				'sale_price'    => 'get_sale_price',
+				'type'          => 'get_type',
+			);
+			$rows    = array();
 			foreach ( $ids as $id ) {
 				$product = wc_get_product( $id );
 				if ( ! $product || ! user_can( $state['user_id'], 'edit_post', $id ) ) {
 					continue;
 				}
-				$values = array(
-					'id'            => $id,
-					'sku'           => $product->get_sku(),
-					'name'          => $product->get_name(),
-					'cogs'          => $product->get_cogs_value(),
-					'regular_price' => $product->get_regular_price(),
-					'sale_price'    => $product->get_sale_price(),
-					'type'          => $product->get_type(),
-				);
+				$values = array( 'id' => $id );
 				$row    = array();
 				foreach ( $state['columns'] as $column ) {
+					if ( ! array_key_exists( $column, $values ) ) {
+						$values[ $column ] = $product->{$getters[ $column ]}();
+					}
 					$row[] = $values[ $column ];
 				}
 				$row[]  = '';
@@ -223,7 +236,9 @@ class DKBCE_Download_Processor {
 		$state = $store->get( $id );
 		if ( $state && 'server_download' === $state['action'] ) {
 			wp_delete_file( $state['file'] );
-			delete_option( 'dkbce_operation_' . sanitize_key( $id ) );
+			if ( delete_option( 'dkbce_operation_' . sanitize_key( $id ) ) ) {
+				delete_option( 'dkbce_context_' . sanitize_key( $id ) );
+			}
 			delete_option( 'dkbce_cancel_' . sanitize_key( $id ) );
 		}
 	}

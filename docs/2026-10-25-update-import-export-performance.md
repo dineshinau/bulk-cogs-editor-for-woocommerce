@@ -423,3 +423,54 @@ changed previews, expired checkpoints, original timing, stale-signature errors,
 and final claim ordering. Browser/automated tests and product benchmarks were not
 run. Markdown, graph, and final diff results accompany the handoff. Step 5 is
 uncommitted and ready for review; recommendation 6 has not started.
+
+
+### Step 6 plan: selective CSV export work
+
+Scope: download processor and operation storage. Reuse the existing product and
+parent cache primer, evaluate only selected column getters, and allow export
+filters to use the verified selection sidecar introduced in step 4. Remove that
+sidecar only after download state deletion succeeds. Keep import reports unchanged
+apart from the shared worker memory safeguard.
+
+Acceptance: preserve column order, duplicate columns, WooCommerce getter values,
+permissions, CSV encoding/formula protection, ID cursors, cancellation, and file
+resume offsets. Keep 100-row batches and the existing ten-second deadline. Yield
+between batches at 32 MiB allocated growth or 80% of a finite PHP memory limit,
+whichever is lower; allow the first batch to make progress. No benchmark or tests
+will run without a request. Checks: PHP formatting/lint/PHPCS, Markdown lint,
+source review, Graphify refresh and bounded query, and git diff checks.
+
+### Step 6 implementation and review
+
+Exports now prime product and parent caches through the existing COGS service
+helper. The worker evaluates only requested getters, once per distinct column per
+product, preserving duplicate columns and their order. For an ID/SKU export, the
+row-building code calls one getter instead of six; product loading and any
+internal WooCommerce getter calls still occur. This is a source-level reduction,
+not a measured throughput result.
+
+Export filters now use the existing verified, non-autoloaded selection sidecar.
+Creation stays inline; the first worker save moves unchanged filters out of the
+progress record. Subsequent saves reuse that sidecar. Downloads completing in
+one worker action incur the initial compaction overhead without repeated-write
+savings. Older inline jobs remain readable, missing context fails closed, and
+download cleanup removes context only after successful operation deletion. The
+step 4 downgrade limitation also applies to compacted exports.
+
+The shared download worker yields between batches at the lower of 32 MiB allocated
+memory growth and 80% of a finite PHP memory limit. Unlimited PHP memory retains
+the growth ceiling. A first batch is allowed even when already over the ceiling
+to avoid repeatedly queuing without progress. This is a cooperative safeguard,
+not protection against an individual batch or getter exhausting memory. Batch
+size remains 100; the existing ten-second deadline, queue group, cancellation
+checks, CSV writer, and cursor/file-offset recovery remain unchanged.
+
+PHP formatting, syntax checks, and PHPCS passed for the download processor and
+operation store using `python3 scripts/php-quality.py all` with explicit paths
+(the documented npm quality script remains unavailable). Source review covered
+validated column names, duplicate/null values, parent priming, skipped products,
+empty/final pages, memory yielding, inline/compact reads, and cleanup ordering.
+No automated tests, browser tests, or export benchmarks were run. No frontend or
+translatable strings changed. Step 6 is ready for review without a commit; step 7
+has not started.
