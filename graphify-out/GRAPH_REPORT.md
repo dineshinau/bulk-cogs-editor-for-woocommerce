@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-26)
 
 ## Corpus Check
-- 31 files · ~61,300 words
+- 31 files · ~61,872 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 419 nodes · 895 edges · 21 communities (8 shown, 13 thin omitted)
+- 422 nodes · 905 edges · 21 communities (8 shown, 13 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 99 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ad310b5b`
+- Built from commit: `14aee517`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -37,7 +37,7 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `DKBCE_Admin_Functions` - 38 edges
-2. `DKBCE_Operation_Store` - 35 edges
+2. `DKBCE_Operation_Store` - 38 edges
 3. `DKBCE_Bulk_Processor` - 26 edges
 4. `DKBCE_COGS_Service` - 25 edges
 5. `DKBCE_History_Store` - 24 edges
@@ -103,7 +103,7 @@ Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+  _High betweenness centrality (0.070) - this node is a cross-community bridge._
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.063) - this node is a cross-community bridge._
 - **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_Range_Query_Profiler`?**
