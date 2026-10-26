@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T20:05:10+00:00\n"
+"POT-Creation-Date: 2026-10-26T20:16:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2162,11 +2162,11 @@ msgstr ""
 msgid "The import preview could not be queued."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:116
+#: admin/class-dkbce-import-processor.php:117
 msgid "Permission to prepare this import is no longer available."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:119
+#: admin/class-dkbce-import-processor.php:120
 msgid "The temporary upload is unavailable. Upload the file again."
 msgstr ""
 
@@ -2174,59 +2174,59 @@ msgstr ""
 msgid "No import header was found in the file."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:174
+#: admin/class-dkbce-import-processor.php:175
 msgid "The preview queue stopped. Upload the file again."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:64
+#: admin/class-dkbce-import-reader.php:99
 msgid "Use UTF-8 CSV with valid double-quoted fields. Other CSV encodings are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:127
+#: admin/class-dkbce-import-reader.php:162
 msgid "XLSX imports require the PHP ZIP, XMLReader and DOM extensions."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:131
+#: admin/class-dkbce-import-reader.php:166
 msgid "This file is not a readable XLSX workbook."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:168
+#: admin/class-dkbce-import-reader.php:203
 msgid "External worksheet relationships are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:173
+#: admin/class-dkbce-import-reader.php:208
 msgid "Invalid worksheet path in XLSX file."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:185
+#: admin/class-dkbce-import-reader.php:220
 msgid "The first XLSX sheet is not a readable worksheet."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:243
+#: admin/class-dkbce-import-reader.php:288
 msgid "An XLSX row could not be read."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:258
+#: admin/class-dkbce-import-reader.php:303
 msgid "Invalid or repeated XLSX row number."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:321
+#: admin/class-dkbce-import-reader.php:371
 msgid "The XLSX XML content could not be opened."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:339
+#: admin/class-dkbce-import-reader.php:389
 msgid "Invalid XLSX XML. DTDs and external entities are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:389
+#: admin/class-dkbce-import-reader.php:439
 msgid "Invalid XLSX column reference."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:397
+#: admin/class-dkbce-import-reader.php:447
 msgid "Replace spreadsheet formulas with values before importing."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:419
+#: admin/class-dkbce-import-reader.php:469
 msgid "The XLSX file references a missing shared string."
 msgstr ""
 
