@@ -3125,7 +3125,7 @@
       "file_type": "code",
       "norm_label": ".cleanup()",
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L166"
+      "source_location": "L186"
     },
     {
       "id": "admin_class_dkbce_import_processor_dkbce_import_processor_process",
@@ -13525,7 +13525,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L166",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -15121,7 +15121,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L167",
+      "source_location": "L187",
       "weight": 1.0
     },
     {
@@ -15133,7 +15133,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-import-processor.php",
-      "source_location": "L195",
+      "source_location": "L215",
       "weight": 1.0
     },
     {
@@ -15378,5 +15378,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f4a9681f18be7d42e3652ce7601df395f92cd3a2"
+  "built_at_commit": "ad310b5baad1729ad6027aa46c4c55af96c88d76"
 }
