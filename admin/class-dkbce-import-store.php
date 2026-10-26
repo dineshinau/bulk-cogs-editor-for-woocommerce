@@ -255,24 +255,29 @@ class DKBCE_Import_Store {
 	 */
 	public function exclude( $job, $ids ) {
 		global $wpdb;
+		$normalized = array();
 		foreach ( $ids as $id ) {
-			if ( ! is_scalar( $id ) || ! preg_match( '/\A[1-9][0-9]*\z/', (string) $id ) || null === $this->value( $job, (int) $id ) ) {
+			if ( ! is_scalar( $id ) || ! preg_match( '/\A[1-9][0-9]*\z/', (string) $id ) ) {
+				throw new RuntimeException( esc_html__( 'Invalid import selection. Prepare the preview again.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			$normalized[] = (int) $id;
+		}
+		$batches = array_chunk( array_values( array_unique( $normalized ) ), 250 );
+		// Validate the complete selection before making any changes.
+		foreach ( $batches as $batch ) {
+			if ( count( $this->values( $job, $batch ) ) !== count( $batch ) ) {
 				throw new RuntimeException( esc_html__( 'Invalid import selection. Prepare the preview again.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
 		}
-		foreach ( $ids as $id ) {
-			// A claimed preview has one frozen selection.
-			if ( false === $wpdb->update(
-				$wpdb->prefix . 'dkbce_import_rows',
-				array( 'selected' => 0 ),
-				array(
-					'job_id'     => $job,
-					'row_type'   => 0,
-					'product_id' => (int) $id,
-				),
-				array( '%d' ),
-				array( '%s', '%d', '%d' )
-			) ) {
+		foreach ( $batches as $batch ) {
+			$placeholders = implode( ', ', array_fill( 0, count( $batch ), '%d' ) );
+			// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- One placeholder per bounded ID, plus table and job.
+			$query = $wpdb->prepare(
+				"UPDATE %i SET selected = 0 WHERE job_id = %s AND row_type = 0 AND product_id IN ($placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only generated integer placeholders are interpolated.
+				array_merge( array( $wpdb->prefix . 'dkbce_import_rows', $job ), $batch )
+			);
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared update for the claimed preview and validated IDs.
+			if ( false === $wpdb->query( $query ) ) {
 				throw new RuntimeException( esc_html__( 'The import selection could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
 		}

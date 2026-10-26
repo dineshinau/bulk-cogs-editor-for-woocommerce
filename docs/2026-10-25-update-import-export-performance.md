@@ -356,3 +356,70 @@ index failure/retry/deletion, independent cancellation, selection reuse, history
 display, and retention. Automated tests and product benchmarks were not run.
 Markdown, graph, and final diff check results accompany the handoff. Recommendation
 5 has not started; step 4 is ready for user review.
+
+### Step 5 plan and acceptance
+
+Step 4 was committed in `15bc25d`, with its graph in `4809acf`.
+Batch Apply-time preparation without starting product updates before preflight:
+
+1. Validate all import exclusions before changing selection, using batches of
+   250 IDs and the existing staged-value reader. Then update matching rows in
+   batches of 250, preserving job ownership, selected/valid-row checks, and errors.
+2. Check reviewed products in groups of 50 with product and parent cache priming
+   and one staged-value read per group. Use ID lookup sets for selection membership.
+3. Limit each review request to 250 products and a five-second cooperative budget.
+   Store a short-lived continuation bound to the owned preview and selection;
+   the browser repeats the same Apply payload until checks complete. Preserve the
+   original start time, recheck nonce/ownership on every request, and claim the
+   preview only after validation and scope-count checks complete.
+
+Affected files: import store, COGS service, admin controller, frontend source and
+rebuilt assets. Check PHP formatting/syntax/PHPCS, frontend build, Markdownlint,
+continuation and selection behavior by source review, graph coverage, and final
+diff. No automated tests or product benchmarks. Stop for review before step 6.
+
+### Step 5 implementation and review
+
+Implemented batched exclusions and resumable reviewed-value validation. Exclusions
+are normalized and checked against valid, selected rows in their owned import job.
+All validation batches finish before the first selection write. Both validation
+and updates use groups of at most 250 unique IDs. For 5,000 valid unique exclusions,
+the source now requests 20 validation SELECTs and 20 UPDATEs instead of 5,000 of
+each. Existing error messages and the claimed-preview selection policy are retained.
+
+Preflight uses lookup sets for selected/excluded IDs. Product and parent caches are
+primed in groups of 50, and imported target costs are fetched once per group using
+the existing staged-value reader. Calculations still use WooCommerce products,
+the existing precision rules, and the same reviewed-value signatures.
+
+Each validation request handles at most 250 reviewed products and yields at a
+five-second cooperative deadline. A private transient records the checked offset,
+original Apply timestamp, and a fingerprint of the exact owned preview token,
+preview contents, and normalized selection. The browser continues with the same
+captured payload. Every request rechecks authorization, nonce, preview ownership,
+and import readiness; a changed/expired continuation fails before claiming the
+preview. Checkpoints expire after five idle minutes and are removed after the last
+review batch. Scope counts and the existing single-use claim still precede queuing.
+Worker-side freshness checks remain in place for changes occurring after preflight.
+
+The cooperative deadline covers reviewed-product validation; it cannot interrupt
+an individual query/getter, and final scope-count queries and batched exclusion
+writes still complete in the final Apply request. Large reviews may need additional
+HTTP requests. Actual elapsed-time improvement has not been measured.
+
+PHP formatting, syntax checks, and PHPCS passed for the three changed PHP files
+with `python3 scripts/php-quality.py all admin/class-dkbce-admin-functions.php
+admin/class-dkbce-cogs-service.php admin/class-dkbce-import-store.php`.
+`npm run build` passed and rebuilt the JavaScript and asset version; generated
+continuation handling was inspected. The translation template was regenerated.
+Read-only MySQL EXPLAIN accepted the batched selection SQL. The original and
+batched SELECT examples used the existing primary job index; these used a synthetic
+job ID and establish syntax/plan compatibility, not realistic workload timings.
+The exclusion UPDATE was explained without executing the write.
+
+Source review covered empty and duplicate exclusion lists, invalid IDs before
+mutation, selection modes, staged zero/missing values, deadline continuation,
+changed previews, expired checkpoints, original timing, stale-signature errors,
+and final claim ordering. Browser/automated tests and product benchmarks were not
+run. Markdown, graph, and final diff results accompany the handoff. Step 5 is
+uncommitted and ready for review; recommendation 6 has not started.
