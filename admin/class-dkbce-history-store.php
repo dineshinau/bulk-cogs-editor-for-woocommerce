@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_History_Store {
 	/**
+	 * Confirmed index rows, shared by store instances within this request.
+	 *
+	 * @var array
+	 */
+	private static $indexed_rows = array();
+
+	/**
 	 * Get the configured policy for costs changed after the original operation.
 	 *
 	 * @return string
@@ -47,10 +54,8 @@ class DKBCE_History_Store {
 		if ( ! in_array( $state['action'] ?? '', array( 'set', 'clear', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'csv_import', 'rollback' ), true ) ) {
 			return;
 		}
-		DKBCE_Database_Installer::maybe_upgrade();
-		// Private indexed history is updated alongside durable worker state.
-		$result = $wpdb->replace(
-			$wpdb->prefix . 'dkbce_history',
+		$summary = array_map(
+			'strval',
 			array(
 				'operation_id' => $state['operation_id'],
 				'created_at'   => $state['created_at'],
@@ -58,12 +63,31 @@ class DKBCE_History_Store {
 				'action'       => $state['action'],
 				'status'       => $state['status'],
 				'note'         => $state['note'] ?? '',
-			),
+			)
+		);
+		$id      = $state['operation_id'];
+		if ( ! array_key_exists( $id, self::$indexed_rows ) ) {
+			DKBCE_Database_Installer::maybe_upgrade();
+			$stored = $wpdb->get_row( $wpdb->prepare( 'SELECT operation_id, created_at, user_id, action, status, note FROM %i WHERE operation_id = %s', $wpdb->prefix . 'dkbce_history', $id ), ARRAY_A );
+			if ( $wpdb->last_error ) {
+				throw new RuntimeException( esc_html__( 'Operation history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			self::$indexed_rows[ $id ] = is_array( $stored ) ? array_map( 'strval', $stored ) : null;
+		}
+		if ( self::$indexed_rows[ $id ] === $summary ) {
+			return;
+		}
+		// Counters and timestamps belong to operation state, not this summary index.
+		$result = $wpdb->replace(
+			$wpdb->prefix . 'dkbce_history',
+			$summary,
 			array( '%s', '%d', '%d', '%s', '%s', '%s' )
 		);
 		if ( false === $result ) {
+			unset( self::$indexed_rows[ $id ] );
 			throw new RuntimeException( esc_html__( 'Operation history could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
+		self::$indexed_rows[ $id ] = $summary;
 	}
 
 	/**
@@ -345,6 +369,7 @@ class DKBCE_History_Store {
 			return false;
 		}
 		// Remove the summary only after its product rows are gone.
+		unset( self::$indexed_rows[ $operation_id ] );
 		return false !== $wpdb->delete( $wpdb->prefix . 'dkbce_history', array( 'operation_id' => $operation_id ), array( '%s' ) );
 	}
 }

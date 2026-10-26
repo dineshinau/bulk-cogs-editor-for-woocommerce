@@ -288,3 +288,71 @@ deadline expiry, finite/unlimited memory settings, workbook-stage transitions,
 and requeue failure. Behavioral tests and runtime benchmarks were not run.
 Markdown, graph, and final diff check results accompany the handoff. Recommendation
 4 has not started; this implementation is ready for user review.
+
+### Step 4 plan and acceptance
+
+Step 3 was committed in `31bdaa0`, with its graph refresh in `14aee51`.
+Reduce progress-write work in the operation store and history index:
+
+1. Compare the six indexed summary fields with the stored history row once per
+   operation per request. Cache confirmed summaries for subsequent saves and write
+   only when those fields change. Failed writes must remain retryable; deletion
+   must invalidate the cached summary.
+2. Store stable `reviewed_rows` and `filters` separately from progress counters.
+   Keep the first save inline, so separate data always has a parent operation.
+   On a later save with unchanged inputs, verify the separate option before
+   replacing inline fields with a reference. Hydrate it through the existing
+   `get()` API and fail closed if required fields are missing. If inputs change,
+   save them inline again so interrupted writes cannot change an older checkpoint's
+   selection. Keep download and import-preview storage outside this change.
+3. Remove the separate data with retained operations. Preserve independent
+   cancellation, outcome storage, fresh reads, and verification of progress saves.
+
+Affected PHP: operation store, history store, and retention processor. Acceptance
+checks are source review of initialization/retry/cleanup paths, PHP formatting,
+syntax and PHPCS, Markdownlint, graph refresh, and final diff checks. Automated
+tests and benchmarks remain unrun. Stop for review before recommendation 5.
+
+### Step 4 implementation and review
+
+Implemented selective history indexing and separate selection storage. History
+indexing reads the current summary once per operation per PHP request, then skips
+database work while operation ID, creation time, owner, action, status, and note
+match the confirmed row. Status/note changes and missing rows still write the
+index. Failed writes and summary deletion invalidate the request cache, so a
+retry reads persisted data again. Progress counters still receive their existing
+durable save and readback verification.
+
+An existing operation with unchanged, nonempty selection inputs moves `filters`
+and `reviewed_rows` into a non-autoloaded `dkbce_context_<operation-id>` option.
+The progress record stores the expected field names, and `get()` restores those
+fields before returning the usual complete state. Fresh reads invalidate both
+options' caches. Missing, incomplete, or malformed selection data raises an error
+instead of dropping matching constraints or reviewed-cost checks. Empty selection
+inputs, import previews, and downloads retain inline storage.
+
+The first save remains self-contained. A later save verifies the separate data
+before compacting progress; interruption before that checkpoint leaves the inline
+state authoritative. Changed inputs also return to inline storage before a later
+save can replace the separate option. Retention removes selection data only after
+successfully deleting the parent operation. Existing inline jobs remain readable
+and adopt compact storage on a subsequent qualifying save.
+
+This changes the persisted format for compacted operations. Before downgrading to
+code predating this change, expand their selection fields back into each operation
+option using the current reader; older code cannot hydrate `context_fields`.
+
+Expected savings are fewer history writes and smaller progress writes/readbacks.
+Loading a compact operation adds a selection-option read, normally served from
+the option cache after the first read in a request. Initial compaction also needs
+one selection write and readback. No runtime speedup has been measured.
+
+PHP formatting, syntax checks, and PHPCS passed for all three changed files using
+`python3 scripts/php-quality.py all admin/class-dkbce-operation-store.php
+admin/class-dkbce-history-store.php admin/class-dkbce-retention-processor.php`.
+The translation template was regenerated for the missing-selection error. Source
+review covered inline/compact reads, failed or interrupted saves, changed inputs,
+index failure/retry/deletion, independent cancellation, selection reuse, history
+display, and retention. Automated tests and product benchmarks were not run.
+Markdown, graph, and final diff check results accompany the handoff. Recommendation
+5 has not started; step 4 is ready for user review.

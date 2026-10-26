@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T07:35:38+00:00\n"
+"POT-Creation-Date: 2026-10-26T07:45:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2084,40 +2084,41 @@ msgstr ""
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:65
-msgid "Operation history could not be saved."
-msgstr ""
-
-#: admin/class-dkbce-history-store.php:140
+#: admin/class-dkbce-history-store.php:73
+#: admin/class-dkbce-history-store.php:164
 msgid "Operation history could not be read."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:163
-#: admin/class-dkbce-history-store.php:321
+#: admin/class-dkbce-history-store.php:88
+msgid "Operation history could not be saved."
+msgstr ""
+
+#: admin/class-dkbce-history-store.php:187
+#: admin/class-dkbce-history-store.php:345
 msgid "Product history could not be read."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:200
+#: admin/class-dkbce-history-store.php:224
 msgid "Original product costs could not be saved. The product was not changed."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:227
+#: admin/class-dkbce-history-store.php:251
 msgid "Product history could not be confirmed."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:253
+#: admin/class-dkbce-history-store.php:277
 msgid "The restored product could not be recorded."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:277
+#: admin/class-dkbce-history-store.php:301
 msgid "Rollback progress could not be recovered."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:296
+#: admin/class-dkbce-history-store.php:320
 msgid "Rollback products could not be collected."
 msgstr ""
 
-#: admin/class-dkbce-history-store.php:342
+#: admin/class-dkbce-history-store.php:366
 msgid "Expired history could not be removed."
 msgstr ""
 
@@ -2248,32 +2249,37 @@ msgstr ""
 msgid "Import storage is unavailable. Try again when the database is available."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:123
+#: admin/class-dkbce-operation-store.php:141
+#: admin/class-dkbce-operation-store.php:199
 msgid "The operation could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:203
+#: admin/class-dkbce-operation-store.php:158
+msgid "The saved operation selection is unavailable."
+msgstr ""
+
+#: admin/class-dkbce-operation-store.php:281
 msgid "Bulk operation outcomes could not be read."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:248
+#: admin/class-dkbce-operation-store.php:326
 msgid "The bulk product outcome could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:265
+#: admin/class-dkbce-operation-store.php:343
 msgid "A conflicting bulk product outcome already exists."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:354
+#: admin/class-dkbce-operation-store.php:432
 msgid "Bulk operation outcomes could not be summarized."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:398
+#: admin/class-dkbce-operation-store.php:476
 msgid "Bulk operation errors could not be summarized."
 msgstr ""
 
-#: admin/class-dkbce-operation-store.php:444
-#: admin/class-dkbce-operation-store.php:472
+#: admin/class-dkbce-operation-store.php:522
+#: admin/class-dkbce-operation-store.php:550
 msgid "Bulk operation outcomes could not be removed."
 msgstr ""
 

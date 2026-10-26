@@ -42,21 +42,37 @@ class DKBCE_Operation_Store {
 	}
 
 	/**
+	 * Get the option holding stable selection inputs separately from progress.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @return string
+	 */
+	private function context_key( $operation_id ) {
+		return 'dkbce_context_' . sanitize_key( $operation_id );
+	}
+
+	/**
 	 * Get an operation state.
 	 *
 	 * @param string $operation_id Operation UUID.
 	 * @param bool   $fresh Bypass request-local option caches after acquiring a lock.
 	 * @return array|false
+	 * @throws RuntimeException When referenced selection data is unavailable.
 	 */
 	public function get( $operation_id, $fresh = false ) {
 		$key = $this->operation_key( $operation_id );
 		if ( $fresh ) {
 			wp_cache_delete( $key, 'options' );
+			wp_cache_delete( $this->context_key( $operation_id ), 'options' );
 			wp_cache_delete( 'notoptions', 'options' );
 		}
 		$state = get_option( $key, false );
 		if ( ! is_array( $state ) ) {
 			return false;
+		}
+		if ( isset( $state['context_fields'] ) ) {
+			$state = array_merge( $state, $this->get_context( $operation_id, $state['context_fields'] ) );
+			unset( $state['context_fields'] );
 		}
 
 		$state['cancel_requested'] = ! empty( $state['cancel_requested'] ) || $this->is_cancel_requested( $operation_id );
@@ -111,8 +127,10 @@ class DKBCE_Operation_Store {
 	 * @throws RuntimeException When the operation cannot be persisted.
 	 */
 	public function save( $state ) {
-		$key = $this->operation_key( $state['operation_id'] );
-		if ( false === get_option( $key, false ) ) {
+		$key      = $this->operation_key( $state['operation_id'] );
+		$previous = get_option( $key, false );
+		$state    = $this->compact_state( $state, $previous );
+		if ( false === $previous ) {
 			add_option( $key, $state, '', false );
 		} else {
 			update_option( $key, $state, false );
@@ -124,6 +142,66 @@ class DKBCE_Operation_Store {
 		}
 		$history = new DKBCE_History_Store();
 		$history->index( $state );
+	}
+
+	/**
+	 * Read all referenced selection fields; never silently drop review safeguards.
+	 *
+	 * @param string $operation_id Operation UUID.
+	 * @param array  $fields Expected field names from the durable checkpoint.
+	 * @return array
+	 * @throws RuntimeException When selection data is missing or incomplete.
+	 */
+	private function get_context( $operation_id, $fields ) {
+		$context = get_option( $this->context_key( $operation_id ), false );
+		if ( ! is_array( $context ) || ! is_array( $fields ) || array_keys( $context ) !== $fields || array_diff( $fields, array( 'filters', 'reviewed_rows' ) ) || array_filter( $context, 'is_array' ) !== $context ) {
+			throw new RuntimeException( esc_html__( 'The saved operation selection is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return $context;
+	}
+
+	/**
+	 * Move unchanged selection inputs out of an existing durable checkpoint.
+	 *
+	 * New or changed inputs stay inline until a subsequent save. This keeps the old
+	 * checkpoint self-contained while writing or replacing the separate option.
+	 *
+	 * @param array       $state Complete operation state.
+	 * @param array|false $previous Previous persisted state, possibly compact.
+	 * @return array State suitable for persistence.
+	 * @throws RuntimeException When the selection cannot be read or persisted.
+	 */
+	private function compact_state( $state, $previous ) {
+		if ( isset( $state['context_fields'] ) ) {
+			$state = array_merge( $state, $this->get_context( $state['operation_id'], $state['context_fields'] ) );
+		}
+		unset( $state['context_fields'] );
+		if ( ! is_array( $previous ) || ( empty( $state['filters'] ) && empty( $state['reviewed_rows'] ) ) || in_array( $state['action'] ?? '', array( 'import_preview', 'server_download' ), true ) ) {
+			return $state;
+		}
+		$fields  = array_flip( array( 'filters', 'reviewed_rows' ) );
+		$context = array_intersect_key( $state, $fields );
+		if ( ! $context ) {
+			return $state;
+		}
+		$stored = isset( $previous['context_fields'] )
+			? $this->get_context( $state['operation_id'], $previous['context_fields'] )
+			: array_intersect_key( $previous, $fields );
+		if ( $stored !== $context ) {
+			return $state;
+		}
+		if ( ! isset( $previous['context_fields'] ) ) {
+			$key = $this->context_key( $state['operation_id'] );
+			update_option( $key, $context, false );
+			wp_cache_delete( $key, 'options' );
+			wp_cache_delete( 'notoptions', 'options' );
+			if ( get_option( $key, false ) !== $context ) {
+				throw new RuntimeException( esc_html__( 'The operation could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+		}
+		$state                   = array_diff_key( $state, $fields );
+		$state['context_fields'] = array_keys( $context );
+		return $state;
 	}
 
 	/**
