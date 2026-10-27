@@ -231,6 +231,30 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Prime product and variation-parent data for a bounded group of IDs.
+	 *
+	 * @param array $ids Product IDs.
+	 * @return void
+	 */
+	public function prime_products( $ids ) {
+		$ids = array_values( array_unique( array_filter( array_map( 'absint', $ids ) ) ) );
+		if ( ! $ids ) {
+			return;
+		}
+		_prime_post_caches( $ids, true, true );
+		$parents = array();
+		foreach ( $ids as $id ) {
+			$parent = wp_get_post_parent_id( $id );
+			if ( $parent ) {
+				$parents[] = $parent;
+			}
+		}
+		if ( $parents ) {
+			_prime_post_caches( array_unique( $parents ), true, true );
+		}
+	}
+
+	/**
 	 * Calculate a new COGS value. A null result means clear the COGS value.
 	 *
 	 * @param WC_Product $product Product.

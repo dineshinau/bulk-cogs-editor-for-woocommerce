@@ -1450,10 +1450,12 @@ class DKBCE_Admin_Functions {
 	/**
 	 * Reject stale reviewed values before claiming a preview or queuing work.
 	 *
-	 * @param array $preview Owned preview.
+	 * @param array  $preview Owned preview.
+	 * @param string $token Owned preview token.
+	 * @param float  $requested_at Original Apply start time, restored on continuation.
 	 * @return int|null Selected count, or null for import and legacy explicit selections.
 	 */
-	private function revalidate_reviewed_rows( $preview ) {
+	private function revalidate_reviewed_rows( $preview, $token, &$requested_at ) {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
 			$this->send_nonce_error();
 		}
@@ -1464,36 +1466,60 @@ class DKBCE_Admin_Functions {
 		$excluded = is_array( $excluded ) ? array_filter( $excluded, 'is_scalar' ) : array();
 		$excluded = array_map( 'absint', $excluded );
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Legacy IDs only narrow preflight here and are strictly validated by ajax_apply.
-		$selected = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? array_map( 'absint', array_filter( wp_unslash( $_POST['selected_ids'] ), 'is_scalar' ) ) : array();
-		$range    = $preview['selection_range'] ?? null;
+		$selected        = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? array_map( 'absint', array_filter( wp_unslash( $_POST['selected_ids'] ), 'is_scalar' ) ) : array();
+		$range           = $preview['selection_range'] ?? null;
+		$selected_lookup = array_fill_keys( $selected, true );
+		$excluded_lookup = array_fill_keys( $excluded, true );
+		$reviewed        = array();
 		foreach ( $preview['reviewed_rows'] ?? array() as $id => $signature ) {
-			if ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) && ! in_array( (int) $id, $selected, true ) ) {
+			if ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) && ! isset( $selected_lookup[ (int) $id ] ) ) {
 				continue;
 			}
-			if ( $selected_only && 'all_except' === $mode && in_array( (int) $id, $excluded, true ) ) {
+			if ( $selected_only && 'all_except' === $mode && isset( $excluded_lookup[ (int) $id ] ) ) {
 				continue;
 			}
 			if ( $selected_only && 'range' === $mode && $range && ( $id < $range['min'] || $id > $range['max'] ) ) {
 				continue;
 			}
-			$product = wc_get_product( $id );
-			$result  = $product ? $this->service->calculate( $product, $preview['operation'] ) : null;
-			if ( $product && is_wp_error( $result ) ) {
-				$result = array(
-					'current' => $product->get_cogs_value(),
-					'new'     => null,
-					'status'  => 'failed',
-				);
-			}
-			if ( ! is_array( $result ) || ! hash_equals( $signature, $this->service->preview_signature( $result ) ) ) {
+			$reviewed[ $id ] = $signature;
+		}
+		$fingerprint  = hash( 'sha256', maybe_serialize( array( $token, $preview, $selected_only, $mode, $excluded, $selected ) ) );
+		$preflight_id = isset( $_POST['preflight_id'] ) && is_string( $_POST['preflight_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preflight_id'] ) ) : '';
+		$offset       = 0;
+		if ( '' !== $preflight_id ) {
+			$checkpoint = preg_match( '/\A[0-9a-f-]{36}\z/i', $preflight_id ) ? get_transient( 'dkbce_preflight_' . $preflight_id ) : false;
+			if ( ! is_array( $checkpoint ) || ! isset( $checkpoint['fingerprint'], $checkpoint['offset'], $checkpoint['requested_at'] ) || ! is_string( $checkpoint['fingerprint'] ) || ! hash_equals( $checkpoint['fingerprint'], $fingerprint ) || ! is_int( $checkpoint['offset'] ) || $checkpoint['offset'] < 0 || $checkpoint['offset'] > count( $reviewed ) || ! is_numeric( $checkpoint['requested_at'] ) ) {
 				wp_send_json_error(
 					array(
-						'message'         => __( 'A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started.', 'bulk-cogs-editor-for-woocommerce' ),
+						'message'         => __( 'The selection check expired or the preview changed. Refresh the preview and apply again.', 'bulk-cogs-editor-for-woocommerce' ),
 						'refresh_preview' => true,
 					),
 					409
 				);
 			}
+			$offset       = $checkpoint['offset'];
+			$requested_at = $checkpoint['requested_at'];
+		}
+		$offset += $this->revalidate_reviewed_batch( array_slice( $reviewed, $offset, 250, true ), $preview['operation'] );
+		if ( $offset < count( $reviewed ) ) {
+			$preflight_id = $preflight_id ? $preflight_id : wp_generate_uuid4();
+			$checkpoint   = array(
+				'fingerprint'  => $fingerprint,
+				'offset'       => $offset,
+				'requested_at' => $requested_at,
+			);
+			if ( ! set_transient( 'dkbce_preflight_' . $preflight_id, $checkpoint, 5 * MINUTE_IN_SECONDS ) ) {
+				wp_send_json_error( array( 'message' => __( 'The selection check could not be saved. Try applying again.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
+			}
+			wp_send_json_success(
+				array(
+					'preflight_pending' => true,
+					'preflight_id'      => $preflight_id,
+				)
+			);
+		}
+		if ( $preflight_id ) {
+			delete_transient( 'dkbce_preflight_' . $preflight_id );
 		}
 		if ( 'csv_import' === $preview['operation']['action'] || ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) ) ) {
 			return null;
@@ -1519,6 +1545,57 @@ class DKBCE_Admin_Functions {
 			);
 		}
 		return $total;
+	}
+
+	/**
+	 * Check a bounded group of reviewed costs with batched reads.
+	 *
+	 * @param array $reviewed Product signatures, at most 250 per request.
+	 * @param array $operation Preview operation.
+	 * @return int Number of signatures checked before the cooperative deadline.
+	 */
+	private function revalidate_reviewed_batch( $reviewed, $operation ) {
+		$deadline = microtime( true ) + 5;
+		$checked  = 0;
+		foreach ( array_chunk( $reviewed, 50, true ) as $batch ) {
+			if ( $checked && microtime( true ) >= $deadline ) {
+				break;
+			}
+			$ids = array_keys( $batch );
+			$this->service->prime_products( $ids );
+			$batch_operation = $operation;
+			if ( 'csv_import' === $operation['action'] && ! empty( $operation['source_id'] ) ) {
+				$imports                   = new DKBCE_Import_Store();
+				$batch_operation['values'] = $imports->values( $operation['source_id'], $ids );
+				unset( $batch_operation['source_id'] );
+			}
+			foreach ( $batch as $id => $signature ) {
+				// Finish at least one row so expensive cache priming cannot stall progress.
+				if ( $checked && microtime( true ) >= $deadline ) {
+					break 2;
+				}
+				$product = wc_get_product( $id );
+				$result  = $product ? $this->service->calculate( $product, $batch_operation ) : null;
+				if ( $product && is_wp_error( $result ) ) {
+					$result = array(
+						'current' => $product->get_cogs_value(),
+						'new'     => null,
+						'status'  => 'failed',
+					);
+				}
+				if ( ! is_array( $result ) || ! hash_equals( $signature, $this->service->preview_signature( $result ) ) ) {
+					wp_send_json_error(
+						array(
+							'message'         => __( 'A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started.', 'bulk-cogs-editor-for-woocommerce' ),
+							'refresh_preview' => true,
+						),
+						409
+					);
+				}
+				++$checked;
+			}
+		}
+		return $checked;
 	}
 
 	/**
@@ -1558,7 +1635,7 @@ class DKBCE_Admin_Functions {
 			}
 		}
 
-		$expected_total = $this->revalidate_reviewed_rows( $preview );
+		$expected_total = $this->revalidate_reviewed_rows( $preview, $token, $requested_at );
 
 		if ( ! add_option(
 			'dkbce_preview_claim_' . $token,

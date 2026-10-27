@@ -45,6 +45,7 @@ https://youtu.be/sOEOg0xiqYs
 * Import CSV or XLSX costs using product IDs or SKUs, export matching costs to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original costs in History, with rollback review and confirmation.
 * Configure history retention and choose whether rollback overwrites later cost edits or skips changed products.
+* Recover a stuck editor operation through a confirmed force-clear action in Settings when normal cancellation does not work.
 
 = Performance for large catalogs =
 
@@ -83,7 +84,8 @@ Required headers are `new_cogs` and `id` or `sku`. Older files can use `cogs` if
 - Use either ID or SKU to identify products.
 - If both are provided, they must match.
 - Use decimal values without currency symbols.
-- Blank costs are skipped.
+- Extra decimal places are rounded to WooCommerce's configured number of decimals before preview. With two decimal places, `12.3456` becomes `12.35`. WooCommerce treats a value that rounds to zero as empty.
+- Blank costs are excluded and listed as validation errors; they do not clear existing costs.
 - Duplicate product rows are excluded and listed in the error report.
 
 XLSX imports read raw values from the first worksheet. Replace formulas with values and store SKUs as text to preserve leading zeros.
@@ -92,9 +94,9 @@ XLSX requires PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
 
 ### Preview and apply
 
-Preview preparation runs in Action Scheduler batches without changing products. You can close the page and return to check progress.
+Preview preparation runs in background batches without changing products. Progress is saved between batches, and you can close the page and return to check it. Preparation time varies with file size, product mix, hosting, and background worker availability.
 
-When ready, review products, download validation errors, select products and click **Apply**. Preparation can be cancelled separately from an applied update.
+When ready, review products, download validation errors if needed, select products, review the selected changes, and confirm the update. Preparation can be cancelled separately from an applied update. Completed imports with no skipped, failed, or unprocessed products have no update error report to download.
 
 Original uploads are deleted after preparation. Staged previews and reports expire after about 24 hours. Retention extends while an applied update is active.
 
@@ -195,6 +197,20 @@ No. The editor includes task-specific Help and instructions, field guidance, and
 = Where can I see the result of my last update? =
 Expand Recent activity for the latest completed operation, including updated counts, completion time, elapsed time, and highlighted problems. Open History to inspect earlier operations.
 
+= Can I update the same products again? =
+When a bulk update finishes in the open editor, its product selection is reused with current costs for another preview, even if those costs no longer match the original filters. Edit filters to narrow that selection. Choose Reset filters to start a new selection.
+
+= Can I use other tabs while an update is running? =
+Yes. You can move between Bulk edit, CSV import / export, History, and Settings while a background operation runs. Controls that could conflict with it stay disabled until the operation finishes.
+
+= How do I stop an update or rollback? =
+Choose Stop remaining updates, or Cancel rollback for a rollback, and confirm in the editor dialog. Cancel or Escape closes the dialog without requesting cancellation. Saved cost changes remain, and the active worker may take a short time to stop. Import preview preparation has its own Cancel preparation control.
+
+= What should I do if an operation is stuck? =
+Try normal cancellation first. If it does not work, a WooCommerce manager can open Settings, choose Force clear current operation, review the warning, and confirm.
+
+This resets the current user's editor operation and import preview references and requests cancellation. It does not restore costs or immediately stop an active worker. Saved changes, operation history, and retained rollback data are kept. Check History before starting another update.
+
 = Can I roll back a completed update? =
 
 Open History, select View details, and choose Review rollback when original costs are retained. Compare current and original values, then choose Confirm rollback.
@@ -252,6 +268,9 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Upgrade Notice ==
 
+= 1.2.1 =
+Version 1.2.1 improves import preparation, Apply checks, and CSV export processing; rounds imported costs to WooCommerce decimal settings; and adds confirmed stop and force-clear recovery controls. You can return to the editor tabs while a background operation runs.
+
 = 1.2.0 =
 Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
 
@@ -268,6 +287,11 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 * Improved: Show a spinner while cancellation is pending.
 * Improved: Confirm stopping remaining updates or a rollback in an editor dialog explaining that saved changes remain.
 * Improved: Confirm force-clear recovery in an editor dialog before resetting saved operation references.
+* Improved: Validate and stage CSV/XLSX rows in bounded batches with grouped SKU lookups and product cache preparation.
+* Improved: Process multiple import preparation batches within each worker's time and memory budgets, with cursor checkpoints and cancellation checks between batches.
+* Improved: Batch import exclusions and reviewed-cost checks before Apply, continuing large reviews across bounded requests before queuing updates.
+* Improved: Prepare variation-parent caches for CSV export, evaluate only requested column getters, and yield between batches under memory pressure.
+* Improved: Reuse XLSX XML streams between batches within one worker while reopening safely after partial staging or a cursor change. New workers still scan to the saved position.
 * Updated: Clarify the editor title as Bulk COGS (Cost of Goods Sold) Editor and refresh the translation template.
 * Added: A force-clear recovery setting for stuck operations that resets the current user's saved operation and import references and requests cancellation, while retaining saved cost changes, history, and rollback data.
 

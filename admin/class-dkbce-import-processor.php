@@ -106,6 +106,7 @@ class DKBCE_Import_Processor {
 		if ( in_array( $state['status'], array( 'ready', 'failed', 'cancelled', 'expired' ), true ) ) {
 			return;
 		}
+		$reader          = new DKBCE_Import_Reader();
 		$previous_errors = libxml_use_internal_errors( true );
 		libxml_clear_errors();
 		try {
@@ -119,26 +120,46 @@ class DKBCE_Import_Processor {
 					throw new RuntimeException( esc_html__( 'The temporary upload is unavailable. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) );
 				}
 				$state['status'] = 'processing';
-				$reader          = new DKBCE_Import_Reader();
 				$rows            = new DKBCE_Import_Store();
 				$deadline        = microtime( true ) + 10;
+				$memory_limit    = wp_convert_hr_to_bytes( ini_get( 'memory_limit' ) );
+				$memory_ceiling  = memory_get_usage( true ) + 32 * MB_IN_BYTES;
+				if ( $memory_limit > 0 ) {
+					$memory_ceiling = min( $memory_ceiling, (int) ( $memory_limit * 0.8 ) );
+				}
 				if ( 'import_open' === $state['stage'] ) {
 					$reader->prepare_xlsx( $state );
 				}
-				$done = 'csv' === $state['format'] ? $reader->csv_batch( $state, $rows, $service, $deadline ) : $reader->xlsx_batch( $state, $rows, $service, $deadline );
-				if ( $done ) {
-					if ( ! $state['header'] ) {
-						throw new RuntimeException( esc_html__( 'No import header was found in the file.', 'bulk-cogs-editor-for-woocommerce' ) );
+				$batches = 0;
+				while ( $batches < 10 && microtime( true ) < $deadline ) {
+					if ( $store->is_cancel_requested( $state['operation_id'] ) ) {
+						$state['status'] = 'cancelled';
+						break;
 					}
-					$state['counts'] = $rows->counts( $state['operation_id'] );
-					$state['total']  = $state['counts']['valid'];
-					$state['status'] = 'ready';
+					++$batches;
+					$done = 'csv' === $state['format'] ? $reader->csv_batch( $state, $rows, $service, $deadline ) : $reader->xlsx_batch( $state, $rows, $service, $deadline );
+					if ( $done ) {
+						if ( ! $state['header'] ) {
+							throw new RuntimeException( esc_html__( 'No import header was found in the file.', 'bulk-cogs-editor-for-woocommerce' ) );
+						}
+						$state['counts'] = $rows->counts( $state['operation_id'] );
+						$state['total']  = $state['counts']['valid'];
+						$state['status'] = 'ready';
+						break;
+					}
+					// Persist the staged cursor before starting another reader batch.
+					$state['updated_at'] = time();
+					$store->save( $state );
+					if ( memory_get_usage( true ) >= $memory_ceiling ) {
+						break;
+					}
 				}
 			}
 		} catch ( Throwable $exception ) {
 			$state['status']        = 'failed';
 			$state['error_summary'] = $exception->getMessage();
 		} finally {
+			$reader->close_xlsx();
 			libxml_clear_errors();
 			libxml_use_internal_errors( $previous_errors );
 		}

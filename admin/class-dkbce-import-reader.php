@@ -11,12 +11,50 @@ defined( 'ABSPATH' ) || exit;
  * Read bounded batches without loading a workbook into memory.
  */
 class DKBCE_Import_Reader {
+	const VALIDATION_BATCH_SIZE  = 50;
+	const VALIDATION_BATCH_BYTES = 65536;
+
 	/**
 	 * Bounded shared-string cache for the current XLSX batch request.
 	 *
 	 * @var array
 	 */
 	private $shared_string_cache = array();
+
+	/**
+	 * Live XML stream reused only at an exact durable batch boundary.
+	 *
+	 * @var XMLReader|null
+	 */
+	private $xlsx_reader = null;
+
+	/**
+	 * Job, upload, and package member identifying the live stream.
+	 *
+	 * @var array
+	 */
+	private $xlsx_source = array();
+
+	/**
+	 * Number of row or shared-string elements consumed by the live stream.
+	 *
+	 * @var int
+	 */
+	private $xlsx_index = 0;
+
+	/**
+	 * Release the live stream before deleting an upload or leaving a worker.
+	 *
+	 * @return void
+	 */
+	public function close_xlsx() {
+		if ( null !== $this->xlsx_reader ) {
+			$this->xlsx_reader->close();
+		}
+		$this->xlsx_reader = null;
+		$this->xlsx_source = array();
+		$this->xlsx_index  = 0;
+	}
 
 	/**
 	 * Read the next CSV records using a durable byte cursor.
@@ -31,18 +69,23 @@ class DKBCE_Import_Reader {
 	public function csv_batch( &$state, $store, $service, $deadline ) {
 		$file = new SplFileObject( $state['file'], 'rb' );
 		$file->fseek( $state['offset'] );
-		$csv = new DKBCE_CSV_Service();
+		$csv           = new DKBCE_CSV_Service();
+		$cursor        = $state['cursor'];
+		$pending       = array();
+		$pending_bytes = 0;
 		for ( $count = 0; $count < $state['batch_size']; ++$count ) {
 			if ( microtime( true ) >= $deadline ) {
-				return false;
+				break;
 			}
 			$start  = $file->ftell();
 			$fields = $file->fgetcsv( ',', '"', '' );
 			$end    = $file->ftell();
 			if ( false === $fields || array( null ) === $fields ) {
-				$state['offset'] = $end;
+				if ( ! $pending ) {
+					$state['offset'] = $end;
+				}
 				if ( $file->eof() ) {
-					return true;
+					break;
 				}
 				continue;
 			}
@@ -55,17 +98,56 @@ class DKBCE_Import_Reader {
 			if ( false !== strpos( $raw, "\0" ) || ! preg_match( '//u', $raw ) || ! $csv->valid_quoting( $raw ) ) {
 				throw new RuntimeException( esc_html__( 'Use UTF-8 CSV with valid double-quoted fields. Other CSV encodings are not supported.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
-			$line = $state['cursor'] + 1;
+			$line = ++$cursor;
 			if ( ! $state['header'] ) {
 				$state['header'] = $csv->header( $fields );
+				$state['cursor'] = $line;
+				$state['offset'] = $end;
 			} else {
-				$store->put( $state['operation_id'], $csv->validate_row( $fields, $state['header'], $line, $state['user_id'], $service ) );
-				++$state['processed'];
+				$pending[]      = array(
+					'line'     => $line,
+					'fields'   => $fields,
+					'position' => array(
+						'cursor' => $line,
+						'offset' => $end,
+					),
+				);
+				$pending_bytes += array_sum( array_map( 'strlen', $fields ) );
+				if ( count( $pending ) >= self::VALIDATION_BATCH_SIZE || $pending_bytes >= self::VALIDATION_BATCH_BYTES ) {
+					if ( ! $this->stage_rows( $state, $pending, $store, $service, $deadline ) ) {
+						return false;
+					}
+					$pending       = array();
+					$pending_bytes = 0;
+				}
 			}
-			$state['cursor'] = $line;
-			$state['offset'] = $end;
+		}
+		if ( ! $this->stage_rows( $state, $pending, $store, $service, $deadline ) ) {
+			return false;
 		}
 		return $file->eof();
+	}
+
+	/**
+	 * Persist validated rows before advancing their durable input position.
+	 *
+	 * @param array              $state Import state.
+	 * @param array              $records Buffered records with their input positions.
+	 * @param DKBCE_Import_Store $store Staging storage.
+	 * @param DKBCE_COGS_Service $service Product calculations.
+	 * @param float              $deadline Cooperative deadline.
+	 * @return bool Whether every buffered record was staged.
+	 */
+	private function stage_rows( &$state, $records, $store, $service, $deadline ) {
+		if ( ! $records ) {
+			return true;
+		}
+		$csv  = new DKBCE_CSV_Service();
+		$rows = $csv->validate_rows( $records, $state['header'], $state['user_id'], $service, $deadline );
+		$store->put_rows( $state['operation_id'], $rows );
+		$state               = array_merge( $state, $records[ array_key_last( $rows ) ]['position'] );
+		$state['processed'] += count( $rows );
+		return count( $rows ) === count( $records );
 	}
 
 	/**
@@ -172,12 +254,25 @@ class DKBCE_Import_Reader {
 		if ( ! $strings ) {
 			$this->shared_string_cache = array();
 		}
-		$reader   = $this->xml( $state['file'], $strings ? $state['strings'] : $state['sheet'] );
-		$tag      = $strings ? 'si' : 'row';
-		$index    = 0;
-		$count    = 0;
-		$max_rows = max( 1, absint( $state['batch_size'] ) ) * 4;
-		$csv      = new DKBCE_CSV_Service();
+		$part   = $strings ? $state['strings'] : $state['sheet'];
+		$source = array( $state['operation_id'], $state['file'], $part, $state['stage'] );
+		if ( $this->xlsx_source !== $source || $this->xlsx_index !== (int) $state['cursor'] ) {
+			$this->close_xlsx();
+		}
+		if ( null === $this->xlsx_reader ) {
+			$this->xlsx_reader = $this->xml( $state['file'], $part );
+			$this->xlsx_source = $source;
+		}
+		$reader        = $this->xlsx_reader;
+		$eof           = false;
+		$tag           = $strings ? 'si' : 'row';
+		$index         = $this->xlsx_index;
+		$count         = 0;
+		$max_rows      = max( 1, absint( $state['batch_size'] ) ) * 4;
+		$csv           = new DKBCE_CSV_Service();
+		$sheet_row     = $state['sheet_row'] ?? 0;
+		$pending       = array();
+		$pending_bytes = 0;
 		try {
 			while ( $this->read( $reader ) ) {
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Native DOM/XMLReader property.
@@ -203,38 +298,63 @@ class DKBCE_Import_Reader {
 					);
 				} else {
 					$reference = $node->getAttribute( 'r' );
-					$line      = '' === $reference ? ( $state['sheet_row'] ?? 0 ) + 1 : (int) $reference;
-					if ( ( '' !== $reference && ! preg_match( '/\A[1-9][0-9]*\z/', $reference ) ) || $line <= ( $state['sheet_row'] ?? 0 ) ) {
+					$line      = '' === $reference ? $sheet_row + 1 : (int) $reference;
+					if ( ( '' !== $reference && ! preg_match( '/\A[1-9][0-9]*\z/', $reference ) ) || $line <= $sheet_row ) {
 						throw new RuntimeException( esc_html__( 'Invalid or repeated XLSX row number.', 'bulk-cogs-editor-for-woocommerce' ) );
 					}
-					$state['sheet_row'] = $line;
-					$fields             = $this->cells( $node, $state, $store );
+					$sheet_row = $line;
+					$fields    = $this->cells( $node, $state, $store );
 					if ( $fields ) {
 						if ( ! $state['header'] ) {
 							$state['header'] = $csv->header( $fields );
 						} else {
-							$fields = array_pad( $fields, count( $state['header'] ), '' );
-							$store->put( $state['operation_id'], $csv->validate_row( $fields, $state['header'], $line, $state['user_id'], $service ) );
-							++$state['processed'];
+							$fields         = array_pad( $fields, count( $state['header'] ), '' );
+							$pending[]      = array(
+								'line'     => $line,
+								'fields'   => $fields,
+								'position' => array(
+									'cursor'    => $index,
+									'sheet_row' => $line,
+								),
+							);
+							$pending_bytes += array_sum( array_map( 'strlen', $fields ) );
 						}
 					}
 				}
-				$state['cursor'] = $index;
+				if ( count( $pending ) >= self::VALIDATION_BATCH_SIZE || $pending_bytes >= self::VALIDATION_BATCH_BYTES ) {
+					if ( ! $this->stage_rows( $state, $pending, $store, $service, $deadline ) ) {
+						return false;
+					}
+					$pending       = array();
+					$pending_bytes = 0;
+				}
+				if ( ! $pending ) {
+					$state['cursor'] = $index;
+					if ( ! $strings ) {
+						$state['sheet_row'] = $sheet_row;
+					}
+				}
 				++$count;
 				unset( $node );
 				if ( $count >= $max_rows || microtime( true ) >= $deadline ) {
+					$this->stage_rows( $state, $pending, $store, $service, $deadline );
 					return false;
 				}
 			}
+			$eof = true;
 		} finally {
-			$reader->close();
+			$this->xlsx_index = $index;
+			// A partially staged buffer must be replayed from its durable cursor.
+			if ( $eof || $index !== (int) $state['cursor'] ) {
+				$this->close_xlsx();
+			}
 		}
 		if ( $strings ) {
 			$state['cursor'] = 0;
 			$state['stage']  = 'import_rows';
 			return false;
 		}
-		return true;
+		return $this->stage_rows( $state, $pending, $store, $service, $deadline );
 	}
 
 	/**

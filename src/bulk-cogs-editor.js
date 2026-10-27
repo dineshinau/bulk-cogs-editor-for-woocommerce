@@ -1963,7 +1963,7 @@
 		}
 	} );
 
-	function applyChanges() {
+	async function applyChanges() {
 		if ( isOperationRunning() || ! state.previewId || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
 			return;
 		}
@@ -1980,7 +1980,7 @@
 		state.startingOperation = true;
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
-		request( 'apply', {
+		const payload = {
 			note: noteInput.value,
 			confirmed_count: selectionCount(),
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
@@ -1989,27 +1989,31 @@
 			selection_mode: state.explicitSelection ? 'explicit' : state.selectionRange ? 'range' : 'all_except',
 			range_token: state.selectionRange ? state.selectionRange.token : '',
 			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
-		} )
-			.then( ( data ) => {
-				state.operationId = data.operation_id;
-				operationPanel.hidden = false;
-				renderOperation( data.state );
-				window.scrollTo( {
-					top: document.documentElement.scrollHeight,
-					behavior: 'smooth',
-				} );
-				pollProgress();
-			} )
-			.catch( ( error ) => {
-				setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
-				if ( error.refreshPreview ) {
-					state.previewNeedsRefresh = true;
-				}
-			} )
-			.finally( () => {
-				state.startingOperation = false;
-				setBusy( false, applyButton );
+		};
+		try {
+			let data;
+			let preflightId = '';
+			do {
+				data = await request( 'apply', { ...payload, preflight_id: preflightId } );
+				preflightId = data.preflight_id || '';
+			} while ( data.preflight_pending );
+			state.operationId = data.operation_id;
+			operationPanel.hidden = false;
+			renderOperation( data.state );
+			window.scrollTo( {
+				top: document.documentElement.scrollHeight,
+				behavior: 'smooth',
 			} );
+			pollProgress();
+		} catch ( error ) {
+			setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
+			if ( error.refreshPreview ) {
+				state.previewNeedsRefresh = true;
+			}
+		} finally {
+			state.startingOperation = false;
+			setBusy( false, applyButton );
+		}
 	}
 
 	function formatDuration( seconds ) {

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-27T04:27:13+00:00\n"
+"POT-Creation-Date: 2026-10-27T04:51:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -702,7 +702,7 @@ msgid "Previous selection narrowed to the current filters: %d products selected.
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:321
-#: admin/class-dkbce-admin-functions.php:1718
+#: admin/class-dkbce-admin-functions.php:1795
 msgid "Select at least one product in the preview table."
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgid "The import preview has expired. Upload the file again."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1081
-#: admin/class-dkbce-admin-functions.php:1721
+#: admin/class-dkbce-admin-functions.php:1798
 msgid "The selected products do not match the preview. Run the preview again."
 msgstr ""
 
@@ -1358,11 +1358,11 @@ msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1269
 #: admin/class-dkbce-admin-functions.php:1342
-#: admin/class-dkbce-admin-functions.php:1777
-#: admin/class-dkbce-admin-functions.php:1781
-#: admin/class-dkbce-admin-functions.php:1799
-#: admin/class-dkbce-admin-functions.php:1803
-#: admin/class-dkbce-admin-functions.php:1825
+#: admin/class-dkbce-admin-functions.php:1854
+#: admin/class-dkbce-admin-functions.php:1858
+#: admin/class-dkbce-admin-functions.php:1876
+#: admin/class-dkbce-admin-functions.php:1880
+#: admin/class-dkbce-admin-functions.php:1902
 #: admin/class-dkbce-history-controller.php:163
 msgid "This operation is unavailable."
 msgstr ""
@@ -1373,13 +1373,13 @@ msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1285
 #: admin/class-dkbce-admin-functions.php:1289
-#: admin/class-dkbce-admin-functions.php:1604
-#: admin/class-dkbce-admin-functions.php:1608
+#: admin/class-dkbce-admin-functions.php:1681
+#: admin/class-dkbce-admin-functions.php:1685
 msgid "The excluded product list is invalid."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1302
-#: admin/class-dkbce-admin-functions.php:1595
+#: admin/class-dkbce-admin-functions.php:1672
 msgid "Select the product range again before applying."
 msgstr ""
 
@@ -1388,8 +1388,8 @@ msgid "Use Reset filters to start a new selection before changing filters again.
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1382
-#: admin/class-dkbce-admin-functions.php:1546
-#: admin/class-dkbce-admin-functions.php:1861
+#: admin/class-dkbce-admin-functions.php:1623
+#: admin/class-dkbce-admin-functions.php:1938
 msgid "Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes"
 msgstr ""
 
@@ -1402,84 +1402,92 @@ msgid "That preview page is unavailable. Run the preview again."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1417
-#: admin/class-dkbce-admin-functions.php:1875
-#: admin/class-dkbce-admin-functions.php:1885
+#: admin/class-dkbce-admin-functions.php:1952
+#: admin/class-dkbce-admin-functions.php:1962
 msgid "Products changed after this preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1491
-msgid "A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started."
+#: admin/class-dkbce-admin-functions.php:1494
+msgid "The selection check expired or the preview changed. Refresh the preview and apply again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1515
+#: admin/class-dkbce-admin-functions.php:1512
+msgid "The selection check could not be saved. Try applying again."
+msgstr ""
+
+#: admin/class-dkbce-admin-functions.php:1541
 msgid "The selected product scope changed. Refresh the preview, review the selection, and confirm again. No update was started."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1539
+#: admin/class-dkbce-admin-functions.php:1589
+msgid "A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started."
+msgstr ""
+
+#: admin/class-dkbce-admin-functions.php:1616
 msgid "Background processing is unavailable. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1550
+#: admin/class-dkbce-admin-functions.php:1627
 msgid "Export cannot update products."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1557
+#: admin/class-dkbce-admin-functions.php:1634
 msgid "The import preview is not ready or has expired."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1572
+#: admin/class-dkbce-admin-functions.php:1649
 msgid "This preview has already been used. Run a new preview before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1580
-#: admin/class-dkbce-admin-functions.php:1586
+#: admin/class-dkbce-admin-functions.php:1657
+#: admin/class-dkbce-admin-functions.php:1663
 msgid "The selected product scope is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1614
+#: admin/class-dkbce-admin-functions.php:1691
 msgid "The selection is empty or no longer matches the preview."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1628
-#: admin/class-dkbce-admin-functions.php:1864
+#: admin/class-dkbce-admin-functions.php:1705
+#: admin/class-dkbce-admin-functions.php:1941
 msgid "Choose import products using the preview checkboxes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1635
-#: admin/class-dkbce-import-store.php:218
+#: admin/class-dkbce-admin-functions.php:1712
+#: admin/class-dkbce-import-store.php:297
 msgid "Select at least one valid product to import."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1649
+#: admin/class-dkbce-admin-functions.php:1726
 msgid "Choose CSV products using the preview checkboxes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1654
+#: admin/class-dkbce-admin-functions.php:1731
 msgid "There are no valid CSV products to import."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1707
+#: admin/class-dkbce-admin-functions.php:1784
 msgid "The selected product list is too large. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1712
+#: admin/class-dkbce-admin-functions.php:1789
 msgid "The selected product list is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1752
+#: admin/class-dkbce-admin-functions.php:1829
 #: admin/class-dkbce-history-controller.php:490
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1829
+#: admin/class-dkbce-admin-functions.php:1906
 msgid "This finished operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1833
+#: admin/class-dkbce-admin-functions.php:1910
 msgid "The operation could not be cleared. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1869
+#: admin/class-dkbce-admin-functions.php:1946
 msgid "Choose a valid number of matching products."
 msgstr ""
 
@@ -1509,7 +1517,7 @@ msgid "Already processed products remain changed; no rollback was performed."
 msgstr ""
 
 #: admin/class-dkbce-bulk-processor.php:712
-#: admin/class-dkbce-download-processor.php:207
+#: admin/class-dkbce-download-processor.php:220
 msgid "Not processed before the operation stopped."
 msgstr ""
 
@@ -1592,19 +1600,19 @@ msgstr ""
 msgid "The percentage cannot exceed 10,000%."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:249
+#: admin/class-dkbce-cogs-service.php:273
 msgid "This product is not in the validated CSV."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:283
+#: admin/class-dkbce-cogs-service.php:307
 msgid "Current COGS is not set."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:305
+#: admin/class-dkbce-cogs-service.php:329
 msgid "Choose a supported COGS action."
 msgstr ""
 
-#: admin/class-dkbce-cogs-service.php:311
+#: admin/class-dkbce-cogs-service.php:335
 msgid "The calculated value exceeds the supported monetary limit."
 msgstr ""
 
@@ -1612,15 +1620,15 @@ msgstr ""
 msgid "Headers must include new_cogs (or legacy cogs) and id or sku, with no duplicate columns."
 msgstr ""
 
-#: admin/class-dkbce-csv-service.php:56
+#: admin/class-dkbce-csv-service.php:101
 msgid "The number of fields does not match the header."
 msgstr ""
 
-#: admin/class-dkbce-csv-service.php:81
+#: admin/class-dkbce-csv-service.php:124
 msgid "Product is missing, ambiguous, inaccessible, or ID and SKU disagree."
 msgstr ""
 
-#: admin/class-dkbce-csv-service.php:90
+#: admin/class-dkbce-csv-service.php:133
 msgid "Enter a non-negative decimal COGS value. Blank values are not imported."
 msgstr ""
 
@@ -1644,15 +1652,15 @@ msgstr ""
 msgid "The download could not be queued."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:95
+#: admin/class-dkbce-download-processor.php:100
 msgid "The download file could not be resumed."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:113
+#: admin/class-dkbce-download-processor.php:118
 msgid "The download file could not be written."
 msgstr ""
 
-#: admin/class-dkbce-download-processor.php:137
+#: admin/class-dkbce-download-processor.php:146
 msgid "The download queue stopped."
 msgstr ""
 
@@ -2132,95 +2140,99 @@ msgstr ""
 msgid "The import preview could not be queued."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:116
+#: admin/class-dkbce-import-processor.php:117
 msgid "Permission to prepare this import is no longer available."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:119
+#: admin/class-dkbce-import-processor.php:120
 msgid "The temporary upload is unavailable. Upload the file again."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:131
+#: admin/class-dkbce-import-processor.php:143
 msgid "No import header was found in the file."
 msgstr ""
 
-#: admin/class-dkbce-import-processor.php:154
+#: admin/class-dkbce-import-processor.php:175
 msgid "The preview queue stopped. Upload the file again."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:56
+#: admin/class-dkbce-import-reader.php:99
 msgid "Use UTF-8 CSV with valid double-quoted fields. Other CSV encodings are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:80
+#: admin/class-dkbce-import-reader.php:162
 msgid "XLSX imports require the PHP ZIP, XMLReader and DOM extensions."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:84
+#: admin/class-dkbce-import-reader.php:166
 msgid "This file is not a readable XLSX workbook."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:121
+#: admin/class-dkbce-import-reader.php:203
 msgid "External worksheet relationships are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:126
+#: admin/class-dkbce-import-reader.php:208
 msgid "Invalid worksheet path in XLSX file."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:138
+#: admin/class-dkbce-import-reader.php:220
 msgid "The first XLSX sheet is not a readable worksheet."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:193
+#: admin/class-dkbce-import-reader.php:288
 msgid "An XLSX row could not be read."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:208
+#: admin/class-dkbce-import-reader.php:303
 msgid "Invalid or repeated XLSX row number."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:251
+#: admin/class-dkbce-import-reader.php:371
 msgid "The XLSX XML content could not be opened."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:269
+#: admin/class-dkbce-import-reader.php:389
 msgid "Invalid XLSX XML. DTDs and external entities are not supported."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:319
+#: admin/class-dkbce-import-reader.php:439
 msgid "Invalid XLSX column reference."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:327
+#: admin/class-dkbce-import-reader.php:447
 msgid "Replace spreadsheet formulas with values before importing."
 msgstr ""
 
-#: admin/class-dkbce-import-reader.php:349
+#: admin/class-dkbce-import-reader.php:469
 msgid "The XLSX file references a missing shared string."
 msgstr ""
 
 #: admin/class-dkbce-import-store.php:54
+#: admin/class-dkbce-import-store.php:127
 msgid "An import row could not be saved."
 msgstr ""
 
 #: admin/class-dkbce-import-store.php:65
+#: admin/class-dkbce-import-store.php:149
 msgid "Duplicate product in file. Remove duplicate rows and preview again."
 msgstr ""
 
 #: admin/class-dkbce-import-store.php:77
+#: admin/class-dkbce-import-store.php:153
 msgid "Duplicate import rows could not be marked."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:186
+#: admin/class-dkbce-import-store.php:261
+#: admin/class-dkbce-import-store.php:269
 msgid "Invalid import selection. Prepare the preview again."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:202
+#: admin/class-dkbce-import-store.php:281
 msgid "The import selection could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:287
+#: admin/class-dkbce-import-store.php:366
 msgid "Import storage is unavailable. Try again when the database is available."
 msgstr ""
 
