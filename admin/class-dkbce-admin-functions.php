@@ -313,6 +313,7 @@ class DKBCE_Admin_Functions {
 					'remainingTime'       => __( 'Approx. time remaining: %s', 'bulk-cogs-editor-for-woocommerce' ),
 					'estimatingTime'      => __( 'Calculating…', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelOperation'     => __( 'Stop remaining updates', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmCancel'       => __( 'Any changes already made will remain.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'          => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'            => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: selected products remaining after a filter refresh. */

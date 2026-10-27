@@ -265,6 +265,7 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 * Fixed: Restore workflow step indicators and remove duplicate step badges from History progress.
 * Fixed: Hide empty import error reports when every product succeeds, while retaining reports for failed, skipped, and unprocessed products.
 * Improved: Show a spinner while cancellation is pending.
+* Improved: Confirm stopping remaining updates or a rollback in an editor dialog explaining that saved changes remain.
 * Improved: Confirm force-clear recovery in an editor dialog before resetting saved operation references.
 * Updated: Clarify the editor title as Bulk COGS (Cost of Goods Sold) Editor and refresh the translation template.
 * Added: A force-clear recovery setting for stuck operations that resets the current user's saved operation and import references and requests cancellation, while retaining saved cost changes, history, and rollback data.

@@ -440,14 +440,18 @@
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
+	let pendingCancellation = null;
 	const forceClearSection = historySection( historyText.forceClear, 2 );
 	const forceClearButton = historyButton( historyText.forceClear, () => {
 		if ( ! clearReferences ) { return; }
+		pendingCancellation = null;
 		forceClearReferences = { ...clearReferences };
 		$( '#dkbce-confirm-title' ).textContent = historyText.forceClear;
 		$( '#dkbce-confirm-text' ).textContent = historyText.forceClearConfirm;
 		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
 		$( '#dkbce-confirm-warning' ).textContent = historyText.forceClearWarning;
+		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-apply' ).textContent = historyText.forceClear;
 		$( '#dkbce-confirm-apply' ).disabled = false;
 		modal.hidden = false;
@@ -1858,7 +1862,10 @@
 			return;
 		}
 		forceClearReferences = null;
+		pendingCancellation = null;
 		const confirmButton = $( '#dkbce-confirm-apply' );
+		$( '#dkbce-confirm-summary' ).hidden = false;
+		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
 		confirmButton.disabled = false;
 		confirmButton.textContent = exporting ? DKBCE.ui.createCSV : DKBCE.ui.updateCount.replace( '%d', count );
@@ -1889,6 +1896,10 @@
 
 	function confirmAction() {
 		if ( modal.hidden ) { return; }
+		if ( pendingCancellation ) {
+			cancelOperation();
+			return;
+		}
 		if ( forceClearReferences ) {
 			const references = forceClearReferences;
 			forceClearReferences = null;
@@ -2286,7 +2297,7 @@
 				? DKBCE.i18n.cancelling
 				: operation.action === 'rollback' ? historyText.cancelRollback : DKBCE.i18n.cancelOperation;
 			cancelButton.disabled = operation.cancel_requested;
-			cancelButton.addEventListener( 'click', historyView ? async () => { cancelButton.disabled = true; try { await request( 'cancel', { operation_id: operation.operation_id } ); loadHistoryDetails(); } catch ( error ) { setNotice( error.message, 'error', operationPanel ); cancelButton.disabled = false; } } : cancelOperation );
+			cancelButton.addEventListener( 'click', () => openCancelConfirmation( operation, operationPanel, historyView, cancelButton ) );
 			operationPanel.appendChild( cancelButton );
 			if ( operation.cancel_requested ) {
 				const cancelSpinner = document.createElement( 'span' );
@@ -2416,11 +2427,48 @@
 			} );
 	}
 
-	function cancelOperation() {
-		if ( ! state.operationId ) {
+	function openCancelConfirmation( operation, panel, historyView, button ) {
+		if ( ! operation.operation_id || operation.cancel_requested ) {
 			return;
 		}
-		request( 'cancel', { operation_id: state.operationId } )
+		pendingCancellation = {
+			operationId: operation.operation_id,
+			historyView,
+			panel,
+			button,
+		};
+		forceClearReferences = null;
+		$( '#dkbce-confirm-title' ).textContent = button.textContent;
+		$( '#dkbce-confirm-text' ).textContent = DKBCE.i18n.confirmCancel;
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
+		$( '#dkbce-confirm-warning' ).textContent = '';
+		$( '#dkbce-confirm-warning' ).hidden = true;
+		$( '#dkbce-confirm-apply' ).textContent = button.textContent;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	}
+
+	function cancelOperation() {
+		if ( ! pendingCancellation ) {
+			return;
+		}
+		const cancellation = pendingCancellation;
+		pendingCancellation = null;
+		modal.hidden = true;
+		if ( cancellation.historyView ) {
+			cancellation.button.disabled = true;
+			request( 'cancel', { operation_id: cancellation.operationId } )
+				.then( () => loadHistoryDetails() )
+				.catch( ( error ) => {
+					setNotice( error.message, 'error', cancellation.panel );
+					const cancelButton = cancellation.panel.querySelector( '[data-operation-control="cancel"]' );
+					if ( cancelButton ) { cancelButton.disabled = false; }
+				} );
+			return;
+		}
+		request( 'cancel', { operation_id: cancellation.operationId } )
 			.then( ( data ) => {
 				state.progressRequestId++;
 				renderOperation( data.state );
@@ -2454,9 +2502,13 @@
 		}
 	} );
 	function closeConfirm() {
+		const focusTarget = pendingCancellation
+			? ( pendingCancellation.button.isConnected ? pendingCancellation.button : pendingCancellation.panel.querySelector( '[data-operation-control="cancel"]' ) )
+			: forceClearReferences ? forceClearButton : applyButton;
 		modal.hidden = true;
-		( forceClearReferences ? forceClearButton : applyButton ).focus();
 		forceClearReferences = null;
+		pendingCancellation = null;
+		if ( focusTarget ) { focusTarget.focus(); }
 	}
 	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', closeConfirm );
 	$( '#dkbce-confirm-apply' ).addEventListener( 'click', confirmAction );
