@@ -259,6 +259,7 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 
 = 1.2.1 (2026-10-27) =
 
+* Fixed: Round imported costs to the WooCommerce decimal settings instead of rejecting values with excess decimal places.
 * Fixed: Reuse the completed bulk operation's product selection with current costs when preparing another update, even when changed costs no longer match the original filters.
 * Fixed: Keep range selection controls within the editor layout.
 * Fixed: Restore workflow step indicators and remove duplicate step badges from History progress.

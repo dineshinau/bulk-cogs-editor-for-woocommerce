@@ -81,11 +81,15 @@ class DKBCE_CSV_Service {
 			$row['error'] = __( 'Product is missing, ambiguous, inaccessible, or ID and SKU disagree.', 'bulk-cogs-editor-for-woocommerce' );
 		} else {
 			$row['id'] = $product->get_id();
-			$action    = $service->validate_action( 'set', $row['value'], 6 );
-			if ( '' === $row['value'] || is_wp_error( $action ) ) {
+			$precision = wc_get_price_decimals();
+			$rounded   = preg_match( '/\A\d{1,12}(?:\.\d{1,18})?\z/', $row['value'] )
+				? wc_format_decimal( $row['value'], $precision, false )
+				: '';
+			$action    = $service->validate_action( 'set', $rounded, $precision );
+			if ( '' === $row['value'] || '' === $rounded || is_wp_error( $action ) ) {
 				$row['error'] = __( 'Enter a non-negative decimal COGS value. Blank values are not imported.', 'bulk-cogs-editor-for-woocommerce' );
 			} else {
-				// COGS can retain more precision than the store's currency display setting.
+				// Round imported amounts to the store's configured currency precision.
 				$row['value'] = wc_format_decimal( $action['value'], false, true );
 			}
 		}
