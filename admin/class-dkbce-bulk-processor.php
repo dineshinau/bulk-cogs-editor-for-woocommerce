@@ -133,11 +133,22 @@ class DKBCE_Bulk_Processor {
 			if ( ! $state || empty( $state['cleanup_pending'] ) || ! in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) ) {
 				return;
 			}
+			if ( ! empty( $state['history_cleanup_pending'] ) && empty( $state['history_cleanup_started'] ) ) {
+				$retention = new DKBCE_Retention_Processor();
+				if ( ! $retention->is_expired_operation( $state, true ) ) {
+					// Settings or an active rollback may have changed since scheduling.
+					unset( $state['history_cleanup_pending'] );
+				} else {
+					// Invalidate reused selections before deleting their first outcome.
+					$state['history_cleanup_started'] = true;
+					$this->store->save( $state );
+				}
+			}
 			$cursor = isset( $state['cleanup_cursor'] ) ? absint( $state['cleanup_cursor'] ) : 1;
 			$done   = $this->store->delete_chunks(
 				$operation_id,
 				$state['snapshot_chunks'],
-				! empty( $state['operation']['source_id'] ),
+				! empty( $state['operation']['source_id'] ) || ( ! empty( $state['reusable_selection'] ) && empty( $state['history_cleanup_pending'] ) ),
 				$cursor,
 				100
 			);
@@ -145,21 +156,11 @@ class DKBCE_Bulk_Processor {
 				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
 			}
 			if ( $done && ! empty( $state['history_cleanup_pending'] ) ) {
-				$retention = new DKBCE_Retention_Processor();
-				if ( ! $retention->is_expired_operation( $state, true ) ) {
-					// Settings or an active rollback may have changed since scheduling.
+				$history = new DKBCE_History_Store();
+				$done    = $history->delete( $operation_id );
+				if ( $done ) {
+					$state['history_cleanup_complete'] = true;
 					unset( $state['history_cleanup_pending'] );
-				} else {
-					if ( empty( $state['history_cleanup_started'] ) ) {
-						$state['history_cleanup_started'] = true;
-						$this->store->save( $state );
-					}
-					$history = new DKBCE_History_Store();
-					$done    = $history->delete( $operation_id );
-					if ( $done ) {
-						$state['history_cleanup_complete'] = true;
-						unset( $state['history_cleanup_pending'] );
-					}
 				}
 			}
 			if ( $done ) {

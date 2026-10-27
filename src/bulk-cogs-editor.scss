@@ -4,6 +4,7 @@ $muted: #566a9c;
 $border: #dce6f5;
 
 #dkbce-history, #dkbce-settings { grid-column: 1 / -1; min-width: 0; }
+#dkbce-history .dkbce-operation .dkbce-section-heading { > .dkbce-step-icon, > span { display: none; } }
 .dkbce-history-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 18px; }
 .dkbce-history-field { display: flex; flex-direction: column; gap: 5px; font-size: 13px; input[type="number"] { width: 110px; } input[type="search"] { min-width: 230px; } }
 .dkbce-table-footer > .dkbce-history-field { flex-direction: row; align-items: center; gap: 8px; }
@@ -263,6 +264,7 @@ $border: #dce6f5;
 }
 .dkbce-export-time { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 8px 0 10px; > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 10px 12px; border: 1px solid $border; border-radius: 6px; background: #f6f7f7; } }
 .dkbce-preview-loading { display: flex; align-items: center; gap: 8px; min-height: 72px; }
+.dkbce-cancel-spinner { float: none; margin: 0; margin-inline-start: 8px; vertical-align: middle; }
 .dkbce-spinner { width: 18px; height: 18px; border: 2px solid $border; border-top-color: $blue; border-radius: 50%; animation: dkbce-spin 0.7s linear infinite; }
 @keyframes dkbce-spin { to { transform: rotate(360deg); } }
 .dkbce-refresh-notice { margin-top: 16px; }
@@ -483,7 +485,7 @@ $border: #dce6f5;
 		inset-inline-end: 0;
 		z-index: 40;
 		box-sizing: border-box;
-		width: min(440px, calc(100vw - 32px));
+		width: min(560px, calc(100vw - 32px));
 		padding: 16px;
 		border: 1px solid $border;
 		border-radius: 6px;
@@ -497,7 +499,6 @@ $border: #dce6f5;
 	z-index: 20;
 	border-color: $border;
 	box-shadow: 0 -2px 8px rgb(0 0 0 / 6%);
-	.dkbce-section-heading > span, .dkbce-step-icon { display: none; }
 }
 #dkbce-action-summary { font-weight: 600; color: $ink; }
 .dkbce-wrap :where(button, input, select, summary, a) { scroll-margin-block: 100px 160px; }
@@ -531,7 +532,7 @@ $border: #dce6f5;
 		width: min(320px, calc(100vw - 32px));
 		label { grid-column: 1 / -1; }
 		input { width: 100%; }
-		button { grid-column: 2; justify-self: start; }
+		button { grid-column: 1 / -1; justify-self: start; }
 	}
 	.dkbce-apply-section, .dkbce-csv-workflow .dkbce-apply-section {
 		display: flex;

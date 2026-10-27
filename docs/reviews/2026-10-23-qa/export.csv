@@ -1,0 +1,6 @@
+﻿"id","sku","name","cogs","regular_price","sale_price","type","new_cogs"
+"654","apparel-01","Classic Cotton Crewneck Tee","7.12","","","variable",""
+"656","apparel-01-s","Classic Cotton Crewneck Tee - S","7.12","24.00","","variation",""
+"657","apparel-01-m","Classic Cotton Crewneck Tee - M","7.12","24.00","","variation",""
+"658","apparel-01-l","Classic Cotton Crewneck Tee - L","7.12","24.00","","variation",""
+"659","apparel-01-xl","Classic Cotton Crewneck Tee - XL","7.12","24.00","","variation",""

@@ -22,6 +22,9 @@
 		selectedIds: new Set(),
 		explicitSelection: false,
 		selectionPreviewId: '',
+		selectionOperationId: '',
+		reusedSelection: false,
+		refreshedOperationId: '',
 		selectedCount: 0,
 		selectionFiltersChanged: false,
 		selectionRange: null,
@@ -292,7 +295,7 @@
 	historyFilters.addEventListener( 'submit', ( event ) => { event.preventDefault(); historyState.page = 1; loadHistory(); } );
 	const historyRows = historyElement( 'div' );
 	const historyDetails = historyElement( 'div' );
-	const historyProgress = historySection( historyText.progress, 5 );
+	const historyProgress = historySection( historyText.progress, 4 );
 	historyProgress.hidden = true;
 	historyList.append( historyFilters, historyRows );
 	historyRoot.append( historyList, historyDetails, historyProgress );
@@ -361,7 +364,7 @@
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
 			details.appendChild( metadata );
-			const products = historySection( historyState.review ? historyText.review : historyText.changes, historyState.review ? 4 : 3 );
+			const products = historySection( historyState.review ? historyText.review : historyText.changes, 3 );
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
 			data.rows.forEach( ( item ) => {
 				const row = document.createElement( 'tr' );
@@ -390,7 +393,7 @@
 			}
 			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => { historyState.operationId = data.rollback_id; historyState.review = false; historyState.productPage = 1; loadHistoryDetails(); } ) ); }
 			historyDetails.append( details, products );
-			const result = historySection( historyText.progress, 5 );
+			const result = historySection( historyText.progress, 4 );
 			const panel = historyElement( 'div', '', 'dkbce-operation' ); result.appendChild( panel );
 			renderOperation( data.state, panel, true );
 			historyDetails.appendChild( result );
@@ -435,10 +438,47 @@
 	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
 	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
+	let clearReferences = null;
+	let forceClearReferences = null;
+	let pendingCancellation = null;
+	const forceClearSection = historySection( historyText.forceClear, 2 );
+	const forceClearButton = historyButton( historyText.forceClear, () => {
+		if ( ! clearReferences ) { return; }
+		pendingCancellation = null;
+		forceClearReferences = { ...clearReferences };
+		$( '#dkbce-confirm-title' ).textContent = historyText.forceClear;
+		$( '#dkbce-confirm-text' ).textContent = historyText.forceClearConfirm;
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
+		$( '#dkbce-confirm-warning' ).textContent = historyText.forceClearWarning;
+		$( '#dkbce-confirm-warning' ).hidden = false;
+		$( '#dkbce-confirm-apply' ).textContent = historyText.forceClear;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	} );
+	async function forceClearOperation( references ) {
+		forceClearButton.disabled = true;
+		try {
+			await request( 'force_clear', { ...references, confirmed: '1' } );
+			window.location.reload();
+		} catch ( error ) {
+			setNotice( error.message, 'error', forceClearSection );
+			await loadSettings();
+			forceClearButton.focus();
+		}
+	}
+	forceClearButton.disabled = true;
+	forceClearSection.append( historyElement( 'p', historyText.forceClearWarning, 'description' ), forceClearButton );
+	settingsRoot.appendChild( forceClearSection );
 	async function loadSettings() {
 		saveSettings.disabled = true;
+		forceClearButton.disabled = true;
+		clearReferences = null;
 		try {
 			const data = await request( 'settings' );
+			clearReferences = { dkbce_latest_operation: data.dkbce_latest_operation, dkbce_latest_import: data.dkbce_latest_import };
+			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			rollbackPolicy.value = data.rollback_policy;
 			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
 		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
@@ -703,8 +743,13 @@
 	}
 
 	$( '#dkbce-import-progress button' ).addEventListener( 'click', () => {
-		state.importCancel = true;
-		$( '#dkbce-import-progress button' ).disabled = true;
+		if ( ! state.importPreparing ) { return; }
+		const panel = $( '#dkbce-import-progress' );
+		openCancelConfirmation( {
+			operation_id: state.importId,
+			cancel_requested: state.importCancel,
+			action: 'import_preview',
+		}, panel, false, panel.querySelector( 'button' ) );
 	} );
 
 	async function exportCSV() {
@@ -815,7 +860,7 @@
 
 	document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 		button.addEventListener( 'click', () => {
-			if ( state.busy || state.loadingPage || ( isOperationRunning() && ! [ 'history', 'settings' ].includes( button.dataset.dkbceMode ) ) ) {
+			if ( state.busy || state.loadingPage ) {
 				return;
 			}
 			const nextMode = button.dataset.dkbceMode;
@@ -1150,6 +1195,8 @@
 		state.previewNeedsRefresh = false;
 		state.previewId = '';
 		state.selectionPreviewId = '';
+		state.selectionOperationId = '';
+		state.reusedSelection = false;
 		state.reviewedIds.clear();
 		state.excludedIds.clear();
 		state.selectedIds.clear();
@@ -1181,7 +1228,7 @@
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
-			input.disabled = [ 'history', 'settings' ].includes( input.dataset.dkbceMode ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
+			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
 		$( '#dkbce-action-prerequisite' ).hidden = state.hasQuery && state.count > 0;
 		document.querySelectorAll( '.dkbce-action-fields input, .dkbce-action-fields select' ).forEach( ( input ) => {
@@ -1449,8 +1496,8 @@
 		if ( ! state.busy ) {
 			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
-		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed;
-		$( '#dkbce-selection-context' ).textContent = state.selectionNarrowed ? DKBCE.ui.narrowed : '';
+		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed && ! state.reusedSelection;
+		$( '#dkbce-selection-context' ).textContent = state.reusedSelection ? DKBCE.ui.reused : state.selectionNarrowed ? DKBCE.ui.narrowed : '';
 	}
 
 	function setPageSelection( selected ) {
@@ -1477,6 +1524,7 @@
 	} );
 
 	function renderPreview( data, restoreSelection = false ) {
+		if ( data.reused_selection !== undefined ) { state.reusedSelection = data.reused_selection; }
 		if ( data !== state.pageData ) {
 			state.previewNeedsRefresh = false;
 		}
@@ -1493,6 +1541,9 @@
 		}
 		if ( ! state.pageData && data.selected_count === undefined ) { state.selectedCount = data.count; }
 		state.count = data.count;
+		if ( state.reusedSelection ) {
+			$( '#dkbce-product-count' ).textContent = data.count + ' ' + ( data.count === 1 ? DKBCE.i18n.productOne : DKBCE.i18n.productMany );
+		}
 		state.rows = data.rows;
 		state.pageData = data;
 		state.page = data.page;
@@ -1685,6 +1736,12 @@
 		if ( isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
+		if ( ! csvMode() && state.reusedSelection ) {
+			invalidatePreview( false );
+			state.hasQuery = true;
+			preview();
+			return;
+		}
 		const requestedFilters = filters();
 		setNotice( '', 'info' );
 		invalidatePreview();
@@ -1725,7 +1782,7 @@
 
 	function preview() {
 		if ( csvMode() ) { return; }
-		if ( isOperationRunning() || state.busy || state.loadingPage || 0 === state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ( 0 === state.count && ! state.reusedSelection ) ) {
 			return;
 		}
 		const action = selectedAction();
@@ -1750,6 +1807,7 @@
 		const previousPreviewId = state.selectionPreviewId;
 		request( 'preview', {
 			previous_preview_id: previousPreviewId,
+			previous_operation_id: state.selectionOperationId,
 			selection_mode: state.explicitSelection ? 'explicit' : 'all_except',
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
 			excluded_ids: JSON.stringify( Array.from( state.excludedIds ) ),
@@ -1770,6 +1828,7 @@
 					return;
 				}
 				renderPreview( data, true );
+				state.selectionOperationId = '';
 				if ( state.selectionFiltersChanged && previousPreviewId ) {
 					setNotice( DKBCE.i18n.selectionPreserved.replace( '%d', String( state.selectedCount ) ), 'info' );
 				}
@@ -1807,7 +1866,11 @@
 			setNotice( DKBCE.i18n.noSelection, 'error' );
 			return;
 		}
+		forceClearReferences = null;
+		pendingCancellation = null;
 		const confirmButton = $( '#dkbce-confirm-apply' );
+		$( '#dkbce-confirm-summary' ).hidden = false;
+		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
 		confirmButton.disabled = false;
 		confirmButton.textContent = exporting ? DKBCE.ui.createCSV : DKBCE.ui.updateCount.replace( '%d', count );
@@ -1837,6 +1900,19 @@
 	}
 
 	function confirmAction() {
+		if ( modal.hidden ) { return; }
+		if ( pendingCancellation ) {
+			cancelOperation();
+			return;
+		}
+		if ( forceClearReferences ) {
+			const references = forceClearReferences;
+			forceClearReferences = null;
+			modal.hidden = true;
+			forceClearOperation( references );
+			return;
+		}
+
 		if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
 			modal.hidden = true;
 			exportCSV();
@@ -1850,7 +1926,7 @@
 		if ( state.previewTimer ) {
 			window.clearTimeout( state.previewTimer );
 		}
-		if ( isOperationRunning() || ! state.hasQuery || ! state.count ) {
+		if ( isOperationRunning() || ! state.hasQuery || ( ! state.count && ! state.reusedSelection ) ) {
 			return;
 		}
 		const action = selectedAction();
@@ -1892,7 +1968,7 @@
 		}
 	} );
 
-	function applyChanges() {
+	async function applyChanges() {
 		if ( isOperationRunning() || ! state.previewId || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
 			return;
 		}
@@ -1909,7 +1985,7 @@
 		state.startingOperation = true;
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
-		request( 'apply', {
+		const payload = {
 			note: noteInput.value,
 			confirmed_count: selectionCount(),
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
@@ -1918,27 +1994,31 @@
 			selection_mode: state.explicitSelection ? 'explicit' : state.selectionRange ? 'range' : 'all_except',
 			range_token: state.selectionRange ? state.selectionRange.token : '',
 			excluded_ids: JSON.stringify( selectedOnly ? excludedIds : [] ),
-		} )
-			.then( ( data ) => {
-				state.operationId = data.operation_id;
-				operationPanel.hidden = false;
-				renderOperation( data.state );
-				window.scrollTo( {
-					top: document.documentElement.scrollHeight,
-					behavior: 'smooth',
-				} );
-				pollProgress();
-			} )
-			.catch( ( error ) => {
-				setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
-				if ( error.refreshPreview ) {
-					state.previewNeedsRefresh = true;
-				}
-			} )
-			.finally( () => {
-				state.startingOperation = false;
-				setBusy( false, applyButton );
+		};
+		try {
+			let data;
+			let preflightId = '';
+			do {
+				data = await request( 'apply', { ...payload, preflight_id: preflightId } );
+				preflightId = data.preflight_id || '';
+			} while ( data.preflight_pending );
+			state.operationId = data.operation_id;
+			operationPanel.hidden = false;
+			renderOperation( data.state );
+			window.scrollTo( {
+				top: document.documentElement.scrollHeight,
+				behavior: 'smooth',
 			} );
+			pollProgress();
+		} catch ( error ) {
+			setNotice( error.message, 'error', $( '.dkbce-preview-section' ) );
+			if ( error.refreshPreview ) {
+				state.previewNeedsRefresh = true;
+			}
+		} finally {
+			state.startingOperation = false;
+			setBusy( false, applyButton );
+		}
 	}
 
 	function formatDuration( seconds ) {
@@ -2010,6 +2090,19 @@
 		operationPanel.replaceChildren();
 		const heading = document.createElement( 'h3' );
 		const terminal = terminalStatuses.includes( operation.status );
+		if ( ! historyView && ! csvMode() && operation.reusable_selection && state.hasQuery && state.refreshedOperationId !== operation.operation_id &&
+			[ 'completed', 'completed_with_errors' ].includes( operation.status ) &&
+			! [ 'csv_import', 'csv_export', 'rollback' ].includes( operation.action ) ) {
+			state.refreshedOperationId = operation.operation_id;
+			invalidatePreview( false );
+			resetSelection();
+			state.previewNeedsRefresh = true;
+			state.selectionOperationId = operation.operation_id;
+			state.reusedSelection = true;
+			state.selectedCount = operation.total;
+			schedulePreviewRefresh();
+			updateOperationControls();
+		}
 		operationPanel.classList.toggle( 'is-history', terminal );
 		operationPanel.dataset.task = operation.action === 'rollback' ? historyText.rollback : operation.action === 'csv_import' ? DKBCE.ui.importTask : DKBCE.ui.bulkTask;
 		const delayed = ! terminal && operation.progress_age >= 120;
@@ -2032,7 +2125,17 @@
 			);
 		}
 		if ( ! terminal ) { heading.textContent = operationPanel.dataset.task + ' · ' + heading.textContent; }
-		operationPanel.appendChild( heading );
+		if ( ! historyView && csvMode() && operation.action === 'csv_import' ) {
+			const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
+			const icon = historyElement( 'i', '', 'dkbce-step-icon dashicons dashicons-update' );
+			const number = historyElement( 'span', '4' );
+			icon.setAttribute( 'aria-hidden', 'true' );
+			number.setAttribute( 'aria-hidden', 'true' );
+			sectionHeading.append( icon, number, heading );
+			operationPanel.appendChild( sectionHeading );
+		} else {
+			operationPanel.appendChild( heading );
+		}
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
@@ -2158,7 +2261,8 @@
 			} );
 			operationPanel.appendChild( clearButton );
 		}
-		if ( operation.import_source && [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( operation.status ) ) {
+		const hasImportReportRows = operation.failed > 0 || operation.skipped > 0 || operation.processed < operation.total;
+		if ( hasImportReportRows && operation.import_source && [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( operation.status ) ) {
 			const report = document.createElement( 'button' );
 			report.type = 'button';
 			report.className = 'button';
@@ -2167,7 +2271,7 @@
 			operationPanel.appendChild( report );
 		}
 
-		if ( operation.csv_report ) {
+		if ( hasImportReportRows && operation.csv_report ) {
 			const report = document.createElement( 'button' );
 			report.type = 'button';
 			report.className = 'button';
@@ -2202,8 +2306,14 @@
 				? DKBCE.i18n.cancelling
 				: operation.action === 'rollback' ? historyText.cancelRollback : DKBCE.i18n.cancelOperation;
 			cancelButton.disabled = operation.cancel_requested;
-			cancelButton.addEventListener( 'click', historyView ? async () => { cancelButton.disabled = true; try { await request( 'cancel', { operation_id: operation.operation_id } ); loadHistoryDetails(); } catch ( error ) { setNotice( error.message, 'error', operationPanel ); cancelButton.disabled = false; } } : cancelOperation );
+			cancelButton.addEventListener( 'click', () => openCancelConfirmation( operation, operationPanel, historyView, cancelButton ) );
 			operationPanel.appendChild( cancelButton );
+			if ( operation.cancel_requested ) {
+				const cancelSpinner = document.createElement( 'span' );
+				cancelSpinner.className = 'spinner is-active dkbce-cancel-spinner';
+				cancelSpinner.setAttribute( 'aria-hidden', 'true' );
+				operationPanel.appendChild( cancelSpinner );
+			}
 			const persistence = document.createElement( 'p' );
 			persistence.textContent = DKBCE.ui.persistence;
 			operationPanel.appendChild( persistence );
@@ -2326,11 +2436,57 @@
 			} );
 	}
 
-	function cancelOperation() {
-		if ( ! state.operationId ) {
+	function openCancelConfirmation( operation, panel, historyView, button ) {
+		if ( ! operation.operation_id || operation.cancel_requested ) {
 			return;
 		}
-		request( 'cancel', { operation_id: state.operationId } )
+		pendingCancellation = {
+			operationId: operation.operation_id,
+			importPreparation: operation.action === 'import_preview',
+			historyView,
+			panel,
+			button,
+		};
+		forceClearReferences = null;
+		$( '#dkbce-confirm-title' ).textContent = button.textContent;
+		$( '#dkbce-confirm-text' ).textContent = pendingCancellation.importPreparation ? DKBCE.csv.confirmCancel : DKBCE.i18n.confirmCancel;
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
+		$( '#dkbce-confirm-warning' ).textContent = '';
+		$( '#dkbce-confirm-warning' ).hidden = true;
+		$( '#dkbce-confirm-apply' ).textContent = button.textContent;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	}
+
+	function cancelOperation() {
+		if ( ! pendingCancellation ) {
+			return;
+		}
+		const cancellation = pendingCancellation;
+		pendingCancellation = null;
+		modal.hidden = true;
+		if ( cancellation.importPreparation ) {
+			if ( state.importPreparing && state.importId === cancellation.operationId ) {
+				state.importCancel = true;
+				cancellation.button.disabled = true;
+				$( '#dkbce-import-status' ).textContent = DKBCE.csv.cancelling;
+			}
+			return;
+		}
+		if ( cancellation.historyView ) {
+			cancellation.button.disabled = true;
+			request( 'cancel', { operation_id: cancellation.operationId } )
+				.then( () => loadHistoryDetails() )
+				.catch( ( error ) => {
+					setNotice( error.message, 'error', cancellation.panel );
+					const cancelButton = cancellation.panel.querySelector( '[data-operation-control="cancel"]' );
+					if ( cancelButton ) { cancelButton.disabled = false; }
+				} );
+			return;
+		}
+		request( 'cancel', { operation_id: cancellation.operationId } )
 			.then( ( data ) => {
 				state.progressRequestId++;
 				renderOperation( data.state );
@@ -2363,15 +2519,24 @@
 			fetchPreviewPage( 1 );
 		}
 	} );
-	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', () => {
+	function closeConfirm() {
+		let focusTarget = pendingCancellation
+			? ( pendingCancellation.button.isConnected ? pendingCancellation.button : pendingCancellation.panel.querySelector( '[data-operation-control="cancel"]' ) )
+			: forceClearReferences ? forceClearButton : applyButton;
+		if ( pendingCancellation && pendingCancellation.importPreparation && ! state.importPreparing ) {
+			focusTarget = $( '#dkbce-csv-preview' );
+		}
 		modal.hidden = true;
-		applyButton.focus();
-	} );
+		forceClearReferences = null;
+		pendingCancellation = null;
+		if ( focusTarget ) { focusTarget.focus(); }
+	}
+	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', closeConfirm );
 	$( '#dkbce-confirm-apply' ).addEventListener( 'click', confirmAction );
 	modal.addEventListener( 'keydown', ( event ) => {
 		if ( 'Escape' === event.key ) {
-			modal.hidden = true;
-			applyButton.focus();
+			event.preventDefault();
+			closeConfirm();
 		}
 		if ( 'Tab' === event.key ) {
 			const focusable = Array.from( modal.querySelectorAll( 'button:not([disabled]), input:not([disabled])' ) )

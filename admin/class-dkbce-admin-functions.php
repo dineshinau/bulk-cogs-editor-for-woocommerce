@@ -190,6 +190,7 @@ class DKBCE_Admin_Functions {
 					'exportTask'      => __( 'File export', 'bulk-cogs-editor-for-woocommerce' ),
 					'clear'           => __( 'Clear selection', 'bulk-cogs-editor-for-woocommerce' ),
 					'narrowed'        => __( 'Selection includes previous filter constraints.', 'bulk-cogs-editor-for-woocommerce' ),
+					'reused'          => __( 'Using the completed operation’s selection with current costs. Edit filters to narrow it, or use Reset filters to start a new selection.', 'bulk-cogs-editor-for-woocommerce' ),
 					'set'             => __( 'Set cost', 'bulk-cogs-editor-for-woocommerce' ),
 					'clearCost'       => __( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ),
 					'increase'        => __( 'Increase', 'bulk-cogs-editor-for-woocommerce' ),
@@ -221,6 +222,7 @@ class DKBCE_Admin_Functions {
 					'invalidCount'    => __( 'Invalid rows: %d. Showing the first 50; download the report for all errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'retrying'        => __( 'Retrying status shortly. Reload this page if your session has expired.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'      => __( 'Cancelling import preparation…', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmCancel'   => __( 'Stop preparing this import preview? Product costs have not been changed. Upload the file again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
 					'importStopped'   => __( 'Import preparation stopped or this preview was already applied. Upload again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
 					'selection'       => __( 'Only include products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
 					'exportHelp'      => __( 'Review the products, then download the selected CSV columns. Export does not change costs. Keep this page open until the download is ready.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -312,6 +314,7 @@ class DKBCE_Admin_Functions {
 					'remainingTime'       => __( 'Approx. time remaining: %s', 'bulk-cogs-editor-for-woocommerce' ),
 					'estimatingTime'      => __( 'Calculating…', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelOperation'     => __( 'Stop remaining updates', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmCancel'       => __( 'Any changes already made will remain.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'          => __( 'Cancellation requested…', 'bulk-cogs-editor-for-woocommerce' ),
 					'starting'            => __( 'Starting…', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: selected products remaining after a filter refresh. */
@@ -392,7 +395,7 @@ class DKBCE_Admin_Functions {
 		<div class="wrap dkbce-wrap">
 			<header class="dkbce-hero">
 				<span class="dkbce-brand-icon dashicons dashicons-database" aria-hidden="true"></span>
-				<div><h1><?php esc_html_e( 'Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
+				<div><h1><?php esc_html_e( 'Bulk COGS (Cost of Goods Sold) Editor', 'bulk-cogs-editor-for-woocommerce' ); ?></h1><p><?php esc_html_e( 'Review and update product costs, or transfer costs with CSV and Excel files.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div>
 				<details class="dkbce-help"><summary><?php esc_html_e( 'Help', 'bulk-cogs-editor-for-woocommerce' ); ?> (<span data-dkbce-help-title><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></span>)</summary><div class="dkbce-popover">
 					<div data-dkbce-help="bulk">
 						<strong><?php esc_html_e( 'Update product costs in four steps', 'bulk-cogs-editor-for-woocommerce' ); ?></strong>
@@ -1183,6 +1186,7 @@ class DKBCE_Admin_Functions {
 		$filters['page_no']   = 1;
 		$filters['page_size'] = $page_size;
 
+		$this->validate_reused_selection( $filters );
 		$result                           = $this->service->scan_matches( $filters );
 		$selected_filters                 = $filters;
 		$selected_filters['count']        = true;
@@ -1205,6 +1209,7 @@ class DKBCE_Admin_Functions {
 			);
 		}
 		$selected_count = null !== $selected_ids ? count( $selected_ids ) : $this->service->scan_matches( $selected_filters );
+		$this->validate_reused_selection( $filters );
 		if ( $selection['range'] ) {
 			$selection['range']['count'] = $selected_count;
 		}
@@ -1227,18 +1232,46 @@ class DKBCE_Admin_Functions {
 
 		wp_send_json_success(
 			array(
-				'selected_count'  => $selected_count,
-				'selected_ids'    => $selected_ids,
-				'excluded_ids'    => $selection['excluded_ids'],
-				'selection_range' => $selection['range'],
-				'preview_id'      => $token,
-				'count'           => $result['count'],
-				'page'            => $result['page'],
-				'page_size'       => $result['page_size'],
-				'total_pages'     => $result['total_pages'],
-				'rows'            => $result['rows'],
+				'selected_count'   => $selected_count,
+				'reused_selection' => ! empty( $filters['selection_operation'] ),
+				'selected_ids'     => $selected_ids,
+				'excluded_ids'     => $selection['excluded_ids'],
+				'selection_range'  => $selection['range'],
+				'preview_id'       => $token,
+				'count'            => $result['count'],
+				'page'             => $result['page'],
+				'page_size'        => $result['page_size'],
+				'total_pages'      => $result['total_pages'],
+				'rows'             => $result['rows'],
 			)
 		);
+	}
+
+	/**
+	 * Reject unavailable reusable selections, bypassing cached operation state.
+	 *
+	 * Check before and after product reads because retention cleanup can start
+	 * during a request. Its started marker persists before any outcomes are removed.
+	 *
+	 * @param array $filters Trusted preview or operation filters.
+	 * @return array|false Reusable source, or false when no source is requested.
+	 */
+	private function validate_reused_selection( $filters ) {
+		$operation_id = $filters['selection_operation'] ?? '';
+		if ( '' === $operation_id ) {
+			return false;
+		}
+		$operation = is_string( $operation_id ) && preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id, true ) : false;
+		if ( ! $operation || empty( $operation['reusable_selection'] ) || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors' ), true ) || ! empty( $operation['history_cleanup_pending'] ) || ! empty( $operation['history_cleanup_started'] ) ) {
+			wp_send_json_error(
+				array(
+					'message'         => __( 'The previous selection expired. Use Reset filters to start a new selection.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refresh_preview' => true,
+				),
+				409
+			);
+		}
+		return $operation;
 	}
 
 	/**
@@ -1253,12 +1286,23 @@ class DKBCE_Admin_Functions {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
 			$this->send_nonce_error();
 		}
-		$selection = array(
+		$selection    = array(
 			'row_ids'      => array(),
 			'excluded_ids' => array(),
 			'range'        => null,
 		);
-		$token     = isset( $_POST['previous_preview_id'] ) && is_string( $_POST['previous_preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_preview_id'] ) ) : '';
+		$token        = isset( $_POST['previous_preview_id'] ) && is_string( $_POST['previous_preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_preview_id'] ) ) : '';
+		$operation_id = isset( $_POST['previous_operation_id'] ) && is_string( $_POST['previous_operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_operation_id'] ) ) : '';
+		if ( '' === $token && '' !== $operation_id ) {
+			$operation = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id, true ) : false;
+			if ( ! $operation || get_current_user_id() !== (int) $operation['user_id'] ) {
+				wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+			}
+			$operation                      = $this->validate_reused_selection( array( 'selection_operation' => $operation_id ) );
+			$filters['selection_operation'] = $operation_id;
+			$filters['selection_baseline']  = array_intersect_key( $operation['filters'], $this->service->validate_filters( array() ) );
+			return $selection;
+		}
 		if ( '' === $token ) {
 			return $selection;
 		}
@@ -1276,7 +1320,11 @@ class DKBCE_Admin_Functions {
 				wp_send_json_error( array( 'message' => __( 'The excluded product list is invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
 		}
-		$selection['previous']     = $previous;
+		$selection['previous'] = $previous;
+		if ( ! empty( $previous['filters']['selection_operation'] ) ) {
+			$filters['selection_operation'] = $previous['filters']['selection_operation'];
+			$filters['selection_baseline']  = $previous['filters']['selection_baseline'];
+		}
 		$selection['row_ids']      = $previous['row_ids'];
 		$selection['excluded_ids'] = array_values( array_unique( array_map( 'absint', $excluded ) ) );
 		$range_token               = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
@@ -1348,7 +1396,9 @@ class DKBCE_Admin_Functions {
 			$filters['operation'] = $state['operation'];
 			$filters['page_no']   = $page_no;
 			$filters['page_size'] = $page_size;
-			$result               = $this->service->scan_matches( $filters );
+			$this->validate_reused_selection( $filters );
+			$result = $this->service->scan_matches( $filters );
+			$this->validate_reused_selection( $filters );
 			wp_send_json_success(
 				array(
 					'preview_id'  => $token,
@@ -1394,7 +1444,9 @@ class DKBCE_Admin_Functions {
 		$filters['page_no']   = $page_no;
 		$filters['page_size'] = $page_size;
 
+		$this->validate_reused_selection( $filters );
 		$result = $this->service->scan_matches( $filters );
+		$this->validate_reused_selection( $filters );
 		if ( $result['count'] !== (int) $preview['total'] ) {
 			delete_transient( 'dkbce_preview_' . $token );
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
@@ -1433,13 +1485,16 @@ class DKBCE_Admin_Functions {
 	/**
 	 * Reject stale reviewed values before claiming a preview or queuing work.
 	 *
-	 * @param array $preview Owned preview.
+	 * @param array  $preview Owned preview.
+	 * @param string $token Owned preview token.
+	 * @param float  $requested_at Original Apply start time, restored on continuation.
 	 * @return int|null Selected count, or null for import and legacy explicit selections.
 	 */
-	private function revalidate_reviewed_rows( $preview ) {
+	private function revalidate_reviewed_rows( $preview, $token, &$requested_at ) {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
 			$this->send_nonce_error();
 		}
+		$this->validate_reused_selection( $preview['filters'] ?? array() );
 		$selected_only = isset( $_POST['selected_only'] ) && '1' === $_POST['selected_only'];
 		$mode          = isset( $_POST['selection_mode'] ) && is_string( $_POST['selection_mode'] ) ? sanitize_key( wp_unslash( $_POST['selection_mode'] ) ) : '';
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Used only to omit excluded rows from preflight; apply validates every ID and the worker guards reviewed values again.
@@ -1447,36 +1502,61 @@ class DKBCE_Admin_Functions {
 		$excluded = is_array( $excluded ) ? array_filter( $excluded, 'is_scalar' ) : array();
 		$excluded = array_map( 'absint', $excluded );
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Legacy IDs only narrow preflight here and are strictly validated by ajax_apply.
-		$selected = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? array_map( 'absint', array_filter( wp_unslash( $_POST['selected_ids'] ), 'is_scalar' ) ) : array();
-		$range    = $preview['selection_range'] ?? null;
+		$selected        = isset( $_POST['selected_ids'] ) && is_array( $_POST['selected_ids'] ) ? array_map( 'absint', array_filter( wp_unslash( $_POST['selected_ids'] ), 'is_scalar' ) ) : array();
+		$range           = $preview['selection_range'] ?? null;
+		$selected_lookup = array_fill_keys( $selected, true );
+		$excluded_lookup = array_fill_keys( $excluded, true );
+		$reviewed        = array();
 		foreach ( $preview['reviewed_rows'] ?? array() as $id => $signature ) {
-			if ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) && ! in_array( (int) $id, $selected, true ) ) {
+			if ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) && ! isset( $selected_lookup[ (int) $id ] ) ) {
 				continue;
 			}
-			if ( $selected_only && 'all_except' === $mode && in_array( (int) $id, $excluded, true ) ) {
+			if ( $selected_only && 'all_except' === $mode && isset( $excluded_lookup[ (int) $id ] ) ) {
 				continue;
 			}
 			if ( $selected_only && 'range' === $mode && $range && ( $id < $range['min'] || $id > $range['max'] ) ) {
 				continue;
 			}
-			$product = wc_get_product( $id );
-			$result  = $product ? $this->service->calculate( $product, $preview['operation'] ) : null;
-			if ( $product && is_wp_error( $result ) ) {
-				$result = array(
-					'current' => $product->get_cogs_value(),
-					'new'     => null,
-					'status'  => 'failed',
-				);
-			}
-			if ( ! is_array( $result ) || ! hash_equals( $signature, $this->service->preview_signature( $result ) ) ) {
+			$reviewed[ $id ] = $signature;
+		}
+		$fingerprint  = hash( 'sha256', maybe_serialize( array( $token, $preview, $selected_only, $mode, $excluded, $selected ) ) );
+		$preflight_id = isset( $_POST['preflight_id'] ) && is_string( $_POST['preflight_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preflight_id'] ) ) : '';
+		$offset       = 0;
+		if ( '' !== $preflight_id ) {
+			$checkpoint = preg_match( '/\A[0-9a-f-]{36}\z/i', $preflight_id ) ? get_transient( 'dkbce_preflight_' . $preflight_id ) : false;
+			if ( ! is_array( $checkpoint ) || ! isset( $checkpoint['fingerprint'], $checkpoint['offset'], $checkpoint['requested_at'] ) || ! is_string( $checkpoint['fingerprint'] ) || ! hash_equals( $checkpoint['fingerprint'], $fingerprint ) || ! is_int( $checkpoint['offset'] ) || $checkpoint['offset'] < 0 || $checkpoint['offset'] > count( $reviewed ) || ! is_numeric( $checkpoint['requested_at'] ) ) {
 				wp_send_json_error(
 					array(
-						'message'         => __( 'A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started.', 'bulk-cogs-editor-for-woocommerce' ),
+						'message'         => __( 'The selection check expired or the preview changed. Refresh the preview and apply again.', 'bulk-cogs-editor-for-woocommerce' ),
 						'refresh_preview' => true,
 					),
 					409
 				);
 			}
+			$offset       = $checkpoint['offset'];
+			$requested_at = $checkpoint['requested_at'];
+		}
+		$offset += $this->revalidate_reviewed_batch( array_slice( $reviewed, $offset, 250, true ), $preview['operation'] );
+		$this->validate_reused_selection( $preview['filters'] ?? array() );
+		if ( $offset < count( $reviewed ) ) {
+			$preflight_id = $preflight_id ? $preflight_id : wp_generate_uuid4();
+			$checkpoint   = array(
+				'fingerprint'  => $fingerprint,
+				'offset'       => $offset,
+				'requested_at' => $requested_at,
+			);
+			if ( ! set_transient( 'dkbce_preflight_' . $preflight_id, $checkpoint, 5 * MINUTE_IN_SECONDS ) ) {
+				wp_send_json_error( array( 'message' => __( 'The selection check could not be saved. Try applying again.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
+			}
+			wp_send_json_success(
+				array(
+					'preflight_pending' => true,
+					'preflight_id'      => $preflight_id,
+				)
+			);
+		}
+		if ( $preflight_id ) {
+			delete_transient( 'dkbce_preflight_' . $preflight_id );
 		}
 		if ( 'csv_import' === $preview['operation']['action'] || ( $selected_only && ! in_array( $mode, array( 'range', 'all_except' ), true ) ) ) {
 			return null;
@@ -1490,7 +1570,8 @@ class DKBCE_Admin_Functions {
 				$filters['selection_range'] = $range;
 			}
 		}
-		$total     = $selected_only ? $this->service->scan_matches( $filters ) : $matches;
+		$total = $selected_only ? $this->service->scan_matches( $filters ) : $matches;
+		$this->validate_reused_selection( $filters );
 		$confirmed = isset( $_POST['confirmed_count'] ) && is_scalar( $_POST['confirmed_count'] ) ? sanitize_text_field( wp_unslash( $_POST['confirmed_count'] ) ) : null;
 		if ( ! $total || (int) $preview['total'] !== $matches || ( null !== $confirmed && ( ! ctype_digit( $confirmed ) || (int) $confirmed !== $total ) ) ) {
 			wp_send_json_error(
@@ -1502,6 +1583,57 @@ class DKBCE_Admin_Functions {
 			);
 		}
 		return $total;
+	}
+
+	/**
+	 * Check a bounded group of reviewed costs with batched reads.
+	 *
+	 * @param array $reviewed Product signatures, at most 250 per request.
+	 * @param array $operation Preview operation.
+	 * @return int Number of signatures checked before the cooperative deadline.
+	 */
+	private function revalidate_reviewed_batch( $reviewed, $operation ) {
+		$deadline = microtime( true ) + 5;
+		$checked  = 0;
+		foreach ( array_chunk( $reviewed, 50, true ) as $batch ) {
+			if ( $checked && microtime( true ) >= $deadline ) {
+				break;
+			}
+			$ids = array_keys( $batch );
+			$this->service->prime_products( $ids );
+			$batch_operation = $operation;
+			if ( 'csv_import' === $operation['action'] && ! empty( $operation['source_id'] ) ) {
+				$imports                   = new DKBCE_Import_Store();
+				$batch_operation['values'] = $imports->values( $operation['source_id'], $ids );
+				unset( $batch_operation['source_id'] );
+			}
+			foreach ( $batch as $id => $signature ) {
+				// Finish at least one row so expensive cache priming cannot stall progress.
+				if ( $checked && microtime( true ) >= $deadline ) {
+					break 2;
+				}
+				$product = wc_get_product( $id );
+				$result  = $product ? $this->service->calculate( $product, $batch_operation ) : null;
+				if ( $product && is_wp_error( $result ) ) {
+					$result = array(
+						'current' => $product->get_cogs_value(),
+						'new'     => null,
+						'status'  => 'failed',
+					);
+				}
+				if ( ! is_array( $result ) || ! hash_equals( $signature, $this->service->preview_signature( $result ) ) ) {
+					wp_send_json_error(
+						array(
+							'message'         => __( 'A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started.', 'bulk-cogs-editor-for-woocommerce' ),
+							'refresh_preview' => true,
+						),
+						409
+					);
+				}
+				++$checked;
+			}
+		}
+		return $checked;
 	}
 
 	/**
@@ -1541,7 +1673,7 @@ class DKBCE_Admin_Functions {
 			}
 		}
 
-		$expected_total = $this->revalidate_reviewed_rows( $preview );
+		$expected_total = $this->revalidate_reviewed_rows( $preview, $token, $requested_at );
 
 		if ( ! add_option(
 			'dkbce_preview_claim_' . $token,
@@ -1668,6 +1800,7 @@ class DKBCE_Admin_Functions {
 			'batch_size'            => $this->processor->get_batch_size(),
 			'cancel_requested'      => false,
 			'preview_claim_token'   => $token,
+			'reusable_selection'    => ! in_array( $preview['operation']['action'], array( 'csv_import', 'csv_export', 'rollback' ), true ),
 			'reviewed_rows'         => $preview['reviewed_rows'] ?? array(),
 			'expected_total'        => $expected_total,
 			'errors'                => array(),
@@ -1853,6 +1986,7 @@ class DKBCE_Admin_Functions {
 		$count            = (int) $count;
 		$filters          = $preview['filters'];
 		$filters['count'] = true;
+		$this->validate_reused_selection( $filters );
 		if ( (int) $this->service->scan_matches( $filters ) !== (int) $preview['total'] ) {
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
@@ -1863,6 +1997,7 @@ class DKBCE_Admin_Functions {
 		$first                = $this->service->scan_matches( $filters );
 		$filters['page_no']  += $count - 1;
 		$last                 = $this->service->scan_matches( $filters );
+		$this->validate_reused_selection( $filters );
 		if ( ! $first || ! $last ) {
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
@@ -1885,29 +2020,30 @@ class DKBCE_Admin_Functions {
 	 */
 	public function public_operation( $state ) {
 		return array(
-			'action'           => $state['action'],
-			'completed_at'     => (int) ( $state['completed_at'] ?? 0 ),
-			'last_progress_at' => (int) ( $state['updated_at'] ?? $state['created_at'] ),
-			'progress_age'     => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
-			'queue_available'  => function_exists( 'as_enqueue_async_action' ),
-			'csv_report'       => $state['csv_report'] ?? '',
-			'import_source'    => $state['operation']['source_id'] ?? '',
-			'operation_id'     => $state['operation_id'],
-			'status'           => $state['status'],
-			'stage'            => $state['stage'],
-			'total'            => (int) $state['total'],
-			'processed'        => (int) $state['processed'],
-			'succeeded'        => (int) $state['succeeded'],
-			'skipped'          => (int) $state['skipped'],
-			'failed'           => (int) $state['failed'],
-			'elapsed_seconds'  => max(
+			'action'             => $state['action'],
+			'completed_at'       => (int) ( $state['completed_at'] ?? 0 ),
+			'last_progress_at'   => (int) ( $state['updated_at'] ?? $state['created_at'] ),
+			'progress_age'       => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
+			'queue_available'    => function_exists( 'as_enqueue_async_action' ),
+			'csv_report'         => $state['csv_report'] ?? '',
+			'import_source'      => $state['operation']['source_id'] ?? '',
+			'operation_id'       => $state['operation_id'],
+			'reusable_selection' => ! empty( $state['reusable_selection'] ),
+			'status'             => $state['status'],
+			'stage'              => $state['stage'],
+			'total'              => (int) $state['total'],
+			'processed'          => (int) $state['processed'],
+			'succeeded'          => (int) $state['succeeded'],
+			'skipped'            => (int) $state['skipped'],
+			'failed'             => (int) $state['failed'],
+			'elapsed_seconds'    => max(
 				0,
 				(int) ( ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : time() ) - $state['created_at'] )
 			),
-			'errors'           => $state['errors'],
-			'error_summary'    => $state['error_summary'],
-			'cancel_requested' => (bool) $state['cancel_requested'],
-			'cancelled_note'   => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
+			'errors'             => $state['errors'],
+			'error_summary'      => $state['error_summary'],
+			'cancel_requested'   => (bool) $state['cancel_requested'],
+			'cancelled_note'     => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
 		);
 	}
 
@@ -1919,6 +2055,9 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function extend_product_query( $wp_query_args, $query_vars ) {
+		if ( ! empty( $query_vars['dkbce_selection_operation'] ) ) {
+			$wp_query_args['dkbce_selection_operation'] = sanitize_key( $query_vars['dkbce_selection_operation'] );
+		}
 		if ( isset( $query_vars['dkbce_after_id'] ) ) {
 			$wp_query_args['dkbce_after_id'] = absint( $query_vars['dkbce_after_id'] );
 		}
