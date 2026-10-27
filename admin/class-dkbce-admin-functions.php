@@ -222,6 +222,7 @@ class DKBCE_Admin_Functions {
 					'invalidCount'    => __( 'Invalid rows: %d. Showing the first 50; download the report for all errors.', 'bulk-cogs-editor-for-woocommerce' ),
 					'retrying'        => __( 'Retrying status shortly. Reload this page if your session has expired.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelling'      => __( 'Cancelling import preparation…', 'bulk-cogs-editor-for-woocommerce' ),
+					'confirmCancel'   => __( 'Stop preparing this import preview? Product costs have not been changed. Upload the file again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
 					'importStopped'   => __( 'Import preparation stopped or this preview was already applied. Upload again to prepare a new preview.', 'bulk-cogs-editor-for-woocommerce' ),
 					'selection'       => __( 'Only include products checked in the preview table', 'bulk-cogs-editor-for-woocommerce' ),
 					'exportHelp'      => __( 'Review the products, then download the selected CSV columns. Export does not change costs. Keep this page open until the download is ready.', 'bulk-cogs-editor-for-woocommerce' ),

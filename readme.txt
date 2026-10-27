@@ -204,7 +204,7 @@ When a bulk update finishes in the open editor, its product selection is reused 
 Yes. You can move between Bulk edit, CSV import / export, History, and Settings while a background operation runs. Controls that could conflict with it stay disabled until the operation finishes.
 
 = How do I stop an update or rollback? =
-Choose Stop remaining updates, or Cancel rollback for a rollback, and confirm in the editor dialog. Cancel or Escape closes the dialog without requesting cancellation. Saved cost changes remain, and the active worker may take a short time to stop. Import preview preparation has its own Cancel preparation control.
+Choose Stop remaining updates, or Cancel rollback for a rollback, and confirm in the editor dialog. Cancel or Escape closes the dialog without requesting cancellation. Saved cost changes remain, and the active worker may take a short time to stop. Import preview preparation has its own Cancel preparation control with a confirmation dialog. Cancelling preparation does not change product costs; upload the file again to prepare another preview.
 
 = What should I do if an operation is stuck? =
 Try normal cancellation first. If it does not work, a WooCommerce manager can open Settings, choose Force clear current operation, review the warning, and confirm.
@@ -286,6 +286,7 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 * Fixed: Hide empty import error reports when every product succeeds, while retaining reports for failed, skipped, and unprocessed products.
 * Improved: Show a spinner while cancellation is pending.
 * Improved: Confirm stopping remaining updates or a rollback in an editor dialog explaining that saved changes remain.
+* Improved: Confirm cancelling CSV/XLSX import preparation before requesting cancellation, explaining that costs are unchanged and the file must be uploaded again for another preview.
 * Improved: Confirm force-clear recovery in an editor dialog before resetting saved operation references.
 * Improved: Validate and stage CSV/XLSX rows in bounded batches with grouped SKU lookups and product cache preparation.
 * Improved: Process multiple import preparation batches within each worker's time and memory budgets, with cursor checkpoints and cancellation checks between batches.

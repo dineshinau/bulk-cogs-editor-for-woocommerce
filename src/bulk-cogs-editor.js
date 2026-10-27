@@ -743,8 +743,13 @@
 	}
 
 	$( '#dkbce-import-progress button' ).addEventListener( 'click', () => {
-		state.importCancel = true;
-		$( '#dkbce-import-progress button' ).disabled = true;
+		if ( ! state.importPreparing ) { return; }
+		const panel = $( '#dkbce-import-progress' );
+		openCancelConfirmation( {
+			operation_id: state.importId,
+			cancel_requested: state.importCancel,
+			action: 'import_preview',
+		}, panel, false, panel.querySelector( 'button' ) );
 	} );
 
 	async function exportCSV() {
@@ -2437,13 +2442,14 @@
 		}
 		pendingCancellation = {
 			operationId: operation.operation_id,
+			importPreparation: operation.action === 'import_preview',
 			historyView,
 			panel,
 			button,
 		};
 		forceClearReferences = null;
 		$( '#dkbce-confirm-title' ).textContent = button.textContent;
-		$( '#dkbce-confirm-text' ).textContent = DKBCE.i18n.confirmCancel;
+		$( '#dkbce-confirm-text' ).textContent = pendingCancellation.importPreparation ? DKBCE.csv.confirmCancel : DKBCE.i18n.confirmCancel;
 		$( '#dkbce-confirm-summary' ).replaceChildren();
 		$( '#dkbce-confirm-summary' ).hidden = true;
 		$( '#dkbce-confirm-warning' ).textContent = '';
@@ -2461,6 +2467,14 @@
 		const cancellation = pendingCancellation;
 		pendingCancellation = null;
 		modal.hidden = true;
+		if ( cancellation.importPreparation ) {
+			if ( state.importPreparing && state.importId === cancellation.operationId ) {
+				state.importCancel = true;
+				cancellation.button.disabled = true;
+				$( '#dkbce-import-status' ).textContent = DKBCE.csv.cancelling;
+			}
+			return;
+		}
 		if ( cancellation.historyView ) {
 			cancellation.button.disabled = true;
 			request( 'cancel', { operation_id: cancellation.operationId } )
@@ -2506,9 +2520,12 @@
 		}
 	} );
 	function closeConfirm() {
-		const focusTarget = pendingCancellation
+		let focusTarget = pendingCancellation
 			? ( pendingCancellation.button.isConnected ? pendingCancellation.button : pendingCancellation.panel.querySelector( '[data-operation-control="cancel"]' ) )
 			: forceClearReferences ? forceClearButton : applyButton;
+		if ( pendingCancellation && pendingCancellation.importPreparation && ! state.importPreparing ) {
+			focusTarget = $( '#dkbce-csv-preview' );
+		}
 		modal.hidden = true;
 		forceClearReferences = null;
 		pendingCancellation = null;
