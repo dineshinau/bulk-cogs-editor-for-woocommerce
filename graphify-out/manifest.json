@@ -84,27 +84,27 @@
     "semantic_hash": ""
   },
   "tests/e2e/bulk-cogs-editor.spec.cjs": {
-    "mtime": 1792795931.2893414,
-    "seen": 1792796355.9292307,
-    "ast_hash": "6efb4ff0f9183ae9b8cae40c62fdef9b",
+    "mtime": 1793079994.304358,
+    "seen": 1793092819.601249,
+    "ast_hash": "f66f2f9b2746cb9fa25d18d51e8d524a",
     "semantic_hash": ""
   },
   "tests/e2e/fixtures.php": {
-    "mtime": 1792795931.2897203,
-    "seen": 1792796355.9292321,
-    "ast_hash": "beb60a71ed4be74bc92c8bbcfff9ba43",
+    "mtime": 1793081477.824869,
+    "seen": 1793092819.6012585,
+    "ast_hash": "bf9f1633cc5c1142f76281abbdcf711a",
     "semantic_hash": ""
   },
   "tests/e2e/global-setup.cjs": {
-    "mtime": 1792795931.2902339,
-    "seen": 1792796355.9292333,
-    "ast_hash": "aa3829651e3a6e033438ec96f9d48e4a",
+    "mtime": 1793080781.1133327,
+    "seen": 1793092819.601262,
+    "ast_hash": "8a8710de9a1368c4d554ffd218c4bef7",
     "semantic_hash": ""
   },
   "tests/e2e/global-teardown.cjs": {
-    "mtime": 1792795931.2905593,
-    "seen": 1792796355.929235,
-    "ast_hash": "8ad0f9a616b5e5899189179930fbda98",
+    "mtime": 1793081785.5842295,
+    "seen": 1793092819.6012654,
+    "ast_hash": "eec4be15e9cdaa8843e2f86c6fcc8106",
     "semantic_hash": ""
   },
   "tests/e2e/playwright.config.cjs": {
@@ -189,6 +189,24 @@
     "mtime": 1793074508.7401254,
     "seen": 1793075158.9663322,
     "ast_hash": "573788a867809a054336e2bb3f721c38",
+    "semantic_hash": ""
+  },
+  "tests/e2e/cleanup-private-files.py": {
+    "mtime": 1793082142.562779,
+    "seen": 1793092819.6012545,
+    "ast_hash": "fbeb48b202feb7c0eb363c20ef31c85f",
+    "semantic_hash": ""
+  },
+  "tests/e2e/release-fixtures.php": {
+    "mtime": 1793082352.923756,
+    "seen": 1793092819.6012728,
+    "ast_hash": "322805e633e1277234f56c0ba7684b38",
+    "semantic_hash": ""
+  },
+  "tests/e2e/release-workflows.spec.cjs": {
+    "mtime": 1793082684.4992568,
+    "seen": 1793092819.6012754,
+    "ast_hash": "52909a0c4bc64738779e6ca41d158677",
     "semantic_hash": ""
   }
 }

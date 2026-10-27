@@ -260,6 +260,54 @@
       "source_location": "L45"
     },
     {
+      "id": "tests_e2e_cleanup_private_files_pair",
+      "label": "pair()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "code",
+      "norm_label": "pair()",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "tests_e2e_cleanup_private_files_pair_size",
+      "label": "size()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "code",
+      "norm_label": "size()",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L41"
+    },
+    {
+      "id": "tests_e2e_cleanup_private_files_readn",
+      "label": "readn()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "code",
+      "norm_label": "readn()",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L53"
+    },
+    {
+      "id": "tests_e2e_cleanup_private_files_record",
+      "label": "record()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "code",
+      "norm_label": "record()",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L34"
+    },
+    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_file",
       "label": ".ajax_download_file()",
       "_callable": true,
@@ -774,6 +822,18 @@
       "norm_label": ".schedule()",
       "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L42"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 117,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L2093"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
@@ -1973,7 +2033,7 @@
       "file_type": "code",
       "norm_label": "{closure#1}()",
       "source_file": "tests/e2e/fixtures.php",
-      "source_location": "L179"
+      "source_location": "L218"
     },
     {
       "id": "tests_e2e_fixtures_dkbce_e2e_cleanup",
@@ -2864,18 +2924,6 @@
       "source_location": "L628"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 188,
-      "community_name": "DKBCE_Operation_Store",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2093"
-    },
-    {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
       "label": ".batch()",
       "_callable": true,
@@ -3164,6 +3212,42 @@
       "source_location": "L331"
     },
     {
+      "id": "tests_e2e_release_fixtures_closure_1",
+      "label": "{closure#1}()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "release-fixtures.php",
+      "file_type": "code",
+      "norm_label": "{closure#1}()",
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L120"
+    },
+    {
+      "id": "tests_e2e_release_fixtures_closure_2",
+      "label": "{closure#2}()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "release-fixtures.php",
+      "file_type": "code",
+      "norm_label": "{closure#2}()",
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L184"
+    },
+    {
+      "id": "tests_e2e_release_fixtures_closure_3",
+      "label": "{closure#3}()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "release-fixtures.php",
+      "file_type": "code",
+      "norm_label": "{closure#3}()",
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L197"
+    },
+    {
       "id": "tests_e2e_bulk_cogs_editor_spec_fixturesku",
       "label": "fixtureSku()",
       "_callable": true,
@@ -3428,6 +3512,126 @@
       "source_location": "L181"
     },
     {
+      "id": "tests_e2e_release_workflows_spec_ajax",
+      "label": "ajax()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "ajax()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L31"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_csvrows",
+      "label": "csvRows()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "csvrows()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L89"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_drive",
+      "label": "drive()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "drive()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L70"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_fixture",
+      "label": "fixture()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "fixture()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_isajax",
+      "label": "isAjax()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "isajax()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L90"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_releasesearch",
+      "label": "releaseSearch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "releasesearch()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L88"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_remember",
+      "label": "remember()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "remember()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_rollback",
+      "label": "rollback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "rollback()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L79"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_upload",
+      "label": "upload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "upload()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L48"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_waitimport",
+      "label": "waitImport()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "waitimport()",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L59"
+    },
+    {
       "id": "admin_class_dkbce_autoloader_dkbce_autoloader_load",
       "label": ".load()",
       "_callable": true,
@@ -3460,6 +3664,17 @@
       "file_type": "code",
       "norm_label": "php-quality.py",
       "source_file": "scripts/php-quality.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_cleanup_private_files",
+      "label": "cleanup-private-files.py",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "code",
+      "norm_label": "cleanup-private-files.py",
+      "source_file": "tests/e2e/cleanup-private-files.py",
       "source_location": "L1"
     },
     {
@@ -3505,6 +3720,17 @@
       "norm_label": "find project, path, or user composer tools; respect explicit overrides.",
       "source_file": "scripts/php-quality.py",
       "source_location": "L46"
+    },
+    {
+      "id": "tests_e2e_cleanup_private_files_rationale_1",
+      "label": "Remove recorded fixture uploads in an explicitly selected local PHP-FPM\u2026",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "file_type": "rationale",
+      "norm_label": "remove recorded fixture uploads in an explicitly selected local php-fpm...",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L1"
     },
     {
       "id": "admin_class_dkbce_csv_service",
@@ -3868,17 +4094,6 @@
       "norm_label": "@playwright/cli",
       "source_file": "package.json",
       "source_location": "L25"
-    },
-    {
-      "id": "ref_playwright_test",
-      "label": "@playwright/test",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "scripts",
-      "file_type": "concept",
-      "norm_label": "@playwright/test",
-      "source_file": "package.json",
-      "source_location": "L26"
     },
     {
       "id": "ref_woocommerce_dependency_extraction_webpack_plugin",
@@ -4387,6 +4602,116 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_e2e_global_setup",
+      "label": "global-setup.cjs",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "global-setup.cjs",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_global_setup_chromium",
+      "label": "{ chromium }",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "{ chromium }",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_global_setup_crypto",
+      "label": "crypto",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "crypto",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L6"
+    },
+    {
+      "id": "tests_e2e_global_setup_execfilesync",
+      "label": "{ execFileSync }",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "{ execfilesync }",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L2"
+    },
+    {
+      "id": "tests_e2e_global_setup_fixturescript",
+      "label": "fixtureScript",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "fixturescript",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_e2e_global_setup_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L3"
+    },
+    {
+      "id": "tests_e2e_global_setup_os",
+      "label": "os",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "os",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L4"
+    },
+    {
+      "id": "tests_e2e_global_setup_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L5"
+    },
+    {
+      "id": "tests_e2e_global_setup_statedirectory",
+      "label": "stateDirectory",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "statedirectory",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L8"
+    },
+    {
+      "id": "tests_e2e_global_setup_statefile",
+      "label": "stateFile",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "global-setup.cjs",
+      "file_type": "code",
+      "norm_label": "statefile",
+      "source_file": "tests/e2e/global-setup.cjs",
+      "source_location": "L9"
+    },
+    {
       "id": "admin_class_dkbce_database_installer",
       "label": "class-dkbce-database-installer.php",
       "_origin": "ast",
@@ -4420,6 +4745,61 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_e2e_global_teardown",
+      "label": "global-teardown.cjs",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "file_type": "code",
+      "norm_label": "global-teardown.cjs",
+      "source_file": "tests/e2e/global-teardown.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_global_teardown_execfilesync",
+      "label": "{ execFileSync }",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "file_type": "code",
+      "norm_label": "{ execfilesync }",
+      "source_file": "tests/e2e/global-teardown.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_global_teardown_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "tests/e2e/global-teardown.cjs",
+      "source_location": "L2"
+    },
+    {
+      "id": "tests_e2e_global_teardown_os",
+      "label": "os",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "file_type": "code",
+      "norm_label": "os",
+      "source_file": "tests/e2e/global-teardown.cjs",
+      "source_location": "L3"
+    },
+    {
+      "id": "tests_e2e_global_teardown_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "tests/e2e/global-teardown.cjs",
+      "source_location": "L4"
+    },
+    {
       "id": "src_bulk_cogs_editor",
       "label": "bulk-cogs-editor.js",
       "_origin": "ast",
@@ -4429,6 +4809,72 @@
       "norm_label": "bulk-cogs-editor.js",
       "source_file": "src/bulk-cogs-editor.js",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_playwright_config",
+      "label": "playwright.config.cjs",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "code",
+      "norm_label": "playwright.config.cjs",
+      "source_file": "tests/e2e/playwright.config.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_playwright_config_defineconfig",
+      "label": "{ defineConfig }",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "code",
+      "norm_label": "{ defineconfig }",
+      "source_file": "tests/e2e/playwright.config.cjs",
+      "source_location": "L3"
+    },
+    {
+      "id": "tests_e2e_playwright_config_os",
+      "label": "os",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "code",
+      "norm_label": "os",
+      "source_file": "tests/e2e/playwright.config.cjs",
+      "source_location": "L2"
+    },
+    {
+      "id": "tests_e2e_playwright_config_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "tests/e2e/playwright.config.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_playwright_config_statedirectory",
+      "label": "stateDirectory",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "code",
+      "norm_label": "statedirectory",
+      "source_file": "tests/e2e/playwright.config.cjs",
+      "source_location": "L5"
+    },
+    {
+      "id": "ref_playwright_test",
+      "label": "@playwright/test",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
+      "file_type": "concept",
+      "norm_label": "@playwright/test",
+      "source_file": "package.json",
+      "source_location": "L26"
     },
     {
       "id": "admin_class_dkbce_download_processor",
@@ -4450,6 +4896,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-operation-store.php",
       "source_file": "admin/class-dkbce-operation-store.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_release_fixtures",
+      "label": "release-fixtures.php",
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "release-fixtures.php",
+      "file_type": "code",
+      "norm_label": "release-fixtures.php",
+      "source_file": "tests/e2e/release-fixtures.php",
       "source_location": "L1"
     },
     {
@@ -4519,237 +4976,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_e2e_global_setup",
-      "label": "global-setup.cjs",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "global-setup.cjs",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_global_setup_admincredentialsfile",
-      "label": "adminCredentialsFile",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "admincredentialsfile",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_e2e_global_setup_chromium",
-      "label": "{ chromium }",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "{ chromium }",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_global_setup_crypto",
-      "label": "crypto",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "crypto",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L6"
-    },
-    {
-      "id": "tests_e2e_global_setup_execfilesync",
-      "label": "{ execFileSync }",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "{ execfilesync }",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L2"
-    },
-    {
-      "id": "tests_e2e_global_setup_fixturescript",
-      "label": "fixtureScript",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "fixturescript",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_e2e_global_setup_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L3"
-    },
-    {
-      "id": "tests_e2e_global_setup_os",
-      "label": "os",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "os",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L4"
-    },
-    {
-      "id": "tests_e2e_global_setup_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L5"
-    },
-    {
-      "id": "tests_e2e_global_setup_statedirectory",
-      "label": "stateDirectory",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "statedirectory",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L8"
-    },
-    {
-      "id": "tests_e2e_global_setup_statefile",
-      "label": "stateFile",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "statefile",
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_e2e_global_teardown",
-      "label": "global-teardown.cjs",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "global-teardown.cjs",
-      "source_file": "tests/e2e/global-teardown.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_global_teardown_execfilesync",
-      "label": "{ execFileSync }",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "{ execfilesync }",
-      "source_file": "tests/e2e/global-teardown.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_global_teardown_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "tests/e2e/global-teardown.cjs",
-      "source_location": "L2"
-    },
-    {
-      "id": "tests_e2e_global_teardown_os",
-      "label": "os",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "os",
-      "source_file": "tests/e2e/global-teardown.cjs",
-      "source_location": "L3"
-    },
-    {
-      "id": "tests_e2e_global_teardown_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "tests/e2e/global-teardown.cjs",
-      "source_location": "L4"
-    },
-    {
-      "id": "tests_e2e_playwright_config",
-      "label": "playwright.config.cjs",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "playwright.config.cjs",
-      "source_file": "tests/e2e/playwright.config.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_playwright_config_defineconfig",
-      "label": "{ defineConfig }",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "{ defineconfig }",
-      "source_file": "tests/e2e/playwright.config.cjs",
-      "source_location": "L3"
-    },
-    {
-      "id": "tests_e2e_playwright_config_os",
-      "label": "os",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "os",
-      "source_file": "tests/e2e/playwright.config.cjs",
-      "source_location": "L2"
-    },
-    {
-      "id": "tests_e2e_playwright_config_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "tests/e2e/playwright.config.cjs",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_e2e_playwright_config_statedirectory",
-      "label": "stateDirectory",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "file_type": "code",
-      "norm_label": "statedirectory",
-      "source_file": "tests/e2e/playwright.config.cjs",
-      "source_location": "L5"
-    },
-    {
       "id": "admin_index",
       "label": "admin/index.php",
       "_origin": "ast",
@@ -4802,6 +5028,83 @@
       "file_type": "code",
       "norm_label": "class-dkbce-import-store.php",
       "source_file": "admin/class-dkbce-import-store.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec",
+      "label": "release-workflows.spec.cjs",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "release-workflows.spec.cjs",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_execfilesync",
+      "label": "{ execFileSync }",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "{ execfilesync }",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L2"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L3"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_os",
+      "label": "os",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "os",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L4"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L5"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_statefile",
+      "label": "stateFile",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "statefile",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L7"
+    },
+    {
+      "id": "tests_e2e_release_workflows_spec_test_expect",
+      "label": "{ test, expect }",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "release-workflows.spec.cjs",
+      "file_type": "code",
+      "norm_label": "{ test, expect }",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
       "source_location": "L1"
     },
     {
@@ -4912,23 +5215,11 @@
       "type": "external"
     },
     {
-      "id": "ref_node_child_process",
-      "label": "ref_node_child_process",
-      "_origin": "semantic",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "ref_node_child_process",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "ref_node_crypto",
       "label": "ref_node_crypto",
       "_origin": "semantic",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
+      "community": 14,
+      "community_name": "global-setup.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_crypto",
@@ -4936,11 +5227,23 @@
       "type": "external"
     },
     {
+      "id": "ref_node_child_process",
+      "label": "ref_node_child_process",
+      "_origin": "semantic",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "ref_node_child_process",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "ref_node_fs",
       "label": "ref_node_fs",
       "_origin": "semantic",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_node_fs",
@@ -4948,26 +5251,26 @@
       "type": "external"
     },
     {
-      "id": "ref_node_os",
-      "label": "ref_node_os",
+      "id": "ref_node_path",
+      "label": "ref_node_path",
       "_origin": "semantic",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
+      "community": 16,
+      "community_name": "global-teardown.cjs",
       "external": true,
       "file_type": "concept",
-      "norm_label": "ref_node_os",
+      "norm_label": "ref_node_path",
       "source_file": "",
       "type": "external"
     },
     {
-      "id": "ref_node_path",
-      "label": "ref_node_path",
+      "id": "ref_node_os",
+      "label": "ref_node_os",
       "_origin": "semantic",
-      "community": 2,
-      "community_name": "bulk-cogs-editor.spec.cjs",
+      "community": 18,
+      "community_name": "playwright.config.cjs",
       "external": true,
       "file_type": "concept",
-      "norm_label": "ref_node_path",
+      "norm_label": "ref_node_os",
       "source_file": "",
       "type": "external"
     },
@@ -5004,6 +5307,61 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "ref_anthropic_ai_sdk",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "json",
+      "label": "json",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "json",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "secrets",
+      "label": "secrets",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "secrets",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "socket",
+      "label": "socket",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "socket",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "struct",
+      "label": "struct",
+      "community": 0,
+      "community_name": "php-quality.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "struct",
       "source_file": "",
       "type": "external"
     }
@@ -9938,7 +10296,67 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/e2e/fixtures.php",
-      "source_location": "L181",
+      "source_location": "L220",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec_ajax",
+      "target": "tests_e2e_release_workflows_spec_remember",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec_drive",
+      "target": "tests_e2e_release_workflows_spec_fixture",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec_rollback",
+      "target": "tests_e2e_release_workflows_spec_ajax",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec_rollback",
+      "target": "tests_e2e_release_workflows_spec_drive",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec_waitimport",
+      "target": "tests_e2e_release_workflows_spec_ajax",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -10398,6 +10816,126 @@
       "weight": 1.0
     },
     {
+      "source": "tests_e2e_cleanup_private_files_pair",
+      "target": "tests_e2e_cleanup_private_files_pair_size",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_fixture",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_ajax",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_upload",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_waitimport",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_drive",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_rollback",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_releasesearch",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_csvrows",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_isajax",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
       "source": "package",
       "target": "ref_woocommerce_dependency_extraction_webpack_plugin",
       "relation": "imports",
@@ -10502,6 +11040,90 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "scripts/php-quality.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "pathlib",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "re",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "secrets",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "socket",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "struct",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "json",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "os",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/cleanup-private-files.py",
       "source_location": "L9",
       "weight": 1.0
     },
@@ -10719,6 +11341,66 @@
       "context": "import",
       "source_file": "tests/e2e/playwright.config.cjs",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "ref_playwright_test",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "ref_node_child_process",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "ref_node_fs",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "ref_node_os",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "ref_node_path",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -12079,14 +12761,36 @@
       "weight": 1.0
     },
     {
-      "source": "tests_e2e_fixtures",
-      "target": "tests_e2e_fixtures_closure_1",
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "tests_e2e_cleanup_private_files_record",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tests/e2e/fixtures.php",
-      "source_location": "L179",
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "tests_e2e_cleanup_private_files_pair",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_cleanup_private_files",
+      "target": "tests_e2e_cleanup_private_files_readn",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -12098,6 +12802,17 @@
       "confidence_score": 1.0,
       "source_file": "tests/e2e/fixtures.php",
       "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_fixtures",
+      "target": "tests_e2e_fixtures_closure_1",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/fixtures.php",
+      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -12131,17 +12846,6 @@
       "confidence_score": 1.0,
       "source_file": "tests/e2e/global-setup.cjs",
       "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_e2e_global_setup",
-      "target": "tests_e2e_global_setup_admincredentialsfile",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/e2e/global-setup.cjs",
-      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -12307,6 +13011,116 @@
       "confidence_score": 1.0,
       "source_file": "tests/e2e/playwright.config.cjs",
       "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_fixtures",
+      "target": "tests_e2e_release_fixtures_closure_1",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_fixtures",
+      "target": "tests_e2e_release_fixtures_closure_2",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L184",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_fixtures",
+      "target": "tests_e2e_release_fixtures_closure_3",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-fixtures.php",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_test_expect",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_execfilesync",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_remember",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_fs",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_os",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_path",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_release_workflows_spec",
+      "target": "tests_e2e_release_workflows_spec_statefile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/release-workflows.spec.cjs",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -14367,6 +15181,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_e2e_cleanup_private_files_rationale_1",
+      "target": "tests_e2e_cleanup_private_files",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/cleanup-private-files.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "readme",
       "target": "readme",
       "relation": "references",
@@ -15562,7 +16387,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "tests/e2e/fixtures.php",
-      "source_location": "L62",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -15574,10 +16399,46 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "tests/e2e/fixtures.php",
-      "source_location": "L63",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_fixtures_dkbce_e2e_cleanup",
+      "target": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "tests/e2e/fixtures.php",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_fixtures_dkbce_e2e_cleanup",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "tests/e2e/fixtures.php",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_e2e_fixtures_dkbce_e2e_cleanup",
+      "target": "admin_class_dkbce_import_store_dkbce_import_store",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "tests/e2e/fixtures.php",
+      "source_location": "L89",
       "weight": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1517b12b7103271adba0d0d9cba51eb4dc13cf5a"
+  "built_at_commit": "8524a7996a27e889f13a334df11a9ef0810e56c6"
 }
