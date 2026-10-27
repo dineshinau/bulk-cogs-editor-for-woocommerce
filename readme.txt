@@ -257,7 +257,7 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 
 == Changelog ==
 
-= 1.2.1 (2026-10-25) =
+= 1.2.1 (2026-10-27) =
 
 * Fixed: Reuse the completed bulk operation's product selection with current costs when preparing another update, even when changed costs no longer match the original filters.
 * Fixed: Keep range selection controls within the editor layout.
