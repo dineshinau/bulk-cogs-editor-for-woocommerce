@@ -1186,6 +1186,7 @@ class DKBCE_Admin_Functions {
 		$filters['page_no']   = 1;
 		$filters['page_size'] = $page_size;
 
+		$this->validate_reused_selection( $filters );
 		$result                           = $this->service->scan_matches( $filters );
 		$selected_filters                 = $filters;
 		$selected_filters['count']        = true;
@@ -1208,6 +1209,7 @@ class DKBCE_Admin_Functions {
 			);
 		}
 		$selected_count = null !== $selected_ids ? count( $selected_ids ) : $this->service->scan_matches( $selected_filters );
+		$this->validate_reused_selection( $filters );
 		if ( $selection['range'] ) {
 			$selection['range']['count'] = $selected_count;
 		}
@@ -1246,6 +1248,33 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Reject unavailable reusable selections, bypassing cached operation state.
+	 *
+	 * Check before and after product reads because retention cleanup can start
+	 * during a request. Its started marker persists before any outcomes are removed.
+	 *
+	 * @param array $filters Trusted preview or operation filters.
+	 * @return array|false Reusable source, or false when no source is requested.
+	 */
+	private function validate_reused_selection( $filters ) {
+		$operation_id = $filters['selection_operation'] ?? '';
+		if ( '' === $operation_id ) {
+			return false;
+		}
+		$operation = is_string( $operation_id ) && preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id, true ) : false;
+		if ( ! $operation || empty( $operation['reusable_selection'] ) || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors' ), true ) || ! empty( $operation['history_cleanup_pending'] ) || ! empty( $operation['history_cleanup_started'] ) ) {
+			wp_send_json_error(
+				array(
+					'message'         => __( 'The previous selection expired. Use Reset filters to start a new selection.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refresh_preview' => true,
+				),
+				409
+			);
+		}
+		return $operation;
+	}
+
+	/**
 	 * Carry an owned preview's selection into its replacement.
 	 *
 	 * Filter refreshes intersect prior matching constraints without loading all IDs.
@@ -1265,10 +1294,11 @@ class DKBCE_Admin_Functions {
 		$token        = isset( $_POST['previous_preview_id'] ) && is_string( $_POST['previous_preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_preview_id'] ) ) : '';
 		$operation_id = isset( $_POST['previous_operation_id'] ) && is_string( $_POST['previous_operation_id'] ) ? sanitize_text_field( wp_unslash( $_POST['previous_operation_id'] ) ) : '';
 		if ( '' === $token && '' !== $operation_id ) {
-			$operation = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id ) : false;
-			if ( ! $operation || get_current_user_id() !== (int) $operation['user_id'] || empty( $operation['reusable_selection'] ) || ! in_array( $operation['status'], array( 'completed', 'completed_with_errors' ), true ) || ! empty( $operation['history_cleanup_started'] ) ) {
+			$operation = preg_match( '/\A[0-9a-f-]{36}\z/i', $operation_id ) ? $this->store->get( $operation_id, true ) : false;
+			if ( ! $operation || get_current_user_id() !== (int) $operation['user_id'] ) {
 				wp_send_json_error( array( 'message' => __( 'This operation is unavailable.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 			}
+			$operation                      = $this->validate_reused_selection( array( 'selection_operation' => $operation_id ) );
 			$filters['selection_operation'] = $operation_id;
 			$filters['selection_baseline']  = array_intersect_key( $operation['filters'], $this->service->validate_filters( array() ) );
 			return $selection;
@@ -1366,7 +1396,9 @@ class DKBCE_Admin_Functions {
 			$filters['operation'] = $state['operation'];
 			$filters['page_no']   = $page_no;
 			$filters['page_size'] = $page_size;
-			$result               = $this->service->scan_matches( $filters );
+			$this->validate_reused_selection( $filters );
+			$result = $this->service->scan_matches( $filters );
+			$this->validate_reused_selection( $filters );
 			wp_send_json_success(
 				array(
 					'preview_id'  => $token,
@@ -1412,7 +1444,9 @@ class DKBCE_Admin_Functions {
 		$filters['page_no']   = $page_no;
 		$filters['page_size'] = $page_size;
 
+		$this->validate_reused_selection( $filters );
 		$result = $this->service->scan_matches( $filters );
+		$this->validate_reused_selection( $filters );
 		if ( $result['count'] !== (int) $preview['total'] ) {
 			delete_transient( 'dkbce_preview_' . $token );
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
@@ -1460,6 +1494,7 @@ class DKBCE_Admin_Functions {
 		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
 			$this->send_nonce_error();
 		}
+		$this->validate_reused_selection( $preview['filters'] ?? array() );
 		$selected_only = isset( $_POST['selected_only'] ) && '1' === $_POST['selected_only'];
 		$mode          = isset( $_POST['selection_mode'] ) && is_string( $_POST['selection_mode'] ) ? sanitize_key( wp_unslash( $_POST['selection_mode'] ) ) : '';
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Used only to omit excluded rows from preflight; apply validates every ID and the worker guards reviewed values again.
@@ -1502,6 +1537,7 @@ class DKBCE_Admin_Functions {
 			$requested_at = $checkpoint['requested_at'];
 		}
 		$offset += $this->revalidate_reviewed_batch( array_slice( $reviewed, $offset, 250, true ), $preview['operation'] );
+		$this->validate_reused_selection( $preview['filters'] ?? array() );
 		if ( $offset < count( $reviewed ) ) {
 			$preflight_id = $preflight_id ? $preflight_id : wp_generate_uuid4();
 			$checkpoint   = array(
@@ -1534,7 +1570,8 @@ class DKBCE_Admin_Functions {
 				$filters['selection_range'] = $range;
 			}
 		}
-		$total     = $selected_only ? $this->service->scan_matches( $filters ) : $matches;
+		$total = $selected_only ? $this->service->scan_matches( $filters ) : $matches;
+		$this->validate_reused_selection( $filters );
 		$confirmed = isset( $_POST['confirmed_count'] ) && is_scalar( $_POST['confirmed_count'] ) ? sanitize_text_field( wp_unslash( $_POST['confirmed_count'] ) ) : null;
 		if ( ! $total || (int) $preview['total'] !== $matches || ( null !== $confirmed && ( ! ctype_digit( $confirmed ) || (int) $confirmed !== $total ) ) ) {
 			wp_send_json_error(
@@ -1949,6 +1986,7 @@ class DKBCE_Admin_Functions {
 		$count            = (int) $count;
 		$filters          = $preview['filters'];
 		$filters['count'] = true;
+		$this->validate_reused_selection( $filters );
 		if ( (int) $this->service->scan_matches( $filters ) !== (int) $preview['total'] ) {
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
@@ -1959,6 +1997,7 @@ class DKBCE_Admin_Functions {
 		$first                = $this->service->scan_matches( $filters );
 		$filters['page_no']  += $count - 1;
 		$last                 = $this->service->scan_matches( $filters );
+		$this->validate_reused_selection( $filters );
 		if ( ! $first || ! $last ) {
 			wp_send_json_error( array( 'message' => __( 'Products changed after this preview. Run the preview again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
