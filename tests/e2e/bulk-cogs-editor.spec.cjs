@@ -10,7 +10,7 @@ const pageURL = 'wp-admin/edit.php?post_type=product&page=bulk-cogs-editor';
 async function loadPage( page ) {
 	await page.goto( pageURL );
 	await expect(
-		page.getByRole( 'heading', { name: 'Bulk COGS Editor', exact: true } )
+		page.getByRole( 'heading', { name: 'Bulk COGS (Cost of Goods Sold) Editor', exact: true } )
 	).toBeVisible();
 	await expect( page.locator( '#dkbce-get-products' ) ).toBeEnabled();
 }

@@ -27,6 +27,9 @@ module.exports = async function globalTeardown() {
 				stdio: 'inherit',
 			}
 		);
+		if ( process.env.DKBCE_E2E_FPM_SOCKET && fs.existsSync( path.join( stateDirectory, 'cleanup-files.json' ) ) ) {
+			execFileSync( 'python3', [ path.join( __dirname, 'cleanup-private-files.py' ) ], { env: process.env, stdio: 'inherit', timeout: 45000 } );
+		}
 	} catch ( error ) {
 		console.error( 'Playwright fixture cleanup failed. State file retained for recovery.' );
 		throw error;

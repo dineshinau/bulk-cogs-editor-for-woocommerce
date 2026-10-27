@@ -6,9 +6,8 @@ const path = require( 'node:path' );
 const crypto = require( 'node:crypto' );
 
 const stateDirectory = path.join( os.tmpdir(), 'dkbce-playwright-e2e' );
-	const stateFile = path.join( stateDirectory, 'fixtures.json' );
-	const fixtureScript = path.join( __dirname, 'fixtures.php' );
-	const adminCredentialsFile = path.join( stateDirectory, 'admin-credentials.json' );
+const stateFile = path.join( stateDirectory, 'fixtures.json' );
+const fixtureScript = path.join( __dirname, 'fixtures.php' );
 
 module.exports = async function globalSetup() {
 	const baseURL = process.env.DKBCE_BASE_URL
@@ -44,15 +43,12 @@ module.exports = async function globalSetup() {
 		const fixtures = JSON.parse( fixtureLine );
 		fs.writeFileSync( stateFile, JSON.stringify( fixtures ), { mode: 0o600 } );
 		fs.chmodSync( stateFile, 0o600 );
-		const adminCredentials = JSON.parse(
-			fs.readFileSync( adminCredentialsFile, 'utf8' )
-		);
 		const browser = await chromium.launch( {
 			channel: 'chrome',
 			headless: ! process.argv.includes( '--headed' ),
 		} );
 		try {
-			for ( const user of [ 'admin', 'customer' ] ) {
+			for ( const user of [ 'manager', 'customer' ] ) {
 				const context = await browser.newContext( {
 					baseURL,
 					ignoreHTTPSErrors: true,
@@ -65,13 +61,13 @@ module.exports = async function globalSetup() {
 				await page.locator( '#user_login' ).waitFor( { state: 'visible' } );
 				await page
 					.locator( '#user_login' )
-					.fill( 'admin' === user ? adminCredentials.username : fixtures.customer_login );
+					.fill( 'manager' === user ? fixtures.manager_login : fixtures.customer_login );
 				await page
 					.locator( '#user_pass' )
-					.fill( 'admin' === user ? adminCredentials.password : fixtures.customer_password );
+					.fill( 'manager' === user ? fixtures.manager_password : fixtures.customer_password );
 				await page.locator( '#wp-submit' ).click();
 				await page.waitForURL(
-					'admin' === user
+					'manager' === user
 						? /wp-admin\//
 						: ( url ) => ! url.pathname.endsWith( 'wp-login.php' ),
 					{ timeout: 45000 }
@@ -104,13 +100,13 @@ module.exports = async function globalSetup() {
 				await context.storageState( {
 					path: path.join(
 						stateDirectory,
-						'admin' === user ? 'manager.json' : 'customer.json'
+						'manager' === user ? 'manager.json' : 'customer.json'
 					),
 				} );
 				fs.chmodSync(
 					path.join(
 						stateDirectory,
-						'admin' === user ? 'manager.json' : 'customer.json'
+						'manager' === user ? 'manager.json' : 'customer.json'
 					),
 					0o600
 				);
