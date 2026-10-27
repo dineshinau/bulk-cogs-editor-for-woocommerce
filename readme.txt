@@ -265,6 +265,8 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 5. **Operation history:** Filterable operation records with statuses, outcomes, notes, and numbered page navigation.
 6. **Operation details:** Existing summary-only history with operation metadata, results, and the notice explaining that original values are unavailable.
 7. **Settings:** History retention presets and custom days, plus overwrite or skip-changed rollback behavior.
+8. **Completed bulk update:** 10,000 products updated in 15 minutes 24 seconds, with zero skipped and zero failed. The elapsed time shown is from a single reported benchmark run; actual completion time varies by store.
+
 
 == Upgrade Notice ==
 
