@@ -305,7 +305,7 @@
       "file_type": "code",
       "norm_label": ".line()",
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L170"
+      "source_location": "L174"
     },
     {
       "id": "admin_class_dkbce_csv_service_dkbce_csv_service_sku_ids",
@@ -317,7 +317,7 @@
       "file_type": "code",
       "norm_label": ".sku_ids()",
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L133"
+      "source_location": "L137"
     },
     {
       "id": "admin_class_dkbce_csv_service_dkbce_csv_service_valid_quoting",
@@ -329,7 +329,7 @@
       "file_type": "code",
       "norm_label": ".valid_quoting()",
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L101"
+      "source_location": "L105"
     },
     {
       "id": "admin_class_dkbce_csv_service_dkbce_csv_service_validate_row",
@@ -12812,7 +12812,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L101",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -12823,7 +12823,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L133",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -12834,7 +12834,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-csv-service.php",
-      "source_location": "L170",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -15049,5 +15049,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "aa6fc94d1b5d5b8a1955e93cbe0ddbaf71408f8c"
+  "built_at_commit": "c42547968c8f8a6968109400f21d70a8ca51224a"
 }
