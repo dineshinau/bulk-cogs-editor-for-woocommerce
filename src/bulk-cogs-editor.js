@@ -803,7 +803,7 @@
 			return;
 		}
 		const columns = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.value );
-		if ( ! columns.length ) {
+		if ( ! hasCSVIdentifierColumn() ) {
 			setNotice( DKBCE.csv.columns, 'error', $( '#dkbce-csv' ) );
 			return;
 		}
@@ -932,17 +932,31 @@
 	} );
 	const csvColumnInputs = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]' ) );
 	const csvSelectAll = $( '#dkbce-csv-select-all' );
+	const csvColumnsError = $( '#dkbce-csv-columns-error' );
+	let csvColumnsErrorTimer;
+	function hasCSVIdentifierColumn() {
+		return Boolean( $( '[name="dkbce-csv-column"][value="id"]:checked, [name="dkbce-csv-column"][value="sku"]:checked' ) );
+	}
 	function updateCSVColumnToggle() {
 		const selected = csvColumnInputs.filter( ( input ) => input.checked ).length;
 		csvSelectAll.checked = selected === csvColumnInputs.length;
 		csvSelectAll.indeterminate = selected > 0 && selected < csvColumnInputs.length;
+		window.clearTimeout( csvColumnsErrorTimer );
+		csvColumnsError.hidden = hasCSVIdentifierColumn();
+		csvColumnsError.textContent = csvColumnsError.hidden ? '' : DKBCE.csv.columns;
+		if ( ! csvColumnsError.hidden ) {
+			csvColumnsErrorTimer = window.setTimeout( () => {
+				csvColumnsError.hidden = true;
+				csvColumnsError.textContent = '';
+			}, 10000 );
+		}
+		updateOperationControls();
 	}
 	csvSelectAll.addEventListener( 'change', () => {
 		csvColumnInputs.forEach( ( input ) => { input.checked = csvSelectAll.checked; } );
 		updateCSVColumnToggle();
 	} );
 	csvColumnInputs.forEach( ( input ) => input.addEventListener( 'change', updateCSVColumnToggle ) );
-	updateCSVColumnToggle();
 
 	function updateFileDetails() {
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
@@ -1327,7 +1341,8 @@
 		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
-			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length;
+			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
+			( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' && ! hasCSVIdentifierColumn() );
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
@@ -1931,6 +1946,10 @@
 	function openConfirm() {
 		const exporting = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export';
 		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || state.previewNeedsRefresh || ! state.count ) {
+			return;
+		}
+		if ( exporting && ! hasCSVIdentifierColumn() ) {
+			setNotice( DKBCE.csv.columns, 'error', $( '#dkbce-csv' ) );
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -2680,7 +2699,7 @@
 	$( '#dkbce-value' ).addEventListener( 'keyup', schedulePreviewRefresh );
 	actionLabel();
 	updateCSVMode();
-	updateOperationControls();
+	updateCSVColumnToggle();
 	if ( DKBCE.operationMode === 'rollback' ) { state.mode = 'history'; updateCSVMode(); loadHistory(); }
 	if ( state.importId || DKBCE.operationMode === 'csv_import' ) {
 		state.mode = 'csv';

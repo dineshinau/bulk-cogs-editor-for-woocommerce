@@ -230,7 +230,7 @@ class DKBCE_Admin_Functions {
 					'previewImport'   => __( 'Validate file', 'bulk-cogs-editor-for-woocommerce' ),
 					'apply'           => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'file'            => __( 'Choose a CSV or XLSX file within the WordPress upload limit.', 'bulk-cogs-editor-for-woocommerce' ),
-					'columns'         => __( 'Select at least one CSV column.', 'bulk-cogs-editor-for-woocommerce' ),
+					'columns'         => __( 'Select Product ID or SKU to create a CSV.', 'bulk-cogs-editor-for-woocommerce' ),
 					'errors'          => __( 'Invalid rows are excluded from this preview and cannot be applied.', 'bulk-cogs-editor-for-woocommerce' ),
 					'report'          => __( 'Download error report', 'bulk-cogs-editor-for-woocommerce' ),
 					'row'             => __( 'Row', 'bulk-cogs-editor-for-woocommerce' ),
@@ -496,13 +496,17 @@ class DKBCE_Admin_Functions {
 				<div id="dkbce-csv-export-options">
 
 					<p><?php esc_html_e( 'Use the filters below to choose products. Product type controls whether variable parents and variations are included. Export includes all matching pages. A blank new_cogs column is always added last. Enter your new costs there before importing.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
-					<fieldset class="dkbce-csv-columns"><legend><?php esc_html_e( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
-						<label class="dkbce-csv-select-all"><input type="checkbox" id="dkbce-csv-select-all" checked> <?php esc_html_e( 'Select all', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
+					<fieldset class="dkbce-csv-columns" aria-describedby="dkbce-csv-columns-help"><legend><?php esc_html_e( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
+						<div class="dkbce-csv-select-all">
+							<label><input type="checkbox" id="dkbce-csv-select-all" checked> <?php esc_html_e( 'Select all', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
+							<span id="dkbce-csv-columns-error" role="alert" hidden></span>
+						</div>
 					<?php foreach ( DKBCE_CSV_Service::COLUMNS as $column ) : ?>
 						<label><input type="checkbox" name="dkbce-csv-column" value="<?php echo esc_attr( $column ); ?>" checked> <?php echo esc_html( $column_labels[ $column ] ); ?></label>
 					<?php endforeach; ?>
 						<label><input type="checkbox" id="dkbce-csv-new-cogs" checked disabled> new_cogs</label>
 					</fieldset>
+					<p id="dkbce-csv-columns-help" class="description"><?php esc_html_e( 'Select Product ID or SKU to create a CSV.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 				</div>
 				<div id="dkbce-csv-import-options" hidden>
 					<p><button type="button" class="button-link" id="dkbce-csv-template"><?php esc_html_e( 'Download template', 'bulk-cogs-editor-for-woocommerce' ); ?></button></p>
@@ -1112,6 +1116,9 @@ class DKBCE_Admin_Functions {
 		$columns = isset( $_POST['columns'] ) && is_array( $_POST['columns'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['columns'] ) ) : array();
 		if ( ! $columns || array_diff( $columns, DKBCE_CSV_Service::COLUMNS ) ) {
 			wp_send_json_error( array( 'message' => __( 'Choose valid CSV columns.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		if ( ! array_intersect( array( 'id', 'sku' ), $columns ) ) {
+			wp_send_json_error( array( 'message' => __( 'Select Product ID or SKU to create a CSV.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 		$filters     = $preview['filters'];
 		$range_token = isset( $_POST['range_token'] ) && is_string( $_POST['range_token'] ) ? sanitize_text_field( wp_unslash( $_POST['range_token'] ) ) : '';
