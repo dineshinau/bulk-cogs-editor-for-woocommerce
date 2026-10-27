@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-27)
 
 ## Corpus Check
-- 31 files · ~59,260 words
+- 31 files · ~60,512 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 412 nodes · 874 edges · 21 communities (8 shown, 13 thin omitted)
+- 413 nodes · 878 edges · 21 communities (8 shown, 13 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 98 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c4254796`
+- Built from commit: `6f3c2706`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -42,9 +42,9 @@
 4. `DKBCE_COGS_Service` - 25 edges
 5. `DKBCE_History_Store` - 24 edges
 6. `DKBCE_Import_Store` - 22 edges
-7. `loadHistoryDetails()` - 21 edges
+7. `loadHistoryDetails()` - 22 edges
 8. `setNotice()` - 21 edges
-9. `renderOperation()` - 20 edges
+9. `renderOperation()` - 21 edges
 10. `request()` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -88,7 +88,7 @@ Nodes (4): DKBCE_Database_Installer, DKBCE_History_Store, {closure#1}(), dkbce_e
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.11
-Nodes (69): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), clearFilters() (+61 more)
+Nodes (70): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), clearFilters() (+62 more)
 
 ### Community 135 - "DKBCE_Bulk_Processor"
 Cohesion: 0.16
