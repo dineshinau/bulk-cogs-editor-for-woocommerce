@@ -497,9 +497,11 @@ class DKBCE_Admin_Functions {
 
 					<p><?php esc_html_e( 'Use the filters below to choose products. Product type controls whether variable parents and variations are included. Export includes all matching pages. A blank new_cogs column is always added last. Enter your new costs there before importing.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 					<fieldset class="dkbce-csv-columns"><legend><?php esc_html_e( 'CSV columns', 'bulk-cogs-editor-for-woocommerce' ); ?></legend>
+						<label class="dkbce-csv-select-all"><input type="checkbox" id="dkbce-csv-select-all" checked> <?php esc_html_e( 'Select all', 'bulk-cogs-editor-for-woocommerce' ); ?></label>
 					<?php foreach ( DKBCE_CSV_Service::COLUMNS as $column ) : ?>
 						<label><input type="checkbox" name="dkbce-csv-column" value="<?php echo esc_attr( $column ); ?>" checked> <?php echo esc_html( $column_labels[ $column ] ); ?></label>
 					<?php endforeach; ?>
+						<label><input type="checkbox" id="dkbce-csv-new-cogs" checked disabled> new_cogs</label>
 					</fieldset>
 				</div>
 				<div id="dkbce-csv-import-options" hidden>

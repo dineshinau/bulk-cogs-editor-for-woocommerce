@@ -930,6 +930,20 @@
 			updateCSVMode();
 		} );
 	} );
+	const csvColumnInputs = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]' ) );
+	const csvSelectAll = $( '#dkbce-csv-select-all' );
+	function updateCSVColumnToggle() {
+		const selected = csvColumnInputs.filter( ( input ) => input.checked ).length;
+		csvSelectAll.checked = selected === csvColumnInputs.length;
+		csvSelectAll.indeterminate = selected > 0 && selected < csvColumnInputs.length;
+	}
+	csvSelectAll.addEventListener( 'change', () => {
+		csvColumnInputs.forEach( ( input ) => { input.checked = csvSelectAll.checked; } );
+		updateCSVColumnToggle();
+	} );
+	csvColumnInputs.forEach( ( input ) => input.addEventListener( 'change', updateCSVColumnToggle ) );
+	updateCSVColumnToggle();
+
 	function updateFileDetails() {
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
 		$( '#dkbce-file-details' ).hidden = ! file;
@@ -1273,7 +1287,7 @@
 		refreshPreviewButton.hidden = state.loadingPage || ( state.busy && ! state.previewNeedsRefresh );
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
-		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
+		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input:not(#dkbce-csv-new-cogs), #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
 			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
 		$( '#dkbce-action-prerequisite' ).hidden = state.hasQuery && state.count > 0;
