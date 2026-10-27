@@ -163,10 +163,10 @@ class DKBCE_Admin_Functions {
 					'removeFilter'    => __( 'Remove filter: %s', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: original sample cost, 2: resulting sample cost. */
 					'example'         => __( 'Example: %1$s becomes %2$s.', 'bulk-cogs-editor-for-woocommerce' ),
-					'bulkEmpty'       => __( 'Choose products to preview your cost changes.', 'bulk-cogs-editor-for-woocommerce' ),
+					'bulkEmpty'       => __( 'Find products, then choose a cost update. Compare current and new costs here before you confirm.', 'bulk-cogs-editor-for-woocommerce' ),
 					'exportEmpty'     => __( 'Choose products to preview your export.', 'bulk-cogs-editor-for-woocommerce' ),
 					'importEmpty'     => __( 'Upload a file to preview your cost changes.', 'bulk-cogs-editor-for-woocommerce' ),
-					'emptyTitle'      => __( 'Your preview will appear here', 'bulk-cogs-editor-for-woocommerce' ),
+					'emptyTitle'      => __( 'A clear view of every cost change', 'bulk-cogs-editor-for-woocommerce' ),
 					'review'          => __( 'Review changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'createCSV'       => __( 'Create CSV', 'bulk-cogs-editor-for-woocommerce' ),
 					'downloadCSV'     => __( 'Download CSV', 'bulk-cogs-editor-for-woocommerce' ),
@@ -476,6 +476,12 @@ class DKBCE_Admin_Functions {
 				<button type="button" class="button" data-dkbce-mode="settings" aria-pressed="false"><?php esc_html_e( 'Settings', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<?php endif; ?>
 			</div>
+
+			<ol class="dkbce-workflow" aria-label="<?php esc_attr_e( 'Bulk edit progress', 'bulk-cogs-editor-for-woocommerce' ); ?>">
+				<li aria-current="step"><span aria-hidden="true">1</span><div><strong><?php esc_html_e( 'Select products', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><small><?php esc_html_e( 'Find your selection', 'bulk-cogs-editor-for-woocommerce' ); ?></small></div></li>
+				<li><span aria-hidden="true">2</span><div><strong><?php esc_html_e( 'Set cost update', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><small><?php esc_html_e( 'Choose an action and value', 'bulk-cogs-editor-for-woocommerce' ); ?></small></div></li>
+				<li><span aria-hidden="true">3</span><div><strong><?php esc_html_e( 'Review & confirm', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><small><?php esc_html_e( 'Preview before applying', 'bulk-cogs-editor-for-woocommerce' ); ?></small></div></li>
+			</ol>
 			<div id="dkbce-history" hidden></div>
 			<div id="dkbce-settings" hidden></div>
 			<section id="dkbce-csv" class="dkbce-section dkbce-csv-section" hidden aria-labelledby="dkbce-csv-title">
@@ -555,11 +561,11 @@ class DKBCE_Admin_Functions {
 			</section>
 
 			<section class="dkbce-section dkbce-action-section" aria-labelledby="dkbce-action-title">
-				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-admin-generic" aria-hidden="true"></i><span aria-hidden="true">2</span><div><h2 id="dkbce-action-title"><?php esc_html_e( 'Choose COGS update action', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Select how you want to update COGS for matching products.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
+				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-admin-generic" aria-hidden="true"></i><span aria-hidden="true">2</span><div><h2 id="dkbce-action-title"><?php esc_html_e( 'Set your cost update', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Select how you want to update COGS for matching products.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
 
-				<p id="dkbce-action-prerequisite" class="description"><?php esc_html_e( 'Find products first to configure a cost update.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
-				<div class="dkbce-action-fields"><p><label for="dkbce-action-kind"><?php esc_html_e( 'Update action', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-kind"><option value="set"><?php esc_html_e( 'Set exact cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="adjust"><?php esc_html_e( 'Adjust existing cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="clear"><?php esc_html_e( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p><p><label for="dkbce-action-direction"><?php esc_html_e( 'Direction', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-direction"><option value="increase"><?php esc_html_e( 'Increase', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="decrease"><?php esc_html_e( 'Decrease', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p><p><label for="dkbce-action-unit"><?php esc_html_e( 'Change by', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-unit"><option value="percent"><?php esc_html_e( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="fixed"><?php esc_html_e( 'Fixed amount', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p></div>
-				<div class="dkbce-value-row"><p id="dkbce-value-wrap"><label for="dkbce-value" id="dkbce-value-label"><?php esc_html_e( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-value" type="number" min="0" step="any" inputmode="decimal"><span id="dkbce-value-suffix"></span></p>
+				<p id="dkbce-action-prerequisite" class="description" role="status"><?php esc_html_e( 'Start with your products. Cost update options unlock when products are found.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
+				<div class="dkbce-action-fields"><p><label for="dkbce-action-kind"><?php esc_html_e( 'Update action', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-kind" aria-describedby="dkbce-action-prerequisite"><option value="set"><?php esc_html_e( 'Set exact cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="adjust"><?php esc_html_e( 'Adjust existing cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="clear"><?php esc_html_e( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p><p><label for="dkbce-action-direction"><?php esc_html_e( 'Direction', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-direction"><option value="increase"><?php esc_html_e( 'Increase', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="decrease"><?php esc_html_e( 'Decrease', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p><p><label for="dkbce-action-unit"><?php esc_html_e( 'Change by', 'bulk-cogs-editor-for-woocommerce' ); ?></label><select id="dkbce-action-unit"><option value="percent"><?php esc_html_e( 'Percentage', 'bulk-cogs-editor-for-woocommerce' ); ?></option><option value="fixed"><?php esc_html_e( 'Fixed amount', 'bulk-cogs-editor-for-woocommerce' ); ?></option></select></p></div>
+				<div class="dkbce-value-row"><p id="dkbce-value-wrap"><label for="dkbce-value" id="dkbce-value-label"><?php esc_html_e( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ); ?></label><input id="dkbce-value" aria-describedby="dkbce-action-example" type="number" min="0" step="any" inputmode="decimal"><span id="dkbce-value-suffix"></span></p>
 				<p id="dkbce-action-example" aria-live="polite"></p><p class="description"><?php esc_html_e( 'Variations are treated as separate products and their own COGS values are changed. WooCommerce stores a COGS value of zero as empty, so relative actions skip it.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
 			</div>
 			</section>

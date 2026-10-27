@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class DKBCE_History_Store {
 	/**
+	 * Confirmed index rows, shared by store instances within this request.
+	 *
+	 * @var array
+	 */
+	private static $indexed_rows = array();
+
+	/**
 	 * Get the configured policy for costs changed after the original operation.
 	 *
 	 * @return string
@@ -47,10 +54,8 @@ class DKBCE_History_Store {
 		if ( ! in_array( $state['action'] ?? '', array( 'set', 'clear', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'csv_import', 'rollback' ), true ) ) {
 			return;
 		}
-		DKBCE_Database_Installer::maybe_upgrade();
-		// Private indexed history is updated alongside durable worker state.
-		$result = $wpdb->replace(
-			$wpdb->prefix . 'dkbce_history',
+		$summary = array_map(
+			'strval',
 			array(
 				'operation_id' => $state['operation_id'],
 				'created_at'   => $state['created_at'],
@@ -58,12 +63,31 @@ class DKBCE_History_Store {
 				'action'       => $state['action'],
 				'status'       => $state['status'],
 				'note'         => $state['note'] ?? '',
-			),
+			)
+		);
+		$id      = $state['operation_id'];
+		if ( ! array_key_exists( $id, self::$indexed_rows ) ) {
+			DKBCE_Database_Installer::maybe_upgrade();
+			$stored = $wpdb->get_row( $wpdb->prepare( 'SELECT operation_id, created_at, user_id, action, status, note FROM %i WHERE operation_id = %s', $wpdb->prefix . 'dkbce_history', $id ), ARRAY_A );
+			if ( $wpdb->last_error ) {
+				throw new RuntimeException( esc_html__( 'Operation history could not be read.', 'bulk-cogs-editor-for-woocommerce' ) );
+			}
+			self::$indexed_rows[ $id ] = is_array( $stored ) ? array_map( 'strval', $stored ) : null;
+		}
+		if ( self::$indexed_rows[ $id ] === $summary ) {
+			return;
+		}
+		// Counters and timestamps belong to operation state, not this summary index.
+		$result = $wpdb->replace(
+			$wpdb->prefix . 'dkbce_history',
+			$summary,
 			array( '%s', '%d', '%d', '%s', '%s', '%s' )
 		);
 		if ( false === $result ) {
+			unset( self::$indexed_rows[ $id ] );
 			throw new RuntimeException( esc_html__( 'Operation history could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
+		self::$indexed_rows[ $id ] = $summary;
 	}
 
 	/**
@@ -168,34 +192,38 @@ class DKBCE_History_Store {
 	/**
 	 * Persist original and intended values before changing a product.
 	 *
-	 * @param string $operation_id Operation UUID.
-	 * @param int    $product_id Product ID.
-	 * @param array  $result Calculated current and new costs.
+	 * @param string           $operation_id Operation UUID.
+	 * @param int              $product_id Product ID.
+	 * @param array            $result Calculated current and new costs.
+	 * @param array|null|false $recorded Journal read for this operation/product under its lock;
+	 *                                  null means absent, false requests a fresh lookup.
 	 * @return array Frozen journal entry.
 	 * @throws RuntimeException When the original values cannot be saved.
 	 */
-	public function prepare( $operation_id, $product_id, $result ) {
+	public function prepare( $operation_id, $product_id, $result, $recorded = false ) {
 		global $wpdb;
-		$row = $this->product( $operation_id, $product_id );
+		$row = false === $recorded ? $this->product( $operation_id, $product_id ) : $recorded;
 		if ( $row ) {
 			return $row;
 		}
+		// Match the nullable string values persisted by the journal's %s formats.
+		$row = array(
+			'operation_id'   => $operation_id,
+			'product_id'     => (string) (int) $product_id,
+			'original_value' => null === $result['current'] ? null : (string) $result['current'],
+			'target_value'   => null === $result['new'] ? null : (string) $result['new'],
+			'status'         => 'prepared',
+		);
 		// The product lock excludes competing preparations for this operation.
 		$saved = $wpdb->insert(
 			$wpdb->prefix . 'dkbce_history_products',
-			array(
-				'operation_id'   => $operation_id,
-				'product_id'     => $product_id,
-				'original_value' => $result['current'],
-				'target_value'   => $result['new'],
-				'status'         => 'prepared',
-			),
+			$row,
 			array( '%s', '%d', '%s', '%s', '%s' )
 		);
-		if ( false === $saved ) {
+		if ( 1 !== $saved ) {
 			throw new RuntimeException( esc_html__( 'Original product costs could not be saved. The product was not changed.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
-		return $this->product( $operation_id, $product_id );
+		return $row;
 	}
 
 	/**
@@ -341,6 +369,7 @@ class DKBCE_History_Store {
 			return false;
 		}
 		// Remove the summary only after its product rows are gone.
+		unset( self::$indexed_rows[ $operation_id ] );
 		return false !== $wpdb->delete( $wpdb->prefix . 'dkbce_history', array( 'operation_id' => $operation_id ), array( '%s' ) );
 	}
 }

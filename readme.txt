@@ -4,7 +4,7 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -71,22 +71,22 @@ The upload limit follows WordPress's maximum upload size, shown beside the file 
 
 ### Sample CSV
 
-Exported CSV files include a blank `new_cogs` column. Fill it with new costs and import the file.
+Export products to CSV, fill in the blank `new_cogs` column, then import the file to preview your changes.
 
-```csv
-id,sku,new_cogs
-123,PRODUCT-001,25.50
-124,PRODUCT-002,40.00
-```
+Use this format for your CSV file, replacing the example IDs, SKUs, and costs with your product data:
 
-Required headers are `new_cogs` and `id` or `sku`. Older files can use `cogs` if `new_cogs` is missing.
+    id,sku,new_cogs
+    123,PRODUCT-001,25.50
+    124,PRODUCT-002,40.00
 
-- Use either ID or SKU to identify products.
-- If both are provided, they must match.
-- Use decimal values without currency symbols.
-- Extra decimal places are rounded to WooCommerce's configured number of decimals before preview. With two decimal places, `12.3456` becomes `12.35`. WooCommerce treats a value that rounds to zero as empty.
-- Blank costs are excluded and listed as validation errors; they do not clear existing costs.
+Your file must include `new_cogs` and at least one product identifier: `id` or `sku`.
+
+- You can omit either `id` or `sku`. If both are provided, they must identify the same product.
+- Enter costs as decimal numbers without currency symbols, such as `25.50`.
+- Leave a cost blank to skip that row.
 - Duplicate product rows are excluded and listed in the error report.
+
+Older files can use `cogs` when the `new_cogs` header is missing.
 
 XLSX imports read raw values from the first worksheet. Replace formulas with values and store SKUs as text to preserve leading zeros.
 
@@ -270,6 +270,9 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Upgrade Notice ==
 
+= 1.2.2 =
+Version 1.2.2 refreshes the editor design and preserves import cancellation and reused-selection checks during Apply.
+
 = 1.2.1 =
 Version 1.2.1 improves import preparation, Apply checks, and CSV export processing; rounds imported costs to WooCommerce decimal settings; and adds confirmed stop and force-clear recovery controls. You can return to the editor tabs while a background operation runs.
 
@@ -277,6 +280,13 @@ Version 1.2.1 improves import preparation, Apply checks, and CSV export processi
 Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
 
 == Changelog ==
+
+= 1.2.2 (2026-10-27) =
+
+* Fixed: Preserve import preparation cancellation, its confirmation message, and keyboard focus when closing confirmation after preparation finishes.
+* Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources that enter retention cleanup during preflight.
+* Improved: Refresh the Bulk edit, CSV, History, and Settings layouts, workflow guidance, and loading and empty states.
+* Updated: Align plugin version declarations at 1.2.2 and refresh the translation template and development code graph.
 
 = 1.2.1 (2026-10-27) =
 

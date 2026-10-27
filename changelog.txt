@@ -1,3 +1,10 @@
+= 1.2.2 (2026-10-27) =
+
+* Fixed: Preserve import preparation cancellation, its confirmation message, and keyboard focus when closing confirmation after preparation finishes.
+* Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources that enter retention cleanup during preflight.
+* Improved: Refresh the Bulk edit, CSV, History, and Settings layouts, workflow guidance, and loading and empty states.
+* Updated: Align plugin version declarations at 1.2.2 and refresh the translation template and development code graph.
+
 = 1.2.0 (2026-10-24) =
 
 * Fixed: Restore green increases and red decreases in the review table's Change column.

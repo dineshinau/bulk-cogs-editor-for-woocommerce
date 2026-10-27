@@ -881,7 +881,7 @@ class DKBCE_Bulk_Processor {
 			// Record WooCommerce's normalized target, including zero becoming unset.
 			$product->set_cogs_value( null === $result['new'] ? null : (float) $result['new'] );
 			$result['new'] = $product->get_cogs_value();
-			$journal       = $history->prepare( $state['operation_id'], $product_id, $result );
+			$journal       = $history->prepare( $state['operation_id'], $product_id, $result, $recorded );
 			$product->set_cogs_value( null === $journal['target_value'] ? null : (float) $journal['target_value'] );
 			$product->update_meta_data( '_dkbce_last_bulk_cogs_operation', $state['operation_id'] );
 			if ( empty( $product->get_changes() ) ) {
