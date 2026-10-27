@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-27)
 
 ## Corpus Check
-- 34 files · ~69,297 words
+- 34 files · ~69,387 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 458 nodes · 964 edges · 25 communities (12 shown, 13 thin omitted)
+- 459 nodes · 965 edges · 25 communities (13 shown, 12 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `540b8251`
+- Built from commit: `ecce65e5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -65,11 +65,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (25 total, 13 thin omitted)
+## Communities (25 total, 12 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.09
 Nodes (21): argparse, json, os, pathlib, re, changed_files(), main(), php_files() (+13 more)
+
+### Community 1 - "DKBCE_CSV_Service"
+Cohesion: 0.11
+Nodes (3): DKBCE_CSV_Service, DKBCE_Download_Processor, DKBCE_Import_Reader
 
 ### Community 2 - "bulk-cogs-editor.spec.cjs"
 Cohesion: 0.18
@@ -104,7 +108,7 @@ Cohesion: 0.25
 Nodes (7): ref_node_child_process, ref_node_fs, ref_node_path, { execFileSync }, fs, os, path
 
 ### Community 17 - "bulk-cogs-editor.js"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (71): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), clearFilters() (+63 more)
 
 ### Community 18 - "playwright.config.cjs"
@@ -117,18 +121,18 @@ Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_
 
 ## Knowledge Gaps
 - **80 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+75 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 169 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 170 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_CSV_Service`, `DKBCE_Import_Store`, `DKBCE_History_Controller`, `DKBCE_History_Store`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.057) - this node is a cross-community bridge._
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_History_Store`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
   _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**
