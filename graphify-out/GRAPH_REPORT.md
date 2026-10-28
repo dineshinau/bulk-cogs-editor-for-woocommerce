@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-27)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-28)
 
 ## Corpus Check
-- 34 files · ~69,529 words
+- 34 files · ~69,602 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 460 nodes · 971 edges · 24 communities (12 shown, 12 thin omitted)
+- 460 nodes · 972 edges · 24 communities (12 shown, 12 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `edca7bae`
+- Built from commit: `b52a0358`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
