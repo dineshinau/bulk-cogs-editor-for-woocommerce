@@ -38,7 +38,8 @@ https://youtu.be/sOEOg0xiqYs
 
 = Features =
 
-* Filter products and variations by title, SKU, category, brand, product type, stock status, current price, or current COGS.
+* **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
+* Filter products and variations by category, brand, product type, stock status, current price, or current COGS.
 * Set an exact cost, increase or decrease it by a fixed amount or percentage, or clear it.
 * Preview product images alongside current COGS, proposed COGS, and the exact difference, with pagination and product selection.
 * Process updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.

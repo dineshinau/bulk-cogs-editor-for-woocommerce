@@ -1291,6 +1291,10 @@
 
 	function updateOperationControls() {
 		renderFilterChips();
+		const matchHelp = $( '#dkbce-match-help' );
+		if ( matchHelp && ! csvMode() ) {
+			matchHelp.textContent = hasValidActionValue() ? DKBCE.i18n.matchPreviewHelp : DKBCE.i18n.matchActionHelp;
+		}
 		const running = isOperationRunning();
 		updateSelectionSummary();
 		previewContent.inert = state.previewNeedsRefresh || state.loadingPage;
@@ -1851,6 +1855,11 @@
 						.replace( '%2$d', String( data.product_count ) )
 						.replace( '%3$d', String( data.variation_count ) )
 					: DKBCE.i18n.noProducts;
+				if ( data.count && ! csvMode() ) {
+					const matchHelp = document.createElement( 'span' );
+					matchHelp.id = 'dkbce-match-help';
+					$( '#dkbce-product-count' ).append( ' ', matchHelp );
+				}
 				if ( 0 === data.count ) {
 					invalidatePreview( false, true );
 					setNotice( DKBCE.i18n.noProducts, 'info', $( '.dkbce-filters-section' ) );

@@ -280,7 +280,9 @@ class DKBCE_Admin_Functions {
 					'productOne'          => __( 'product matches.', 'bulk-cogs-editor-for-woocommerce' ),
 					'productMany'         => __( 'products match.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: total matches, 2: product count excluding variations, 3: variation count. */
-					'matchCount'          => __( '%1$d matches: %2$d products and %3$d variations. Preview changes before applying.', 'bulk-cogs-editor-for-woocommerce' ),
+					'matchCount'          => __( '%1$d matches: %2$d products and %3$d variations.', 'bulk-cogs-editor-for-woocommerce' ),
+					'matchActionHelp'     => __( 'Choose an action and value in Step 2 to preview changes below.', 'bulk-cogs-editor-for-woocommerce' ),
+					'matchPreviewHelp'    => __( 'Review changes in the table below before applying.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: number of preview rows, 2: total matching products. */
 					'showing'             => __( 'Showing first %1$d of %2$d matching products.', 'bulk-cogs-editor-for-woocommerce' ),
 					'allShown'            => __( 'All matching products are shown.', 'bulk-cogs-editor-for-woocommerce' ),
