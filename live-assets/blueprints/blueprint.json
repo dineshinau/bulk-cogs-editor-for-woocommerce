@@ -31,6 +31,16 @@
       }
     },
     {
+      "step": "installTheme",
+      "pluginData": {
+        "resource": "wordpress.org/themes",
+        "slug": "storefront"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
       "step": "installPlugin",
       "pluginData": {
         "resource": "wordpress.org/plugins",
