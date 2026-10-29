@@ -96,7 +96,8 @@ class DKBCE_Retention_Processor {
 		update_option( self::CURSOR_OPTION, $next, false );
 
 		if ( self::BATCH_SIZE === count( $option_names ) && function_exists( 'as_enqueue_async_action' ) ) {
-			as_enqueue_async_action( self::HOOK, array(), self::GROUP, true );
+			// Continue despite the running scan or the next scheduled daily sweep.
+			as_enqueue_async_action( self::HOOK, array(), self::GROUP, false );
 		}
 	}
 

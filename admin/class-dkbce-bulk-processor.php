@@ -103,13 +103,15 @@ class DKBCE_Bulk_Processor {
 	 * Queue bounded cleanup for a terminal operation.
 	 *
 	 * @param string $operation_id Operation UUID.
+	 * @param bool   $continuation Whether the running cleanup needs another batch.
 	 * @return bool
 	 */
-	private function enqueue_cleanup( $operation_id ) {
+	private function enqueue_cleanup( $operation_id, $continuation = false ) {
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
 			return false;
 		}
-		$queued = as_enqueue_async_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP, true );
+		// A unique action would reject a continuation while this batch is running.
+		$queued = as_enqueue_async_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP, ! $continuation );
 		return (bool) $queued || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP ) );
 	}
 
@@ -168,7 +170,7 @@ class DKBCE_Bulk_Processor {
 			}
 			$this->store->save( $state );
 			if ( ! $done ) {
-				$this->enqueue_cleanup( $operation_id );
+				$this->enqueue_cleanup( $operation_id, true );
 			}
 		} finally {
 			$this->release_operation_lock( $operation_id, $lock );
