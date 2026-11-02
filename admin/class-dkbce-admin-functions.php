@@ -298,6 +298,8 @@ class DKBCE_Admin_Functions {
 					'queueUnavailable'    => __( 'Background processing is unavailable. Ask an administrator to restore Action Scheduler, then refresh status or cancel the operation.', 'bulk-cogs-editor-for-woocommerce' ),
 					'progressUnavailable' => __( 'Status could not be refreshed. Background changes may still continue. Retry status or reload this page to reconnect.', 'bulk-cogs-editor-for-woocommerce' ),
 					'refreshStatus'       => __( 'Refresh status', 'bulk-cogs-editor-for-woocommerce' ),
+					'operationRunning'    => __( 'Another operation is in progress. This action is unavailable until it finishes. View progress to check its status or stop the remaining work. Changes already saved will be kept.', 'bulk-cogs-editor-for-woocommerce' ),
+					'viewProgress'        => __( 'View progress', 'bulk-cogs-editor-for-woocommerce' ),
 					'refreshPreview'      => __( 'Refresh preview', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: local date and time of the latest progress checkpoint. */
 					'lastProgress'        => __( 'Last progress reported: %s', 'bulk-cogs-editor-for-woocommerce' ),

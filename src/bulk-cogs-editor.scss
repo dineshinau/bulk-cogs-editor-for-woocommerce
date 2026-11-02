@@ -233,7 +233,48 @@ $border: #dce6f5;
 	progress { display: block; width: 100%; height: 32px; border: 0; border-radius: 6px; overflow: hidden; accent-color: $blue; &::-webkit-progress-bar { background: #f0f0f1; } &::-webkit-progress-value { background: $blue; border-radius: 6px; } &::-moz-progress-bar { background: $blue; } }
 	> p { margin: 6px 0; color: $muted; font-size: 13px; }
 }
-.dkbce-operation-metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 10px 0; }
+.dkbce-operation-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+.dkbce-operation-status-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 16px;
+	p { margin: 0; color: $muted; font-size: 13px; }
+}
+.dkbce-disabled-action {
+	display: inline-flex;
+	max-width: 100%;
+	cursor: help;
+	> button:disabled, > input:disabled { pointer-events: none; }
+	&:focus-visible { outline: 2px solid $blue; outline-offset: 3px; border-radius: 6px; }
+	&:not(.is-dismissed):hover > .dkbce-operation-hint,
+	&:not(.is-dismissed):focus-within > .dkbce-operation-hint { visibility: visible; pointer-events: auto; }
+}
+.dkbce-operation-hint {
+	position: fixed;
+	z-index: 100100;
+	box-sizing: border-box;
+	width: 320px;
+	max-width: calc(100vw - 24px);
+	padding: 16px;
+	border: 1px solid $border;
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 0 4px 16px rgb(24 40 63 / 18%);
+	color: $ink;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.6;
+	text-align: start;
+	white-space: normal;
+	cursor: auto;
+	visibility: hidden;
+	pointer-events: none;
+	> span { display: block; }
+	a { display: inline-block; margin-top: 10px; color: $blue; font-weight: 600; text-decoration: underline; }
+}
 .dkbce-operation-stats { display: contents; }
 .dkbce-stat { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid $border; border-radius: 6px; color: $muted; strong { font-size: 20px; color: $ink; } &::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #15a35d; flex-shrink: 0; } &.is-skipped::before { background: $blue; } &.is-failed::before { background: #ef3a4c; } }
 .dkbce-operation-time {
@@ -841,6 +882,9 @@ $border: #dce6f5;
 // Tab-specific layouts share the same cards, controls, and typography.
 .dkbce-workspace {
 	.dkbce-section-heading > div { min-width: 0; overflow-wrap: anywhere; }
+	.dkbce-section > .dkbce-operation { margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+	.dkbce-operation .dkbce-section-heading { align-items: center; margin-bottom: 16px; }
+	.dkbce-operation h3 { margin: 0; color: var(--dkbce-text); font-size: 17px; letter-spacing: -0.2px; }
 	.dkbce-history-field { min-width: 0; color: var(--dkbce-secondary); font-weight: 500; }
 	input[type='date'] { box-sizing: border-box; padding: 6px 10px; }
 	.dkbce-table-wrap { border-radius: 8px; }

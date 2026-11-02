@@ -425,7 +425,6 @@
 				historyDetails.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			}
 			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
-				result.appendChild( historyButton( DKBCE.i18n.refreshStatus, loadHistoryDetails ) );
 				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
 			}
 		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { setNotice( error.message, 'error', historyList ); } }
@@ -1353,6 +1352,77 @@
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
 		}
+		updateOperationTooltips( running );
+	}
+
+	function updateOperationTooltips( running ) {
+		document.querySelectorAll( '.dkbce-csv-action label' ).forEach( ( label ) => {
+			const locked = running && label.querySelector( 'input' ).disabled;
+			if ( locked ) {
+				if ( ! label.classList.contains( 'dkbce-disabled-action' ) ) { addOperationHint( label, label.textContent.trim() ); }
+			} else {
+				label.classList.remove( 'dkbce-disabled-action', 'is-dismissed' );
+				label.querySelector( '.dkbce-operation-hint' )?.remove();
+				label.onpointerenter = label.onfocusin = label.onkeydown = null;
+				[ 'tabindex', 'aria-label' ].forEach( ( attribute ) => label.removeAttribute( attribute ) );
+			}
+		} );
+		const selector = '#dkbce-get-products, #dkbce-clear-filters, #dkbce-reset, #dkbce-apply, #dkbce-refresh-preview, #dkbce-selection-toolbar button, .dkbce-range-selection button, .dkbce-filter-grid button, #dkbce-csv-preview, #dkbce-file-details button, .dkbce-filter-chip';
+		document.querySelectorAll( selector ).forEach( ( button ) => {
+			const wrapper = button.parentElement;
+			if ( running && button.disabled ) {
+				if ( wrapper.classList.contains( 'dkbce-disabled-action' ) ) { return; }
+				const hint = document.createElement( 'span' );
+				button.before( hint );
+				hint.appendChild( button );
+				addOperationHint( hint, button.textContent.trim() );
+			} else if ( wrapper.classList.contains( 'dkbce-disabled-action' ) ) {
+				wrapper.replaceWith( button );
+			}
+		} );
+	}
+
+	function addOperationHint( target, actionLabel ) {
+		target.classList.add( 'dkbce-disabled-action' );
+		target.tabIndex = 0;
+		target.setAttribute( 'aria-label', actionLabel + '. ' + DKBCE.i18n.operationRunning );
+		const hint = document.createElement( 'span' );
+		hint.className = 'dkbce-operation-hint';
+		const message = document.createElement( 'span' );
+		message.textContent = DKBCE.i18n.operationRunning;
+		const link = document.createElement( 'a' );
+		link.href = state.importPreparing ? '#dkbce-import-progress' : '#dkbce-operation';
+		link.textContent = DKBCE.i18n.viewProgress;
+		link.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			event.stopPropagation();
+			if ( state.importPreparing || [ 'history', 'settings' ].includes( state.mode ) ) {
+				state.mode = state.importPreparing ? 'csv' : state.editorMode;
+				updateCSVMode();
+			}
+			const panel = state.importPreparing ? $( '#dkbce-import-progress' ) : operationPanel;
+			panel.setAttribute( 'tabindex', '-1' );
+			panel.focus( { preventScroll: true } );
+			panel.scrollIntoView( { behavior: window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ? 'auto' : 'smooth', block: 'start' } );
+			target.classList.add( 'is-dismissed' );
+		} );
+		hint.append( message, link );
+		target.appendChild( hint );
+		const position = () => {
+			target.classList.remove( 'is-dismissed' );
+			const bounds = target.getBoundingClientRect();
+			hint.style.left = Math.max( 12, Math.min( bounds.left, window.innerWidth - hint.offsetWidth - 12 ) ) + 'px';
+			hint.style.top = ( bounds.bottom + hint.offsetHeight <= window.innerHeight ? bounds.bottom : Math.max( 0, bounds.top - hint.offsetHeight ) ) + 'px';
+		};
+		target.onpointerenter = position;
+		target.onfocusin = position;
+		target.onkeydown = ( event ) => {
+			if ( event.key === 'Escape' ) {
+				target.focus( { preventScroll: true } );
+				target.classList.add( 'is-dismissed' );
+				event.stopPropagation();
+			}
+		};
 	}
 
 	function setBusy( busy, button, label ) {
@@ -2133,10 +2203,10 @@
 			.join( ':' );
 	}
 
-	function updateOperationTime( operation, timeElement ) {
+	function updateOperationTime( operation, timeElement, historyView = false ) {
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
 		const isTerminal = terminalStatuses.includes( operation.status );
-		const elapsedSeconds = isTerminal
+		const elapsedSeconds = isTerminal || historyView
 			? operation.elapsed_seconds
 			: Math.floor( ( window.performance.now() - state.operationStartedAt ) / 1000 );
 		let remaining = DKBCE.i18n.estimatingTime;
@@ -2240,7 +2310,10 @@
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
-		operationPanel.appendChild( checkpoint );
+		const statusRow = document.createElement( 'div' );
+		statusRow.className = 'dkbce-operation-status-row';
+		statusRow.appendChild( checkpoint );
+		operationPanel.appendChild( statusRow );
 		if ( ! terminal ) {
 			if ( unavailable || delayed ) {
 				const recovery = document.createElement( 'p' );
@@ -2253,7 +2326,7 @@
 			refresh.dataset.operationControl = 'refresh';
 			refresh.textContent = DKBCE.i18n.refreshStatus;
 			refresh.addEventListener( 'click', historyView ? loadHistoryDetails : pollProgress );
-			operationPanel.appendChild( refresh );
+			statusRow.appendChild( refresh );
 		}
 		if ( ! historyView ) { setApplySpinner( ! terminal && ! delayed && ! unavailable ); }
 
@@ -2329,7 +2402,7 @@
 		time.className = 'dkbce-operation-time';
 		time.setAttribute( 'aria-live', 'off' );
 		metrics.appendChild( time );
-		if ( historyView ) { time.textContent = DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) ); } else { updateOperationTime( operation, time ); }
+		updateOperationTime( operation, time, historyView );
 		if ( ! historyView && ! terminalStatuses.includes( operation.status ) ) {
 			state.operationTimer = window.setInterval(
 				() => updateOperationTime( operation, time ),
