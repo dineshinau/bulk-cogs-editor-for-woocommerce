@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-10-29)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-02)
 
 ## Corpus Check
-- 34 files · ~69,643 words
+- 34 files · ~70,046 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 460 nodes · 972 edges · 24 communities (12 shown, 12 thin omitted)
+- 462 nodes · 977 edges · 24 communities (12 shown, 12 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b9b9079d`
+- Built from commit: `0b08b3ea`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -47,7 +47,7 @@
 7. `loadHistoryDetails()` - 22 edges
 8. `setNotice()` - 21 edges
 9. `renderOperation()` - 21 edges
-10. `request()` - 19 edges
+10. `updateOperationControls()` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `dkbce_e2e_cleanup()` --calls--> `DKBCE_Bulk_Processor`  [INFERRED]
@@ -84,7 +84,7 @@ Nodes (12): ajax(), drive(), { execFileSync }, fixture(), fs, os, path, remember
 
 ### Community 10 - "scripts"
 Cohesion: 0.06
-Nodes (33): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+25 more)
+Nodes (34): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+26 more)
 
 ### Community 13 - "Bulk COGS Editor for WooCommerce"
 Cohesion: 0.06
@@ -99,16 +99,16 @@ Cohesion: 0.13
 Nodes (3): DKBCE_Database_Installer, DKBCE_History_Controller, DKBCE_History_Store
 
 ### Community 16 - "global-teardown.cjs"
-Cohesion: 0.25
-Nodes (7): ref_node_child_process, ref_node_fs, ref_node_path, { execFileSync }, fs, os, path
+Cohesion: 0.29
+Nodes (6): ref_node_child_process, ref_node_fs, { execFileSync }, fs, os, path
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.10
-Nodes (73): actionLabel(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation(), clearFilters() (+65 more)
+Nodes (75): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), cancelOperation() (+67 more)
 
 ### Community 18 - "playwright.config.cjs"
 Cohesion: 0.29
-Nodes (6): ref_node_os, @playwright/test, { defineConfig }, os, path, stateDirectory
+Nodes (6): ref_node_os, ref_node_path, { defineConfig }, os, path, stateDirectory
 
 ### Community 135 - "DKBCE_Bulk_Processor"
 Cohesion: 0.10
@@ -123,9 +123,9 @@ Nodes (6): DKBCE_Admin_Hooks, DKBCE_Bulk_Processor, DKBCE_Retention_Processor, d
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_Bulk_Processor`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Store`, `DKBCE_COGS_Service`, `DKBCE_Bulk_Processor`?**
   _High betweenness centrality (0.056) - this node is a cross-community bridge._
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Store`, `DKBCE_COGS_Service`, `DKBCE_Bulk_Processor`?**
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
 - **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_Operation_Store`, `DKBCE_History_Store`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`?**
   _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
