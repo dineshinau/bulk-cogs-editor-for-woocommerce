@@ -13,7 +13,7 @@ estimates describe inspected paths; they are not measured time savings.
 | Workflow | Reported result | Source |
 | --- | --- | --- |
 | Bulk COGS update | 10,000 products in 15 minutes 24 seconds; approximately 10.8 products/second | [Readme](../readme.txt), Performance for large catalogs |
-| CSV creation | 10,000 records in 11 seconds | [Blog](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/), step 10 |
+| CSV creation | 10,000 records in 11 seconds | [Blog](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/), step 10 |
 | Apply imported costs | 10,000 products in 18 minutes 25 seconds | Same blog, step 19 |
 
 The documented bulk-update count is 10,000, not 15,000. The readme reports editor
