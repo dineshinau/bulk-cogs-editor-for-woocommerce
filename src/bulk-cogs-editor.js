@@ -2206,13 +2206,17 @@
 
 	function formatDuration( seconds ) {
 		const duration = Math.max( 0, Math.floor( seconds ) );
-		const hours = Math.floor( duration / 3600 );
+		const days = Math.floor( duration / 86400 );
+		const hours = Math.floor( ( duration % 86400 ) / 3600 );
 		const minutes = Math.floor( ( duration % 3600 ) / 60 );
 		const remainingSeconds = duration % 60;
-		return [ hours, minutes, remainingSeconds ]
+		const clock = [ hours, minutes, remainingSeconds ]
 			.map( ( value ) => String( value ).padStart( 2, '0' ) )
 			.join( ':' );
+		return days ? DKBCE.i18n.durationDays.replace( '%1$s', days.toLocaleString() ).replace( '%2$s', clock ) : clock;
 	}
+
+	const operationEstimates = new Map();
 
 	function updateOperationTime( operation, timeElement, historyView = false ) {
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
@@ -2221,18 +2225,23 @@
 			? operation.elapsed_seconds
 			: Math.floor( ( window.performance.now() - state.operationStartedAt ) / 1000 );
 		let remaining = DKBCE.i18n.estimatingTime;
-
+		const progressAge = Number( operation.progress_age ) + Math.max( 0, elapsedSeconds - operation.elapsed_seconds );
+		const waiting = ! operation.queue_available || progressAge >= 120 || operation.status === 'pending' || operation.cancel_requested || operation.stage === 'snapshot';
+		let sample = operationEstimates.get( operation.operation_id );
 		if ( isTerminal ) {
-			remaining = [ 'completed', 'completed_with_errors' ].includes(
-				operation.status
-			)
-				? formatDuration( 0 )
-				: '—';
-		} else if ( 'snapshot' !== operation.stage && operation.processed > 0 ) {
-			remaining = formatDuration(
-				( elapsedSeconds / operation.processed ) *
-					Math.max( 0, operation.total - operation.processed )
-			);
+			operationEstimates.delete( operation.operation_id );
+		} else if ( waiting || ! sample || sample.waiting || operation.processed < sample.processed ) {
+			sample = { processed: operation.processed, elapsed: elapsedSeconds, rate: 0, waiting };
+			operationEstimates.set( operation.operation_id, sample );
+		} else if ( operation.processed > sample.processed && elapsedSeconds > sample.elapsed ) {
+			sample.rate = ( operation.processed - sample.processed ) / ( elapsedSeconds - sample.elapsed );
+			sample.processed = operation.processed;
+			sample.elapsed = elapsedSeconds;
+		}
+		if ( waiting ) {
+			remaining = DKBCE.i18n.estimateUnavailable;
+		} else if ( sample && sample.rate > 0 ) {
+			remaining = formatDuration( Math.max( 0, operation.total - operation.processed ) / sample.rate );
 		}
 
 		timeElement.replaceChildren();
@@ -2301,6 +2310,8 @@
 		const unavailable = ! terminal && ! operation.queue_available;
 		if ( terminal ) {
 			heading.textContent = completionMessage[ operation.status ];
+		} else if ( operation.cancel_requested ) {
+			heading.textContent = DKBCE.i18n.cancelling;
 		} else if ( unavailable || delayed || operation.status === 'pending' ) {
 			heading.textContent = DKBCE.i18n.queued;
 		} else if ( 'snapshot' === operation.stage ) {
