@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1793967011.2524302,
-    "seen": 1794091231.0568676,
-    "ast_hash": "10903e73c96c24af84a51ebec994f530",
+    "mtime": 1794163543.1262665,
+    "seen": 1794163578.890781,
+    "ast_hash": "ea01667e47ba14b84ef62f282f037370",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794163393.6513717,
-    "seen": 1794163436.43607,
-    "ast_hash": "e4947971f6c9ece9d516c9bddc4f626b",
+    "mtime": 1794163581.5607207,
+    "seen": 1794163595.326416,
+    "ast_hash": "9260a5317ff56f31cdfaec47d5059897",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -207,12 +207,6 @@
     "mtime": 1793111361.421251,
     "seen": 1793111397.5741444,
     "ast_hash": "28f507e61ff66416e28f1dcf76d4163a",
-    "semantic_hash": ""
-  },
-  ".playwright-cli/page-2026-11-08T18-43-34-439Z.yml": {
-    "mtime": 1794163414.4403431,
-    "seen": 1794163436.4360886,
-    "ast_hash": "2f23be616bb27daae006b3bede53679f",
     "semantic_hash": ""
   }
 }
