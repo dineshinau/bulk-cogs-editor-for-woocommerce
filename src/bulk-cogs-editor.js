@@ -1973,6 +1973,7 @@
 		previewContent.setAttribute( 'aria-busy', 'true' );
 		const requestedFilters = filters();
 		const previousPreviewId = state.selectionPreviewId;
+		const freshSelection = ! previousPreviewId && ! state.selectionOperationId;
 		request( 'preview', {
 			previous_preview_id: previousPreviewId,
 			previous_operation_id: state.selectionOperationId,
@@ -1994,6 +1995,11 @@
 					requestedPageSize !== Number( pageSizeSelect.value )
 				) {
 					return;
+				}
+				if ( freshSelection ) {
+					// Require an explicit selection before a new bulk update.
+					data.selected_ids = [];
+					data.selected_count = 0;
 				}
 				renderPreview( data, true );
 				state.selectionOperationId = '';
