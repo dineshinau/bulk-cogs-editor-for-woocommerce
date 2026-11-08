@@ -397,6 +397,12 @@
 			if ( ! historyState.review && data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
 			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
 			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			if ( ! data.can_rollback ) {
+				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
+				const reasons = historyElement( 'ul', '', 'description' );
+				( data.rollback_unavailable_reasons || [] ).forEach( ( reason ) => reasons.appendChild( historyElement( 'li', reason ) ) );
+				products.appendChild( reasons );
+			}
 			if ( historyState.review ) {
 				products.appendChild( historyElement( 'p', data.rollback_policy === 'skip_changed' ? historyText.skipWarning : historyText.warning, 'notice notice-warning inline dkbce-history-warning' ) );
 				const checked = document.createElement( 'input' ); checked.type = 'checkbox';
@@ -411,8 +417,6 @@
 				products.appendChild( rollbackActions );
 			} else if ( data.can_rollback ) {
 				products.appendChild( historyButton( historyText.review, () => { historyState.review = true; historyState.productPage = 1; loadHistoryDetails(); } ) );
-			} else {
-				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
 			}
 			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => { historyState.operationId = data.rollback_id; historyState.review = false; historyState.productPage = 1; loadHistoryDetails(); } ) ); }
 			historyDetails.append( details, products );

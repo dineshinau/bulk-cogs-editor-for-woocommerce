@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-08T18:46:45+00:00\n"
+"POT-Creation-Date: 2026-11-08T18:49:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1534,7 +1534,7 @@ msgid "The selected product list is invalid."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1889
-#: admin/class-dkbce-history-controller.php:490
+#: admin/class-dkbce-history-controller.php:512
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
@@ -1904,7 +1904,7 @@ msgid "Rollback restores the original costs shown in this review. Later changes 
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:81
-msgid "Rollback is unavailable: this operation has no retained original values, is still running, has expired, or already has a rollback."
+msgid "Rollback is unavailable."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:82
@@ -2076,57 +2076,85 @@ msgstr ""
 msgid "COGS changed after the original operation. The product will be skipped."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:389
-#: admin/class-dkbce-history-controller.php:427
+#: admin/class-dkbce-history-controller.php:347
+msgid "This operation is still running. Review rollback after it finishes."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:350
+msgid "A rollback operation cannot itself be rolled back."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:355
+msgid "The history retention period has expired. Rollback is no longer available."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:357
+msgid "History cleanup has been scheduled or started. Original costs are no longer available for rollback."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:360
+msgid "No recorded product changes remain available for rollback. View the existing rollback operation for its results."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:361
+msgid "This operation has no retained original costs available for rollback."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:364
+msgid "A rollback is already in progress. View the rollback operation to check its status."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:411
+#: admin/class-dkbce-history-controller.php:449
 msgid "Review this rollback again before confirming."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:418
+#: admin/class-dkbce-history-controller.php:440
 msgid "COGS or background processing is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:422
+#: admin/class-dkbce-history-controller.php:444
 msgid "This operation is busy. Please try again shortly."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:437
+#: admin/class-dkbce-history-controller.php:459
 msgid "The remaining rollback scope changed. Review it again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:479
+#: admin/class-dkbce-history-controller.php:501
 msgid "The rollback claim could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:509
-#: admin/class-dkbce-history-controller.php:552
+#: admin/class-dkbce-history-controller.php:531
+#: admin/class-dkbce-history-controller.php:574
 msgid "You do not have permission to manage these settings."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:512
+#: admin/class-dkbce-history-controller.php:534
 msgid "Confirm the warning before clearing the current operation."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:520
+#: admin/class-dkbce-history-controller.php:542
 msgid "Your current operation changed. Reload this page before clearing it."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:532
+#: admin/class-dkbce-history-controller.php:554
 msgid "Cancellation could not be saved. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:538
+#: admin/class-dkbce-history-controller.php:560
 msgid "The operation could not be cleared. Please reload this page and try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:557
+#: admin/class-dkbce-history-controller.php:579
 msgid "Enter a retention period between 1 and 36,500 days."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:561
+#: admin/class-dkbce-history-controller.php:583
 msgid "Choose a valid rollback behavior."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:566
+#: admin/class-dkbce-history-controller.php:588
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 

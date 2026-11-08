@@ -78,7 +78,7 @@ class DKBCE_History_Controller {
 			'backChanges'       => __( 'Back to product changes', 'bulk-cogs-editor-for-woocommerce' ),
 			'confirm'           => __( 'Confirm rollback', 'bulk-cogs-editor-for-woocommerce' ),
 			'warning'           => __( 'Rollback restores the original costs shown in this review. Later changes will be overwritten. Deleted products cannot be restored.', 'bulk-cogs-editor-for-woocommerce' ),
-			'unavailable'       => __( 'Rollback is unavailable: this operation has no retained original values, is still running, has expired, or already has a rollback.', 'bulk-cogs-editor-for-woocommerce' ),
+			'unavailable'       => __( 'Rollback is unavailable.', 'bulk-cogs-editor-for-woocommerce' ),
 			'empty'             => __( 'No operations found.', 'bulk-cogs-editor-for-woocommerce' ),
 			/* translators: %1$d: products with retained original costs, %2$d: successful products in the operation. */
 			'partialHistory'    => __( 'Original values are available for %1$d of %2$d successful products. Only products with recorded original values can be rolled back.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -342,8 +342,29 @@ class DKBCE_History_Controller {
 			$claim          = $attempt ? $attempt['operation_id'] : '';
 			$active_attempt = $attempt && ! in_array( $attempt['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
 			$terminal       = in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
-			$eligible       = $terminal && empty( $state['history_cleanup_pending'] ) && empty( $state['history_cleanup_complete'] ) && empty( $state['history_cleanup_started'] ) && 'rollback' !== $state['action'] && $remaining > 0 && ! $active_attempt && time() - (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) < DKBCE_Retention_Processor::retention_seconds();
-			$token          = '';
+			$reasons        = array();
+			if ( ! $terminal ) {
+				$reasons[] = __( 'This operation is still running. Review rollback after it finishes.', 'bulk-cogs-editor-for-woocommerce' );
+			}
+			if ( 'rollback' === $state['action'] ) {
+				$reasons[] = __( 'A rollback operation cannot itself be rolled back.', 'bulk-cogs-editor-for-woocommerce' );
+			}
+			$expired = time() - (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) >= DKBCE_Retention_Processor::retention_seconds();
+			$cleanup = ! empty( $state['history_cleanup_pending'] ) || ! empty( $state['history_cleanup_complete'] ) || ! empty( $state['history_cleanup_started'] );
+			if ( $expired ) {
+				$reasons[] = __( 'The history retention period has expired. Rollback is no longer available.', 'bulk-cogs-editor-for-woocommerce' );
+			} elseif ( $cleanup ) {
+				$reasons[] = __( 'History cleanup has been scheduled or started. Original costs are no longer available for rollback.', 'bulk-cogs-editor-for-woocommerce' );
+			} elseif ( $remaining <= 0 ) {
+				$reasons[] = $attempt
+					? __( 'No recorded product changes remain available for rollback. View the existing rollback operation for its results.', 'bulk-cogs-editor-for-woocommerce' )
+					: __( 'This operation has no retained original costs available for rollback.', 'bulk-cogs-editor-for-woocommerce' );
+			}
+			if ( $active_attempt ) {
+				$reasons[] = __( 'A rollback is already in progress. View the rollback operation to check its status.', 'bulk-cogs-editor-for-woocommerce' );
+			}
+			$eligible = empty( $reasons );
+			$token    = '';
 			if ( $review && $eligible ) {
 				$token = wp_generate_uuid4();
 				set_transient(
@@ -359,13 +380,14 @@ class DKBCE_History_Controller {
 			}
 			wp_send_json_success(
 				array(
-					'state'           => $this->summary( $state ),
-					'rows'            => $rows,
-					'total'           => $data['total'],
-					'can_rollback'    => $eligible,
-					'rollback_id'     => $claim,
-					'review_token'    => $token,
-					'rollback_policy' => $policy,
+					'state'                        => $this->summary( $state ),
+					'rows'                         => $rows,
+					'total'                        => $data['total'],
+					'can_rollback'                 => $eligible,
+					'rollback_unavailable_reasons' => $reasons,
+					'rollback_id'                  => $claim,
+					'review_token'                 => $token,
+					'rollback_policy'              => $policy,
 				)
 			);
 		} catch ( Throwable $exception ) {
