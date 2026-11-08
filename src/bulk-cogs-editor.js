@@ -1657,7 +1657,7 @@
 		$( '#dkbce-page-selection-count' ).textContent = DKBCE.ui.pageSelected.replace( '%d', state.rows.filter( ( item ) => productSelected( item.id ) ).length );
 		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.previewId ? count.toLocaleString() + ' · ' + ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
 		if ( ! state.busy ) {
-			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
+			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : state.previewId && count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
 		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed && ! state.reusedSelection;
 		$( '#dkbce-selection-context' ).textContent = state.reusedSelection ? DKBCE.ui.reused : state.selectionNarrowed ? DKBCE.ui.narrowed : '';
