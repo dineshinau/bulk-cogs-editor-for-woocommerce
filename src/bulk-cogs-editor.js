@@ -1809,7 +1809,12 @@
 		} );
 		[ header, ...tbody.children ].forEach( ( row ) => {
 			const cells = Array.from( row.children );
-			cells.forEach( ( cell, index ) => { cell.dataset.column = String( index ); } );
+			cells.forEach( ( cell, index ) => {
+				cell.dataset.column = String( index );
+				if ( row !== header ) {
+					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
+				}
+			} );
 			[ 0, 2, 5, 6, 7, 1, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );

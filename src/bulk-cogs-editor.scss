@@ -1032,3 +1032,25 @@ $border: #dce6f5;
 	.dkbce-csv-workflow .dkbce-csv-action { flex-wrap: wrap; label { flex-basis: 100%; } }
 	.dkbce-csv-workflow #dkbce-csv-drop { padding: 24px 16px; }
 }
+
+// Keep product identity and both costs together on narrow preview screens.
+@media (max-width: 600px) {
+	#dkbce-preview-content {
+		.dkbce-table-wrap { overflow: visible; max-height: none; border: 0; }
+		.dkbce-preview-table {
+			display: block;
+			min-width: 0;
+			width: 100%;
+			thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+			tbody { display: block; }
+			tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 12px; border: 1px solid $border; border-radius: 8px; }
+			td { display: block; position: static; width: auto; min-width: 0; max-width: none; height: auto; padding: 10px; text-align: start; white-space: normal; overflow-wrap: anywhere; }
+			td[hidden] { display: none; }
+			td::before { content: attr(data-label); display: block; margin-bottom: 4px; color: $muted; font-size: 12px; font-weight: 600; }
+			td[data-column="0"], td[data-column="2"], td[data-column="7"], td[data-column="8"] { grid-column: 1 / -1; }
+			td[data-column="2"]::before { content: none; }
+			.dkbce-product-cell { min-width: 0; }
+			.dkbce-change-badge { white-space: normal; flex-wrap: wrap; }
+		}
+	}
+}
