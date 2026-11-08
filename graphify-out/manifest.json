@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794134396.9620485,
-    "seen": 1794134423.678433,
-    "ast_hash": "3cefbe8df95282c826f7e41e0b108440",
+    "mtime": 1794163393.6513717,
+    "seen": 1794163436.43607,
+    "ast_hash": "e4947971f6c9ece9d516c9bddc4f626b",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -207,6 +207,12 @@
     "mtime": 1793111361.421251,
     "seen": 1793111397.5741444,
     "ast_hash": "28f507e61ff66416e28f1dcf76d4163a",
+    "semantic_hash": ""
+  },
+  ".playwright-cli/page-2026-11-08T18-43-34-439Z.yml": {
+    "mtime": 1794163414.4403431,
+    "seen": 1794163436.4360886,
+    "ast_hash": "2f23be616bb27daae006b3bede53679f",
     "semantic_hash": ""
   }
 }
