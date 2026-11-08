@@ -577,7 +577,7 @@
 		$( '.dkbce-preview-empty p' ).textContent = importing ? DKBCE.ui.importEmpty : active ? DKBCE.ui.exportEmpty : DKBCE.ui.bulkEmpty;
 		$( '.dkbce-preview-controls' ).hidden = ! state.rows.length;
 		$( '#dkbce-csv-title' ).textContent = importing ? DKBCE.ui.importTask : DKBCE.ui.exportTask;
-		$( '#dkbce-apply-title' ).textContent = applyButton.textContent;
+		$( '#dkbce-apply-title' ).textContent = active && ! importing ? DKBCE.ui.createCSV : DKBCE.ui.confirmUpdate;
 		const help = $( '.dkbce-apply-section .dkbce-section-heading p' );
 		if ( ! help.dataset.originalText ) { help.dataset.originalText = help.textContent; }
 		help.textContent = active && ! importing ? DKBCE.csv.exportHelp : help.dataset.originalText;
@@ -602,9 +602,7 @@
 		filterHelp.textContent = active && ! importing ? DKBCE.csv.filterHelp : filterHelp.dataset.originalText;
 		updateColumnVisibility();
 		$( '.dkbce-apply-section .dkbce-section-heading > span' ).textContent = active && importing ? '3' : '4';
-		operationPanel.querySelectorAll( '.dkbce-operation-step' ).forEach( ( number ) => {
-			number.textContent = active && importing ? '4' : '5';
-		} );
+		$( '.dkbce-apply-section .dkbce-section-heading > span' ).hidden = ! active;
 		document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 			const selected = button.dataset.dkbceMode === state.mode;
 			button.setAttribute( 'aria-pressed', String( selected ) );
@@ -2266,10 +2264,7 @@
 
 	function operationHeading( heading ) {
 		const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
-		const reviewStep = Number( $( '.dkbce-apply-section .dkbce-section-heading > span' ).textContent );
-		const number = historyElement( 'span', String( reviewStep + 1 ), 'dkbce-operation-step' );
-		number.setAttribute( 'aria-hidden', 'true' );
-		sectionHeading.append( number, heading );
+		sectionHeading.appendChild( heading );
 		return sectionHeading;
 	}
 
