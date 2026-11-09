@@ -289,6 +289,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 * Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources entering retention cleanup during preflight.
 * Fixed: Repair the early preset-table name index that prevented saving a second preset for the same user.
 * Improved: Refresh editor layouts, align workflow steps, reduce inactive content, and place confirmation beside the product preview.
+* Improved: Follow each user’s WordPress Administration Color Scheme for buttons, links, tabs, progress bars, and selection highlights.
 * Improved: Distinguish Reset filters, Deselect all products, and Start over; provide actionable empty results and clearer search, selection, preview, and confirmation guidance.
 * Improved: Use import/export-specific labels and explain blank versus zero costs. Show specific missing-file, format, and size errors and group row errors with correction guidance.
 * Improved: Make history easier to scan with action-first columns, accessible full operation IDs, focused detail views, preserved list context, reloadable operation links, and operation-specific progress headings.

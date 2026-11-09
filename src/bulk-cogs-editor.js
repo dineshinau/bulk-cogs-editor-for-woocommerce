@@ -3,6 +3,24 @@
 	'use strict';
 
 	const $ = ( selector ) => document.querySelector( selector );
+
+	// Read native controls outside plugin styles, including custom admin schemes.
+	const schemeProbe = document.createElement( 'div' );
+	schemeProbe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;';
+	schemeProbe.setAttribute( 'aria-hidden', 'true' );
+	const schemeButton = document.createElement( 'button' );
+	schemeButton.type = 'button'; schemeButton.className = 'button button-primary'; schemeButton.tabIndex = -1;
+	const schemeLink = document.createElement( 'a' );
+	schemeLink.href = '#'; schemeLink.tabIndex = -1;
+	schemeProbe.append( schemeButton, schemeLink );
+	document.body.appendChild( schemeProbe );
+	const nativeButtonStyle = window.getComputedStyle( schemeButton );
+	const workspaceStyle = $( '.dkbce-wrap' ).style;
+	workspaceStyle.setProperty( '--dkbce-accent', nativeButtonStyle.backgroundColor );
+	workspaceStyle.setProperty( '--dkbce-on-accent', nativeButtonStyle.color );
+	workspaceStyle.setProperty( '--dkbce-link', window.getComputedStyle( schemeLink ).color );
+	schemeProbe.remove();
+
 	const ux = DKBCE.ux;
 	const state = {
 		mode: 'bulk',
