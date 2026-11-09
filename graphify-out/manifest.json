@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1794223427.302291,
-    "seen": 1794223444.799239,
-    "ast_hash": "f699b2185a8e2178b1553966e47c0b00",
+    "mtime": 1794226799.4291797,
+    "seen": 1794226824.7956088,
+    "ast_hash": "b452ebf5725d7a4fa4287ce9b84aff4f",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-database-installer.php": {
-    "mtime": 1792795931.076168,
-    "seen": 1793111199.7867844,
-    "ast_hash": "b786c30029c8e4a6fb238d6ca735324d",
+    "mtime": 1794235457.553506,
+    "seen": 1794235477.8590531,
+    "ast_hash": "3503efbade176df522613eb1e8137215",
     "semantic_hash": ""
   },
   "admin/class-dkbce-download-processor.php": {
@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1793967011.2524302,
-    "seen": 1794091231.0569024,
-    "ast_hash": "54b057bef2aa9f46040e53586fe089da",
+    "mtime": 1794235457.5518095,
+    "seen": 1794235477.8590722,
+    "ast_hash": "3c86b029f601ea324c09a3fce49031ab",
     "semantic_hash": ""
   },
   "index.php": {
@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794222376.8948448,
-    "seen": 1794222553.3101583,
-    "ast_hash": "a880cc0128689d2c44943af6dc0166f8",
+    "mtime": 1794226672.9927688,
+    "seen": 1794226824.795657,
+    "ast_hash": "ba6fbfe6fb2c7ba1fe9ffcf6791efcad",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -207,6 +207,18 @@
     "mtime": 1793111361.421251,
     "seen": 1793111397.5741444,
     "ast_hash": "28f507e61ff66416e28f1dcf76d4163a",
+    "semantic_hash": ""
+  },
+  "admin/class-dkbce-preset-list-table.php": {
+    "mtime": 1794226672.9911873,
+    "seen": 1794226824.7956405,
+    "ast_hash": "1bcbc49cca1c5e0324ea966a342c24e9",
+    "semantic_hash": ""
+  },
+  "admin/class-dkbce-preset-store.php": {
+    "mtime": 1794226799.4270115,
+    "seen": 1794226824.7956424,
+    "ast_hash": "985712538e71b52846b7d96de5d7d924",
     "semantic_hash": ""
   }
 }
