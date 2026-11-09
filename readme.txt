@@ -312,7 +312,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 * Updated: Set release metadata to 1.3.0, refresh translations and generated assets, update development dependencies and code graphs, and document the UI/UX review and implementation decisions.
 * Updated: Refresh documentation, plugin, and social profile links. Require an explicit request for Playwright verification on each development task.
 * Added: A CSV export column-selection toggle.
-* Added: A Default rollback mode setting with Keep rollback history and No rollback history options. The update confirmation checkbox uses this default, allows a per-operation override, and explains the selected mode. No rollback history omits rollback and detailed cost-change history while preserving operation results and retry protection.
+* Added: A Default rollback mode setting with Keep rollback history and No rollback history options. The update confirmation checkbox uses this default, allows a per-operation override, and explains the selected mode and potential time savings. No rollback history omits rollback and detailed cost-change history while preserving operation results and retry protection.
 * Added: Account-based filter presets in a dedicated custom table, with unique names per user and access across browsers and devices. Existing browser and user-meta presets are not migrated.
 * Added: A Presets tab before Settings with a native WordPress list table, created dates, editable names and filter rules, Edit/Delete row actions, and bulk deletion. Loaded presets hide duplicate-save controls, and deletion is available only in Presets.
 

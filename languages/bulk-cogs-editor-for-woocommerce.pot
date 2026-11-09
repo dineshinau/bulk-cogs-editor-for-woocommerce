@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-09T23:00:08+00:00\n"
+"POT-Creation-Date: 2026-11-09T23:13:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1942,11 +1942,11 @@ msgid "Choose the default for new cost updates. You can change it in the confirm
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:34
-msgid "Original costs and product changes are retained for the configured history period so you can review and roll back this update."
+msgid "Original costs and product changes are retained for the configured history period so you can review and roll back this update. Saving rollback history can increase the time needed to finish."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:35
-msgid "This update cannot be rolled back, and detailed cost-change history will not be retained. Operation results and retry protection remain available. Temporary retry data is removed after the operation finishes."
+msgid "This update cannot be rolled back, and detailed cost-change history will not be retained. Without rollback history, the operation can finish faster. Operation results and retry protection remain available. Temporary retry data is removed after the operation finishes."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:36
