@@ -152,47 +152,51 @@ class DKBCE_Admin_Functions {
 				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
 				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
 				'ux'             => array(
-					'resetHelp'          => __( 'Reset filters keeps your draft cost update. Start over clears filters, selections, cost update, and operation note.', 'bulk-cogs-editor-for-woocommerce' ),
-					'noMatchesHelp'      => __( 'Try a different search or reset your filters. Your cost update is kept as a draft.', 'bulk-cogs-editor-for-woocommerce' ),
-					'adjustFilters'      => __( 'Adjust filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'freshnessHelp'      => __( 'How preview checks work', 'bulk-cogs-editor-for-woocommerce' ),
+					'resetHelp'           => __( 'Reset filters keeps your draft cost update. Start over clears filters, selections, cost update, and operation note.', 'bulk-cogs-editor-for-woocommerce' ),
+					'noMatchesHelp'       => __( 'Try a different search or reset your filters. Your cost update is kept as a draft.', 'bulk-cogs-editor-for-woocommerce' ),
+					'adjustFilters'       => __( 'Adjust filters', 'bulk-cogs-editor-for-woocommerce' ),
+					'freshnessHelp'       => __( 'How preview checks work', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: cost update description, 2: selected product and variation count. */
-					'scopeSummary'       => __( '%1$s. Selected products and variations: %2$s.', 'bulk-cogs-editor-for-woocommerce' ),
-					'exportEmptyTitle'   => __( 'Preview your CSV export', 'bulk-cogs-editor-for-woocommerce' ),
-					'exportNote'         => __( 'Export downloads data without changing costs.', 'bulk-cogs-editor-for-woocommerce' ),
-					'missingFile'        => __( 'Choose a CSV or XLSX file before validating.', 'bulk-cogs-editor-for-woocommerce' ),
-					'invalidFile'        => __( 'Unsupported file format. Choose a CSV or XLSX file.', 'bulk-cogs-editor-for-woocommerce' ),
+					'scopeSummary'        => __( '%1$s. Selected products and variations: %2$s.', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportEmptyTitle'    => __( 'Preview your CSV export', 'bulk-cogs-editor-for-woocommerce' ),
+					'exportNote'          => __( 'Export downloads data without changing costs.', 'bulk-cogs-editor-for-woocommerce' ),
+					'missingFile'         => __( 'Choose a CSV or XLSX file before validating.', 'bulk-cogs-editor-for-woocommerce' ),
+					'invalidFile'         => __( 'Unsupported file format. Choose a CSV or XLSX file.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: formatted maximum upload size. */
-					'largeFile'          => __( 'This file exceeds the upload limit of %s. Choose a smaller file.', 'bulk-cogs-editor-for-woocommerce' ),
-					'fileCorrection'     => __( 'Correct the reported rows, then replace the file and validate again. The selected file is kept until you replace or remove it.', 'bulk-cogs-editor-for-woocommerce' ),
-					'fullId'             => __( 'Full operation ID', 'bulk-cogs-editor-for-woocommerce' ),
-					'copyId'             => __( 'Copy operation ID', 'bulk-cogs-editor-for-woocommerce' ),
-					'copied'             => __( 'Operation ID copied.', 'bulk-cogs-editor-for-woocommerce' ),
-					'copyFailed'         => __( 'Copy unavailable. Select and copy the full operation ID below.', 'bulk-cogs-editor-for-woocommerce' ),
-					'operationProgress'  => __( 'Operation progress and results', 'bulk-cogs-editor-for-woocommerce' ),
-					'currentOperation'   => __( 'Current operation', 'bulk-cogs-editor-for-woocommerce' ),
-					'expiry'             => __( 'Rollback available until', 'bulk-cogs-editor-for-woocommerce' ),
-					'effectivePolicy'    => __( 'Rollback policy', 'bulk-cogs-editor-for-woocommerce' ),
-					'retentionConfirm'   => __( 'Reducing history retention also affects existing operations. Expired history and original costs will be permanently deleted and cannot be rolled back. Continue?', 'bulk-cogs-editor-for-woocommerce' ),
-					'presets'            => __( 'Saved filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetName'         => __( 'Filter preset name', 'bulk-cogs-editor-for-woocommerce' ),
-					'savePreset'         => __( 'Save filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'loadPreset'         => __( 'Load filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'deletePreset'       => __( 'Delete saved filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetHelp'         => __( 'Saved to your account on this site, available across browsers and devices. Filters only; costs and product selections are not saved. Up to 10 presets.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetMigration'    => __( 'Some browser presets could not be transferred because names conflict or the account limit was reached. They remain in this browser.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetSaved'        => __( 'Filters saved to your account.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetMissing'      => __( 'Some saved filter values are no longer available. Review the visible filters before finding products.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetError'        => __( 'Could not load saved filters. Close and reopen Saved filters to try again. Your current filters are unchanged.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetNameRequired' => __( 'Enter a unique preset name (up to 60 characters). A maximum of 10 presets can be saved.', 'bulk-cogs-editor-for-woocommerce' ),
-					'startCategory'      => __( 'Choose a category', 'bulk-cogs-editor-for-woocommerce' ),
-					'startImport'        => __( 'Import supplier costs', 'bulk-cogs-editor-for-woocommerce' ),
-					'viewChanges'        => __( 'View changed products', 'bulk-cogs-editor-for-woocommerce' ),
-					'reviewOutcomes'     => __( 'Review skipped or failed results', 'bulk-cogs-editor-for-woocommerce' ),
-					'startAnother'       => __( 'Start another update', 'bulk-cogs-editor-for-woocommerce' ),
-					'viewHistory'        => __( 'View operation history', 'bulk-cogs-editor-for-woocommerce' ),
-					'outcomesHelp'       => __( 'Review the outcome counts and reported errors below. Import operations may also provide a downloadable results report.', 'bulk-cogs-editor-for-woocommerce' ),
-					'unnamedUser'        => __( 'Unavailable user name · ID', 'bulk-cogs-editor-for-woocommerce' ),
+					'largeFile'           => __( 'This file exceeds the upload limit of %s. Choose a smaller file.', 'bulk-cogs-editor-for-woocommerce' ),
+					'fileCorrection'      => __( 'Correct the reported rows, then replace the file and validate again. The selected file is kept until you replace or remove it.', 'bulk-cogs-editor-for-woocommerce' ),
+					'fullId'              => __( 'Full operation ID', 'bulk-cogs-editor-for-woocommerce' ),
+					'copyId'              => __( 'Copy operation ID', 'bulk-cogs-editor-for-woocommerce' ),
+					'copied'              => __( 'Operation ID copied.', 'bulk-cogs-editor-for-woocommerce' ),
+					'copyFailed'          => __( 'Copy unavailable. Select and copy the full operation ID below.', 'bulk-cogs-editor-for-woocommerce' ),
+					'operationProgress'   => __( 'Operation progress and results', 'bulk-cogs-editor-for-woocommerce' ),
+					'currentOperation'    => __( 'Current operation', 'bulk-cogs-editor-for-woocommerce' ),
+					'expiry'              => __( 'Rollback available until', 'bulk-cogs-editor-for-woocommerce' ),
+					'effectivePolicy'     => __( 'Rollback policy', 'bulk-cogs-editor-for-woocommerce' ),
+					'retentionConfirm'    => __( 'Reducing history retention also affects existing operations. Expired history and original costs will be permanently deleted and cannot be rolled back. Continue?', 'bulk-cogs-editor-for-woocommerce' ),
+					'presets'             => __( 'Saved filters', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetTab'           => __( 'Presets', 'bulk-cogs-editor-for-woocommerce' ),
+					'editPreset'          => __( 'Edit preset', 'bulk-cogs-editor-for-woocommerce' ),
+					'updatePreset'        => __( 'Update preset', 'bulk-cogs-editor-for-woocommerce' ),
+					'cancelPreset'        => __( 'Cancel', 'bulk-cogs-editor-for-woocommerce' ),
+					'deletePresetConfirm' => __( 'Delete the selected presets?', 'bulk-cogs-editor-for-woocommerce' ),
+					'loadedPreset'        => __( 'A saved preset is loaded. Edit its rules in the Presets tab, or use Start over to create a new preset.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetName'          => __( 'Filter preset name', 'bulk-cogs-editor-for-woocommerce' ),
+					'savePreset'          => __( 'Save filters', 'bulk-cogs-editor-for-woocommerce' ),
+					'loadPreset'          => __( 'Load filters', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetHelp'          => __( 'Saved to your account on this site. Manage names and rules in the Presets tab.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetSaved'         => __( 'Filters saved to your account.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetMissing'       => __( 'Some saved filter values are no longer available. Review the visible filters before finding products.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetError'         => __( 'Could not load saved filters. Close and reopen Saved filters to try again. Your current filters are unchanged.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetNameRequired'  => __( 'Enter a unique preset name (up to 60 characters).', 'bulk-cogs-editor-for-woocommerce' ),
+					'startCategory'       => __( 'Choose a category', 'bulk-cogs-editor-for-woocommerce' ),
+					'startImport'         => __( 'Import supplier costs', 'bulk-cogs-editor-for-woocommerce' ),
+					'viewChanges'         => __( 'View changed products', 'bulk-cogs-editor-for-woocommerce' ),
+					'reviewOutcomes'      => __( 'Review skipped or failed results', 'bulk-cogs-editor-for-woocommerce' ),
+					'startAnother'        => __( 'Start another update', 'bulk-cogs-editor-for-woocommerce' ),
+					'viewHistory'         => __( 'View operation history', 'bulk-cogs-editor-for-woocommerce' ),
+					'outcomesHelp'        => __( 'Review the outcome counts and reported errors below. Import operations may also provide a downloadable results report.', 'bulk-cogs-editor-for-woocommerce' ),
+					'unnamedUser'         => __( 'Unavailable user name · ID', 'bulk-cogs-editor-for-woocommerce' ),
 				),
 				'ui'             => array(
 					'bulkTitle'       => __( 'Review & confirm', 'bulk-cogs-editor-for-woocommerce' ),
@@ -525,6 +529,7 @@ class DKBCE_Admin_Functions {
 				<button type="button" class="button button-primary" data-dkbce-mode="bulk" aria-pressed="true"><?php esc_html_e( 'Bulk edit', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<button type="button" class="button" data-dkbce-mode="csv" aria-pressed="false"><?php esc_html_e( 'Import / export', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<button type="button" class="button" data-dkbce-mode="history" aria-pressed="false"><?php esc_html_e( 'History', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
+				<button type="button" class="button" data-dkbce-mode="presets" aria-pressed="false"><?php esc_html_e( 'Presets', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<?php if ( current_user_can( 'manage_woocommerce' ) ) : ?>
 				<button type="button" class="button" data-dkbce-mode="settings" aria-pressed="false"><?php esc_html_e( 'Settings', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
 				<?php endif; ?>
@@ -536,6 +541,7 @@ class DKBCE_Admin_Functions {
 				<li><span aria-hidden="true">3</span><div><strong><?php esc_html_e( 'Review & confirm', 'bulk-cogs-editor-for-woocommerce' ); ?></strong><small><?php esc_html_e( 'Preview before applying', 'bulk-cogs-editor-for-woocommerce' ); ?></small></div></li>
 			</ol>
 			<div id="dkbce-history" hidden></div>
+			<div id="dkbce-presets" hidden></div>
 			<div id="dkbce-settings" hidden></div>
 			<section id="dkbce-csv" class="dkbce-section dkbce-csv-section" hidden aria-labelledby="dkbce-csv-title">
 				<div class="dkbce-section-heading"><i class="dkbce-step-icon dashicons dashicons-media-spreadsheet" aria-hidden="true"></i><span class="dkbce-step-number" aria-hidden="true">1</span><div><h2 id="dkbce-csv-title"><?php esc_html_e( 'File transfer', 'bulk-cogs-editor-for-woocommerce' ); ?></h2><p><?php esc_html_e( 'Choose whether to export matching products or import updated costs.', 'bulk-cogs-editor-for-woocommerce' ); ?></p></div></div>
@@ -703,7 +709,7 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
-	 * Read or replace the current user's site-specific filter presets.
+	 * Manage the current user's presets in the private site table.
 	 *
 	 * @return void
 	 */
@@ -712,73 +718,56 @@ class DKBCE_Admin_Functions {
 			$this->send_nonce_error();
 		}
 		$this->authorize_ajax();
-		$user_id  = get_current_user_id();
-		$key      = 'dkbce_filter_presets_' . get_current_blog_id();
-		$exists   = metadata_exists( 'user', $user_id, $key );
-		$stored   = get_user_meta( $user_id, $key, true );
-		$revision = hash( 'sha256', maybe_serialize( $stored ) );
-		$presets  = is_array( $stored ) && isset( $stored['presets'] ) ? $stored['presets'] : array();
-		if ( isset( $_POST['presets'] ) ) {
-			$expected = isset( $_POST['revision'] ) && is_string( $_POST['revision'] ) ? sanitize_text_field( wp_unslash( $_POST['revision'] ) ) : '';
-			if ( ! hash_equals( $revision, $expected ) ) {
-				wp_send_json_error( array( 'message' => __( 'Saved filters changed on another device. Close and reopen Saved filters, then try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
-			}
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON fields are validated and sanitized below.
-			$json = is_string( $_POST['presets'] ) ? wp_unslash( $_POST['presets'] ) : '';
-			$next = strlen( $json ) <= 65536 ? json_decode( $json, true ) : null;
-			if ( ! is_array( $next ) || count( $next ) > 10 ) {
-				wp_send_json_error( array( 'message' => __( 'Choose up to 10 valid filter presets.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
-			}
-			$presets = array();
-			$names   = array();
-			foreach ( $next as $preset ) {
-				$name = isset( $preset['name'] ) && is_string( $preset['name'] ) ? trim( sanitize_text_field( $preset['name'] ) ) : '';
-				if ( '' === $name || mb_strlen( $name ) > 60 || in_array( $name, $names, true ) || ! isset( $preset['filters'] ) || ! is_array( $preset['filters'] ) ) {
-					wp_send_json_error( array( 'message' => __( 'Enter a unique preset name (up to 60 characters). A maximum of 10 presets can be saved.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		try {
+			$store     = new DKBCE_Preset_Store();
+			$operation = isset( $_POST['preset_action'] ) && is_string( $_POST['preset_action'] ) ? sanitize_key( wp_unslash( $_POST['preset_action'] ) ) : 'list';
+			$id        = isset( $_POST['preset_id'] ) && is_scalar( $_POST['preset_id'] ) ? absint( $_POST['preset_id'] ) : 0;
+			$result    = true;
+			if ( 'save' === $operation ) {
+				$name = isset( $_POST['name'] ) && is_string( $_POST['name'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['name'] ) ) ) : '';
+				if ( '' === $name || mb_strlen( $name ) > 60 ) {
+					wp_send_json_error( array( 'message' => __( 'Enter a unique preset name (up to 60 characters).', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 				}
-				$filters = array();
-				foreach ( array( 'search', 'price_min', 'price_max', 'cogs_min', 'cogs_max' ) as $field ) {
-					$value = $preset['filters'][ $field ] ?? '';
-					if ( ! is_scalar( $value ) || strlen( (string) $value ) > 100 ) {
-						wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
-					}
-					$filters[ $field ] = sanitize_text_field( (string) $value );
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- The service validates and unslashes each filter field.
+				$raw     = isset( $_POST['filters'] ) && is_array( $_POST['filters'] ) ? $_POST['filters'] : array();
+				$filters = $this->service->validate_filters( $raw );
+				if ( is_wp_error( $filters ) ) {
+					wp_send_json_error( array( 'message' => $filters->get_error_message() ), 400 );
 				}
-				foreach ( array( 'category', 'type', 'stock_status', 'brand' ) as $field ) {
-					$values = $preset['filters'][ $field ] ?? array();
-					if ( ! is_array( $values ) || count( $values ) > 1000 ) {
-						wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
-					}
-					foreach ( $values as $value ) {
-						if ( ! is_scalar( $value ) || strlen( (string) $value ) > 100 ) {
-							wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
-						}
-					}
-					$filters[ $field ] = array_values( array_unique( array_map( 'sanitize_text_field', $values ) ) );
+				$revision = isset( $_POST['revision'] ) && is_string( $_POST['revision'] ) ? sanitize_text_field( wp_unslash( $_POST['revision'] ) ) : '';
+				$result   = $store->save( $name, $filters, $id, $revision );
+			} elseif ( 'delete' === $operation ) {
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- IDs are validated as scalars and converted with absint below.
+				$ids = isset( $_POST['ids'] ) && is_array( $_POST['ids'] ) ? wp_unslash( $_POST['ids'] ) : array();
+				if ( count( $ids ) > 100 || array_filter( $ids, 'is_array' ) || array_filter( $ids, 'is_object' ) ) {
+					wp_send_json_error( array( 'message' => __( 'Select valid presets to delete.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 				}
-				$names[]   = $name;
-				$presets[] = array(
-					'name'    => $name,
-					'filters' => $filters,
-				);
+				$result = $store->delete( array_map( 'absint', $ids ) );
+			} elseif ( ! in_array( $operation, array( 'list', 'table' ), true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Invalid preset action.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
-			$record = array( 'presets' => $presets );
-			if ( $record !== $stored ) {
-				$saved = $exists
-					? update_user_meta( $user_id, $key, wp_slash( $record ), $stored )
-					: add_user_meta( $user_id, $key, wp_slash( $record ), true );
-				if ( ! $saved ) {
-					wp_send_json_error( array( 'message' => __( 'Could not save filters. Close and reopen Saved filters, then try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
-				}
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error( array( 'message' => $result->get_error_message() ), 409 );
 			}
-			$revision = hash( 'sha256', maybe_serialize( $record ) );
+			$rows = $store->all();
+			$html = '';
+			if ( 'table' === $operation ) {
+				$page  = isset( $_POST['preset_page'] ) && is_scalar( $_POST['preset_page'] ) ? max( 1, absint( $_POST['preset_page'] ) ) : 1;
+				$table = new DKBCE_Preset_List_Table();
+				$table->set_rows( $rows, $page );
+				ob_start();
+				$table->display();
+				$html = ob_get_clean();
+			}
+			wp_send_json_success(
+				array(
+					'presets' => $rows,
+					'html'    => $html,
+				)
+			);
+		} catch ( Throwable $exception ) {
+			wp_send_json_error( array( 'message' => __( 'Could not manage presets. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 		}
-		wp_send_json_success(
-			array(
-				'presets'  => $presets,
-				'revision' => $revision,
-			)
-		);
 	}
 
 	/**

@@ -1094,3 +1094,17 @@ $border: #dce6f5;
 #dkbce-empty-recovery { margin-top: 12px; }
 #dkbce-history .dkbce-history-table details { min-width: 120px; input { width: 100%; } }
 #dkbce-history ul.description { list-style: disc; padding-inline-start: 20px; }
+
+#dkbce-presets {
+	padding: 24px;
+	border: 1px solid $border;
+	border-radius: 8px;
+	background: #fff;
+	.dkbce-preset-editor > .dkbce-history-field { max-width: 420px; margin-bottom: 20px; }
+	.dkbce-preset-editor > .dkbce-actions { margin-top: 20px; }
+	.tablenav .button { min-height: 30px; padding: 0 12px; line-height: 28px; }
+	.tablenav select { min-height: 30px; padding-block: 0; }
+	.row-actions .button-link { padding: 0; border: 0; min-height: 24px; background: transparent; }
+	.row-actions .delete .button-link { color: #b32d2e; }
+	.check-column input { width: 16px; height: 16px; }
+}

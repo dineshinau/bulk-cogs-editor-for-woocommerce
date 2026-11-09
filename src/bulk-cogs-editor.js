@@ -600,7 +600,7 @@
 		setNotice( '', 'info' );
 		$( '#dkbce-range-menu' ).open = false;
 		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
-		const helpMode = [ 'history', 'settings' ].includes( state.mode ) ? state.mode : active ? ( importing ? 'import' : 'export' ) : 'bulk';
+		const helpMode = [ 'history', 'presets', 'settings' ].includes( state.mode ) ? state.mode : active ? ( importing ? 'import' : 'export' ) : 'bulk';
 		document.querySelectorAll( '[data-dkbce-help]' ).forEach( ( section ) => {
 			section.hidden = section.dataset.dkbceHelp !== helpMode;
 		} );
@@ -656,9 +656,10 @@
 			button.setAttribute( 'aria-pressed', String( selected ) );
 			button.classList.toggle( 'button-primary', selected );
 		} );
-		const extra = [ 'history', 'settings' ].includes( state.mode );
+		const extra = [ 'history', 'presets', 'settings' ].includes( state.mode );
 		$( '#dkbce-history' ).hidden = state.mode !== 'history';
 		$( '#dkbce-settings' ).hidden = state.mode !== 'settings';
+		$( '#dkbce-presets' ).hidden = state.mode !== 'presets';
 		if ( extra ) {
 			document.querySelectorAll( '.dkbce-workspace > section' ).forEach( ( section ) => { section.hidden = true; } );
 		}
@@ -971,6 +972,8 @@
 			if ( state.busy || state.loadingPage ) {
 				return;
 			}
+			if ( presetBusy ) { return; }
+			if ( editedPreset ) { closePresetEditor(); }
 			const nextMode = button.dataset.dkbceMode;
 			window.clearTimeout( historyState.pollTimer );
 			window.clearTimeout( state.previewTimer );
@@ -983,6 +986,7 @@
 			updateCSVMode();
 			if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
 			if ( state.mode === 'settings' ) { loadSettings(); }
+			if ( state.mode === 'presets' ) { loadPresetTable(); }
 		} );
 	} );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
@@ -1477,7 +1481,7 @@
 		link.addEventListener( 'click', ( event ) => {
 			event.preventDefault();
 			event.stopPropagation();
-			if ( state.importPreparing || [ 'history', 'settings' ].includes( state.mode ) ) {
+			if ( state.importPreparing || [ 'history', 'presets', 'settings' ].includes( state.mode ) ) {
 				state.mode = state.importPreparing ? 'csv' : state.editorMode;
 				updateCSVMode();
 			}
@@ -2854,6 +2858,7 @@
 			window.history.replaceState( null, '', window.location.pathname + window.location.search );
 		}
 		window.clearTimeout( state.previewTimer );
+		loadedPresetId = 0; updatePresetControls();
 		resetSelection(); clearFilters();
 		$( '#dkbce-action-kind' ).value = 'set';
 		$( '#dkbce-action-direction' ).value = 'increase';
@@ -2936,111 +2941,161 @@
 		operationPanel.hidden = false;
 		pollProgress();
 	}
-	const presetKey = 'dkbce-filters:' + window.location.pathname + ':' + DKBCE.userId;
 	let presets = [];
+	let presetBusy = false;
+	let presetsLoaded = false;
+	let loadedPresetId = 0;
+	let editedPreset = null;
+	let presetDraft = null;
+	let presetPage = 1;
+	const presetRoot = $( '#dkbce-presets' );
+	const presetHeading = historyElement( 'h2', ux.presetTab );
+	const presetTable = document.createElement( 'form' );
+	presetTable.className = 'dkbce-preset-table';
+	const presetEditor = historyElement( 'div', '', 'dkbce-preset-editor' ); presetEditor.hidden = true;
+	const editName = document.createElement( 'input' ); editName.type = 'text'; editName.maxLength = 60;
+	const editTitle = historyElement( 'h3', ux.editPreset ); editTitle.tabIndex = -1;
+	const editActions = historyElement( 'div', '', 'dkbce-actions' );
+	presetEditor.append( editTitle, historyField( ux.presetName, editName ), editActions );
+	presetRoot.append( presetHeading, presetTable, presetEditor );
+	const filterPanel = $( '#dkbce-filter-panel' );
+	const filterAnchor = document.createComment( 'product filters' ); filterPanel.before( filterAnchor );
 	const presetPanel = historyElement( 'details', '', 'dkbce-presets' );
 	presetPanel.appendChild( historyElement( 'summary', ux.presets ) );
 	const presetSelect = document.createElement( 'select' ); presetSelect.setAttribute( 'aria-label', ux.presets );
 	const presetName = document.createElement( 'input' ); presetName.type = 'text'; presetName.maxLength = 60;
-	const presetControls = historyElement( 'div', '', 'dkbce-actions' );
-	function renderPresets() {
-		presetSelect.replaceChildren( new Option( ux.presets, '' ) );
-		presets.forEach( ( preset, index ) => presetSelect.add( new Option( preset.name, String( index ) ) ) );
-	}
-	let presetRevision = '';
-	let presetBusy = false;
-	let presetsLoaded = false;
-	async function storePresets( next ) {
-		presetBusy = true; updatePresetControls();
-		try {
-			const data = await request( 'filter_presets', { presets: JSON.stringify( next ), revision: presetRevision } );
-			presets = data.presets; presetRevision = data.revision; renderPresets(); return true;
-		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); return false; }
-		finally { presetBusy = false; updatePresetControls(); }
-	}
-	async function loadPresets() {
-		if ( presetBusy ) { return; }
-		presetBusy = true; presetsLoaded = false; updatePresetControls();
-		try {
-			const data = await request( 'filter_presets' );
-			presets = data.presets; presetRevision = data.revision; presetsLoaded = true; renderPresets();
-			let legacy;
-			try { legacy = JSON.parse( window.localStorage.getItem( presetKey ) || '[]' ); }
-			catch ( error ) { return; } // Browser storage is optional; account presets still work.
-			if ( ! Array.isArray( legacy ) || ! legacy.length ) { return; }
-			const merged = [ ...presets ];
-			for ( const preset of legacy ) {
-				if ( ! preset || typeof preset.name !== 'string' || ! preset.filters ) { throw new Error( ux.presetMigration ); }
-				const existing = merged.find( ( item ) => item.name === preset.name );
-				if ( existing ) {
-					const same = Object.keys( filters() ).every( ( key ) => JSON.stringify( existing.filters[ key ] ) === JSON.stringify( preset.filters[ key ] ) );
-					if ( ! same ) { throw new Error( ux.presetMigration ); }
-				} else { merged.push( preset ); }
-			}
-			if ( merged.length > 10 ) { throw new Error( ux.presetMigration ); }
-			if ( await storePresets( merged ) ) {
-				try { window.localStorage.removeItem( presetKey ); } catch ( error ) { /* Keep the legacy copy if storage is blocked. */ }
-			}
-		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); }
-		finally { presetBusy = false; updatePresetControls(); }
-	}
-	renderPresets();
-	const presetLocked = () => presetBusy || ! presetsLoaded || state.busy || state.loadingPage || isOperationRunning();
-	presetControls.append(
-		historyButton( ux.savePreset, async () => {
-			if ( presetLocked() ) { return; }
-			const name = presetName.value.trim();
-			if ( ! name || presets.length >= 10 || presets.some( ( preset ) => preset.name === name ) ) { setNotice( ux.presetNameRequired, 'error', $( '.dkbce-filters-section' ) ); presetName.focus(); return; }
-			if ( await storePresets( [ ...presets, { name, filters: filters() } ] ) ) { presetName.value = ''; setNotice( ux.presetSaved, 'success', $( '.dkbce-filters-section' ) ); }
-		} ),
-		historyButton( ux.loadPreset, () => {
-			if ( presetLocked() || presetSelect.value === '' ) { return; }
-			const preset = presets[ Number( presetSelect.value ) ]; if ( ! preset ) { return; }
-			resetSelection(); clearFilters();
-			let missing = false;
-			const mapping = { search: 'search', category: 'category', type: 'type', stock_status: 'stock', brand: 'brand', price_min: 'price-min', price_max: 'price-max', cogs_min: 'cogs-min', cogs_max: 'cogs-max' };
-			Object.entries( mapping ).forEach( ( [ key, id ] ) => {
-				const input = $( '#dkbce-' + id ); const value = preset.filters[ key ];
-				if ( ! input ) { if ( value && value.length ) { missing = true; } return; }
-				if ( input.tagName === 'SELECT' ) {
-					const values = Array.isArray( value ) ? value.map( String ) : [];
-					const available = Array.from( input.options, ( option ) => option.value );
-					if ( values.some( ( item ) => ! available.includes( item ) ) ) { missing = true; }
-					Array.from( input.options ).forEach( ( option ) => { option.selected = values.includes( option.value ); } );
-					input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
-				} else { input.value = typeof value === 'string' || typeof value === 'number' ? String( value ).slice( 0, 100 ) : ''; }
-			} );
-			invalidatePreview( true, true );
-			$( '#dkbce-filter-panel' ).open = true;
-			$( '.dkbce-more-filters' ).open = true;
-			setNotice( missing ? ux.presetMissing : DKBCE.i18n.filtersChanged, missing ? 'warning' : 'info', $( '.dkbce-filters-section' ) );
-			getButton.focus();
-		} ),
-		historyButton( ux.deletePreset, () => {
-			if ( presetLocked() || presetSelect.value === '' ) { return; }
-			storePresets( presets.filter( ( preset, index ) => index !== Number( presetSelect.value ) ) );
-		} )
-	);
 	const presetSave = historyElement( 'div', '', 'dkbce-preset-row' );
 	const presetLoad = historyElement( 'div', '', 'dkbce-preset-row' );
-	const [ savePreset, loadPreset, deletePreset ] = Array.from( presetControls.children );
-	deletePreset.className = 'button-link';
-	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
-	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset, deletePreset );
-	const updatePresetControls = () => {
+	const loadedHelp = historyElement( 'p', ux.loadedPreset, 'description' ); loadedHelp.hidden = true;
+	function renderPresets() {
+		presetSelect.replaceChildren( new Option( ux.presets, '' ) );
+		presets.forEach( ( preset ) => presetSelect.add( new Option( preset.name, String( preset.id ) ) ) );
+		if ( presets.some( ( preset ) => preset.id === loadedPresetId ) ) { presetSelect.value = String( loadedPresetId ); }
+	}
+	function updatePresetControls() {
 		savePreset.disabled = presetBusy || ! presetsLoaded;
 		presetName.disabled = presetBusy;
 		presetSelect.disabled = presetBusy;
 		presetPanel.setAttribute( 'aria-busy', String( presetBusy ) );
 		loadPreset.disabled = presetBusy || ! presetsLoaded || presetSelect.value === '';
-		deletePreset.disabled = loadPreset.disabled;
 		presetLoad.hidden = ! presets.length;
-	};
+		presetSave.hidden = Boolean( loadedPresetId ); loadedHelp.hidden = ! loadedPresetId;
+	}
+	const presetLocked = () => presetBusy || ! presetsLoaded || state.busy || state.loadingPage || isOperationRunning();
+	async function loadPresets() {
+		if ( presetBusy ) { return; }
+		presetBusy = true; presetsLoaded = false; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets' );
+			presets = data.presets; presetsLoaded = true; renderPresets();
+		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); }
+		finally { presetBusy = false; updatePresetControls(); }
+	}
+	function applyPresetRules( preset ) {
+		resetSelection(); clearFilters();
+		let missing = false;
+		const mapping = { search: 'search', category: 'category', type: 'type', stock_status: 'stock', brand: 'brand', price_min: 'price-min', price_max: 'price-max', cogs_min: 'cogs-min', cogs_max: 'cogs-max' };
+		Object.entries( mapping ).forEach( ( [ key, id ] ) => {
+			const input = $( '#dkbce-' + id ); const value = preset.filters[ key ];
+			if ( ! input ) { if ( value && value.length ) { missing = true; } return; }
+			if ( input.tagName === 'SELECT' ) {
+				const values = Array.isArray( value ) ? value.map( String ) : [];
+				const available = Array.from( input.options, ( option ) => option.value );
+				if ( values.some( ( item ) => ! available.includes( item ) ) ) { missing = true; }
+				Array.from( input.options ).forEach( ( option ) => { option.selected = values.includes( option.value ); } );
+				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			} else { input.value = typeof value === 'string' || typeof value === 'number' ? String( value ).slice( 0, 100 ) : ''; }
+		} );
+		invalidatePreview( true, true ); filterPanel.open = true; $( '.dkbce-more-filters' ).open = true;
+		return missing;
+	}
+	const savePreset = historyButton( ux.savePreset, async () => {
+		if ( presetLocked() || loadedPresetId ) { return; }
+		const name = presetName.value.trim();
+		if ( ! name || presets.some( ( preset ) => preset.name.toLocaleLowerCase() === name.toLocaleLowerCase() ) ) { setNotice( ux.presetNameRequired, 'error', $( '.dkbce-filters-section' ) ); presetName.focus(); return; }
+		presetBusy = true; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets', { preset_action: 'save', name, filters: filters() } );
+			presets = data.presets; loadedPresetId = presets.find( ( preset ) => preset.name.toLocaleLowerCase() === name.toLocaleLowerCase() )?.id || 0; renderPresets(); presetName.value = ''; setNotice( ux.presetSaved, 'success', $( '.dkbce-filters-section' ) );
+		} catch ( error ) { setNotice( error.message, 'error', $( '.dkbce-filters-section' ) ); }
+		finally { presetBusy = false; updatePresetControls(); }
+	} );
+	const loadPreset = historyButton( ux.loadPreset, () => {
+		if ( presetLocked() || presetSelect.value === '' ) { return; }
+		const preset = presets.find( ( item ) => item.id === Number( presetSelect.value ) ); if ( ! preset ) { return; }
+		const missing = applyPresetRules( preset ); loadedPresetId = preset.id; updatePresetControls();
+		setNotice( missing ? ux.presetMissing : DKBCE.i18n.filtersChanged, missing ? 'warning' : 'info', $( '.dkbce-filters-section' ) ); getButton.focus();
+	} );
+	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
+	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset );
+	presetPanel.append( presetLoad, presetSave, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
+	filterPanel.after( presetPanel );
 	presetSelect.addEventListener( 'change', updatePresetControls );
 	presetPanel.addEventListener( 'toggle', () => { if ( presetPanel.open ) { loadPresets(); } } );
-	presetPanel.append( presetLoad, presetSave, historyElement( 'p', ux.presetHelp, 'description' ) );
-	$( '#dkbce-filter-panel' ).after( presetPanel );
 	updatePresetControls();
+	function closePresetEditor() {
+		filterAnchor.after( filterPanel ); presetEditor.hidden = true; presetTable.hidden = false; editedPreset = null;
+		if ( presetDraft ) { applyPresetRules( { filters: presetDraft } ); presetDraft = null; }
+	}
+	async function loadPresetTable() {
+		if ( presetBusy ) { return; }
+		presetBusy = true; presetRoot.setAttribute( 'aria-busy', 'true' ); updatePresetControls();
+		try {
+			const data = await request( 'filter_presets', { preset_action: 'table', preset_page: presetPage } );
+			presets = data.presets; presetsLoaded = true; renderPresets(); presetTable.innerHTML = data.html;
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); updatePresetControls(); }
+	}
+	async function deletePresets( ids ) {
+		if ( ! ids.length || presetBusy || ! window.confirm( ux.deletePresetConfirm ) ) { return; }
+		presetBusy = true; presetRoot.setAttribute( 'aria-busy', 'true' );
+		try {
+			await request( 'filter_presets', { preset_action: 'delete', ids } );
+			if ( ids.includes( loadedPresetId ) ) { loadedPresetId = 0; }
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); }
+		presetPage = 1; await loadPresetTable();
+	}
+	presetTable.addEventListener( 'click', ( event ) => {
+		const edit = event.target.closest( '[data-preset-edit]' );
+		const remove = event.target.closest( '[data-preset-delete]' );
+		const pagination = event.target.closest( '.tablenav-pages a' );
+		if ( presetBusy ) { event.preventDefault(); return; }
+		if ( edit ) {
+			if ( state.busy || state.loadingPage || isOperationRunning() ) { return; }
+			editedPreset = presets.find( ( item ) => item.id === Number( edit.dataset.presetEdit ) );
+			if ( ! editedPreset ) { return; }
+			presetDraft = filters();
+			editName.value = editedPreset.name; const missing = applyPresetRules( editedPreset );
+			editActions.before( filterPanel ); presetEditor.hidden = false; presetTable.hidden = true;
+			if ( missing ) { setNotice( ux.presetMissing, 'warning', presetRoot ); }
+			editTitle.focus();
+		} else if ( remove ) { deletePresets( [ Number( remove.dataset.presetDelete ) ] ); }
+		else if ( pagination ) { event.preventDefault(); presetPage = Number( new URL( pagination.href ).searchParams.get( 'paged' ) ) || 1; loadPresetTable(); }
+	} );
+	presetTable.addEventListener( 'submit', ( event ) => {
+		event.preventDefault();
+		const submitted = event.submitter;
+		const bottom = submitted && submitted.id === 'doaction2';
+		const action = presetTable.querySelector( bottom ? '[name="action2"]' : '[name="action"]' );
+		if ( action && action.value === 'delete' ) { deletePresets( Array.from( presetTable.querySelectorAll( '[name="preset_ids[]"]:checked' ), ( input ) => Number( input.value ) ) ); }
+		else { const pageInput = presetTable.querySelector( '.current-page' ); presetPage = pageInput ? Math.max( 1, Number( pageInput.value ) || 1 ) : 1; loadPresetTable(); }
+	} );
+	// Native list-table checkbox behavior without requiring the core list-table script.
+	presetTable.addEventListener( 'change', ( event ) => {
+		if ( event.target.matches( 'thead .check-column input, tfoot .check-column input' ) ) { presetTable.querySelectorAll( '[type="checkbox"]' ).forEach( ( input ) => { input.checked = event.target.checked; } ); }
+	} );
+	const updatePreset = historyButton( ux.updatePreset, async () => {
+		if ( ! editedPreset || presetBusy || state.busy || isOperationRunning() ) { return; }
+		presetBusy = true; updatePreset.disabled = true;
+		try {
+			await request( 'filter_presets', { preset_action: 'save', preset_id: editedPreset.id, revision: editedPreset.revision, name: editName.value.trim(), filters: filters() } );
+			closePresetEditor(); setNotice( ux.presetSaved, 'success', presetRoot );
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; updatePreset.disabled = false; }
+		if ( ! editedPreset ) { await loadPresetTable(); }
+	} );
+	editActions.append( updatePreset, historyButton( ux.cancelPreset, () => { if ( ! presetBusy ) { closePresetEditor(); } } ) );
 
 	const linkedOperation = new URLSearchParams( window.location.hash.slice( 1 ) ).get( 'dkbce-operation' );
 	if ( linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation ) ) { openHistoryOperation( linkedOperation ); }
