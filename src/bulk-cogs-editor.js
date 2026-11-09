@@ -521,6 +521,7 @@
 	let clearReferences = null;
 	let forceClearReferences = null;
 	let pendingCancellation = null;
+	let pendingPresetDeletion = null;
 	const forceClearSection = historySection( historyText.forceClear, 2 );
 	forceClearSection.classList.add( 'dkbce-maintenance-section' );
 	const forceClearButton = historyButton( historyText.forceClear, () => {
@@ -670,7 +671,7 @@
 		} else { operationAnchor.after( operationPanel ); historyProgress.hidden = true; }
 		$( '.dkbce-preview-section' ).hidden = extra;
 		$( '.dkbce-apply-section' ).hidden = extra;
-		if ( state.mode === 'settings' ) { historyProgress.appendChild( operationPanel ); }
+		if ( [ 'presets', 'settings' ].includes( state.mode ) ) { historyProgress.appendChild( operationPanel ); }
 		updateOperationControls();
 	}
 
@@ -1816,6 +1817,7 @@
 		previewContent.appendChild( summary );
 		if ( ! csvMode() ) {
 			const freshness = document.createElement( 'details' );
+			freshness.className = 'dkbce-preview-checks';
 			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
 			previewContent.appendChild( freshness );
 		}
@@ -1847,7 +1849,10 @@
 				selectAll.type = 'checkbox';
 				selectAll.className = 'dkbce-select-page';
 				selectAll.setAttribute( 'aria-label', DKBCE.i18n.selectPageProducts );
-				cell.append( selectAll, document.createTextNode( ' ' + label ) );
+				const selectLabel = document.createElement( 'label' );
+				selectLabel.className = 'dkbce-select-page-label';
+				selectLabel.append( selectAll, document.createTextNode( label ) );
+				cell.appendChild( selectLabel );
 			} else {
 				cell.textContent = label;
 			}
@@ -1906,7 +1911,7 @@
 					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
 				}
 			} );
-			[ 0, 2, 5, 6, 7, 1, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
+			[ 0, 1, 2, 5, 6, 7, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
@@ -2175,6 +2180,12 @@
 
 	function confirmAction() {
 		if ( modal.hidden ) { return; }
+		if ( pendingPresetDeletion ) {
+			const { ids } = pendingPresetDeletion;
+			closeConfirm();
+			deletePresets( ids );
+			return;
+		}
 		if ( pendingCancellation ) {
 			cancelOperation();
 			return;
@@ -2827,9 +2838,11 @@
 		if ( pendingCancellation && pendingCancellation.importPreparation && ! state.importPreparing ) {
 			focusTarget = $( '#dkbce-csv-preview' );
 		}
+		if ( pendingPresetDeletion ) { focusTarget = pendingPresetDeletion.trigger; }
 		modal.hidden = true;
 		forceClearReferences = null;
 		pendingCancellation = null;
+		pendingPresetDeletion = null;
 		if ( focusTarget ) { focusTarget.focus(); }
 	}
 	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', closeConfirm );
@@ -3052,8 +3065,23 @@
 		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
 		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); updatePresetControls(); }
 	}
+	function confirmPresetDeletion( ids ) {
+		if ( ! ids.length || presetBusy ) { return; }
+		pendingPresetDeletion = { ids, trigger: document.activeElement };
+		pendingCancellation = null; forceClearReferences = null;
+		$( '#dkbce-confirm-title' ).textContent = ux.deletePresetConfirm;
+		$( '#dkbce-confirm-text' ).textContent = presets.filter( ( preset ) => ids.includes( preset.id ) ).map( ( preset ) => preset.name ).join( ', ' );
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
+		$( '#dkbce-confirm-warning' ).textContent = '';
+		$( '#dkbce-confirm-warning' ).hidden = true;
+		$( '#dkbce-confirm-apply' ).textContent = presetTable.querySelector( 'option[value="delete"]' ).textContent;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	}
 	async function deletePresets( ids ) {
-		if ( ! ids.length || presetBusy || ! window.confirm( ux.deletePresetConfirm ) ) { return; }
+		if ( ! ids.length || presetBusy ) { return; }
 		presetBusy = true; presetRoot.setAttribute( 'aria-busy', 'true' );
 		try {
 			await request( 'filter_presets', { preset_action: 'delete', ids } );
@@ -3061,6 +3089,7 @@
 		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
 		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); }
 		presetPage = 1; await loadPresetTable();
+		if ( state.mode === 'presets' ) { presetHeading.tabIndex = -1; presetHeading.focus(); }
 	}
 	presetTable.addEventListener( 'click', ( event ) => {
 		const edit = event.target.closest( '[data-preset-edit]' );
@@ -3076,7 +3105,7 @@
 			editActions.before( filterPanel ); presetEditor.hidden = false; presetTable.hidden = true;
 			if ( missing ) { setNotice( ux.presetMissing, 'warning', presetRoot ); }
 			editTitle.focus();
-		} else if ( remove ) { deletePresets( [ Number( remove.dataset.presetDelete ) ] ); }
+		} else if ( remove ) { event.preventDefault(); confirmPresetDeletion( [ Number( remove.dataset.presetDelete ) ] ); }
 		else if ( pagination ) { event.preventDefault(); presetPage = Number( new URL( pagination.href ).searchParams.get( 'paged' ) ) || 1; loadPresetTable(); }
 	} );
 	presetTable.addEventListener( 'submit', ( event ) => {
@@ -3084,7 +3113,7 @@
 		const submitted = event.submitter;
 		const bottom = submitted && submitted.id === 'doaction2';
 		const action = presetTable.querySelector( bottom ? '[name="action2"]' : '[name="action"]' );
-		if ( action && action.value === 'delete' ) { deletePresets( Array.from( presetTable.querySelectorAll( '[name="preset_ids[]"]:checked' ), ( input ) => Number( input.value ) ) ); }
+		if ( action && action.value === 'delete' ) { confirmPresetDeletion( Array.from( presetTable.querySelectorAll( '[name="preset_ids[]"]:checked' ), ( input ) => Number( input.value ) ) ); }
 		else { const pageInput = presetTable.querySelector( '.current-page' ); presetPage = pageInput ? Math.max( 1, Number( pageInput.value ) || 1 ) : 1; loadPresetTable(); }
 	} );
 	// Native list-table checkbox behavior without requiring the core list-table script.

@@ -275,12 +275,6 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 = 1.3.0 =
 Version 1.3.0 redesigns the editor workflow, improves selection, progress, import/export and rollback guidance, and adds account-based presets with a dedicated management tab. New presets use a custom database table; existing browser and user-meta presets are not migrated.
 
-= 1.2.1 =
-Version 1.2.1 improves import preparation, Apply checks, and CSV export processing; rounds imported costs to WooCommerce decimal settings; and adds confirmed stop and force-clear recovery controls. You can return to the editor tabs while a background operation runs.
-
-= 1.2.0 =
-Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
-
 == Changelog ==
 
 = 1.3.0 (2026-11-09) =

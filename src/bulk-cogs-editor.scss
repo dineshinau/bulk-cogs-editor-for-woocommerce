@@ -139,6 +139,7 @@ $border: #dce6f5;
 	&:last-child { grid-column: span 5; }
 }
 .dkbce-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.dkbce-operation > details + .dkbce-actions { padding-top: 16px; }
 .dkbce-filter-actions {
 	margin-inline-start: auto;
 	justify-content: flex-end;
@@ -590,17 +591,19 @@ $border: #dce6f5;
 .dkbce-preview-table {
 	thead th { position: sticky; top: 0; z-index: 2; }
 	[data-column="5"], [data-column="6"], [data-column="7"] { text-align: end; white-space: nowrap; }
-	[data-column="0"] { position: sticky; inset-inline-start: 0; z-index: 1; width: 64px; min-width: 64px; max-width: 64px; box-sizing: border-box; }
+	[data-column="0"] { position: sticky; inset-inline-start: 0; z-index: 1; width: 96px; min-width: 96px; max-width: 96px; box-sizing: border-box; }
 	tbody [data-column="0"], tbody [data-column="2"] { background: inherit; }
 	thead [data-column="0"] { z-index: 3; }
+	.dkbce-select-page-label { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 }
+.dkbce-preview-checks { margin-bottom: 16px; }
 .dkbce-product-cell small { display: block; margin-top: 4px; color: $muted; overflow-wrap: anywhere; }
 .dkbce-filter-dropdown .dkbce-popover input[type="search"] { width: 100%; margin-bottom: 10px; }
 #dkbce-selection-toolbar > .dkbce-columns { margin-inline-start: auto; }
 @media (max-width: 600px) {
 	.dkbce-action-fields > p { flex: 1 1 100%; }
 	.dkbce-action-fields #dkbce-value { width: 100%; }
-	.dkbce-preview-table [data-column="2"] { position: sticky; inset-inline-start: 64px; z-index: 1; max-width: 170px; }
+	.dkbce-preview-table [data-column="2"] { position: sticky; inset-inline-start: 96px; z-index: 1; max-width: 170px; }
 	.dkbce-preview-table thead [data-column="2"] { z-index: 3; }
 	.dkbce-product-cell { min-width: 140px; gap: 8px; overflow-wrap: anywhere; }
 }
@@ -844,7 +847,7 @@ $border: #dce6f5;
 		.dkbce-selection-option { grid-column: 1 / -1; }
 		.dkbce-history-field { grid-column: 2; grid-row: 2; font-size: 12px; color: var(--dkbce-secondary); }
 		#dkbce-action-summary { grid-column: 1; grid-row: 2; color: var(--dkbce-secondary); font-size: 13px; font-weight: 400; }
-		> p:last-child { grid-column: 3; grid-row: 2; margin: 0; }
+		> p:last-child { grid-column: 3; grid-row: 2; margin: 0; align-self: end; }
 		&.is-ready { border-color: #9fb7e1; }
 	}
 }
