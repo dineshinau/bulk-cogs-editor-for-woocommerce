@@ -44,27 +44,27 @@ Preserve these behaviors when implementing the improvements.
 
 P1 means fix first because the issue affects confidence, scope comprehension, or recovery. P2 improves task flow and clarity. P3 is an optional product enhancement. These priorities describe UX impact, not security severity.
 
-All approval and completion boxes start unchecked. Approval applies only to the individual finding.
+Approval records manual acceptance of the implementation. UX-01–06 were reviewed and committed. UX-07–17 are implemented and approved for commit on 2026-11-09.
 
 | ID | Priority | Finding | Evidence class | Approved | Implemented |
 | --- | --- | --- | --- | --- | --- |
-| UX-01 | P1 | Reset obsolete review counts after an empty search | Observed defect | [ ] | [ ] |
-| UX-02 | P1 | Make whole-catalog selection an explicit decision | Observed behavior; proposed change | [ ] | [ ] |
-| UX-03 | P1 | Keep current and new costs visible together on mobile | Observed friction | [ ] | [ ] |
-| UX-04 | P1 | Suppress unreliable stalled-operation estimates | Observed defect | [ ] | [ ] |
-| UX-05 | P1 | Explain the actual reason rollback is unavailable | Observed ambiguity | [ ] | [ ] |
-| UX-06 | P2 | Align workflow steps, section numbers, and labels | Observed inconsistency | [ ] | [ ] |
-| UX-07 | P2 | Reduce inactive content and scrolling | Observed friction | [ ] | [ ] |
-| UX-08 | P2 | Clarify reset actions and their scope | Observed ambiguity | [ ] | [ ] |
-| UX-09 | P2 | Provide one actionable empty-results state | Observed friction | [ ] | [ ] |
-| UX-10 | P2 | Simplify preview and confirmation explanations | Observed friction | [ ] | [ ] |
-| UX-11 | P2 | Use mode-specific CSV labels and guidance | Observed inconsistency | [ ] | [ ] |
-| UX-12 | P2 | Make import validation specific and actionable | Observed missing-file message; proposed extension | [ ] | [ ] |
-| UX-13 | P2 | Make history easier to scan and revisit | Observed friction; proposed enhancement | [ ] | [ ] |
-| UX-14 | P2 | Separate current-operation status from rollback status | Observed inconsistency | [ ] | [ ] |
-| UX-15 | P2 | Show rollback availability and retention consequences | Proposed enhancement | [ ] | [ ] |
-| UX-16 | P3 | Add reusable selections and guided starting points | Proposed enhancement | [ ] | [ ] |
-| UX-17 | P3 | Add useful completion actions | Proposed enhancement | [ ] | [ ] |
+| UX-01 | P1 | Reset obsolete review counts after an empty search | Observed defect | [x] | [x] |
+| UX-02 | P1 | Make whole-catalog selection an explicit decision | Observed behavior; proposed change | [x] | [x] |
+| UX-03 | P1 | Keep current and new costs visible together on mobile | Observed friction | [x] | [x] |
+| UX-04 | P1 | Suppress unreliable stalled-operation estimates | Observed defect | [x] | [x] |
+| UX-05 | P1 | Explain the actual reason rollback is unavailable | Observed ambiguity | [x] | [x] |
+| UX-06 | P2 | Align workflow steps, section numbers, and labels | Observed inconsistency | [x] | [x] |
+| UX-07 | P2 | Reduce inactive content and scrolling | Observed friction | [x] | [x] |
+| UX-08 | P2 | Clarify reset actions and their scope | Observed ambiguity | [x] | [x] |
+| UX-09 | P2 | Provide one actionable empty-results state | Observed friction | [x] | [x] |
+| UX-10 | P2 | Simplify preview and confirmation explanations | Observed friction | [x] | [x] |
+| UX-11 | P2 | Use mode-specific CSV labels and guidance | Observed inconsistency | [x] | [x] |
+| UX-12 | P2 | Make import validation specific and actionable | Observed missing-file message; proposed extension | [x] | [x] |
+| UX-13 | P2 | Make history easier to scan and revisit | Observed friction; proposed enhancement | [x] | [x] |
+| UX-14 | P2 | Separate current-operation status from rollback status | Observed inconsistency | [x] | [x] |
+| UX-15 | P2 | Show rollback availability and retention consequences | Proposed enhancement | [x] | [x] |
+| UX-16 | P3 | Add reusable selections and guided starting points | Proposed enhancement | [x] | [x] |
+| UX-17 | P3 | Add useful completion actions | Proposed enhancement | [x] | [x] |
 
 ## Findings and acceptance criteria
 
@@ -320,3 +320,47 @@ Suggested measures after approved changes: time to first valid preview, successf
 - Generated assets and translation catalogs: regenerate through the project workflow when approved source changes require them; do not edit generated files manually.
 
 No product code was changed for this review. The pre-existing `readme.txt` edit was left untouched.
+
+## Implementation update — 2026-11-09
+
+UX-08–17 were implemented together at the user's request, preserving the pending
+UX-07 layout changes. The user approved this batch for commit on 2026-11-09.
+
+| Items | Implemented behavior |
+| --- | --- |
+| UX-08–10 | Separate Reset filters, Deselect all products, and Start over actions; actionable empty results; concise selection scope and expandable freshness guidance. Start over clears the cost draft and selection. |
+| UX-11–12 | Import/export-specific copy; distinct inline missing-file, format, and size errors; blank/zero examples; row errors grouped by reason with row identifiers when supplied and correction guidance. |
+| UX-13–14 | Action-first history, expandable/copyable IDs, focused detail view, reloadable operation links, preserved list filters, and operation-specific progress headings. |
+| UX-15 | Retention-based rollback deadline for eligible records, explicit rollback policy, and confirmation before reducing retention. |
+| UX-16 | Up to ten named filter presets in local browser storage, scoped to site and user. No costs or product selections are saved. Category and supplier-import starting points preserve explicit preview and confirmation. |
+| UX-17 | Links to changed products/history, skipped/failed result review, and a fresh workflow action. No automatic retry or rollback. |
+
+### Verification and limits
+
+- PHP formatting, syntax checks, and PHPCS passed for both changed PHP files.
+  The documented `php:quality` npm script is absent in this checkout, so the
+  available Composer PHPCBF/PHPCS binaries were used with `phpcs.xml`.
+- JavaScript syntax and the production asset build passed. Translation POT was
+  regenerated with the existing project headers.
+- Playwright CLI on wpdev exercised empty-result recovery, preset save/load/delete,
+  preview selection and confirmation, Start over, export guidance, missing/invalid/
+  oversized file errors, history details/back navigation/full-ID access, and a
+  retention reduction warning. The warning was dismissed without saving.
+- Start another update was disabled while wpdev reported a running operation.
+  A browser-only no-active-operation fixture verified that a fresh start clears
+  the cost draft and operation URL and returns to bulk mode.
+- Operation deep links survived reload and focused the detail heading. Controlled,
+  read-only response fixtures verified rollback deadline rendering and the
+  partial-completion recovery action. These are UI checks, not backend integration
+  results for those states.
+- The 390px viewport had no page-level horizontal overflow in the inspected history
+  state. A mobile screenshot was inspected.
+- wpdev runs older PHP than this working tree. Browser checks used intercepted local
+  JS/CSS assets and localized-label fixtures. Updated static PHP copy and the real
+  rollback deadline response require verification after deploying this working tree.
+- No product update, rollback, import upload, export job, or settings save was run.
+  Fresh worker completion, grouped import row errors, unavailable preset options,
+  and denied/expired deep links still need representative integration coverage.
+  Existing server authorization remains in place.
+
+Browser-only preset storage and the integration limits above remain documented for follow-up review.

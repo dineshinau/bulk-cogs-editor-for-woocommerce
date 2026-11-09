@@ -385,6 +385,7 @@ class DKBCE_History_Controller {
 					'total'                        => $data['total'],
 					'can_rollback'                 => $eligible,
 					'rollback_unavailable_reasons' => $reasons,
+					'rollback_expires_at'          => $eligible ? (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) + DKBCE_Retention_Processor::retention_seconds() : null,
 					'rollback_id'                  => $claim,
 					'review_token'                 => $token,
 					'rollback_policy'              => $policy,
