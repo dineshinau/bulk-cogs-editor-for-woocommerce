@@ -277,7 +277,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.0 (2026-11-09) =
+= 1.3.0 (2026-11-10) =
 
 * Fixed: Clear obsolete review counts after empty searches and require explicit product selection for new bulk previews.
 * Fixed: Keep current and proposed costs together on mobile and prevent progress estimate text from overflowing its card.
