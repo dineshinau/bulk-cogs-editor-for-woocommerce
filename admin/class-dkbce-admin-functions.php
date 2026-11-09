@@ -1331,7 +1331,7 @@ class DKBCE_Admin_Functions {
 		if ( $selection['range'] ) {
 			$selected_filters['selection_range'] = $selection['range'];
 		}
-		$selected_ids = null;
+		$selected_ids = ! empty( $selection['expired'] ) ? array() : null;
 		if ( isset( $_POST['selection_mode'] ) && 'explicit' === $_POST['selection_mode'] && ! empty( $selection['previous'] ) ) {
 			$selected_filters['selected_ids'] = $this->explicit_preview_ids( $selection['previous'] );
 			$selected_ids                     = $this->service->scan_matches(
@@ -1370,6 +1370,7 @@ class DKBCE_Admin_Functions {
 		wp_send_json_success(
 			array(
 				'selected_count'   => $selected_count,
+				'selection_notice' => ! empty( $selection['expired'] ) ? __( 'The previous preview expired. Results have been refreshed using your current filters. Select products again before applying.', 'bulk-cogs-editor-for-woocommerce' ) : '',
 				'reused_selection' => ! empty( $filters['selection_operation'] ),
 				'selected_ids'     => $selected_ids,
 				'excluded_ids'     => $selection['excluded_ids'],
@@ -1444,6 +1445,11 @@ class DKBCE_Admin_Functions {
 			return $selection;
 		}
 		$previous = get_transient( 'dkbce_preview_' . $token );
+		if ( preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) && false === $previous ) {
+			// Expired previews cannot authorize a selection. Rebuild with nothing selected.
+			$selection['expired'] = true;
+			return $selection;
+		}
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $previous ) || get_current_user_id() !== (int) $previous['user_id'] || in_array( $previous['operation']['action'], array( 'csv_import', 'csv_export' ), true ) ) {
 			wp_send_json_error( array( 'message' => __( 'The previous selection expired. Use Reset filters to start a new selection.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}

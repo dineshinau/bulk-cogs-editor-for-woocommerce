@@ -2154,6 +2154,9 @@
 					data.selected_ids = [];
 					data.selected_count = 0;
 				}
+				if ( data.selection_notice ) {
+					resetSelection();
+				}
 				renderPreview( data, true );
 				state.selectionOperationId = '';
 				if ( state.selectionFiltersChanged && previousPreviewId ) {
@@ -2161,6 +2164,10 @@
 				}
 				state.selectionNarrowed = Boolean( previousPreviewId && state.selectionFiltersChanged ) || state.selectionNarrowed;
 				state.selectionFiltersChanged = false;
+				if ( data.selection_notice ) {
+					state.selectionNarrowed = false;
+					setNotice( data.selection_notice, 'info', $( '.dkbce-preview-section' ) );
+				}
 				updateSelectionSummary();
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-preview-section' ) ) )
