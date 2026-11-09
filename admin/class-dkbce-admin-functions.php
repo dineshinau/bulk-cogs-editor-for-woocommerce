@@ -179,10 +179,11 @@ class DKBCE_Admin_Functions {
 					'savePreset'         => __( 'Save filters', 'bulk-cogs-editor-for-woocommerce' ),
 					'loadPreset'         => __( 'Load filters', 'bulk-cogs-editor-for-woocommerce' ),
 					'deletePreset'       => __( 'Delete saved filters', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetHelp'         => __( 'Saved in this browser for your account and this site. Filters only; costs and product selections are not saved. Up to 10 presets.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetSaved'        => __( 'Filters saved in this browser.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetHelp'         => __( 'Saved to your account on this site, available across browsers and devices. Filters only; costs and product selections are not saved. Up to 10 presets.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetMigration'    => __( 'Some browser presets could not be transferred because names conflict or the account limit was reached. They remain in this browser.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetSaved'        => __( 'Filters saved to your account.', 'bulk-cogs-editor-for-woocommerce' ),
 					'presetMissing'      => __( 'Some saved filter values are no longer available. Review the visible filters before finding products.', 'bulk-cogs-editor-for-woocommerce' ),
-					'presetError'        => __( 'Could not access saved filters in this browser. Your current filters are unchanged.', 'bulk-cogs-editor-for-woocommerce' ),
+					'presetError'        => __( 'Could not load saved filters. Close and reopen Saved filters to try again. Your current filters are unchanged.', 'bulk-cogs-editor-for-woocommerce' ),
 					'presetNameRequired' => __( 'Enter a unique preset name (up to 60 characters). A maximum of 10 presets can be saved.', 'bulk-cogs-editor-for-woocommerce' ),
 					'startCategory'      => __( 'Choose a category', 'bulk-cogs-editor-for-woocommerce' ),
 					'startImport'        => __( 'Import supplier costs', 'bulk-cogs-editor-for-woocommerce' ),
@@ -699,6 +700,85 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'Could not save display preferences. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 		}
 		wp_send_json_success( $preferences );
+	}
+
+	/**
+	 * Read or replace the current user's site-specific filter presets.
+	 *
+	 * @return void
+	 */
+	public function ajax_filter_presets() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$user_id  = get_current_user_id();
+		$key      = 'dkbce_filter_presets_' . get_current_blog_id();
+		$exists   = metadata_exists( 'user', $user_id, $key );
+		$stored   = get_user_meta( $user_id, $key, true );
+		$revision = hash( 'sha256', maybe_serialize( $stored ) );
+		$presets  = is_array( $stored ) && isset( $stored['presets'] ) ? $stored['presets'] : array();
+		if ( isset( $_POST['presets'] ) ) {
+			$expected = isset( $_POST['revision'] ) && is_string( $_POST['revision'] ) ? sanitize_text_field( wp_unslash( $_POST['revision'] ) ) : '';
+			if ( ! hash_equals( $revision, $expected ) ) {
+				wp_send_json_error( array( 'message' => __( 'Saved filters changed on another device. Close and reopen Saved filters, then try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+			}
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON fields are validated and sanitized below.
+			$json = is_string( $_POST['presets'] ) ? wp_unslash( $_POST['presets'] ) : '';
+			$next = strlen( $json ) <= 65536 ? json_decode( $json, true ) : null;
+			if ( ! is_array( $next ) || count( $next ) > 10 ) {
+				wp_send_json_error( array( 'message' => __( 'Choose up to 10 valid filter presets.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			$presets = array();
+			$names   = array();
+			foreach ( $next as $preset ) {
+				$name = isset( $preset['name'] ) && is_string( $preset['name'] ) ? trim( sanitize_text_field( $preset['name'] ) ) : '';
+				if ( '' === $name || mb_strlen( $name ) > 60 || in_array( $name, $names, true ) || ! isset( $preset['filters'] ) || ! is_array( $preset['filters'] ) ) {
+					wp_send_json_error( array( 'message' => __( 'Enter a unique preset name (up to 60 characters). A maximum of 10 presets can be saved.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+				}
+				$filters = array();
+				foreach ( array( 'search', 'price_min', 'price_max', 'cogs_min', 'cogs_max' ) as $field ) {
+					$value = $preset['filters'][ $field ] ?? '';
+					if ( ! is_scalar( $value ) || strlen( (string) $value ) > 100 ) {
+						wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+					}
+					$filters[ $field ] = sanitize_text_field( (string) $value );
+				}
+				foreach ( array( 'category', 'type', 'stock_status', 'brand' ) as $field ) {
+					$values = $preset['filters'][ $field ] ?? array();
+					if ( ! is_array( $values ) || count( $values ) > 1000 ) {
+						wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+					}
+					foreach ( $values as $value ) {
+						if ( ! is_scalar( $value ) || strlen( (string) $value ) > 100 ) {
+							wp_send_json_error( array( 'message' => __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+						}
+					}
+					$filters[ $field ] = array_values( array_unique( array_map( 'sanitize_text_field', $values ) ) );
+				}
+				$names[]   = $name;
+				$presets[] = array(
+					'name'    => $name,
+					'filters' => $filters,
+				);
+			}
+			$record = array( 'presets' => $presets );
+			if ( $record !== $stored ) {
+				$saved = $exists
+					? update_user_meta( $user_id, $key, wp_slash( $record ), $stored )
+					: add_user_meta( $user_id, $key, wp_slash( $record ), true );
+				if ( ! $saved ) {
+					wp_send_json_error( array( 'message' => __( 'Could not save filters. Close and reopen Saved filters, then try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+				}
+			}
+			$revision = hash( 'sha256', maybe_serialize( $record ) );
+		}
+		wp_send_json_success(
+			array(
+				'presets'  => $presets,
+				'revision' => $revision,
+			)
+		);
 	}
 
 	/**

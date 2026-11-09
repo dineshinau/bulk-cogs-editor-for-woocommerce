@@ -2947,23 +2947,51 @@
 		presetSelect.replaceChildren( new Option( ux.presets, '' ) );
 		presets.forEach( ( preset, index ) => presetSelect.add( new Option( preset.name, String( index ) ) ) );
 	}
-	function storePresets( next ) {
-		try { window.localStorage.setItem( presetKey, JSON.stringify( next ) ); presets = next; renderPresets(); return true; }
-		catch ( error ) { setNotice( ux.presetError, 'error', $( '.dkbce-filters-section' ) ); return false; }
+	let presetRevision = '';
+	let presetBusy = false;
+	let presetsLoaded = false;
+	async function storePresets( next ) {
+		presetBusy = true; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets', { presets: JSON.stringify( next ), revision: presetRevision } );
+			presets = data.presets; presetRevision = data.revision; renderPresets(); return true;
+		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); return false; }
+		finally { presetBusy = false; updatePresetControls(); }
 	}
-	try {
-		const saved = JSON.parse( window.localStorage.getItem( presetKey ) || '[]' );
-		if ( ! Array.isArray( saved ) ) { throw new Error( 'Invalid presets' ); }
-		presets = saved.filter( ( item ) => item && typeof item.name === 'string' && item.name.length <= 60 && item.filters && typeof item.filters === 'object' ).slice( 0, 10 );
-	} catch ( error ) { setNotice( ux.presetError, 'error', $( '.dkbce-filters-section' ) ); }
+	async function loadPresets() {
+		if ( presetBusy ) { return; }
+		presetBusy = true; presetsLoaded = false; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets' );
+			presets = data.presets; presetRevision = data.revision; presetsLoaded = true; renderPresets();
+			let legacy;
+			try { legacy = JSON.parse( window.localStorage.getItem( presetKey ) || '[]' ); }
+			catch ( error ) { return; } // Browser storage is optional; account presets still work.
+			if ( ! Array.isArray( legacy ) || ! legacy.length ) { return; }
+			const merged = [ ...presets ];
+			for ( const preset of legacy ) {
+				if ( ! preset || typeof preset.name !== 'string' || ! preset.filters ) { throw new Error( ux.presetMigration ); }
+				const existing = merged.find( ( item ) => item.name === preset.name );
+				if ( existing ) {
+					const same = Object.keys( filters() ).every( ( key ) => JSON.stringify( existing.filters[ key ] ) === JSON.stringify( preset.filters[ key ] ) );
+					if ( ! same ) { throw new Error( ux.presetMigration ); }
+				} else { merged.push( preset ); }
+			}
+			if ( merged.length > 10 ) { throw new Error( ux.presetMigration ); }
+			if ( await storePresets( merged ) ) {
+				try { window.localStorage.removeItem( presetKey ); } catch ( error ) { /* Keep the legacy copy if storage is blocked. */ }
+			}
+		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); }
+		finally { presetBusy = false; updatePresetControls(); }
+	}
 	renderPresets();
-	const presetLocked = () => state.busy || state.loadingPage || isOperationRunning();
+	const presetLocked = () => presetBusy || ! presetsLoaded || state.busy || state.loadingPage || isOperationRunning();
 	presetControls.append(
-		historyButton( ux.savePreset, () => {
+		historyButton( ux.savePreset, async () => {
 			if ( presetLocked() ) { return; }
 			const name = presetName.value.trim();
 			if ( ! name || presets.length >= 10 || presets.some( ( preset ) => preset.name === name ) ) { setNotice( ux.presetNameRequired, 'error', $( '.dkbce-filters-section' ) ); presetName.focus(); return; }
-			if ( storePresets( [ ...presets, { name, filters: filters() } ] ) ) { presetName.value = ''; setNotice( ux.presetSaved, 'success', $( '.dkbce-filters-section' ) ); }
+			if ( await storePresets( [ ...presets, { name, filters: filters() } ] ) ) { presetName.value = ''; setNotice( ux.presetSaved, 'success', $( '.dkbce-filters-section' ) ); }
 		} ),
 		historyButton( ux.loadPreset, () => {
 			if ( presetLocked() || presetSelect.value === '' ) { return; }
@@ -2993,23 +3021,26 @@
 			storePresets( presets.filter( ( preset, index ) => index !== Number( presetSelect.value ) ) );
 		} )
 	);
-	presetPanel.append( historyElement( 'p', ux.presetHelp, 'description' ), historyField( ux.presetName, presetName ), presetSelect, presetControls );
-	$( '#dkbce-filter-panel' ).before( presetPanel );
-	const startingPoints = historyElement( 'div', '', 'dkbce-actions dkbce-starting-points' );
-	startingPoints.append(
-		historyButton( ux.startCategory, () => {
-			if ( presetLocked() ) { return; }
-			$( '#dkbce-filter-panel' ).open = true;
-			const dropdown = $( '#dkbce-category' ).nextElementSibling; dropdown.open = true; dropdown.querySelector( 'summary' ).focus();
-		} ),
-		historyButton( ux.startImport, () => {
-			if ( presetLocked() ) { return; }
-			$( '[data-dkbce-mode="csv"]' ).click();
-			const importing = $( 'input[name="dkbce-csv-action"][value="import"]' ); importing.checked = true; importing.dispatchEvent( new Event( 'change', { bubbles: true } ) );
-			$( '#dkbce-csv-file' ).focus();
-		} )
-	);
-	$( '#dkbce-filter-panel' ).before( startingPoints );
+	const presetSave = historyElement( 'div', '', 'dkbce-preset-row' );
+	const presetLoad = historyElement( 'div', '', 'dkbce-preset-row' );
+	const [ savePreset, loadPreset, deletePreset ] = Array.from( presetControls.children );
+	deletePreset.className = 'button-link';
+	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
+	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset, deletePreset );
+	const updatePresetControls = () => {
+		savePreset.disabled = presetBusy || ! presetsLoaded;
+		presetName.disabled = presetBusy;
+		presetSelect.disabled = presetBusy;
+		presetPanel.setAttribute( 'aria-busy', String( presetBusy ) );
+		loadPreset.disabled = presetBusy || ! presetsLoaded || presetSelect.value === '';
+		deletePreset.disabled = loadPreset.disabled;
+		presetLoad.hidden = ! presets.length;
+	};
+	presetSelect.addEventListener( 'change', updatePresetControls );
+	presetPanel.addEventListener( 'toggle', () => { if ( presetPanel.open ) { loadPresets(); } } );
+	presetPanel.append( presetLoad, presetSave, historyElement( 'p', ux.presetHelp, 'description' ) );
+	$( '#dkbce-filter-panel' ).after( presetPanel );
+	updatePresetControls();
 
 	const linkedOperation = new URLSearchParams( window.location.hash.slice( 1 ) ).get( 'dkbce-operation' );
 	if ( linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation ) ) { openHistoryOperation( linkedOperation ); }

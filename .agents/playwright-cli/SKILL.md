@@ -6,6 +6,10 @@ allowed-tools: Bash(playwright-cli:*)
 
 # Browser Automation with playwright-cli
 
+## Project verification rule
+
+Run Playwright verification only when the user explicitly requests it for the current task. Do not infer permission from an earlier task, UI changes, a review request, or a completion checklist. This includes browser sessions, screenshots, fixture checks, and E2E runs. Otherwise use the permitted non-browser checks and report browser verification as not run.
+
 ## Quick start
 
 ```bash

@@ -1071,8 +1071,21 @@ $border: #dce6f5;
 	.dkbce-preview-section > .dkbce-apply-section { margin: 0 0 16px; padding: 16px; }
 }
 
-.dkbce-presets { margin-bottom: 16px; summary { cursor: pointer; font-weight: 600; } input, select { max-width: 100%; } .dkbce-actions { margin-block: 12px; } }
-.dkbce-starting-points { margin-block: 12px; }
+// Presets are secondary to the visible product filters.
+.dkbce-wrap .dkbce-presets {
+	margin-top: 16px;
+	> summary { width: fit-content; min-height: 32px; padding: 4px 0; border: 0; background: transparent; cursor: pointer; font-weight: 500; }
+	.dkbce-preset-row {
+		display: flex; align-items: flex-end; flex-wrap: wrap; gap: 8px 12px; margin-top: 12px;
+		&[hidden] { display: none; }
+		.dkbce-history-field { flex: 1 1 220px; max-width: 360px; min-width: 0; margin: 0; gap: 4px; }
+		input, select { width: 100%; max-width: 100%; }
+		.button { min-height: 42px; padding: 6px 14px; }
+		.button-link { min-height: 42px; }
+	}
+	.description { max-width: 64ch; margin: 12px 0 0; }
+}
+.dkbce-wrap .dkbce-filter-chip { min-height: 32px; padding: 4px 10px; border-radius: 16px; font-size: 12px; line-height: 1.6; }
 .dkbce-file-error { color: #b32d2e; font-weight: 600; }
 #dkbce-empty-recovery { margin-top: 12px; }
 #dkbce-history .dkbce-history-table details { min-width: 120px; input { width: 100%; } }
