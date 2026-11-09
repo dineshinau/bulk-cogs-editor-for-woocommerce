@@ -27,83 +27,89 @@ class DKBCE_History_Controller {
 	 */
 	public static function labels() {
 		return array(
-			'history'           => __( 'Operation history', 'bulk-cogs-editor-for-woocommerce' ),
-			'historyHelp'       => __( 'Select an operation to view details or review a rollback.', 'bulk-cogs-editor-for-woocommerce' ),
-			'details'           => __( 'Operation details', 'bulk-cogs-editor-for-woocommerce' ),
-			'changes'           => __( 'Product changes', 'bulk-cogs-editor-for-woocommerce' ),
-			'review'            => __( 'Review rollback', 'bulk-cogs-editor-for-woocommerce' ),
-			'progress'          => __( 'Rollback progress and results', 'bulk-cogs-editor-for-woocommerce' ),
-			'rollbackBehavior'  => __( 'Rollback behavior', 'bulk-cogs-editor-for-woocommerce' ),
-			'overwrite'         => __( 'Overwrite current costs with original costs', 'bulk-cogs-editor-for-woocommerce' ),
-			'skipChanged'       => __( 'Skip products whose costs changed afterward', 'bulk-cogs-editor-for-woocommerce' ),
-			'policyHelp'        => __( 'Applies to new rollbacks. The chosen behavior is shown during review and remains fixed while the rollback runs.', 'bulk-cogs-editor-for-woocommerce' ),
-			'skipWarning'       => __( 'Rollback restores original costs only when current costs still match the values saved by this operation. Products changed afterward or deleted will be skipped. Costs are checked again during processing.', 'bulk-cogs-editor-for-woocommerce' ),
-			'skipConfirm'       => __( 'I understand that rollback restores original costs and skips products whose costs changed afterward.', 'bulk-cogs-editor-for-woocommerce' ),
-			'settings'          => __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ),
-			'retention'         => __( 'History retention', 'bulk-cogs-editor-for-woocommerce' ),
-			'retentionHelp'     => __( 'Keep operation history and original costs for this many days after completion. Expired history is deleted automatically and cannot be rolled back. Reducing this period also applies to existing history.', 'bulk-cogs-editor-for-woocommerce' ),
-			'days30'            => __( '30 days', 'bulk-cogs-editor-for-woocommerce' ),
-			'days90'            => __( '90 days', 'bulk-cogs-editor-for-woocommerce' ),
-			'custom'            => __( 'Custom days', 'bulk-cogs-editor-for-woocommerce' ),
-			'days'              => __( 'Days', 'bulk-cogs-editor-for-woocommerce' ),
-			'save'              => __( 'Save settings', 'bulk-cogs-editor-for-woocommerce' ),
-			'forceClear'        => __( 'Force clear current operation', 'bulk-cogs-editor-for-woocommerce' ),
-			'forceClearWarning' => __( 'Warning: Use this only when your operation is stuck and normal cancellation does not work. This deletes your saved current operation and import references and requests cancellation. An active worker may continue briefly. Costs already changed are not restored. History and rollback data are kept. Check operation history before starting another update.', 'bulk-cogs-editor-for-woocommerce' ),
-			'forceClearConfirm' => __( 'Force clear your current operation and import references? This cannot undo cost changes or immediately stop an active worker.', 'bulk-cogs-editor-for-woocommerce' ),
-			'saved'             => __( 'Settings saved.', 'bulk-cogs-editor-for-woocommerce' ),
-			'filter'            => __( 'Filter', 'bulk-cogs-editor-for-woocommerce' ),
-			'allStatuses'       => __( 'All statuses', 'bulk-cogs-editor-for-woocommerce' ),
-			'allActions'        => __( 'All operation types', 'bulk-cogs-editor-for-woocommerce' ),
-			'allUsers'          => __( 'All users', 'bulk-cogs-editor-for-woocommerce' ),
-			'userId'            => __( 'User ID', 'bulk-cogs-editor-for-woocommerce' ),
-			'from'              => __( 'From date', 'bulk-cogs-editor-for-woocommerce' ),
-			'to'                => __( 'To date', 'bulk-cogs-editor-for-woocommerce' ),
-			'search'            => __( 'Search by operation ID, note, or product ID', 'bulk-cogs-editor-for-woocommerce' ),
-			'id'                => __( 'Operation ID', 'bulk-cogs-editor-for-woocommerce' ),
-			'date'              => __( 'Date & time', 'bulk-cogs-editor-for-woocommerce' ),
-			'action'            => __( 'Operation type', 'bulk-cogs-editor-for-woocommerce' ),
-			'products'          => __( 'Products', 'bulk-cogs-editor-for-woocommerce' ),
-			'status'            => __( 'Status', 'bulk-cogs-editor-for-woocommerce' ),
-			'user'              => __( 'User', 'bulk-cogs-editor-for-woocommerce' ),
-			'note'              => __( 'Note / description', 'bulk-cogs-editor-for-woocommerce' ),
-			'view'              => __( 'View details', 'bulk-cogs-editor-for-woocommerce' ),
-			'old'               => __( 'Old COGS (original)', 'bulk-cogs-editor-for-woocommerce' ),
-			'new'               => __( 'New COGS (after operation)', 'bulk-cogs-editor-for-woocommerce' ),
-			'current'           => __( 'Current COGS (now)', 'bulk-cogs-editor-for-woocommerce' ),
-			'restore'           => __( 'Rollback to (original)', 'bulk-cogs-editor-for-woocommerce' ),
-			'change'            => __( 'Change', 'bulk-cogs-editor-for-woocommerce' ),
-			'product'           => __( 'Product', 'bulk-cogs-editor-for-woocommerce' ),
-			'sku'               => __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ),
-			'back'              => __( 'Back to history', 'bulk-cogs-editor-for-woocommerce' ),
-			'backChanges'       => __( 'Back to product changes', 'bulk-cogs-editor-for-woocommerce' ),
-			'confirm'           => __( 'Confirm rollback', 'bulk-cogs-editor-for-woocommerce' ),
-			'warning'           => __( 'Rollback restores the original costs shown in this review. Later changes will be overwritten. Deleted products cannot be restored.', 'bulk-cogs-editor-for-woocommerce' ),
-			'unavailable'       => __( 'Rollback is unavailable.', 'bulk-cogs-editor-for-woocommerce' ),
-			'empty'             => __( 'No operations found.', 'bulk-cogs-editor-for-woocommerce' ),
+			'defaultRollbackMode' => __( 'Default rollback mode', 'bulk-cogs-editor-for-woocommerce' ),
+			'keepRollbackHistory' => __( 'Keep rollback history', 'bulk-cogs-editor-for-woocommerce' ),
+			'noRollbackHistory'   => __( 'No rollback history', 'bulk-cogs-editor-for-woocommerce' ),
+			'rollbackModeHelp'    => __( 'Choose the default for new cost updates. You can change it in the confirmation popup for each operation.', 'bulk-cogs-editor-for-woocommerce' ),
+			'keepRollbackHelp'    => __( 'Original costs and product changes are retained for the configured history period so you can review and roll back this update.', 'bulk-cogs-editor-for-woocommerce' ),
+			'noRollbackHelp'      => __( 'This update cannot be rolled back, and detailed cost-change history will not be retained. Operation results and retry protection remain available. Temporary retry data is removed after the operation finishes.', 'bulk-cogs-editor-for-woocommerce' ),
+			'history'             => __( 'Operation history', 'bulk-cogs-editor-for-woocommerce' ),
+			'historyHelp'         => __( 'Select an operation to view details or review a rollback.', 'bulk-cogs-editor-for-woocommerce' ),
+			'details'             => __( 'Operation details', 'bulk-cogs-editor-for-woocommerce' ),
+			'changes'             => __( 'Product changes', 'bulk-cogs-editor-for-woocommerce' ),
+			'review'              => __( 'Review rollback', 'bulk-cogs-editor-for-woocommerce' ),
+			'progress'            => __( 'Rollback progress and results', 'bulk-cogs-editor-for-woocommerce' ),
+			'rollbackBehavior'    => __( 'Rollback behavior', 'bulk-cogs-editor-for-woocommerce' ),
+			'overwrite'           => __( 'Overwrite current costs with original costs', 'bulk-cogs-editor-for-woocommerce' ),
+			'skipChanged'         => __( 'Skip products whose costs changed afterward', 'bulk-cogs-editor-for-woocommerce' ),
+			'policyHelp'          => __( 'Applies to new rollbacks. The chosen behavior is shown during review and remains fixed while the rollback runs.', 'bulk-cogs-editor-for-woocommerce' ),
+			'skipWarning'         => __( 'Rollback restores original costs only when current costs still match the values saved by this operation. Products changed afterward or deleted will be skipped. Costs are checked again during processing.', 'bulk-cogs-editor-for-woocommerce' ),
+			'skipConfirm'         => __( 'I understand that rollback restores original costs and skips products whose costs changed afterward.', 'bulk-cogs-editor-for-woocommerce' ),
+			'settings'            => __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ),
+			'retention'           => __( 'History retention', 'bulk-cogs-editor-for-woocommerce' ),
+			'retentionHelp'       => __( 'Keep operation history and original costs for this many days after completion. Expired history is deleted automatically and cannot be rolled back. Reducing this period also applies to existing history.', 'bulk-cogs-editor-for-woocommerce' ),
+			'days30'              => __( '30 days', 'bulk-cogs-editor-for-woocommerce' ),
+			'days90'              => __( '90 days', 'bulk-cogs-editor-for-woocommerce' ),
+			'custom'              => __( 'Custom days', 'bulk-cogs-editor-for-woocommerce' ),
+			'days'                => __( 'Days', 'bulk-cogs-editor-for-woocommerce' ),
+			'save'                => __( 'Save settings', 'bulk-cogs-editor-for-woocommerce' ),
+			'forceClear'          => __( 'Force clear current operation', 'bulk-cogs-editor-for-woocommerce' ),
+			'forceClearWarning'   => __( 'Warning: Use this only when your operation is stuck and normal cancellation does not work. This deletes your saved current operation and import references and requests cancellation. An active worker may continue briefly. Costs already changed are not restored. History and rollback data are kept. Check operation history before starting another update.', 'bulk-cogs-editor-for-woocommerce' ),
+			'forceClearConfirm'   => __( 'Force clear your current operation and import references? This cannot undo cost changes or immediately stop an active worker.', 'bulk-cogs-editor-for-woocommerce' ),
+			'saved'               => __( 'Settings saved.', 'bulk-cogs-editor-for-woocommerce' ),
+			'filter'              => __( 'Filter', 'bulk-cogs-editor-for-woocommerce' ),
+			'allStatuses'         => __( 'All statuses', 'bulk-cogs-editor-for-woocommerce' ),
+			'allActions'          => __( 'All operation types', 'bulk-cogs-editor-for-woocommerce' ),
+			'allUsers'            => __( 'All users', 'bulk-cogs-editor-for-woocommerce' ),
+			'userId'              => __( 'User ID', 'bulk-cogs-editor-for-woocommerce' ),
+			'from'                => __( 'From date', 'bulk-cogs-editor-for-woocommerce' ),
+			'to'                  => __( 'To date', 'bulk-cogs-editor-for-woocommerce' ),
+			'search'              => __( 'Search by operation ID, note, or product ID', 'bulk-cogs-editor-for-woocommerce' ),
+			'id'                  => __( 'Operation ID', 'bulk-cogs-editor-for-woocommerce' ),
+			'date'                => __( 'Date & time', 'bulk-cogs-editor-for-woocommerce' ),
+			'action'              => __( 'Operation type', 'bulk-cogs-editor-for-woocommerce' ),
+			'products'            => __( 'Products', 'bulk-cogs-editor-for-woocommerce' ),
+			'status'              => __( 'Status', 'bulk-cogs-editor-for-woocommerce' ),
+			'user'                => __( 'User', 'bulk-cogs-editor-for-woocommerce' ),
+			'note'                => __( 'Note / description', 'bulk-cogs-editor-for-woocommerce' ),
+			'view'                => __( 'View details', 'bulk-cogs-editor-for-woocommerce' ),
+			'old'                 => __( 'Old COGS (original)', 'bulk-cogs-editor-for-woocommerce' ),
+			'new'                 => __( 'New COGS (after operation)', 'bulk-cogs-editor-for-woocommerce' ),
+			'current'             => __( 'Current COGS (now)', 'bulk-cogs-editor-for-woocommerce' ),
+			'restore'             => __( 'Rollback to (original)', 'bulk-cogs-editor-for-woocommerce' ),
+			'change'              => __( 'Change', 'bulk-cogs-editor-for-woocommerce' ),
+			'product'             => __( 'Product', 'bulk-cogs-editor-for-woocommerce' ),
+			'sku'                 => __( 'SKU', 'bulk-cogs-editor-for-woocommerce' ),
+			'back'                => __( 'Back to history', 'bulk-cogs-editor-for-woocommerce' ),
+			'backChanges'         => __( 'Back to product changes', 'bulk-cogs-editor-for-woocommerce' ),
+			'confirm'             => __( 'Confirm rollback', 'bulk-cogs-editor-for-woocommerce' ),
+			'warning'             => __( 'Rollback restores the original costs shown in this review. Later changes will be overwritten. Deleted products cannot be restored.', 'bulk-cogs-editor-for-woocommerce' ),
+			'unavailable'         => __( 'Rollback is unavailable.', 'bulk-cogs-editor-for-woocommerce' ),
+			'empty'               => __( 'No operations found.', 'bulk-cogs-editor-for-woocommerce' ),
 			/* translators: %1$d: products with retained original costs, %2$d: successful products in the operation. */
-			'partialHistory'    => __( 'Original values are available for %1$d of %2$d successful products. Only products with recorded original values can be rolled back.', 'bulk-cogs-editor-for-woocommerce' ),
-			'noChanges'         => __( 'No recorded product changes. Older operations have summary history only.', 'bulk-cogs-editor-for-woocommerce' ),
-			'indexing'          => __( 'Indexing older operation history…', 'bulk-cogs-editor-for-woocommerce' ),
-			'show'              => __( 'Show entries', 'bulk-cogs-editor-for-woocommerce' ),
-			'previous'          => __( 'Previous page', 'bulk-cogs-editor-for-woocommerce' ),
-			'next'              => __( 'Next page', 'bulk-cogs-editor-for-woocommerce' ),
+			'partialHistory'      => __( 'Original values are available for %1$d of %2$d successful products. Only products with recorded original values can be rolled back.', 'bulk-cogs-editor-for-woocommerce' ),
+			'noChanges'           => __( 'No recorded product changes. Older operations have summary history only.', 'bulk-cogs-editor-for-woocommerce' ),
+			'indexing'            => __( 'Indexing older operation history…', 'bulk-cogs-editor-for-woocommerce' ),
+			'show'                => __( 'Show entries', 'bulk-cogs-editor-for-woocommerce' ),
+			'previous'            => __( 'Previous page', 'bulk-cogs-editor-for-woocommerce' ),
+			'next'                => __( 'Next page', 'bulk-cogs-editor-for-woocommerce' ),
 			/* translators: %1$d: current page, %2$d: total pages, %3$d: total entries. */
-			'page'              => __( 'Page %1$d of %2$d · %3$d entries', 'bulk-cogs-editor-for-woocommerce' ),
-			'updated'           => __( 'Products updated', 'bulk-cogs-editor-for-woocommerce' ),
-			'started'           => __( 'Started at', 'bulk-cogs-editor-for-woocommerce' ),
-			'completed'         => __( 'Completed at', 'bulk-cogs-editor-for-woocommerce' ),
-			'duration'          => __( 'Duration', 'bulk-cogs-editor-for-woocommerce' ),
-			'filters'           => __( 'Filters used', 'bulk-cogs-editor-for-woocommerce' ),
-			'none'              => __( 'None', 'bulk-cogs-editor-for-woocommerce' ),
-			'rounding'          => __( 'Rounding', 'bulk-cogs-editor-for-woocommerce' ),
-			'roundingValue'     => __( 'WooCommerce cost precision', 'bulk-cogs-editor-for-woocommerce' ),
-			'rollback'          => __( 'Rollback', 'bulk-cogs-editor-for-woocommerce' ),
-			'noteHelp'          => __( 'Optional note for this operation', 'bulk-cogs-editor-for-woocommerce' ),
-			'confirmCheck'      => __( 'I understand that rollback restores original costs and may overwrite later changes.', 'bulk-cogs-editor-for-woocommerce' ),
-			'rollbackExists'    => __( 'View rollback operation', 'bulk-cogs-editor-for-woocommerce' ),
-			'loading'           => __( 'Loading…', 'bulk-cogs-editor-for-woocommerce' ),
-			'cancelRollback'    => __( 'Cancel rollback', 'bulk-cogs-editor-for-woocommerce' ),
-			'actions'           => array(
+			'page'                => __( 'Page %1$d of %2$d · %3$d entries', 'bulk-cogs-editor-for-woocommerce' ),
+			'updated'             => __( 'Products updated', 'bulk-cogs-editor-for-woocommerce' ),
+			'started'             => __( 'Started at', 'bulk-cogs-editor-for-woocommerce' ),
+			'completed'           => __( 'Completed at', 'bulk-cogs-editor-for-woocommerce' ),
+			'duration'            => __( 'Duration', 'bulk-cogs-editor-for-woocommerce' ),
+			'filters'             => __( 'Filters used', 'bulk-cogs-editor-for-woocommerce' ),
+			'none'                => __( 'None', 'bulk-cogs-editor-for-woocommerce' ),
+			'rounding'            => __( 'Rounding', 'bulk-cogs-editor-for-woocommerce' ),
+			'roundingValue'       => __( 'WooCommerce cost precision', 'bulk-cogs-editor-for-woocommerce' ),
+			'rollback'            => __( 'Rollback', 'bulk-cogs-editor-for-woocommerce' ),
+			'noteHelp'            => __( 'Optional note for this operation', 'bulk-cogs-editor-for-woocommerce' ),
+			'confirmCheck'        => __( 'I understand that rollback restores original costs and may overwrite later changes.', 'bulk-cogs-editor-for-woocommerce' ),
+			'rollbackExists'      => __( 'View rollback operation', 'bulk-cogs-editor-for-woocommerce' ),
+			'loading'             => __( 'Loading…', 'bulk-cogs-editor-for-woocommerce' ),
+			'cancelRollback'      => __( 'Cancel rollback', 'bulk-cogs-editor-for-woocommerce' ),
+			'actions'             => array(
 				'set'              => __( 'Set exact cost', 'bulk-cogs-editor-for-woocommerce' ),
 				'clear'            => __( 'Clear cost', 'bulk-cogs-editor-for-woocommerce' ),
 				'increase_percent' => __( 'Percentage increase', 'bulk-cogs-editor-for-woocommerce' ),
@@ -113,7 +119,7 @@ class DKBCE_History_Controller {
 				'csv_import'       => __( 'CSV import', 'bulk-cogs-editor-for-woocommerce' ),
 				'rollback'         => __( 'Rollback', 'bulk-cogs-editor-for-woocommerce' ),
 			),
-			'statuses'          => array(
+			'statuses'            => array(
 				'pending'               => __( 'Queued', 'bulk-cogs-editor-for-woocommerce' ),
 				'processing'            => __( 'Processing', 'bulk-cogs-editor-for-woocommerce' ),
 				'completed'             => __( 'Completed', 'bulk-cogs-editor-for-woocommerce' ),
@@ -343,6 +349,9 @@ class DKBCE_History_Controller {
 			$active_attempt = $attempt && ! in_array( $attempt['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
 			$terminal       = in_array( $state['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true );
 			$reasons        = array();
+			if ( 'none' === ( $state['rollback_mode'] ?? 'keep' ) ) {
+				$reasons[] = __( 'Rollback history was disabled for this operation. Original costs and detailed product changes are unavailable.', 'bulk-cogs-editor-for-woocommerce' );
+			}
 			if ( ! $terminal ) {
 				$reasons[] = __( 'This operation is still running. Review rollback after it finishes.', 'bulk-cogs-editor-for-woocommerce' );
 			}
@@ -446,7 +455,7 @@ class DKBCE_History_Controller {
 		}
 		try {
 			$source = $store->get( $source_id, true );
-			if ( ! $source || ( $review['policy'] ?? '' ) !== DKBCE_History_Store::rollback_policy() || ! in_array( $source['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) || 'rollback' === $source['action'] || ! empty( $source['history_cleanup_pending'] ) || ! empty( $source['history_cleanup_complete'] ) || ! empty( $source['history_cleanup_started'] ) || time() - (int) ( ! empty( $source['completed_at'] ) ? $source['completed_at'] : $source['created_at'] ) >= DKBCE_Retention_Processor::retention_seconds() ) {
+			if ( ! $source || 'none' === ( $source['rollback_mode'] ?? 'keep' ) || ( $review['policy'] ?? '' ) !== DKBCE_History_Store::rollback_policy() || ! in_array( $source['status'], array( 'completed', 'completed_with_errors', 'failed', 'cancelled' ), true ) || 'rollback' === $source['action'] || ! empty( $source['history_cleanup_pending'] ) || ! empty( $source['history_cleanup_complete'] ) || ! empty( $source['history_cleanup_started'] ) || time() - (int) ( ! empty( $source['completed_at'] ) ? $source['completed_at'] : $source['created_at'] ) >= DKBCE_Retention_Processor::retention_seconds() ) {
 				throw new RuntimeException( esc_html__( 'Review this rollback again before confirming.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
 			$history  = new DKBCE_History_Store();
@@ -583,9 +592,14 @@ class DKBCE_History_Controller {
 			if ( ! in_array( $policy, array( 'overwrite', 'skip_changed' ), true ) ) {
 				wp_send_json_error( array( 'message' => __( 'Choose a valid rollback behavior.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
+			$mode = $this->input( 'rollback_mode', DKBCE_History_Store::rollback_mode() );
+			if ( ! in_array( $mode, array( 'keep', 'none' ), true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Choose a valid rollback mode.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			update_option( 'dkbce_rollback_mode', $mode, false );
 			update_option( 'dkbce_retention_days', (int) $days, false );
 			update_option( 'dkbce_rollback_policy', $policy, false );
-			if ( (int) get_option( 'dkbce_retention_days', 30 ) !== (int) $days || DKBCE_History_Store::rollback_policy() !== $policy ) {
+			if ( (int) get_option( 'dkbce_retention_days', 30 ) !== (int) $days || DKBCE_History_Store::rollback_policy() !== $policy || DKBCE_History_Store::rollback_mode() !== $mode ) {
 				wp_send_json_error( array( 'message' => __( 'Settings could not be saved. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 			}
 		}
@@ -595,6 +609,7 @@ class DKBCE_History_Controller {
 				'dkbce_latest_import'    => get_user_meta( get_current_user_id(), 'dkbce_latest_import', true ),
 				'days'                   => DKBCE_Retention_Processor::retention_seconds() / DAY_IN_SECONDS,
 				'rollback_policy'        => DKBCE_History_Store::rollback_policy(),
+				'rollback_mode'          => DKBCE_History_Store::rollback_mode(),
 			)
 		);
 	}

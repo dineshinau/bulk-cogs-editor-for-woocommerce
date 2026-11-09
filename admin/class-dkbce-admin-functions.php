@@ -138,6 +138,7 @@ class DKBCE_Admin_Functions {
 			'DKBCE',
 			array(
 				'userId'         => get_current_user_id(),
+				'rollbackMode'   => DKBCE_History_Store::rollback_mode(),
 				'history'        => DKBCE_History_Controller::labels(),
 				'importId'       => $import_id,
 				'maxUploadSize'  => wp_max_upload_size(),
@@ -1784,7 +1785,11 @@ class DKBCE_Admin_Functions {
 		}
 
 		$this->authorize_ajax();
-		$requested_at = microtime( true );
+		$requested_at  = microtime( true );
+		$rollback_mode = isset( $_POST['rollback_mode'] ) && is_string( $_POST['rollback_mode'] ) ? sanitize_key( wp_unslash( $_POST['rollback_mode'] ) ) : DKBCE_History_Store::rollback_mode();
+		if ( ! in_array( $rollback_mode, array( 'keep', 'none' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Choose a valid rollback mode.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
 
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Background processing is unavailable. No products were changed.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
@@ -1914,6 +1919,7 @@ class DKBCE_Admin_Functions {
 			'user_id'               => get_current_user_id(),
 			'created_at'            => time(),
 			'requested_at'          => $requested_at,
+			'rollback_mode'         => $rollback_mode,
 			'started_at'            => 0,
 			'completed_at'          => 0,
 			'total'                 => 0,
@@ -2168,6 +2174,7 @@ class DKBCE_Admin_Functions {
 			'status'             => $state['status'],
 			'stage'              => $state['stage'],
 			'total'              => (int) $state['total'],
+			'rollback_mode'      => $state['rollback_mode'] ?? 'keep',
 			'polling_total'      => isset( $state['expected_total'] ) ? (int) $state['expected_total'] : ( 'snapshot' === $state['stage'] ? null : (int) $state['total'] ),
 			'processed'          => (int) $state['processed'],
 			'succeeded'          => (int) $state['succeeded'],

@@ -157,6 +157,10 @@ class DKBCE_Bulk_Processor {
 			if ( $cursor <= absint( $state['snapshot_chunks'] ) ) {
 				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
 			}
+			if ( $done && 'none' === ( $state['rollback_mode'] ?? 'keep' ) ) {
+				$history = new DKBCE_History_Store();
+				$done    = $history->delete_retry_journal( $operation_id );
+			}
 			if ( $done && ! empty( $state['history_cleanup_pending'] ) ) {
 				$history = new DKBCE_History_Store();
 				$done    = $history->delete( $operation_id );
@@ -576,7 +580,9 @@ class DKBCE_Bulk_Processor {
 				}
 				return false;
 			}
-			$this->store->save_outcome( $state['operation_id'], $product_id, $outcome );
+			if ( 'none' !== ( $state['rollback_mode'] ?? 'keep' ) || 'success' !== $outcome['status'] ) {
+				$this->store->save_outcome( $state['operation_id'], $product_id, $outcome );
+			}
 			$chunk['results'][ $key ] = $outcome;
 			$this->record_outcome( $state, $product_id, $outcome );
 			++$since_checkpoint;
@@ -602,6 +608,30 @@ class DKBCE_Bulk_Processor {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Persist success before releasing the product lock.
+	 *
+	 * @param array               $state Frozen operation state.
+	 * @param int                 $product_id Product ID.
+	 * @param DKBCE_History_Store $history History store.
+	 * @return void
+	 */
+	private function confirm_product( $state, $product_id, $history ) {
+		if ( 'none' === ( $state['rollback_mode'] ?? 'keep' ) ) {
+			// The outcome replaces journal confirmation, without a replay window.
+			$this->store->save_outcome(
+				$state['operation_id'],
+				$product_id,
+				array(
+					'status'  => 'success',
+					'message' => '',
+				)
+			);
+		} else {
+			$history->confirm( $state['operation_id'], $product_id );
+		}
 	}
 
 	/**
@@ -795,7 +825,7 @@ class DKBCE_Bulk_Processor {
 			if ( $state['operation_id'] === $product->get_meta( '_dkbce_last_bulk_cogs_operation', true ) ) {
 				$product_saved = true;
 				$history       = new DKBCE_History_Store();
-				$history->confirm( $state['operation_id'], $product_id );
+				$this->confirm_product( $state, $product_id, $history );
 				if ( 'rollback' === $state['action'] ) {
 					$history->mark_restored( $state['rollback_source'], $product_id );
 				}
@@ -896,7 +926,7 @@ class DKBCE_Bulk_Processor {
 				$product->save();
 			}
 			$product_saved = true;
-			$history->confirm( $state['operation_id'], $product_id );
+			$this->confirm_product( $state, $product_id, $history );
 			if ( 'rollback' === $state['action'] ) {
 				$history->mark_restored( $state['rollback_source'], $product_id );
 			}
@@ -915,7 +945,7 @@ class DKBCE_Bulk_Processor {
 					$record  = $history->product( $state['operation_id'], $product_id );
 					$target  = $record && null !== $record['target_value'] ? (float) $record['target_value'] : null;
 					if ( $record && $saved && $state['operation_id'] === $saved->get_meta( '_dkbce_last_bulk_cogs_operation', true ) && $saved->get_cogs_value() === $target ) {
-						$history->confirm( $state['operation_id'], $product_id );
+						$this->confirm_product( $state, $product_id, $history );
 						if ( 'rollback' === $state['action'] ) {
 							$history->mark_restored( $state['rollback_source'], $product_id );
 						}

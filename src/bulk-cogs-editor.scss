@@ -1118,3 +1118,6 @@ $border: #c3c4c7;
 	.row-actions .delete .button-link { color: #b32d2e; }
 	.check-column input { width: 16px; height: 16px; }
 }
+
+.dkbce-rollback-mode-option { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.dkbce-confirm-rollback-mode { margin-block: 16px; padding: 12px; border: 1px solid var(--dkbce-line); border-radius: 6px; label { display: flex; align-items: center; gap: 6px; font-weight: 600; } input { margin: 0; } }

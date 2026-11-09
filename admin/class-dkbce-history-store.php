@@ -28,6 +28,31 @@ class DKBCE_History_Store {
 	}
 
 	/**
+	 * Get the default rollback history mode for new updates.
+	 *
+	 * @return string
+	 */
+	public static function rollback_mode() {
+		return 'none' === get_option( 'dkbce_rollback_mode', 'keep' ) ? 'none' : 'keep';
+	}
+
+	/**
+	 * Delete a bounded page of temporary retry journals, preserving the summary.
+	 *
+	 * @param string $operation_id Terminal operation UUID.
+	 * @return bool Whether all temporary rows have been removed.
+	 * @throws RuntimeException When deletion fails.
+	 */
+	public function delete_retry_journal( $operation_id ) {
+		global $wpdb;
+		$deleted = $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE operation_id = %s LIMIT 500', $wpdb->prefix . 'dkbce_history_products', $operation_id ) );
+		if ( false === $deleted ) {
+			throw new RuntimeException( esc_html__( 'Temporary retry data could not be removed.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		return $deleted < 500;
+	}
+
+	/**
 	 * Read a bounded list of users represented in visible operation history.
 	 *
 	 * @param int $owner Limit non-manager choices to their own account.

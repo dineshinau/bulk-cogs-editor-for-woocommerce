@@ -175,6 +175,13 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 == Frequently Asked Questions ==
 
+= Can I choose whether an update keeps rollback history? =
+
+Yes. Settings > Default rollback mode offers Keep rollback history (the initial default) and No rollback history. In the update confirmation popup, the Keep rollback history checkbox starts with that default and can be changed for the individual bulk update or CSV import. Its explanation updates as you change it.
+
+With history enabled, original costs and detailed product changes remain available for the configured retention period. With history disabled, the operation cannot be rolled back and detailed cost-change history is not retained. Operation results and retry protection remain available. Temporary retry journals are removed by background cleanup after completion, failure, or cancellation. Changing the default does not change existing operations.
+
+
 = How often does progress refresh, and how can I enable diagnostic logs? =
 
 Update progress refreshes every 10 seconds for fewer than 1,000 selected items, or every 25 seconds for 1,000 or more. While the total is unknown, polling uses 25 seconds. Use Refresh status for an immediate update. Bulk-update progress is checkpointed after 50 products or 10 seconds, and at chunk boundaries or worker exit. Workers continue checking for cancellation every second between products.

@@ -449,7 +449,7 @@
 			} );
 			products.appendChild( wrap );
 			if ( ! historyState.review && data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
-			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
+			if ( ! data.total ) { products.appendChild( historyElement( 'p', data.state.rollback_mode === 'none' ? historyText.noRollbackHelp : historyText.noChanges ) ); }
 			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
 			if ( ! data.can_rollback ) {
 				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
@@ -519,6 +519,35 @@
 	const retentionDays = document.createElement( 'input' ); retentionDays.type = 'number'; retentionDays.min = '1'; retentionDays.max = '36500'; retentionDays.step = '1'; retentionDays.required = true; retentionDays.value = '30';
 	const customRetention = historyField( historyText.days, retentionDays ); customRetention.hidden = true;
 	retentionChoice.addEventListener( 'change', () => { customRetention.hidden = retentionChoice.value !== 'custom'; if ( retentionChoice.value !== 'custom' ) { retentionDays.value = retentionChoice.value; } } );
+
+	let defaultRollbackMode = DKBCE.rollbackMode || 'keep';
+	const rollbackModeGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	rollbackModeGroup.appendChild( historyElement( 'legend', historyText.defaultRollbackMode ) );
+	const rollbackModes = {};
+	[ [ 'keep', historyText.keepRollbackHistory ], [ 'none', historyText.noRollbackHistory ] ].forEach( ( [ value, text ] ) => {
+		const label = historyElement( 'label', '', 'dkbce-rollback-mode-option' );
+		const input = document.createElement( 'input' );
+		input.type = 'radio'; input.name = 'dkbce-default-rollback-mode'; input.value = value;
+		input.checked = defaultRollbackMode === value;
+		rollbackModes[ value ] = input;
+		label.append( input, document.createTextNode( text ) ); rollbackModeGroup.appendChild( label );
+		const help = historyElement( 'p', value === 'keep' ? historyText.keepRollbackHelp : historyText.noRollbackHelp, 'description' );
+		help.id = 'dkbce-rollback-mode-' + value + '-help'; input.setAttribute( 'aria-describedby', help.id );
+		rollbackModeGroup.appendChild( help );
+	} );
+	rollbackModeGroup.appendChild( historyElement( 'p', historyText.rollbackModeHelp, 'description' ) );
+	const rollbackChoice = historyElement( 'div', '', 'dkbce-confirm-rollback-mode' );
+	rollbackChoice.hidden = true;
+	const keepRollback = document.createElement( 'input' ); keepRollback.type = 'checkbox';
+	const rollbackChoiceLabel = historyElement( 'label' );
+	rollbackChoiceLabel.append( keepRollback, document.createTextNode( historyText.keepRollbackHistory ) );
+	const rollbackChoiceHelp = historyElement( 'p', '', 'description' );
+	rollbackChoiceHelp.id = 'dkbce-confirm-rollback-help'; rollbackChoiceHelp.setAttribute( 'aria-live', 'polite' );
+	keepRollback.setAttribute( 'aria-describedby', rollbackChoiceHelp.id );
+	const updateRollbackHelp = () => { rollbackChoiceHelp.textContent = keepRollback.checked ? historyText.keepRollbackHelp : historyText.noRollbackHelp; };
+	keepRollback.addEventListener( 'change', updateRollbackHelp );
+	rollbackChoice.append( rollbackChoiceLabel, rollbackChoiceHelp );
+	$( '#dkbce-confirm-warning' ).after( rollbackChoice );
 	const rollbackPolicy = historySelect( [ [ 'overwrite', historyText.overwrite ], [ 'skip_changed', historyText.skipChanged ] ], 'overwrite' );
 	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
 	const retentionGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
@@ -536,7 +565,7 @@
 	const policyHelp = historyElement( 'p', historyText.policyHelp, 'description' );
 	policyHelp.id = 'dkbce-policy-help';
 	policyGroup.append( rollbackPolicy, policyHelp );
-	settingsForm.append( retentionGroup, policyGroup, saveSettings );
+	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
@@ -556,6 +585,7 @@
 		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-apply' ).textContent = historyText.forceClear;
 		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	} );
@@ -584,6 +614,8 @@
 			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			savedRetentionDays = Number( data.days );
 			rollbackPolicy.value = data.rollback_policy;
+			defaultRollbackMode = data.rollback_mode;
+			Object.entries( rollbackModes ).forEach( ( [ mode, input ] ) => { input.checked = mode === defaultRollbackMode; } );
 			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
 			settingsForm.querySelectorAll( 'input, select, button' ).forEach( ( input ) => { input.disabled = false; } );
 		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
@@ -593,7 +625,7 @@
 		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
 		if ( savedRetentionDays !== null && Number( retentionDays.value ) < savedRetentionDays && ! window.confirm( ux.retentionConfirm ) ) { return; }
 		saveSettings.disabled = true;
-		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value } ); savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
+		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
 		catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
 		finally { saveSettings.disabled = false; }
 	} );
@@ -2194,6 +2226,9 @@
 			summary.append( term, description );
 		} );
 		$( '#dkbce-confirm-warning' ).textContent = exporting ? '' : DKBCE.ui.persistence + ( selectedAction() === 'clear' || ( selectedAction() === 'set' && numericActionValue() !== '' && Number( numericActionValue() ) === 0 ) || state.rows.some( ( item ) => productSelected( item.id ) && item.status === 'success' && item.new === null ) ? ' ' + DKBCE.i18n.zeroClears : '' );
+		rollbackChoice.hidden = exporting;
+		keepRollback.checked = defaultRollbackMode === 'keep';
+		updateRollbackHelp();
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
@@ -2291,6 +2326,7 @@
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		const payload = {
+			rollback_mode: keepRollback.checked ? 'keep' : 'none',
 			note: noteInput.value,
 			confirmed_count: selectionCount(),
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
@@ -2701,7 +2737,7 @@
 			operationPanel.append( historyView ? title : operationHeading( title ), result, outcome, details );
 			const nextActions = historyElement( 'div', '', 'dkbce-actions' );
 			if ( ! historyView && ! [ 'csv_export', 'server_download', 'import_preview' ].includes( operation.action ) ) {
-				nextActions.appendChild( historyButton( operation.succeeded > 0 ? ux.viewChanges : ux.viewHistory, () => openHistoryOperation( operation.operation_id ) ) );
+				nextActions.appendChild( historyButton( operation.succeeded > 0 && operation.rollback_mode !== 'none' ? ux.viewChanges : ux.viewHistory, () => openHistoryOperation( operation.operation_id ) ) );
 			}
 			if ( operation.failed > 0 || operation.skipped > 0 ) {
 				nextActions.appendChild( historyButton( ux.reviewOutcomes, () => { details.open = true; details.querySelector( 'summary' ).focus(); } ) );
@@ -2796,6 +2832,7 @@
 		$( '#dkbce-confirm-warning' ).hidden = true;
 		$( '#dkbce-confirm-apply' ).textContent = button.textContent;
 		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
@@ -3105,6 +3142,7 @@
 		$( '#dkbce-confirm-warning' ).hidden = true;
 		$( '#dkbce-confirm-apply' ).textContent = presetTable.querySelector( 'option[value="delete"]' ).textContent;
 		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
