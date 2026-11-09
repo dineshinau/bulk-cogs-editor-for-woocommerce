@@ -1,17 +1,17 @@
 # Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-09)
 
 ## Corpus Check
-- 36 files · ~74,703 words
+- 36 files · ~75,553 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
 
 ## Summary
-- 490 nodes · 1048 edges · 26 communities (13 shown, 13 thin omitted)
+- 491 nodes · 1051 edges · 26 communities (13 shown, 13 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 110 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `45de09ea`
+- Built from commit: `260b6ad6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -110,7 +110,7 @@ Nodes (6): ref_node_child_process, ref_node_fs, { execFileSync }, fs, os, path
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.09
-Nodes (87): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), applyPresetRules() (+79 more)
+Nodes (88): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), applyPresetRules() (+80 more)
 
 ### Community 18 - "playwright.config.cjs"
 Cohesion: 0.29
@@ -131,7 +131,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_COGS_Service`?**
   _High betweenness centrality (0.069) - this node is a cross-community bridge._
 - **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
+  _High betweenness centrality (0.053) - this node is a cross-community bridge._
 - **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_Import_Store`?**
   _High betweenness centrality (0.051) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
