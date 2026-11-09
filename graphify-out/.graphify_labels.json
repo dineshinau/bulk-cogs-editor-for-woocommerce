@@ -10,6 +10,7 @@
   "8": "DKBCE_Autoloader",
   "9": "ref_anthropic_ai_sdk",
   "10": "scripts",
+  "11": "DKBCE_History_Controller",
   "12": "DKBCE_Admin_Functions",
   "13": "Bulk COGS Editor for WooCommerce",
   "14": "global-setup.cjs",
@@ -20,6 +21,7 @@
   "19": "release-fixtures.php",
   "20": "admin/index.php",
   "21": "index.php",
+  "22": "DKBCE_Range_Query_Profiler",
   "117": "DKBCE_COGS_Service",
   "135": "DKBCE_Bulk_Processor",
   "188": "DKBCE_Operation_Store"
