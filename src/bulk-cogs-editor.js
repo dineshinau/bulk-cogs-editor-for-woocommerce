@@ -2493,7 +2493,14 @@
 		operationPanel.appendChild( ! historyView && ! terminal ? operationHeading( heading ) : heading );
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
-		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
+		const refreshSeconds = Math.round( operationPollInterval / 1000 );
+		const refreshInterval = refreshSeconds + ' ' + ( refreshSeconds === 1 ? 'second' : 'seconds' );
+		checkpoint.textContent = DKBCE.i18n.lastProgress.replace(
+			/%1\$s|%2\$s/g,
+			( placeholder ) => placeholder === '%1$s'
+				? new Date( operation.last_progress_at * 1000 ).toLocaleString()
+				: refreshInterval
+		);
 		const statusRow = document.createElement( 'div' );
 		statusRow.className = 'dkbce-operation-status-row';
 		statusRow.appendChild( checkpoint );

@@ -353,7 +353,8 @@ class DKBCE_Admin_Functions {
 					'viewProgress'        => __( 'View progress', 'bulk-cogs-editor-for-woocommerce' ),
 					'refreshPreview'      => __( 'Refresh preview', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %s: local date and time of the latest progress checkpoint. */
-					'lastProgress'        => __( 'Last progress reported: %s', 'bulk-cogs-editor-for-woocommerce' ),
+					/* translators: 1: local date and time of latest progress checkpoint, 2: automatic status refresh interval. */
+					'lastProgress'        => __( 'Last progress reported: %1$s. Status refreshes every %2$s. You can refresh any time using the Refresh status button.', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: %d: number of product IDs collected for the snapshot. */
 					'snapshotCount'       => __( '%d matching products collected. Product costs have not been changed yet.', 'bulk-cogs-editor-for-woocommerce' ),
 					'processing'          => __( 'Processing COGS updates…', 'bulk-cogs-editor-for-woocommerce' ),
