@@ -2168,6 +2168,7 @@ class DKBCE_Admin_Functions {
 			'status'             => $state['status'],
 			'stage'              => $state['stage'],
 			'total'              => (int) $state['total'],
+			'polling_total'      => isset( $state['expected_total'] ) ? (int) $state['expected_total'] : ( 'snapshot' === $state['stage'] ? null : (int) $state['total'] ),
 			'processed'          => (int) $state['processed'],
 			'succeeded'          => (int) $state['succeeded'],
 			'skipped'            => (int) $state['skipped'],

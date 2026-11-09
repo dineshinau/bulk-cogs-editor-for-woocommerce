@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
 class DKBCE_Bulk_Processor {
 	const BATCH_SIZE          = 50;
 	const BATCH_TIME_LIMIT    = 20;
-	const PROGRESS_INTERVAL   = 25;
-	const PROGRESS_TIME_LIMIT = 2;
+	const PROGRESS_INTERVAL   = 50;
+	const PROGRESS_TIME_LIMIT = 10;
 	const CANCEL_INTERVAL     = 1;
 	const OPERATION_LOCK_TTL  = 180;
 	const STALE_OPERATION_AGE = 120;
@@ -200,8 +200,9 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function process_operation( $operation_id ) {
-		$started_at = microtime( true );
-		$lock_token = $this->acquire_operation_lock( $operation_id );
+		$diagnostics = defined( 'DKBCE_DIAGNOSTICS' ) && DKBCE_DIAGNOSTICS;
+		$started_at  = $diagnostics ? microtime( true ) : 0;
+		$lock_token  = $this->acquire_operation_lock( $operation_id );
 		if ( ! $lock_token ) {
 			return;
 		}
@@ -209,40 +210,42 @@ class DKBCE_Bulk_Processor {
 
 		$initial_state = false;
 		try {
-			$initial_state = $this->store->get( $operation_id );
+			$initial_state = $diagnostics ? $this->store->get( $operation_id ) : false;
 			$this->process_operation_locked( $operation_id );
 		} finally {
 			try {
 				// Read counters while locked so the next worker cannot advance them.
-				$state = $this->store->get( $operation_id );
+				$state = $diagnostics ? $this->store->get( $operation_id ) : false;
 			} finally {
 				$this->release_operation_lock( $operation_id, $lock_token );
 			}
-			$finished_at = microtime( true );
-			$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
-			$processed   = isset( $state['processed'] ) ? (int) $state['processed'] : null;
-			$total       = isset( $state['total'] ) ? (int) $state['total'] : null;
-			$stage       = $state['stage'] ?? 'unknown';
-			$remaining   = 'processing' === $stage && null !== $total && null !== $processed ? max( 0, $total - $processed ) : 'unknown';
-			// Persisted counter growth includes any outcomes recovered on retry.
-			$processed_delta = null !== $processed && isset( $initial_state['processed'] ) ? max( 0, $processed - (int) $initial_state['processed'] ) : 'unknown';
-			$message         = sprintf(
-				'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds, processed: %s, remaining: %s, batch_size: %s, processed_delta: %s, total: %s, stage: %s).',
-				$operation_id,
-				$runner,
-				$started_at,
-				$finished_at,
-				$finished_at - $started_at,
-				$processed ?? 'unknown',
-				$remaining,
-				$state['batch_size'] ?? 'unknown',
-				$processed_delta,
-				$total ?? 'unknown',
-				$stage
-			);
-			dkbce_wc_log( $message );
-			if ( 'WP-CLI' === $runner && class_exists( 'WP_CLI' ) ) {
-				WP_CLI::log( $message );
+			if ( $diagnostics ) {
+				$finished_at = microtime( true );
+				$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
+				$processed   = isset( $state['processed'] ) ? (int) $state['processed'] : null;
+				$total       = isset( $state['total'] ) ? (int) $state['total'] : null;
+				$stage       = $state['stage'] ?? 'unknown';
+				$remaining   = 'processing' === $stage && null !== $total && null !== $processed ? max( 0, $total - $processed ) : 'unknown';
+				// Persisted counter growth includes any outcomes recovered on retry.
+				$processed_delta = null !== $processed && isset( $initial_state['processed'] ) ? max( 0, $processed - (int) $initial_state['processed'] ) : 'unknown';
+				$message         = sprintf(
+					'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds, processed: %s, remaining: %s, batch_size: %s, processed_delta: %s, total: %s, stage: %s).',
+					$operation_id,
+					$runner,
+					$started_at,
+					$finished_at,
+					$finished_at - $started_at,
+					$processed ?? 'unknown',
+					$remaining,
+					$state['batch_size'] ?? 'unknown',
+					$processed_delta,
+					$total ?? 'unknown',
+					$stage
+				);
+				dkbce_wc_log( $message, true );
+				if ( 'WP-CLI' === $runner && class_exists( 'WP_CLI' ) ) {
+					WP_CLI::log( $message );
+				}
 			}
 		}
 	}
@@ -448,7 +451,7 @@ class DKBCE_Bulk_Processor {
 		$state['total_count'] = $state['total'];
 		$state['stage']       = 'processing';
 
-		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'] );
+		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'], true );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
@@ -766,7 +769,7 @@ class DKBCE_Bulk_Processor {
 	private function process_product( $product_id, $state, $import_values = array() ) {
 		$lock = $this->store->acquire_product_lock( $product_id, $state['operation_id'] );
 		if ( false === $lock ) {
-			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id );
+			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id, true );
 			return array(
 				'status'  => 'deferred',
 				'message' => '',
@@ -782,7 +785,7 @@ class DKBCE_Bulk_Processor {
 			}
 			$product = wc_get_product( $product_id );
 			if ( ! $product ) {
-				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id );
+				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'skipped',
 					'message' => __( 'Product no longer exists.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -796,7 +799,7 @@ class DKBCE_Bulk_Processor {
 				if ( 'rollback' === $state['action'] ) {
 					$history->mark_restored( $state['rollback_source'], $product_id );
 				}
-				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id );
+				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'success',
 					'message' => '',
@@ -873,7 +876,7 @@ class DKBCE_Bulk_Processor {
 				);
 			}
 			if ( 'skipped' === $result['status'] ) {
-				dkbce_wc_log( 'Product Skipped  for product ID: ' . $product_id );
+				dkbce_wc_log( 'Product Skipped  for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'skipped',
 					'message' => $result['reason'],

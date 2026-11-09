@@ -244,6 +244,7 @@ $border: #c3c4c7;
 	margin-bottom: 16px;
 	p { margin: 0; color: $muted; font-size: 13px; }
 }
+.dkbce-operation-refresh { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: auto; .spinner { float: none; margin: 0; } }
 .dkbce-disabled-action {
 	display: inline-flex;
 	max-width: 100%;

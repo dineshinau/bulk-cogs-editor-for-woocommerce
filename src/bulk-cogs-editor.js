@@ -21,6 +21,8 @@
 	workspaceStyle.setProperty( '--dkbce-link', window.getComputedStyle( schemeLink ).color );
 	schemeProbe.remove();
 
+	const progressPollInterval = ( total ) => Number( total ) > 0 && Number( total ) < 1000 ? 10000 : 25000;
+	let operationPollInterval = progressPollInterval();
 	const ux = DKBCE.ux;
 	const state = {
 		mode: 'bulk',
@@ -484,7 +486,7 @@
 				historyDetails.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			}
 			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
-				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
+				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, progressPollInterval( data.state.polling_total ) ); }
 			}
 		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { historyList.hidden = false; historyDetails.replaceChildren(); setNotice( error.message, 'error', historyList ); } }
 		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); updateOperationControls(); } }
@@ -754,7 +756,7 @@
 			if ( 'failed' === status.status || 'cancelled' === status.status ) {
 				throw new Error( status.message || DKBCE.csv.downloadFailed );
 			}
-			await new Promise( ( resolve ) => window.setTimeout( resolve, 1500 ) );
+			await new Promise( ( resolve ) => window.setTimeout( resolve, progressPollInterval() ) );
 		}
 	}
 
@@ -841,7 +843,7 @@
 					? DKBCE.csv.cancelling
 					: data.stage === 'import_strings' ? DKBCE.csv.readingStrings : DKBCE.csv.preparing;
 				status.textContent += data.sheet ? ' — ' + data.sheet : '';
-				window.setTimeout( pollImport, 2000 );
+				window.setTimeout( pollImport, progressPollInterval( data.total_rows ) );
 				return;
 			}
 			state.importPreparing = false;
@@ -868,7 +870,7 @@
 				return;
 			}
 			status.textContent = error.message + ' ' + DKBCE.csv.retrying;
-			window.setTimeout( pollImport, 5000 );
+			window.setTimeout( pollImport, progressPollInterval() );
 		}
 	}
 
@@ -2395,7 +2397,7 @@
 		};
 		const focusedControl = operationPanel.contains( document.activeElement ) ? document.activeElement.dataset.operationControl : '';
 		if ( ! historyView ) {
-			state.operationStatus = operation.status; updateOperationControls();
+			state.operationStatus = operation.status; operationPollInterval = progressPollInterval( operation.polling_total ); updateOperationControls();
 			if ( state.mode === 'history' ) { updateHistoryProgressVisibility(); }
 		}
 		if ( ! historyView && null === state.operationStartedAt ) {
@@ -2465,7 +2467,14 @@
 			refresh.dataset.operationControl = 'refresh';
 			refresh.textContent = DKBCE.i18n.refreshStatus;
 			refresh.addEventListener( 'click', historyView ? loadHistoryDetails : pollProgress );
-			statusRow.appendChild( refresh );
+			const refreshControls = document.createElement( 'div' );
+			refreshControls.className = 'dkbce-operation-refresh';
+			const progressSpinner = document.createElement( 'span' );
+			progressSpinner.className = 'spinner dkbce-operation-spinner';
+			progressSpinner.classList.toggle( 'is-active', ! delayed && ! unavailable );
+			progressSpinner.setAttribute( 'aria-hidden', 'true' );
+			refreshControls.append( progressSpinner, refresh );
+			statusRow.appendChild( refreshControls );
 		}
 		if ( ! historyView ) { setApplySpinner( ! terminal && ! delayed && ! unavailable ); }
 
@@ -2734,7 +2743,7 @@
 						'cancelled',
 					].includes( data.state.status )
 				) {
-					state.pollTimer = window.setTimeout( pollProgress, 2500 );
+					state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 				}
 			} )
 			.catch( () => {
@@ -2748,6 +2757,7 @@
 					message.textContent = DKBCE.i18n.progressUnavailable;
 					operationPanel.replaceChildren( message );
 				}
+				operationPanel.querySelector( '.dkbce-operation-spinner' )?.classList.remove( 'is-active' );
 				const track = operationPanel.querySelector( '.dkbce-progress-track' );
 				if ( track ) { track.classList.remove( 'is-active' ); }
 				const background = operationPanel.querySelector( '.dkbce-background-message' );
@@ -2762,7 +2772,7 @@
 					refresh.addEventListener( 'click', pollProgress );
 					operationPanel.appendChild( refresh );
 				}
-				state.pollTimer = window.setTimeout( pollProgress, 10000 );
+				state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 			} );
 	}
 
@@ -2823,7 +2833,7 @@
 				if ( state.pollTimer ) {
 					window.clearTimeout( state.pollTimer );
 				}
-				state.pollTimer = window.setTimeout( pollProgress, 2500 );
+				state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', operationPanel ) );
 	}

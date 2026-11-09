@@ -118,9 +118,13 @@ if ( ! function_exists( 'dkbce_wc_log' ) ) {
 	 * Logger function for tracing and debugging.
 	 *
 	 * @param string $message Message.
+	 * @param bool   $diagnostic Whether this is optional verbose diagnostic output.
 	 * @return void
 	 */
-	function dkbce_wc_log( $message ) {
+	function dkbce_wc_log( $message, $diagnostic = false ) {
+		if ( $diagnostic && ( ! defined( 'DKBCE_DIAGNOSTICS' ) || ! DKBCE_DIAGNOSTICS ) ) {
+			return;
+		}
 		if ( function_exists( 'wc_get_logger' ) ) {
 			$log_enabled = apply_filters( 'dkbce_is_log_enabled', true );
 

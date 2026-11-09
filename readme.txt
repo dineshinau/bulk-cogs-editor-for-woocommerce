@@ -175,6 +175,13 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 == Frequently Asked Questions ==
 
+= How often does progress refresh, and how can I enable diagnostic logs? =
+
+Update progress refreshes every 10 seconds for fewer than 1,000 selected items, or every 25 seconds for 1,000 or more. While the total is unknown, polling uses 25 seconds. Use Refresh status for an immediate update. Bulk-update progress is checkpointed after 50 products or 10 seconds, and at chunk boundaries or worker exit. Workers continue checking for cancellation every second between products.
+
+Errors and operation completion summaries remain logged. Detailed worker timings and routine per-product diagnostics are disabled by default. To enable them temporarily for troubleshooting or benchmarking, add `define( 'DKBCE_DIAGNOSTICS', true );` to wp-config.php. This does not change Query Monitor or other site-wide profiling settings.
+
+
 = How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
 Use Bulk edit for one cost action across a selected group. Use CSV import when individual products need different values. The steps for both workflows appear above.
 
