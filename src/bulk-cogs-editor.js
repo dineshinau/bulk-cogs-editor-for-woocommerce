@@ -443,7 +443,8 @@
 				const checked = document.createElement( 'input' ); checked.type = 'checkbox';
 				const confirm = historyButton( historyText.confirm, () => startRollback( confirm ), true );
 				confirm.classList.add( 'dkbce-rollback-confirm' ); confirm.disabled = true;
-				checked.addEventListener( 'change', () => { confirm.disabled = ! checked.checked || ! data.can_rollback || isOperationRunning(); } );
+				confirm.dataset.canRollback = String( data.can_rollback );
+				checked.addEventListener( 'change', updateOperationControls );
 				const confirmation = historyElement( 'label', '', 'dkbce-rollback-confirmation' );
 				confirmation.append( checked, document.createTextNode( data.rollback_policy === 'skip_changed' ? historyText.skipConfirm : historyText.confirmCheck ) );
 				const rollbackActions = historyElement( 'div', '', 'dkbce-rollback-actions' );
@@ -468,13 +469,14 @@
 				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
 			}
 		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { historyList.hidden = false; historyDetails.replaceChildren(); setNotice( error.message, 'error', historyList ); } }
-		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); } }
+		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); updateOperationControls(); } }
 	}
 
 	async function startRollback( button ) {
 		if ( isOperationRunning() || ! historyState.token || historyState.loading ) { return; }
 		button.disabled = true;
 		state.startingOperation = true;
+		updateOperationControls();
 		try {
 			const data = await request( 'rollback', { operation_id: historyState.operationId, review_token: historyState.token, confirmed: '1' } );
 			historyState.token = '';
@@ -1437,6 +1439,10 @@
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
 		}
+		document.querySelectorAll( '.dkbce-rollback-confirm' ).forEach( ( button ) => {
+			const acknowledged = button.closest( '.dkbce-rollback-actions' ).querySelector( '.dkbce-rollback-confirmation input' ).checked;
+			button.disabled = running || state.busy || historyState.loading || ! historyState.token || ! acknowledged || button.dataset.canRollback !== 'true';
+		} );
 		updateOperationTooltips( running );
 	}
 
@@ -1452,7 +1458,7 @@
 				[ 'tabindex', 'aria-label' ].forEach( ( attribute ) => label.removeAttribute( attribute ) );
 			}
 		} );
-		const selector = '#dkbce-get-products, #dkbce-clear-filters, #dkbce-reset, #dkbce-apply, #dkbce-refresh-preview, #dkbce-selection-toolbar button, .dkbce-range-selection button, .dkbce-filter-grid button, #dkbce-csv-preview, #dkbce-file-details button, .dkbce-filter-chip';
+		const selector = '#dkbce-get-products, #dkbce-clear-filters, #dkbce-reset, #dkbce-apply, #dkbce-refresh-preview, #dkbce-selection-toolbar button, .dkbce-range-selection button, .dkbce-filter-grid button, #dkbce-csv-preview, #dkbce-file-details button, .dkbce-filter-chip, .dkbce-rollback-confirm';
 		document.querySelectorAll( selector ).forEach( ( button ) => {
 			const wrapper = button.parentElement;
 			if ( running && button.disabled ) {
