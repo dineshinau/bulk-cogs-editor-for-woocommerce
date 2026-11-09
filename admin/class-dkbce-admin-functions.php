@@ -364,7 +364,7 @@ class DKBCE_Admin_Functions {
 					'remainingTime'       => __( 'Approx. time remaining: %s', 'bulk-cogs-editor-for-woocommerce' ),
 					/* translators: 1: number of days, 2: hours, minutes, and seconds. */
 					'durationDays'        => __( '%1$s d %2$s', 'bulk-cogs-editor-for-woocommerce' ),
-					'estimateUnavailable' => __( 'Unavailable while waiting for progress.', 'bulk-cogs-editor-for-woocommerce' ),
+					'estimateUnavailable' => __( 'Calcaulating', 'bulk-cogs-editor-for-woocommerce' ),
 					'estimatingTime'      => __( 'Calculating…', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancelOperation'     => __( 'Stop remaining updates', 'bulk-cogs-editor-for-woocommerce' ),
 					'confirmCancel'       => __( 'Any changes already made will remain.', 'bulk-cogs-editor-for-woocommerce' ),
