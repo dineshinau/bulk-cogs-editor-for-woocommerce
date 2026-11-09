@@ -447,10 +447,14 @@
 				const row = document.createElement( 'tr' );
 				appendProductCell( row, item ); appendCell( row, item.sku || '—' ); appendCell( row, money( item.current ) ); appendCell( row, money( item.new ) ); appendChangeCell( row, item ); body.appendChild( row );
 			} );
-			products.appendChild( wrap );
+			if ( data.total || data.can_rollback ) {
+				products.appendChild( wrap );
+			}
 			if ( ! historyState.review && data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
 			if ( ! data.total ) { products.appendChild( historyElement( 'p', data.state.rollback_mode === 'none' ? historyText.noRollbackHelp : historyText.noChanges ) ); }
-			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			if ( data.total || data.can_rollback ) {
+				products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			}
 			if ( ! data.can_rollback ) {
 				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
 				const reasons = historyElement( 'ul', '', 'description' );
