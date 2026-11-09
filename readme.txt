@@ -4,7 +4,7 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,7 @@ https://youtu.be/sOEOg0xiqYs
 * Process updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
 * Import CSV or XLSX costs using product IDs or SKUs, export matching costs to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original costs in History, with rollback review and confirmation.
+* Save reusable filter presets to your account and manage their names, rules, and deletion in the Presets tab.
 * Configure history retention and choose whether rollback overwrites later cost edits or skips changed products.
 * Recover a stuck editor operation through a confirmed force-clear action in Settings when normal cancellation does not work.
 
@@ -271,8 +272,8 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Upgrade Notice ==
 
-= 1.2.2 =
-Version 1.2.2 refreshes the editor design and preserves import cancellation and reused-selection checks during Apply.
+= 1.3.0 =
+Version 1.3.0 redesigns the editor workflow, improves selection, progress, import/export and rollback guidance, and adds account-based presets with a dedicated management tab. New presets use a custom database table; existing browser and user-meta presets are not migrated.
 
 = 1.2.1 =
 Version 1.2.1 improves import preparation, Apply checks, and CSV export processing; rounds imported costs to WooCommerce decimal settings; and adds confirmed stop and force-clear recovery controls. You can return to the editor tabs while a background operation runs.
@@ -282,12 +283,28 @@ Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollb
 
 == Changelog ==
 
-= 1.2.2 (2026-10-27) =
+= 1.3.0 (2026-11-09) =
 
-* Fixed: Preserve import preparation cancellation, its confirmation message, and keyboard focus when closing confirmation after preparation finishes.
-* Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources that enter retention cleanup during preflight.
-* Improved: Refresh the Bulk edit, CSV, History, and Settings layouts, workflow guidance, and loading and empty states.
-* Updated: Align plugin version declarations at 1.2.2 and refresh the translation template and development code graph.
+* Fixed: Clear obsolete review counts after empty searches and require explicit product selection for new bulk previews.
+* Fixed: Keep current and proposed costs together on mobile and prevent progress estimate text from overflowing its card.
+* Fixed: Suppress unreliable remaining-time estimates while operations wait for progress, and support durations longer than one day.
+* Fixed: Explain why rollback is unavailable and show the running-operation notice and progress link beside disabled rollback confirmation controls. Refresh confirmation availability as operation status changes.
+* Fixed: Allow cleanup jobs and retention scans to schedule continuation batches without conflicting with Action Scheduler uniqueness checks.
+* Fixed: Require at least one product identifier column for CSV exports.
+* Fixed: Preserve import preparation cancellation, confirmation copy, and keyboard focus when preparation finishes.
+* Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources entering retention cleanup during preflight.
+* Fixed: Repair the early preset-table name index that prevented saving a second preset for the same user.
+* Improved: Refresh editor layouts, align workflow steps, reduce inactive content, and place confirmation beside the product preview.
+* Improved: Distinguish Reset filters, Deselect all products, and Start over; provide actionable empty results and clearer search, selection, preview, and confirmation guidance.
+* Improved: Use import/export-specific labels and explain blank versus zero costs. Show specific missing-file, format, and size errors and group row errors with correction guidance.
+* Improved: Make history easier to scan with action-first columns, accessible full operation IDs, focused detail views, preserved list context, reloadable operation links, and operation-specific progress headings.
+* Improved: Show rollback retention deadlines and the effective rollback policy, and confirm reductions to history retention before saving.
+* Improved: Provide completion actions for reviewing changed products, skipped or failed results, and starting a fresh update.
+* Updated: Set release metadata to 1.3.0, refresh translations and generated assets, update development dependencies and code graphs, and document the UI/UX review and implementation decisions.
+* Updated: Refresh documentation, plugin, and social profile links. Require an explicit request for Playwright verification on each development task.
+* Added: A CSV export column-selection toggle.
+* Added: Account-based filter presets in a dedicated custom table, with unique names per user and access across browsers and devices. Existing browser and user-meta presets are not migrated.
+* Added: A Presets tab before Settings with a native WordPress list table, created dates, editable names and filter rules, Edit/Delete row actions, and bulk deletion. Loaded presets hide duplicate-save controls, and deletion is available only in Presets.
 
 = 1.2.1 (2026-10-27) =
 
