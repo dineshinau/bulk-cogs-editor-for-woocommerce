@@ -2867,6 +2867,14 @@
 				state.importCancel = true;
 				cancellation.button.disabled = true;
 				$( '#dkbce-import-status' ).textContent = DKBCE.csv.cancelling;
+				request( 'import_status', { import_id: cancellation.operationId, cancel: '1' } )
+					.catch( ( error ) => {
+						if ( state.importId !== cancellation.operationId || ! state.importPreparing ) { return; }
+						state.importCancel = false;
+						cancellation.button.disabled = false;
+						$( '#dkbce-import-status' ).textContent = error.message;
+						setNotice( error.message, 'error', cancellation.panel );
+					} );
 			}
 			return;
 		}
