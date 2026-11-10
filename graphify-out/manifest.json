@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794251355.7853281,
-    "seen": 1794251369.4770758,
-    "ast_hash": "e6e03c4a7c4779d94c59d13bcb6461fa",
+    "mtime": 1794304620.107706,
+    "seen": 1794316986.7889755,
+    "ast_hash": "f67211b47f28dae30bde93c5419973a7",
     "semantic_hash": ""
   },
   "scripts/class-dkbce-range-query-profiler.php": {
@@ -219,6 +219,18 @@
     "mtime": 1794226799.4270115,
     "seen": 1794226824.7956424,
     "ast_hash": "985712538e71b52846b7d96de5d7d924",
+    "semantic_hash": ""
+  },
+  ".playwright-cli/page-2026-11-10T12-25-28-243Z.yml": {
+    "mtime": 1794313528.2487588,
+    "seen": 1794316986.7890193,
+    "ast_hash": "2f23be616bb27daae006b3bede53679f",
+    "semantic_hash": ""
+  },
+  ".playwright-cli/page-2026-11-10T12-26-22-553Z.yml": {
+    "mtime": 1794313582.556694,
+    "seen": 1794316986.7890224,
+    "ast_hash": "71fc263dcfeace0c0e259901dbca571b",
     "semantic_hash": ""
   }
 }
