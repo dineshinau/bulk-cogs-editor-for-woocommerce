@@ -98,7 +98,7 @@ class DKBCE_Admin_Functions {
 		}
 
 		$links[] = '<a href="' . esc_url( 'https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Doc', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
-		$links[] = '<a href="' . esc_url( 'https://youtu.be/sOEOg0xiqYs' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Video', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
+		$links[] = '<a href="' . esc_url( 'https://youtu.be/K-zo4dw7og4' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Video', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		return $links;
 	}
 
@@ -501,7 +501,7 @@ class DKBCE_Admin_Functions {
 						</ol>
 					</div>
 					<p><?php esc_html_e( 'Need more guidance? Read the documentation or watch the video walkthrough.', 'bulk-cogs-editor-for-woocommerce' ); ?></p>
-					<p><a href="<?php echo esc_url( 'https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/sOEOg0xiqYs' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
+					<p><a href="<?php echo esc_url( 'https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Doc', 'bulk-cogs-editor-for-woocommerce' ); ?></a> | <a href="<?php echo esc_url( 'https://youtu.be/K-zo4dw7og4' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Video', 'bulk-cogs-editor-for-woocommerce' ); ?></a></p>
 				</div></details>
 			</header>
 			<hr class="wp-header-end">
