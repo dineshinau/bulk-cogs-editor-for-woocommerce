@@ -1,0 +1,208 @@
+<!-- wp:paragraph -->
+<p>Every WooCommerce store has its own way of managing product costs. But when a store has hundreds or thousands of products, keeping those costs up to date one product at a time quickly becomes a repetitive and time-consuming task.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This article is the story behind <a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/" target="_blank" rel="noreferrer noopener">Bulk COGS Editor for WooCommerce</a>—from noticing a real merchant problem, researching existing solutions, and planning the first version to working through performance challenges and improving the user experience.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Where the problem started</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>WooCommerce introduced its native Cost of Goods Sold (COGS) feature to help merchants record product costs and understand profitability. It made product-level cost tracking available in WooCommerce core, but a practical question remained for stores with large catalogs: how do you update the costs of many products when supplier prices change?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, imagine a store with thousands of products. A supplier increases the cost of one brand by 20%, or a store needs to adjust costs across a category. Opening products individually—or relying on a quick-edit workflow—does not scale well for this kind of recurring work.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">A merchant had already described this exact pain point</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>During the research, I found a WooCommerce feature request titled <a href="https://woocommerce.com/feature-request/allow-bulk-editing-of-cogs/" target="_blank" rel="noreferrer noopener">“Allow Bulk Editing of COGs”</a>, submitted on November 13, 2025.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>The request explained that stores with thousands of products could not keep up with frequently changing costs through the quick-edit menu. It gave a practical example: increasing the costs for an entire brand by 20% using a bulk-editing tool.</p></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>That example captured the problem clearly. Merchants did not simply need another place to enter a product cost. They needed a reliable way to select the right products and apply a controlled cost update to many of them at once.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Source: <a href="https://woocommerce.com/feature-request/allow-bulk-editing-of-cogs/" target="_blank" rel="noreferrer noopener">WooCommerce feature request – Allow Bulk Editing of COGs</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Researching the existing WooCommerce workflow</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I looked at the native COGS workflow and the ways merchants could already move cost data into WooCommerce. WooCommerce documentation explains how to set costs for individual products and variations, and its product CSV importer/exporter supports the COGS field. Those capabilities are useful, but they do not automatically provide a guided bulk-editing workflow with product filtering, calculated adjustments, a review step, and a controlled background update.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I also reviewed the wider discussion around product-catalog management. In the WooCommerce developer discussion about COGS, a merchant asked how large datasets should be handled and noted limitations in the built-in import/export workflow for large datasets. Separately, WooCommerce's product-catalog management epic describes broader merchant pain points such as slow product-editing workflows and inefficient bulk operations in large catalogs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list">
+<li><a href="https://woocommerce.com/document/woocommerce-cost-of-goods-sold-cogs/" target="_blank" rel="noreferrer noopener">WooCommerce COGS documentation</a> – native product and variation cost management, including CSV support.</li>
+<li><a href="https://developer.woocommerce.com/2024/12/04/cogs-in-core/" target="_blank" rel="noreferrer noopener">COGS in WooCommerce core</a> – developer announcement and merchant discussion, including a question about handling large datasets.</li>
+<li><a href="https://github.com/woocommerce/woocommerce/issues/64414" target="_blank" rel="noreferrer noopener">WooCommerce GitHub issue #64414</a> – broader exploration of improving product-catalog workflows, including bulk editing and scalability.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>These discussions were useful signals that the problem was not just an isolated development idea. Merchants needed more efficient ways to manage product data as their catalogs grew. I treated the COGS request as the clearest, directly relevant use case and the broader catalog discussions as supporting context—not as proof that every store had the same requirements.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Defining the problem and the first solution</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I wanted to keep the plugin focused: work with WooCommerce's native COGS data rather than introduce a separate cost system, and make bulk changes understandable before anything was saved.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The initial product plan centered on a straightforward workflow:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list">
+<li><strong>Find products:</strong> narrow the catalog using relevant filters.</li>
+<li><strong>Choose an action:</strong> set an exact cost, or increase/decrease costs by a fixed amount or percentage.</li>
+<li><strong>Preview the result:</strong> inspect the affected products and proposed values before applying changes.</li>
+<li><strong>Process the update:</strong> run the work in background batches and show progress rather than trying to update a large catalog in one request.</li>
+</ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>This gave the project a clear purpose: make common COGS updates faster to prepare, easier to review, and safer to execute.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The first performance challenge</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first implementation exposed an important engineering challenge. In one of my early tests, updating COGS for approximately 13,700 products took around 64 minutes. The value being changed was a product meta value, but the total operation still involved finding the right products, processing them safely, and saving the changes at scale.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>That result changed the priority of the project. A bulk editor is not useful if it only moves the repetitive work into a long-running request or leaves the merchant unsure whether processing is still happening.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Moving the work into background processing</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I focused the architecture on bounded background work using WooCommerce Action Scheduler. Instead of attempting to process an entire catalog in one request, the operation could be split into smaller batches. The design also needed to preserve progress between requests, isolate failures, and let the merchant understand or cancel an operation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list">
+<li>Process products in batches instead of one very large request.</li>
+<li>Pass product IDs through the processing workflow rather than carrying large product-object collections between steps.</li>
+<li>Track operation progress and refresh its status while background work continues.</li>
+<li>Support cancellation and handle failed or interrupted work without treating the entire operation as a single all-or-nothing request.</li>
+<li>Keep the preview as a review of proposed changes, while the server-side operation remains responsible for the actual update.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>I also moved testing beyond small demo catalogs. A local WordPress environment backed by MySQL/MariaDB made it possible to generate larger product datasets and compare runs at increasing scale. The aim was to test realistic workloads and identify bottlenecks, not to publish a speed claim without repeatable measurements.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Important:</strong> the 13,700-product result above is an early benchmark, not a claim about the current version's processing time. I am keeping the original measurement visible because it explains why performance and reliability became major parts of the development work.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Improving the interface and workflow</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Performance was only one part of the problem. A bulk operation can affect hundreds or thousands of products, so the interface needs to make each decision clear. I revisited the workflow to make it easier to understand from top to bottom, with a clear sequence instead of presenting too many decisions at once.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The workflow was organized around four stages: <strong>Filters → Action → Preview → Apply</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list">
+<li><strong>Filters:</strong> identify products by criteria such as title, SKU, category, brand, product type, stock status, price, or current COGS.</li>
+<li><strong>Action:</strong> choose the cost operation and enter the value.</li>
+<li><strong>Preview:</strong> review current and proposed COGS values, select the products to include, and understand the changes before committing.</li>
+<li><strong>Apply:</strong> confirm the operation and follow its background progress.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>I also worked on making the navigation and controls more consistent, keeping the steps visible, improving the review table, and making progress, cancellation, and operation status easier to find. The goal was not to add visual complexity; it was to help store owners feel confident before changing product costs in bulk.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Expanding the workflow: CSV, history, and rollback</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As the project evolved, the workflow grew beyond manual bulk adjustments. Store owners often maintain supplier costs in spreadsheets, so importing and exporting cost data became a natural extension.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list">
+<li><strong>CSV and XLSX import:</strong> prepare cost updates from spreadsheet files, validate the input, and review the proposed changes before applying them.</li>
+<li><strong>CSV export:</strong> export product cost data for external review or spreadsheet workflows.</li>
+<li><strong>Operation history:</strong> review previous bulk operations and the product changes recorded for each operation.</li>
+<li><strong>Rollback:</strong> review eligible changes and restore previously recorded costs, with safeguards for products that may have been edited again after the original operation.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>These additions made the plugin more than a bulk-update form. They helped create a workflow around preparing, reviewing, applying, auditing, and—where eligible—reversing cost changes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Making it available to WooCommerce store owners</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>After iterating on the functionality, performance, and interface, I published <a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/" target="_blank" rel="noreferrer noopener">Bulk COGS Editor for WooCommerce on WordPress.org</a>. The plugin works with WooCommerce's native Cost of Goods Sold feature and is intended to help store owners manage product costs without changing product selling prices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can explore the source code on <a href="https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce" target="_blank" rel="noreferrer noopener">GitHub</a>, try the plugin from the <a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/" target="_blank" rel="noreferrer noopener">WordPress.org plugin directory</a>, and share feedback or report issues through the project repository.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What I learned from building it</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This project started with a focused merchant pain point, but solving it properly required more than adding a bulk update button. It involved understanding the existing WooCommerce workflow, designing a safe review process, handling large catalogs in the background, testing real workloads, and refining the interface as the feature set grew.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The biggest lesson was that performance, reliability, and usability need to be designed together. A fast operation that is difficult to understand is not a good merchant experience; a polished interface that cannot handle a large catalog is not enough either.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Bulk COGS Editor is an ongoing project. I plan to keep improving it based on real-world usage, feedback from WooCommerce store owners, and further performance testing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Have a WooCommerce store with a large product catalog?</strong> Give the plugin a try and let me know what would make bulk cost management easier for your workflow.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><a href="https://wordpress.org/plugins/bulk-cogs-editor-for-woocommerce/" target="_blank" rel="noreferrer noopener"><strong>Get Bulk COGS Editor for WooCommerce</strong></a> · <a href="https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce" target="_blank" rel="noreferrer noopener">View the source on GitHub</a></p>
+<!-- /wp:paragraph -->

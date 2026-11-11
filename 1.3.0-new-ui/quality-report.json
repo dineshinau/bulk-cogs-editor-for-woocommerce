@@ -1,0 +1,82 @@
+{
+  "screenshots": 30,
+  "new_wpdev_screenshots": 28,
+  "unchanged_csv_images": 2,
+  "new_capture_css_viewport_width": 1440,
+  "new_capture_device_scale_factor": 2,
+  "new_capture_sidebar": "collapsed",
+  "png_integrity": "CRC and full pixel-stream decode passed for all 30",
+  "progress": {
+    "captured": {
+      "start": {
+        "operation_id": "875c188d-187e-4d32-92ac-00f0287286ba",
+        "processed": 0,
+        "total": 1000,
+        "status": "processing",
+        "stage": "processing",
+        "succeeded": 0,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 2
+      },
+      "half": {
+        "operation_id": "875c188d-187e-4d32-92ac-00f0287286ba",
+        "processed": 500,
+        "total": 1000,
+        "status": "processing",
+        "stage": "processing",
+        "succeeded": 500,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 130
+      },
+      "complete": {
+        "operation_id": "875c188d-187e-4d32-92ac-00f0287286ba",
+        "processed": 1000,
+        "total": 1000,
+        "status": "completed",
+        "stage": "processing",
+        "succeeded": 1000,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_seconds": 317
+      }
+    },
+    "final_state": {
+      "action": "increase_percent",
+      "completed_at": 1794432913,
+      "last_progress_at": 1794432913,
+      "progress_age": 0,
+      "queue_available": true,
+      "csv_report": "",
+      "import_source": "",
+      "operation_id": "875c188d-187e-4d32-92ac-00f0287286ba",
+      "reusable_selection": true,
+      "status": "completed",
+      "stage": "processing",
+      "total": 1000,
+      "rollback_mode": "keep",
+      "polling_total": 1000,
+      "processed": 1000,
+      "succeeded": 1000,
+      "skipped": 0,
+      "failed": 0,
+      "elapsed_seconds": 317,
+      "errors": [],
+      "error_summary": "",
+      "cancel_requested": false,
+      "cancelled_note": ""
+    }
+  },
+  "cost_verification": {
+    "checked": 1000,
+    "mismatches": 0,
+    "action": "5% increase from original backup"
+  },
+  "settings_example": "Screenshot 29 shows an unsaved settings example; site settings were not changed.",
+  "destructive_dialogs": "Preset deletion, bulk deletion, force clear, cancellation and import confirmation screenshots were cancelled.",
+  "rollback_example": "Screenshot 24 records the real restoration of the earlier demo run before the final repeat. The final run remains applied once.",
+  "readme_sha256": "43fbc21bc56afee954e6c8b0acfd86554507e0bd54be7542445683059be24baa",
+  "readme_changed_by_task": false,
+  "graph_refresh": "Succeeded; no code-graph topology changes."
+}

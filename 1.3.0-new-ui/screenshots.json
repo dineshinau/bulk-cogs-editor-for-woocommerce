@@ -1,0 +1,274 @@
+[
+  {
+    "file": "screenshot-1.png",
+    "title": "Bulk edit — new interface",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "2a818f126d3da9b354967e5d0790033413daae65614dd0c8be5b5e1068cc5f4a",
+    "source_capture": "screenshot-1.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-2.png",
+    "title": "WooCommerce — enable native Cost of Goods Sold",
+    "width": 2880,
+    "height": 2000,
+    "sha256": "89fb9aa25af2586dda1d7f9d983a2faa5b986ef435a472b1c2c487c4f1f116ba",
+    "source_capture": "screenshot-2.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-3.png",
+    "title": "Bulk edit — filters, cost action, saved filters",
+    "width": 2880,
+    "height": 2500,
+    "sha256": "7c2cc9f777fdbc2e0f54e4f7a0ff57f79bef20e41742ad4cad7f4618159860e0",
+    "source_capture": "extra-filters-actions-saved.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-4.png",
+    "title": "Bulk edit — review 1,000 selected products and proposed COGS",
+    "width": 2880,
+    "height": 2400,
+    "sha256": "e3d242bfea7ab8dbf78e3d67eb67fc6931965dcebd1923e12a27f552efca9ee7",
+    "source_capture": "screenshot-5.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-5.png",
+    "title": "Bulk edit — confirmation with rollback history",
+    "width": 2880,
+    "height": 2400,
+    "sha256": "7b085a0176f2cf86c1aadb36e72ae9a3318b2fcc42af30e8d17a28f58d7f574b",
+    "source_capture": "screenshot-6.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-6.png",
+    "title": "Bulk edit — confirmation without rollback history",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "ff870242c92b3ba912bdab093381fe86580f8c86f76528f9f0bf4531ab49ee17",
+    "source_capture": "extra-confirm-nohistory.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-7.png",
+    "title": "Bulk edit — started, 0 of 1,000 (0%)",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "6e3b9766b64e3eb804c72fa60eb012dc94c9b5e54e2e2a5d9260742d3578cbb4",
+    "source_capture": "screenshot-7.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-8.png",
+    "title": "Bulk edit — 500 of 1,000 (50%)",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "8bf6a7ba84aeded3eaa6647bc8019b4ef960a7d825cabf31e7481a98ae5417d6",
+    "source_capture": "screenshot-8.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-9.png",
+    "title": "Bulk edit — stop remaining updates confirmation",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "8451e53edfa29944c6b2a3ec2a007c012c7ab9b7f54e3b275bc8540b182b0a27",
+    "source_capture": "extra-cancel-update.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-10.png",
+    "title": "Bulk edit — completed, 1,000 of 1,000 (100%)",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "06e8938149ccf04688dda31a674972abb8c73fca7531cd593f12fedf3c17b54e",
+    "source_capture": "screenshot-9.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-11.png",
+    "title": "Import / export — export filters and columns",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "1fee3dab7aa770ffae15dbb711b6302d6ec38f373a2eb2fadaa4435666c77984",
+    "source_capture": "screenshot-10.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-12.png",
+    "title": "Import / export — confirm CSV export",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "a5f43b26d962de3256d56ff570facea22eeebe5b9e27e4f20fb3326053a9415a",
+    "source_capture": "extra-export-confirm.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-13.png",
+    "title": "Import / export — CSV export in progress",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "0cfdfa4739f15299ebcb0418b36e41a79f52e1d2fe5f3f8a952637725a13fb6f",
+    "source_capture": "extra-export-progress.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-14.png",
+    "title": "Import / export — CSV ready for download",
+    "width": 2880,
+    "height": 2000,
+    "sha256": "5f45a6a1a9b74e62e18f307544687fbeb0f1851b1d2c9fc263068b548812713d",
+    "source_capture": "extra-export-ready.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-15.png",
+    "title": "Exported CSV — unchanged 1.2.0 screenshot",
+    "width": 619,
+    "height": 839,
+    "sha256": "4dbe0390c169b9623729e8e416bf5a12c744ffcf8a861f0e42bf583f6fabebfc",
+    "source_capture": "screenshot-11.png",
+    "source": "/home/dinesh/projects/assets-bulk-cogs/bulk-cogs-editor-for-woocommerce/1.2.0-csv/screenshot-11.png",
+    "copied_without_changes": true
+  },
+  {
+    "file": "screenshot-16.png",
+    "title": "Edited new_cogs column — unchanged 1.2.0 screenshot",
+    "width": 591,
+    "height": 864,
+    "sha256": "0c0bb473c4359b9d072e63be105348b7216023efee3e84879444d15b5d291d6a",
+    "source_capture": "screenshot-12.png",
+    "source": "/home/dinesh/projects/assets-bulk-cogs/bulk-cogs-editor-for-woocommerce/1.2.0-csv/screenshot-12.png",
+    "copied_without_changes": true
+  },
+  {
+    "file": "screenshot-17.png",
+    "title": "Import / export — file requirements and preview preparation",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "02c1a170843d49cbbadc6bd43febf443fe6202a387176e0cad7ba0b5c5d3e459",
+    "source_capture": "extra-import-progress.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-18.png",
+    "title": "Import / export — cancel preparation confirmation",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "dbf7b41a1a41dc6c46c3ccc1530ec5514c77c9760dba9b7a1e50b8c258911784",
+    "source_capture": "extra-import-cancel.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-19.png",
+    "title": "Import / export — validated cost preview",
+    "width": 2880,
+    "height": 1546,
+    "sha256": "2286b73a4f06dcfac40f231b3102ec7a2ab343a7aad220387e3c6159240daff0",
+    "source_capture": "screenshot-14.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-20.png",
+    "title": "Import / export — confirm selected imported costs",
+    "width": 2880,
+    "height": 1546,
+    "sha256": "a15a7e4a0454510eb8d7de55575a0c18cb6fdbbccd6d2d028b64672665908ac5",
+    "source_capture": "extra-import-confirm.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-21.png",
+    "title": "History — filter and inspect operations",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "b4ab867a202b758bdec744423f2f3023a65cb45bb3c587f311ab4fd03fa05b4b",
+    "source_capture": "screenshot-17.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-22.png",
+    "title": "History — recorded before-and-after product costs",
+    "width": 2880,
+    "height": 2400,
+    "sha256": "4ab0d7ba130803bae6ca9be9afdfa9e75c771e241fa90369cacaa695b27432b8",
+    "source_capture": "screenshot-18.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-23.png",
+    "title": "History — review rollback and its required confirmation",
+    "width": 2880,
+    "height": 2400,
+    "sha256": "ea11af31dc9d64bedc07e42b8a71ecf6777010272b1a4498ce898bfdefe95e16",
+    "source_capture": "screenshot-19.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-24.png",
+    "title": "History — completed rollback from the earlier demo restoration",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "2d95eae69c179603a48f15a4bab54ca461f21db29943612483ae3af4dfad81dc",
+    "source_capture": "screenshot-20.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-25.png",
+    "title": "Presets — saved presets and row actions",
+    "width": 2880,
+    "height": 2000,
+    "sha256": "250f72a3cba1cc1a834a0bd885c174be8683ceac5728ad8799cf72006d0a0dfa",
+    "source_capture": "screenshot-15.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-26.png",
+    "title": "Presets — edit preset rules",
+    "width": 2880,
+    "height": 2300,
+    "sha256": "5921624407585046183c7b65e2ab42b902ce9654337e2512defd9bd2da2e3091",
+    "source_capture": "screenshot-16.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-27.png",
+    "title": "Presets — confirm single deletion",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "1e317c62d2f8c3d6fefd847ccd92249fca1d989a5cb16317aa3114ad2d880ce4",
+    "source_capture": "extra-preset-delete.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-28.png",
+    "title": "Presets — confirm bulk deletion",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "198d521ef718c498fb18c429141d74ad8f3c68c3021b99ff53f56fa66f7685af",
+    "source_capture": "extra-preset-bulk-delete.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-29.png",
+    "title": "Settings — rollback, custom retention, and recovery controls (unsaved example)",
+    "width": 2880,
+    "height": 2200,
+    "sha256": "f219ba5aa6742f8937dc255ae881228fedf9ebc2115f5f30dda41b67bcf8e7c6",
+    "source_capture": "extra-settings-custom.png",
+    "source": "wpdev / Playwright CLI"
+  },
+  {
+    "file": "screenshot-30.png",
+    "title": "Settings — force clear confirmation",
+    "width": 2880,
+    "height": 1800,
+    "sha256": "3e5f7a9a56d5fcac31c4d4ca1b2c26d584928d5f6a5e13f37a147b9f66f5e597",
+    "source_capture": "extra-force-clear.png",
+    "source": "wpdev / Playwright CLI"
+  }
+]
