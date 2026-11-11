@@ -22,6 +22,9 @@ There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCom
 
 https://youtu.be/VrmqxXouvXw
 
+= Quick 60-Second Demo =
+https://www.youtube.com/watch?v=NH3DH9c7FSQ
+
 = Why use Bulk COGS Editor? =
 
 * **Save time on supplier price changes.** Update a category, brand, or selected group instead of editing products one by one.
