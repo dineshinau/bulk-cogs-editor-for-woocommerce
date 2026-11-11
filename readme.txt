@@ -20,7 +20,7 @@ There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommer
 
 = Watch the plugin in action =
 
-https://youtu.be/sOEOg0xiqYs
+https://youtu.be/VrmqxXouvXw
 
 = Why use Bulk COGS Editor? =
 
@@ -160,10 +160,10 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 = Connect with the developer =
 
 * [Website](https://wpbydinesh.wordpress.com/)
-* [Facebook](https://www.facebook.com/wpbydinesh/)
-* [X](https://x.com/wpbydinesh/)
 * [LinkedIn](https://www.linkedin.com/in/dineshinau/)
 * [GitHub](https://github.com/dineshinau/)
+* [X](https://x.com/wpbydinesh)
+* [Facebook](https://www.facebook.com/wpbydinesh/)
 
 == Installation ==
 
