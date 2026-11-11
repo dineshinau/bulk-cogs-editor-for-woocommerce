@@ -8,17 +8,23 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 
 [Documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/) · [Video demonstration](https://youtu.be/sOEOg0xiqYs) · [Report an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
 
-![Version 1.3.0 bulk editor showing its three numbered stages, product filters, and update preview area](docs/screenshots/bulk-editor.png)
+## 1. Bulk edit overview
+
+Open **Products → Bulk COGS Editor** to access the five tabs. **Bulk edit** guides you through **Select products**, **Set cost update**, and **Review & confirm**, keeping product matching, cost calculation, and approval in one workflow.
+
+![Screenshot 1: Bulk edit overview](docs/screenshots/v1.3.0/screenshot-1.png)
+
+Open a screenshot to inspect its original resolution. The walkthrough follows **Bulk edit → Import / export → History → Presets → Settings**.
 
 ## Contents
 
 - [Requirements and installation](#requirements-and-installation)
 - [Features](#features)
-- [Saved filter presets](#saved-filter-presets)
 - [Bulk editing workflow](#bulk-editing-workflow)
 - [CSV export](#csv-export)
 - [CSV and Excel import](#csv-and-excel-import)
 - [History and rollback](#history-and-rollback)
+- [Saved filter presets](#saved-filter-presets)
 - [Settings](#settings)
 - [Background processing and recovery](#background-processing-and-recovery)
 - [Frequently asked questions](#frequently-asked-questions)
@@ -39,6 +45,12 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 4. Open **Products → Bulk COGS Editor**.
 
 If COGS is unavailable or disabled, the editor explains what is required. Use a packaged plugin build when installing a ZIP; a source checkout needs its dependencies and compiled assets for development.
+
+### 2. Enable WooCommerce Cost of Goods Sold
+
+Open **WooCommerce → Settings → Advanced → Features**, enable **Cost of Goods Sold**, and save the WooCommerce settings. The plugin uses this native feature to read and write product costs; enable it before preparing your first update.
+
+![Screenshot 2: Enable WooCommerce Cost of Goods Sold](docs/screenshots/v1.3.0/screenshot-2.png)
 
 ## Features
 
@@ -89,8 +101,6 @@ Individual selections support up to **500 products**. All-matching and range sel
 
 Previous rows can remain visible while results refresh or another page loads. Wait for the refresh to finish, or use **Refresh preview** when prompted. Review the fresh results before confirming.
 
-![Product preview showing current and proposed costs with cross-page selection controls](docs/screenshots/product-preview.png)
-
 ### Guidance and responsive controls
 
 The **Bulk edit** workflow is arranged in three numbered stages: **Select products**, **Set cost update**, and **Review & confirm**. Contextual Help follows the selected **Bulk edit**, **Import**, or **Export** task. File requirements, cost examples, nearby validation messages, and recovery controls guide each workflow. Documentation and video links remain available.
@@ -109,10 +119,53 @@ Costs are written through WooCommerce CRUD APIs for simple, variable, grouped, e
 
 Previewing does not change product costs. Updating begins only after confirmation.
 
-After the update completes, you can verify saved values in **Products → All
-Products**, where WooCommerce displays the **Cost** column.
+### 3. Choose filters and a cost action
 
-![WooCommerce product list showing product costs after the example update](docs/screenshots/products-after.png)
+Use the primary filters and expand **More filters** to narrow the product selection. Choose an exact cost, a percentage or fixed increase/decrease, or clear existing costs. The expanded saved-filter controls let you name a reusable preset for your account; choose **Find products** to load matching records.
+
+![Screenshot 3: Choose filters and a cost action](docs/screenshots/v1.3.0/screenshot-3.png)
+
+### 4. Review 1,000 selected products
+
+Compare **Current COGS**, **New COGS**, and each difference before applying changes. This example selects the first **1,000 products** for a **5% increase**. Review the selection count, use pagination to inspect rows, adjust visible columns when needed, and add an operation note to identify the update in History.
+
+![Screenshot 4: Review 1,000 selected products](docs/screenshots/v1.3.0/screenshot-4.png)
+
+### 5. Confirm with rollback history
+
+Choose **Review changes** to check the action and selected scope in the confirmation dialog. Enable **Keep rollback history** to retain original costs and detailed product changes for the configured retention period. These records allow a later rollback review; the update starts only when you confirm.
+
+![Screenshot 5: Confirm with rollback history](docs/screenshots/v1.3.0/screenshot-5.png)
+
+### 6. Confirm without rollback history
+
+The alternative confirmation leaves **Keep rollback history** unchecked. The operation still records results and protects against repeated processing, but it cannot restore original costs through rollback or retain detailed cost-change history. This can reduce processing time; choose the history option separately for each update.
+
+![Screenshot 6: Confirm without rollback history](docs/screenshots/v1.3.0/screenshot-6.png)
+
+### 7. Update started: 0 of 1,000
+
+After confirmation, the operation panel shows the background update starting at **0%**, with the selected total and outcome counters. Follow its status and use the refresh control when needed. The job continues on the server if you leave the page.
+
+![Screenshot 7: Update started: 0 of 1,000](docs/screenshots/v1.3.0/screenshot-7.png)
+
+### 8. Update halfway: 500 of 1,000
+
+At **50%**, the same operation has processed **500 of 1,000 products**. The panel displays updated, skipped, and failed counts alongside elapsed time and an estimated remaining time when available. Estimates change as processing continues and depend on the store and worker availability.
+
+![Screenshot 8: Update halfway: 500 of 1,000](docs/screenshots/v1.3.0/screenshot-8.png)
+
+### 9. Confirm stopping remaining updates
+
+Choose the stop control to review the cancellation dialog before stopping remaining work. Costs already saved stay changed, so stopping an operation does not restore its original values. Cancel the dialog to keep processing; use retained history to review a rollback when restoration is needed.
+
+![Screenshot 9: Confirm stopping remaining updates](docs/screenshots/v1.3.0/screenshot-9.png)
+
+### 10. Update completed: 1,000 of 1,000
+
+The completed example shows **1,000 products processed**, with **zero skipped and zero failed**. Review the final counters and elapsed time before starting another operation. You can also verify saved values in **Products → All Products**, using WooCommerce’s **Cost** column.
+
+![Screenshot 10: Update completed: 1,000 of 1,000](docs/screenshots/v1.3.0/screenshot-10.png)
 
 ## CSV export
 
@@ -126,13 +179,45 @@ Use exports to review existing costs in a spreadsheet or prepare a file for impo
 
 Exports cover **all matching pages** and always append a blank `new_cogs` column. Fill that column to prepare cost updates. Product type filters determine whether variable parents, variations, or both are included. Export produces CSV, including when the source of a previous import was XLSX.
 
-![CSV export controls with column choices and product filtering](docs/screenshots/csv-export.png)
+### 11. Configure a CSV export
+
+In **Import / export**, choose **Export CSV**, set product filters, and choose output columns. Find the matching products and review the export preview. Exports cover all matching pages and append a blank **new_cogs** column so the downloaded file can be prepared for a later import.
+
+![Screenshot 11: Configure a CSV export](docs/screenshots/v1.3.0/screenshot-11.png)
+
+### 12. Confirm the CSV export
+
+Review the confirmation dialog for the selected product count and output columns before creating the file. This step generates an export of matching product data without changing saved costs. Return to the preview if the product scope or column selection needs adjusting.
+
+![Screenshot 12: Confirm the CSV export](docs/screenshots/v1.3.0/screenshot-12.png)
+
+### 13. Follow CSV generation progress
+
+After confirming, the export runs in the background. Its progress panel reports processing status, elapsed time, and estimated remaining time when available, with a cancellation control for unfinished work. Wait for file generation to complete before attempting to download the result.
+
+![Screenshot 13: Follow CSV generation progress](docs/screenshots/v1.3.0/screenshot-13.png)
+
+### 14. Download the completed CSV
+
+When export finishes, use **Download CSV** to retrieve the generated file. Check the completed status and product count, then open the download in a spreadsheet application. Generated download files are temporary, so save a local copy when you need to keep the export.
+
+![Screenshot 14: Download the completed CSV](docs/screenshots/v1.3.0/screenshot-14.png)
+
+### 15. Inspect the exported spreadsheet
+
+The exported spreadsheet shows product identifiers, existing costs, and the empty **new_cogs** column. Use these identifiers to keep each row associated with the correct product or variation. This spreadsheet image is retained unchanged from the version 1.2.0 documentation because it demonstrates the same file workflow.
+
+![Screenshot 15: Inspect the exported spreadsheet](docs/screenshots/v1.3.0/screenshot-15.png)
+
+### 16. Enter replacement costs in new_cogs
+
+Enter replacement values under **new_cogs**, keeping product IDs and SKUs intact. Use decimal points without currency symbols and save a UTF-8 CSV or XLSX file for import. Blank replacement costs are excluded from updates. This second spreadsheet image is also retained unchanged from version 1.2.0.
+
+![Screenshot 16: Enter replacement costs in new_cogs](docs/screenshots/v1.3.0/screenshot-16.png)
 
 ## CSV and Excel import
 
 Import **UTF-8 CSV** or **XLSX** files. A downloadable CSV template and expandable file requirements are available beside the upload controls.
-
-![File import controls with template download, requirements, and validation](docs/screenshots/csv-import.png)
 
 ### File format
 
@@ -170,16 +255,29 @@ Preparing an import preview does not update products. Preparation can be cancell
 
 Original uploads are deleted when preparation ends. Staged previews and reports expire through scheduled cleanup after approximately **24 hours**, with retention extended while an applied update is active. Generated export and report download files have scheduled cleanup after **two days**.
 
-## Saved filter presets
+### 17. Upload and prepare an import
 
-Save frequently used filter rules from **Bulk edit** and manage them in the
-**Presets** tab. Presets are stored with your WordPress user account, so they
-are available across browsers and devices on the same site. Use **Edit** to
-rename a preset or revise its rules; use **Delete** or the bulk actions to
-remove presets. Loading a preset restores its filters, and you can run **Find
-products** to check the current matching products before an update.
+Choose **Import CSV / XLSX**, review the expandable file requirements, and select or drop a file. Choose **Validate file** to prepare its preview in background batches. This preparation checks the input and resolves products without changing their saved costs; the progress panel shows its current state.
 
-![Presets tab showing saved filters, creation dates, and bulk actions](docs/screenshots/presets.png)
+![Screenshot 17: Upload and prepare an import](docs/screenshots/v1.3.0/screenshot-17.png)
+
+### 18. Confirm cancelling import preparation
+
+The preparation cancellation dialog lets you stop building the import preview. Confirm to stop preparation or cancel the dialog to continue waiting. Product costs remain unchanged at this stage because importing still requires a completed preview, a selected scope, and explicit update confirmation.
+
+![Screenshot 18: Confirm cancelling import preparation](docs/screenshots/v1.3.0/screenshot-18.png)
+
+### 19. Review validated import rows
+
+The ready preview compares current costs, proposed imported costs, and differences for each validated product. This example contains **three ready products**. Review the rows, select the intended changes, and download validation errors when available before proceeding; preparing this preview alone does not apply the file.
+
+![Screenshot 19: Review validated import rows](docs/screenshots/v1.3.0/screenshot-19.png)
+
+### 20. Confirm selected imported costs
+
+Review the selected import changes in the confirmation dialog and choose whether to keep rollback history. Confirm only after checking the product scope and proposed values; applying starts a background cost update. The documentation example stops at this dialog, so it demonstrates approval without applying these imported values.
+
+![Screenshot 20: Confirm selected imported costs](docs/screenshots/v1.3.0/screenshot-20.png)
 
 ## History and rollback
 
@@ -189,16 +287,24 @@ by operation ID, note, or product ID. Use numbered pages, page-size choices, or
 **Go to page** to navigate. An optional note entered before starting an update
 helps identify it later.
 
-![History tab with operation filters, statuses, product counts, and numbered pagination](docs/screenshots/history.png)
-
 Choose **View details** to inspect the action, user, filters, note, timestamps,
 duration, outcome counts, and recorded original and updated product costs.
 Active historical details refresh automatically and use the existing
 stale-worker recovery path.
 
-![Existing operation details with completion results and the summary-only history notice](docs/screenshots/operation-details.png)
+### 21. Find an operation in History
 
-### Review and confirm a rollback
+Open **History** to review bulk updates, imports, and rollbacks. Filter by status, operation type, user, or date range, or search by operation ID, note, or product ID. Use pagination to navigate results and choose **View details** for the operation you want to inspect.
+
+![Screenshot 21: Find an operation in History](docs/screenshots/v1.3.0/screenshot-21.png)
+
+### 22. Inspect recorded product changes
+
+Operation details show the recorded original and updated COGS, product identifiers, and differences when rollback history was retained. Review the operation summary and outcome counts alongside these rows. **Review rollback** is available for eligible source operations while the required original-cost records remain retained.
+
+![Screenshot 22: Inspect recorded product changes](docs/screenshots/v1.3.0/screenshot-22.png)
+
+### Rollback steps and retry behavior
 
 1. Open **History** and choose **View details** for the source update.
 2. Choose **Review rollback** when retained original costs are available.
@@ -219,19 +325,62 @@ attempt rather than creating another concurrent rollback.
 
 **Older operations can have summary history only.** They cannot be rolled back
 without recorded originals. Expired or deleted original values are unavailable
-for rollback too. The operation-details screenshot shows a summary-only record
-from the earlier wpdev data; new operations with rollback history enabled include
-the recorded costs needed to review a rollback.
+for rollback too. Choose **Keep rollback history** when confirming an update
+to retain the product-level records needed for a later rollback review.
+
+### 23. Review and confirm a rollback
+
+Compare each product’s current cost with the original value to restore, then read the displayed rollback policy. Acknowledge the required confirmation before starting. The policy either overwrites current costs or skips products changed afterward; it remains fixed for that rollback attempt.
+
+![Screenshot 23: Review and confirm a rollback](docs/screenshots/v1.3.0/screenshot-23.png)
+
+### 24. Inspect a completed rollback
+
+The completed rollback example shows **1,000 products restored**, with **zero skipped and zero failed**. Review its outcome counters and elapsed time in History. This capture comes from an earlier restoration in the demonstration; the final bulk-update example is a separate operation.
+
+![Screenshot 24: Inspect a completed rollback](docs/screenshots/v1.3.0/screenshot-24.png)
+
+## Saved filter presets
+
+Save frequently used filter rules from **Bulk edit** and manage them in the
+**Presets** tab. Presets are stored with your WordPress user account, so they
+are available across browsers and devices on the same site. Use **Edit** to
+rename a preset or revise its rules; use **Delete** or the bulk actions to
+remove presets. Loading a preset restores its filters, and you can run **Find
+products** to check the current matching products before an update.
+
+### 25. Manage saved filter presets
+
+The **Presets** tab lists your account’s saved filters with creation dates and row actions. Load a preset to reuse its rules, then choose **Find products** to check current matches. Presets are available across browsers and devices when you sign into the same WordPress account on this site.
+
+![Screenshot 25: Manage saved filter presets](docs/screenshots/v1.3.0/screenshot-25.png)
+
+### 26. Edit a preset
+
+Choose **Edit** on a preset to change its name or product-filter rules. Review the form and save the update, or cancel to leave the saved preset unchanged. Editing a preset changes the reusable selection rules; it does not apply a product cost update.
+
+![Screenshot 26: Edit a preset](docs/screenshots/v1.3.0/screenshot-26.png)
+
+### 27. Confirm deleting one preset
+
+Choose **Delete** on a preset to open its confirmation dialog. Check the selected preset before confirming, or cancel to keep it. Deleting a preset removes the saved filter configuration from your account; existing products, their costs, and operation history remain available.
+
+![Screenshot 27: Confirm deleting one preset](docs/screenshots/v1.3.0/screenshot-27.png)
+
+### 28. Confirm bulk deletion of presets
+
+Select multiple preset rows, choose the delete bulk action, and apply it to review the confirmation. Confirm only the presets you intend to remove, or cancel to preserve them. This removes the selected saved configurations without deleting products or changing their costs.
+
+![Screenshot 28: Confirm bulk deletion of presets](docs/screenshots/v1.3.0/screenshot-28.png)
 
 ## Settings
 
 The **Settings** tab controls retained history and the policy applied to new
 rollbacks. It is shown to users with WooCommerce management access.
 
-![Settings tab with 30-day, 90-day, and custom retention plus rollback behavior choices](docs/screenshots/settings.png)
-
 | Setting | Choices |
 | --- | --- |
+| Default rollback mode | Keep rollback history or No rollback history; overridable in each update confirmation |
 | History retention | 30 days (default), 90 days, or custom days from 1 to 36,500 |
 | Rollback behavior | Overwrite current costs with originals (default), or skip products whose costs changed afterward |
 
@@ -247,6 +396,18 @@ rollbacks. It is shown to users with WooCommerce management access.
 
 Choose **Save settings** to apply changes. Visiting this tab preserves your
 current bulk or CSV preview and selection.
+
+### 29. Configure history and rollback settings
+
+In **Settings**, choose the default rollback-history mode for new updates, a history retention period, and rollback behavior. This screenshot illustrates **Keep rollback history**, **60 custom days**, and skipping products changed afterward; these example choices are unsaved. Choose **Save settings** to apply your selections. The recovery controls are available alongside these options.
+
+![Screenshot 29: Configure history and rollback settings](docs/screenshots/v1.3.0/screenshot-29.png)
+
+### 30. Confirm force clearing a stuck operation
+
+Use **Force clear current operation** only when an operation is stuck and normal cancellation does not work. Confirmation clears your current operation and import references and requests cancellation. It keeps history and rollback data, does not restore changed costs, and cannot immediately stop an active worker. Check History before starting another update.
+
+![Screenshot 30: Confirm force clearing a stuck operation](docs/screenshots/v1.3.0/screenshot-30.png)
 
 ## Background processing and recovery
 
@@ -276,9 +437,7 @@ Import preview workers must run on the upload server as the same operating-syste
 
 The latest reported **WP-CLI benchmark** updated **10,000 products in 15 minutes 24 seconds**, with **zero skipped and zero failed**, compared with 50–60 minutes in the initial implementation — approximately **69–74% less elapsed time**.
 
-![WP-CLI benchmark result showing 10,000 products updated, zero skipped, zero failed, and an editor elapsed time of 00:15:24](docs/screenshots/2026-10-21_02-04-27-10k-15-Minutes-WP-CLI.png)
-
-The screenshot records the editor’s operation elapsed time, not a separately measured end-to-end CLI runtime. This is a reported single run, not a guaranteed completion time. Results depend on hosting, database speed, product mix, installed extensions, and worker availability. Repeated runs and larger-catalog benchmarks are still needed.
+The reported time is the editor’s operation elapsed time, not a separately measured end-to-end CLI runtime. This is a reported single run, not a guaranteed completion time. Results depend on hosting, database speed, product mix, installed extensions, and worker availability. Repeated runs and larger-catalog benchmarks are still needed.
 
 ## Frequently asked questions
 
@@ -346,4 +505,4 @@ Use the repository’s [project instructions](AGENTS.md) for contribution conven
 - [Issues and feature requests](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
 - [Performance discussion](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12)
 
-Screenshots were captured from the **wpdev** development store using its existing products and operation history; product data and results are illustrative. Licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
+The 30 screenshots follow the version **1.3.0** workflow. New admin captures use the **wpdev** development store, the default WordPress color scheme, and a collapsed sidebar. Screenshots 15–16 preserve the original version **1.2.0** spreadsheet examples unchanged. Product data and results are illustrative; progress screenshots show an actual 1,000-product operation, and the rollback example shows an earlier restoration. Licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
