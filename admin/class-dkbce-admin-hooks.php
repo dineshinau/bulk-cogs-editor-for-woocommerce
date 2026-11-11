@@ -40,6 +40,7 @@ class DKBCE_Admin_Hooks {
 		add_action( 'wp_ajax_dkbce_preview', array( $admin_functions, 'ajax_preview' ) );
 		add_action( 'wp_ajax_dkbce_preview_page', array( $admin_functions, 'ajax_preview_page' ) );
 		add_action( 'wp_ajax_dkbce_select_range', array( $admin_functions, 'ajax_select_range' ) );
+		add_action( 'wp_ajax_dkbce_filter_presets', array( $admin_functions, 'ajax_filter_presets' ) );
 		add_action( 'wp_ajax_dkbce_preferences', array( $admin_functions, 'ajax_preferences' ) );
 		add_action( 'wp_ajax_dkbce_apply', array( $admin_functions, 'ajax_apply' ) );
 		add_action( 'wp_ajax_dkbce_progress', array( $admin_functions, 'ajax_progress' ) );

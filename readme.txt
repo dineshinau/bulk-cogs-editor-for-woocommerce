@@ -4,23 +4,26 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with CSV/XLSX import, live progress, safe previews, history, and rollback for efficient product cost management.
+Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient product cost management.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a fast and the most powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly edit product cost values for large catalogs by relevant filtering criteria, preview proposed changes, and apply updates through background processing with live progress and cancellation.
+**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
 
-Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back eligible changes while original values are retained. Product prices are not changed.
+Save reusable presets for recurring supplier cost adjustments, import product costs from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
-https://youtu.be/sOEOg0xiqYs
+https://youtu.be/VrmqxXouvXw
+
+= Quick 60-Second Demo =
+https://www.youtube.com/watch?v=NH3DH9c7FSQ
 
 = Why use Bulk COGS Editor? =
 
@@ -38,12 +41,14 @@ https://youtu.be/sOEOg0xiqYs
 
 = Features =
 
-* Filter products and variations by title, SKU, category, brand, product type, stock status, current price, or current COGS.
+* **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
+* Filter products and variations by category, brand, product type, stock status, current price, or current COGS.
 * Set an exact cost, increase or decrease it by a fixed amount or percentage, or clear it.
 * Preview product images alongside current COGS, proposed COGS, and the exact difference, with pagination and product selection.
 * Process updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
 * Import CSV or XLSX costs using product IDs or SKUs, export matching costs to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original costs in History, with rollback review and confirmation.
+* Save reusable filter presets to your account and manage their names, rules, and deletion in the Presets tab.
 * Configure history retention and choose whether rollback overwrites later cost edits or skips changed products.
 * Recover a stuck editor operation through a confirmed force-clear action in Settings when normal cancellation does not work.
 
@@ -71,22 +76,22 @@ The upload limit follows WordPress's maximum upload size, shown beside the file 
 
 ### Sample CSV
 
-Exported CSV files include a blank `new_cogs` column. Fill it with new costs and import the file.
+Export products to CSV, fill in the blank `new_cogs` column, then import the file to preview your changes.
 
-```csv
-id,sku,new_cogs
-123,PRODUCT-001,25.50
-124,PRODUCT-002,40.00
-```
+Use this format for your CSV file, replacing the example IDs, SKUs, and costs with your product data:
 
-Required headers are `new_cogs` and `id` or `sku`. Older files can use `cogs` if `new_cogs` is missing.
+    id,sku,new_cogs
+    123,PRODUCT-001,25.50
+    124,PRODUCT-002,40.00
 
-- Use either ID or SKU to identify products.
-- If both are provided, they must match.
-- Use decimal values without currency symbols.
-- Extra decimal places are rounded to WooCommerce's configured number of decimals before preview. With two decimal places, `12.3456` becomes `12.35`. WooCommerce treats a value that rounds to zero as empty.
-- Blank costs are excluded and listed as validation errors; they do not clear existing costs.
+Your file must include `new_cogs` and at least one product identifier: `id` or `sku`.
+
+- You can omit either `id` or `sku`. If both are provided, they must identify the same product.
+- Enter costs as decimal numbers without currency symbols, such as `25.50`.
+- Leave a cost blank to skip that row.
 - Duplicate product rows are excluded and listed in the error report.
+
+Older files can use `cogs` when the `new_cogs` header is missing.
 
 XLSX imports read raw values from the first worksheet. Replace formulas with values and store SKUs as text to preserve leading zeros.
 
@@ -157,11 +162,11 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 = Connect with the developer =
 
-* [Website](https://dineshinaublog.wordpress.com/)
-* [Facebook](https://www.facebook.com/dineshinau/)
-* [X](https://x.com/dineshinau/)
+* [Website](https://wpbydinesh.wordpress.com/)
 * [LinkedIn](https://www.linkedin.com/in/dineshinau/)
 * [GitHub](https://github.com/dineshinau/)
+* [X](https://x.com/wpbydinesh)
+* [Facebook](https://www.facebook.com/wpbydinesh/)
 
 == Installation ==
 
@@ -172,6 +177,20 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 5. Filter your products, choose an action, preview the changes, then confirm to apply them.
 
 == Frequently Asked Questions ==
+
+= Can I choose whether an update keeps rollback history? =
+
+Yes. Settings > Default rollback mode offers Keep rollback history (the initial default) and No rollback history. In the update confirmation popup, the Keep rollback history checkbox starts with that default and can be changed for the individual bulk update or CSV import. Its explanation updates as you change it.
+
+With history enabled, original costs and detailed product changes remain available for the configured retention period. With history disabled, the operation cannot be rolled back and detailed cost-change history is not retained. Operation results and retry protection remain available. Temporary retry journals are removed by background cleanup after completion, failure, or cancellation. Changing the default does not change existing operations.
+
+
+= How often does progress refresh, and how can I enable diagnostic logs? =
+
+Update progress refreshes every 10 seconds for fewer than 1,000 selected items, or every 25 seconds for 1,000 or more. While the total is unknown, polling uses 25 seconds. Use Refresh status for an immediate update. Bulk-update progress is checkpointed after 50 products or 10 seconds, and at chunk boundaries or worker exit. Workers continue checking for cancellation every second between products.
+
+Errors and operation completion summaries remain logged. Detailed worker timings and routine per-product diagnostics are disabled by default. To enable them temporarily for troubleshooting or benchmarking, add `define( 'DKBCE_DIAGNOSTICS', true );` to wp-config.php. This does not change Query Monitor or other site-wide profiling settings.
+
 
 = How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
 Use Bulk edit for one cost action across a selected group. Use CSV import when individual products need different values. The steps for both workflows appear above.
@@ -270,13 +289,35 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Upgrade Notice ==
 
-= 1.2.1 =
-Version 1.2.1 improves import preparation, Apply checks, and CSV export processing; rounds imported costs to WooCommerce decimal settings; and adds confirmed stop and force-clear recovery controls. You can return to the editor tabs while a background operation runs.
-
-= 1.2.0 =
-Version 1.2.0 adds CSV and XLSX import, CSV export, operation history, and rollback controls. The plugin updates its database tables automatically when you upgrade.
+= 1.3.0 =
+Version 1.3.0 redesigns the editor workflow, improves selection, progress, import/export and rollback guidance, and adds account-based presets with a dedicated management tab. New presets use a custom database table; existing browser and user-meta presets are not migrated.
 
 == Changelog ==
+
+= 1.3.0 (2026-11-11) =
+
+* Fixed: Clear obsolete review counts after empty searches and require explicit product selection for new bulk previews.
+* Fixed: Keep current and proposed costs together on mobile and prevent progress estimate text from overflowing its card.
+* Fixed: Suppress unreliable remaining-time estimates while operations wait for progress, and support durations longer than one day.
+* Fixed: Explain why rollback is unavailable and show the running-operation notice and progress link beside disabled rollback confirmation controls. Refresh confirmation availability as operation status changes.
+* Fixed: Allow cleanup jobs and retention scans to schedule continuation batches without conflicting with Action Scheduler uniqueness checks.
+* Fixed: Require at least one product identifier column for CSV exports.
+* Fixed: Preserve import preparation cancellation, confirmation copy, and keyboard focus when preparation finishes.
+* Fixed: Recheck reused selections after reviewed-product reads so Apply rejects sources entering retention cleanup during preflight.
+* Fixed: Repair the early preset-table name index that prevented saving a second preset for the same user.
+* Improved: Refresh editor layouts, align workflow steps, reduce inactive content, and place confirmation beside the product preview.
+* Improved: Follow each user’s WordPress Administration Color Scheme for buttons, links, tabs, progress bars, and selection highlights.
+* Improved: Distinguish Reset filters, Deselect all products, and Start over; provide actionable empty results and clearer search, selection, preview, and confirmation guidance.
+* Improved: Use import/export-specific labels and explain blank versus zero costs. Show specific missing-file, format, and size errors and group row errors with correction guidance.
+* Improved: Make history easier to scan with action-first columns, accessible full operation IDs, focused detail views, preserved list context, reloadable operation links, and operation-specific progress headings.
+* Improved: Show rollback retention deadlines and the effective rollback policy, and confirm reductions to history retention before saving.
+* Improved: Provide completion actions for reviewing changed products, skipped or failed results, and starting a fresh update.
+* Updated: Set release metadata to 1.3.0, refresh translations and generated assets, update development dependencies and code graphs, and document the UI/UX review and implementation decisions.
+* Updated: Refresh documentation, plugin, and social profile links. Require an explicit request for Playwright verification on each development task.
+* Added: A CSV export column-selection toggle.
+* Added: A Default rollback mode setting with Keep rollback history and No rollback history options. The update confirmation checkbox uses this default, allows a per-operation override, and explains the selected mode and potential time savings. No rollback history omits rollback and detailed cost-change history while preserving operation results and retry protection.
+* Added: Account-based filter presets in a dedicated custom table, with unique names per user and access across browsers and devices. Existing browser and user-meta presets are not migrated.
+* Added: A Presets tab before Settings with a native WordPress list table, created dates, editable names and filter rules, Edit/Delete row actions, and bulk deletion. Loaded presets hide duplicate-save controls, and deletion is available only in Presets.
 
 = 1.2.1 (2026-10-27) =
 

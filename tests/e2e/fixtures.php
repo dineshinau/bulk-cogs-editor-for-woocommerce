@@ -49,28 +49,77 @@ function dkbce_e2e_create_product( $product, $values, &$state ) {
  * @return void
  */
 function dkbce_e2e_cleanup( $state ) {
+	global $wpdb;
 	$operation_ids       = array( $state['operation_id'] );
 	$latest_operation_id = get_user_meta( $state['manager_id'], 'dkbce_latest_operation', true );
 	if ( $latest_operation_id ) {
 		$operation_ids[] = sanitize_text_field( $latest_operation_id );
 	}
-	$admin_latest_operation_id = get_user_meta( $state['admin_id'], 'dkbce_latest_operation', true );
-	if ( $admin_latest_operation_id && $admin_latest_operation_id !== $state['admin_latest_before'] ) {
-		$operation_ids[] = sanitize_text_field( $admin_latest_operation_id );
+	// The actor is a newly created test user; collect every operation it owns.
+	$option_names = $wpdb->get_col( $wpdb->prepare( 'SELECT option_name FROM %i WHERE option_name LIKE %s', $wpdb->options, $wpdb->esc_like( 'dkbce_operation_' ) . '%' ) );
+	foreach ( $option_names as $name ) {
+		$operation = get_option( $name );
+		$owner_id  = absint( $operation['user_id'] ?? 0 );
+		if ( is_array( $operation ) && $owner_id === (int) $state['manager_id'] && ! empty( $state['manager_id'] ) ) {
+			$operation_ids[] = $operation['operation_id'];
+		}
 	}
 
-	$store   = new DKBCE_Operation_Store();
-	$history = new DKBCE_History_Store();
+	$store     = new DKBCE_Operation_Store();
+	$history   = new DKBCE_History_Store();
+	$processor = new DKBCE_Bulk_Processor( $store, new DKBCE_COGS_Service() );
 	foreach ( array_unique( $operation_ids ) as $operation_id ) {
 		$operation = $store->get( $operation_id );
-		if ( $operation && (int) $state['manager_id'] === (int) $operation['user_id'] ) {
-			$store->delete_chunks( $operation_id, $operation['snapshot_chunks'] );
-			$history_deleted = false;
-			while ( ! $history_deleted ) {
-				$history_deleted = $history->delete( $operation_id );
+		if ( ! empty( $operation ) && (int) $state['manager_id'] === (int) $operation['user_id'] ) {
+			$store->request_cancellation( $operation_id );
+			$deadline = time() + 60;
+			do {
+				$lock = $processor->acquire_operation_lock( $operation_id );
+				if ( ! $lock ) {
+					sleep( 1 );
+				}
+			} while ( ! $lock && time() < $deadline );
+			if ( ! $lock ) {
+				WP_CLI::error( 'A fixture worker is still active; retain fixture state for cleanup retry.' );
 			}
-			delete_option( 'dkbce_operation_' . sanitize_key( $operation_id ) );
+			try {
+				while ( ! $store->delete_chunks( $operation_id, $operation['snapshot_chunks'] ?? 0 ) ) {
+					continue; // Finish bounded fixture outcome cleanup before deleting the state.
+				}
+				$imports = new DKBCE_Import_Store();
+				while ( $imports->delete_batch( $operation_id ) ) {
+					continue; // Remove staged rows owned by this test operation.
+				}
+				if ( ! empty( $operation['file'] ) ) {
+					// Web PHP may use a private /tmp namespace. Retain a manifest for
+					// fixture-only file cleanup in the same web runtime when needed.
+					$manifest_path             = dirname( getenv( 'DKBCE_E2E_STATE_FILE' ) ) . '/cleanup-files.json';
+					$manifest                  = file_exists( $manifest_path ) ? json_decode( file_get_contents( $manifest_path ), true ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Private test cleanup manifest.
+					$manifest[ $operation_id ] = $operation['file'];
+					file_put_contents( $manifest_path, wp_json_encode( $manifest ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Non-secret fixture file paths for cleanup.
+					chmod( $manifest_path, 0600 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod -- Private test cleanup manifest.
+					wp_delete_file( $operation['file'] );
+				}
+				foreach ( array( DKBCE_Bulk_Processor::HOOK, DKBCE_Bulk_Processor::CLEANUP_HOOK, 'dkbce_cleanup_import', DKBCE_Download_Processor::HOOK, DKBCE_Download_Processor::CLEANUP_HOOK ) as $hook ) {
+					as_unschedule_all_actions( $hook, array( $operation_id ) );
+				}
+				$history_deleted = false;
+				while ( ! $history_deleted ) {
+					$history_deleted = $history->delete( $operation_id );
+				}
+				delete_option( 'dkbce_operation_' . sanitize_key( $operation_id ) );
+				delete_option( 'dkbce_cancel_' . sanitize_key( $operation_id ) );
+				delete_option( 'dkbce_rollback_' . sanitize_key( $operation_id ) );
+				$claim = $operation['preview_claim_token'] ?? $operation_id;
+				delete_option( 'dkbce_preview_claim_' . sanitize_key( $claim ) );
+				delete_transient( 'dkbce_preview_' . sanitize_key( $claim ) );
+			} finally {
+				$processor->release_operation_lock( $operation_id, $lock );
+			}
 		}
+	}
+	foreach ( $state['cleanup_transients'] ?? array() as $transient ) {
+		delete_transient( $transient );
 	}
 
 	foreach ( array_reverse( $state['product_ids'] ) as $product_id ) {
@@ -92,16 +141,6 @@ function dkbce_e2e_cleanup( $state ) {
 		if ( $user_id ) {
 			wp_delete_user( $user_id );
 		}
-	}
-	if ( $state['admin_latest_before'] ) {
-		update_user_meta( $state['admin_id'], 'dkbce_latest_operation', $state['admin_latest_before'] );
-	} else {
-		delete_user_meta( $state['admin_id'], 'dkbce_latest_operation' );
-	}
-	if ( $state['admin_preferences_before'] ) {
-		update_user_meta( $state['admin_id'], 'dkbce_display_preferences', $state['admin_preferences_before'] );
-	} else {
-		delete_user_meta( $state['admin_id'], 'dkbce_display_preferences' );
 	}
 }
 
@@ -428,9 +467,23 @@ $store->save(
 	)
 );
 
-// Keep the admin browser isolated from any operation saved before this test run.
-delete_user_meta( $state['admin_id'], 'dkbce_latest_operation' );
-delete_user_meta( $state['admin_id'], 'dkbce_display_preferences' );
+if ( '1' === getenv( 'DKBCE_E2E_RELEASE' ) ) {
+	$state['release_ids'] = array();
+	for ( $index = 1; $index <= 260; ++$index ) {
+		$state['release_ids'][] = dkbce_e2e_create_product(
+			new WC_Product_Simple(),
+			array(
+				'key'   => 'release_' . $index,
+				'name'  => 'DKBCE Release ' . $token . ' ' . $index,
+				'sku'   => $prefix . '-RELEASE-' . $index,
+				'price' => '20.00',
+				'cogs'  => 10,
+				'stock' => 'instock',
+			),
+			$state
+		);
+	}
+}
 
 $setup_complete = true;
 WP_CLI::line( wp_json_encode( $state ) );

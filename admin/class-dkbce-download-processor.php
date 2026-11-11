@@ -236,7 +236,9 @@ class DKBCE_Download_Processor {
 		$state = $store->get( $id );
 		if ( $state && 'server_download' === $state['action'] ) {
 			wp_delete_file( $state['file'] );
-			delete_option( 'dkbce_operation_' . sanitize_key( $id ) );
+			if ( delete_option( 'dkbce_operation_' . sanitize_key( $id ) ) ) {
+				delete_option( 'dkbce_context_' . sanitize_key( $id ) );
+			}
 			delete_option( 'dkbce_cancel_' . sanitize_key( $id ) );
 		}
 	}

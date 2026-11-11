@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Bulk COGS Editor for WooCommerce
- * Plugin URI: https://dineshinaublog.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/
- * Description: Bulk edit WooCommerce product costs (COGS) with previews, background updates, CSV/XLSX import, history, and eligible rollback.
- * Version: 1.2.1
+ * Plugin URI: https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/
+ * Description: Bulk edit WooCommerce product costs (COGS) with presets, previews, background updates, CSV/XLSX import, history, and rollback.
+ * Version: 1.3.0
  * Author: Dinesh Yadav
  * Author URI: https://github.com/dineshinau/
  * Text Domain: bulk-cogs-editor-for-woocommerce
@@ -14,7 +14,7 @@
  * Requires at least: 6.7
  * Requires PHP: 7.4
  * WC requires at least: 10.3
- * WC tested up to: 11.2
+ * WC tested up to: 11.3
  * Requires Plugins: woocommerce
  *
  * Bulk COGS Editor for WooCommerce is free software: you can redistribute it and/or modify
@@ -41,12 +41,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version constant.
  */
-define( 'DKBCE_VERSION', '1.2.1' );
+define( 'DKBCE_VERSION', '1.3.0' );
 
 /**
  * Plugin database schema version. Increase when table schemas change.
  */
-define( 'DKBCE_DB_VERSION', '1.1.0' );
+define( 'DKBCE_DB_VERSION', '1.2.1' );
 
 /**
  * Plugin file path constant.
@@ -118,9 +118,13 @@ if ( ! function_exists( 'dkbce_wc_log' ) ) {
 	 * Logger function for tracing and debugging.
 	 *
 	 * @param string $message Message.
+	 * @param bool   $diagnostic Whether this is optional verbose diagnostic output.
 	 * @return void
 	 */
-	function dkbce_wc_log( $message ) {
+	function dkbce_wc_log( $message, $diagnostic = false ) {
+		if ( $diagnostic && ( ! defined( 'DKBCE_DIAGNOSTICS' ) || ! DKBCE_DIAGNOSTICS ) ) {
+			return;
+		}
 		if ( function_exists( 'wc_get_logger' ) ) {
 			$log_enabled = apply_filters( 'dkbce_is_log_enabled', true );
 

@@ -96,7 +96,8 @@ class DKBCE_Retention_Processor {
 		update_option( self::CURSOR_OPTION, $next, false );
 
 		if ( self::BATCH_SIZE === count( $option_names ) && function_exists( 'as_enqueue_async_action' ) ) {
-			as_enqueue_async_action( self::HOOK, array(), self::GROUP, true );
+			// Continue despite the running scan or the next scheduled daily sweep.
+			as_enqueue_async_action( self::HOOK, array(), self::GROUP, false );
 		}
 	}
 
@@ -142,7 +143,9 @@ class DKBCE_Retention_Processor {
 			$operation_id = sanitize_key( $state['operation_id'] );
 			delete_option( 'dkbce_rollback_' . $operation_id );
 			$claim_token = sanitize_text_field( $state['preview_claim_token'] ?? '' );
-			delete_option( $option_name );
+			if ( delete_option( $option_name ) ) {
+				delete_option( 'dkbce_context_' . $operation_id );
+			}
 			delete_option( 'dkbce_search_' . $operation_id );
 			delete_option( 'dkbce_cancel_' . $operation_id );
 			if ( $claim_token ) {

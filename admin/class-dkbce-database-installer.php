@@ -25,9 +25,34 @@ class DKBCE_Database_Installer {
 			return;
 		}
 
+		// Repair the early preset schema without changing any saved names or rules.
+		$preset_table = $wpdb->prefix . 'dkbce_presets';
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $preset_table ) ) ) === $preset_table ) {
+			$columns = $wpdb->get_col( $wpdb->prepare( 'SHOW INDEX FROM %i WHERE Key_name = %s', $preset_table, 'owner_name' ), 4 );
+			if ( in_array( 'name_key', $columns, true ) ) {
+				$result = $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i DROP INDEX owner_name, ADD UNIQUE KEY owner_name (user_id,name), DROP COLUMN name_key', $preset_table ) );
+				if ( false === $result ) {
+					throw new RuntimeException( esc_html__( 'The preset name index could not be updated.', 'bulk-cogs-editor-for-woocommerce' ) );
+				}
+			}
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$collate = $wpdb->get_charset_collate();
 		$tables  = array(
+			$wpdb->prefix . 'dkbce_presets'            => "CREATE TABLE {$wpdb->prefix}dkbce_presets (
+				id bigint unsigned NOT NULL AUTO_INCREMENT,
+				user_id bigint unsigned NOT NULL,
+				name varchar(60) NOT NULL,
+				rules longtext NOT NULL,
+				created_at datetime NOT NULL,
+				updated_at datetime NOT NULL,
+				revision varchar(36) NOT NULL,
+				PRIMARY KEY  (id),
+				UNIQUE KEY owner_name (user_id,name),
+				KEY owner_created (user_id,created_at)
+			) $collate;",
+
 			$wpdb->prefix . 'dkbce_history'            => "CREATE TABLE {$wpdb->prefix}dkbce_history (
 				operation_id varchar(36) NOT NULL,
 				created_at bigint unsigned NOT NULL,

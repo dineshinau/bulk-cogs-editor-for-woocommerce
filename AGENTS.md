@@ -89,6 +89,7 @@ If the shrink guard blocks a legitimate deletion, inspect the removed sources be
 
 - PHP: commands above with `phpcs.xml` (WordPress, WooCommerce, security, PHPCompatibility).
 - Frontend: `npm run build` when source assets change; inspect generated output.
+- Playwright verification requires an explicit user request for the current task. Earlier requests do not carry forward. Do not open browser sessions, take screenshots, run fixture checks, or run E2E tests automatically.
 - Browser tests exist under `tests/e2e/` (`npm run test:e2e`); run only when requested. No Composer/PHPUnit configuration is present.
 - Worker defaults: 50 products, 25-product progress checkpoints, 10-second cooperative update budget. Batch size is configurable through `dkbce_batch_size`.
 - Throughput and timeout resilience require measurement. The planned 50,000-product Playground benchmark remains unrun.

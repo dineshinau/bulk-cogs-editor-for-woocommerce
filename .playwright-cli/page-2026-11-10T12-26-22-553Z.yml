@@ -1,0 +1,462 @@
+- generic [ref=f2e2]:
+  - navigation "Main menu":
+    - link "Skip to main content" [ref=f2e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - link "Skip to toolbar" [ref=f2e4] [cursor=pointer]:
+      - /url: "#wp-toolbar"
+    - list [ref=f2e7]:
+      - listitem [ref=f2e8]:
+        - link "Dashboard" [ref=f2e9] [cursor=pointer]:
+          - /url: index.php
+        - list [ref=f2e14]:
+          - listitem [ref=f2e15]:
+            - link "Home" [ref=f2e16] [cursor=pointer]:
+              - /url: index.php
+          - listitem [ref=f2e17]:
+            - link "Updates" [ref=f2e18] [cursor=pointer]:
+              - /url: update-core.php
+      - listitem [aria-hidden] [ref=f2e19]
+      - listitem [ref=f2e21]:
+        - link "Posts" [ref=f2e22] [cursor=pointer]:
+          - /url: edit.php
+        - list [ref=f2e27]:
+          - listitem [ref=f2e28]:
+            - link "All Posts" [ref=f2e29] [cursor=pointer]:
+              - /url: edit.php
+          - listitem [ref=f2e30]:
+            - link "Add Post" [ref=f2e31] [cursor=pointer]:
+              - /url: post-new.php
+          - listitem [ref=f2e32]:
+            - link "Categories" [ref=f2e33] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=category
+          - listitem [ref=f2e34]:
+            - link "Tags" [ref=f2e35] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=post_tag
+      - listitem [ref=f2e36]:
+        - link "Media" [ref=f2e37] [cursor=pointer]:
+          - /url: upload.php
+        - list [ref=f2e46]:
+          - listitem [ref=f2e47]:
+            - link "Library" [ref=f2e48] [cursor=pointer]:
+              - /url: upload.php
+          - listitem [ref=f2e49]:
+            - link "Add Media File" [ref=f2e50] [cursor=pointer]:
+              - /url: media-new.php
+          - listitem [ref=f2e51]:
+            - link "Generate Image" [ref=f2e52] [cursor=pointer]:
+              - /url: upload.php?page=generate-image
+      - listitem [ref=f2e53]:
+        - link "Pages" [ref=f2e54] [cursor=pointer]:
+          - /url: edit.php?post_type=page
+        - list [ref=f2e59]:
+          - listitem [ref=f2e60]:
+            - link "All Pages" [ref=f2e61] [cursor=pointer]:
+              - /url: edit.php?post_type=page
+          - listitem [ref=f2e62]:
+            - link "Add Page" [ref=f2e63] [cursor=pointer]:
+              - /url: post-new.php?post_type=page
+      - listitem [ref=f2e64]:
+        - link "Comments" [ref=f2e65] [cursor=pointer]:
+          - /url: edit-comments.php
+      - listitem [ref=f2e70]:
+        - link "WP Mail Log" [ref=f2e71] [cursor=pointer]:
+          - /url: admin.php?page=wp-mail-log
+      - listitem [aria-hidden] [ref=f2e76]
+      - listitem [ref=f2e78]:
+        - link "WooCommerce" [ref=f2e79] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin
+        - list [ref=f2e82]:
+          - listitem [ref=f2e83]:
+            - link "Home 1" [ref=f2e84] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin
+              - text: Home
+              - generic [ref=f2e85]: "1"
+          - listitem [ref=f2e86]:
+            - link "Orders 8" [ref=f2e87] [cursor=pointer]:
+              - /url: admin.php?page=wc-orders
+              - text: Orders
+              - generic [ref=f2e88]: "8"
+          - listitem [ref=f2e89]:
+            - link "Live Branches" [ref=f2e90] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/live-branches
+          - listitem [ref=f2e91]:
+            - link "Customers" [ref=f2e92] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/customers
+          - listitem [ref=f2e93]:
+            - link "Coupons" [ref=f2e94] [cursor=pointer]:
+              - /url: admin.php?page=coupons-moved
+          - listitem [ref=f2e95]:
+            - link "Reports" [ref=f2e96] [cursor=pointer]:
+              - /url: admin.php?page=wc-reports
+          - listitem [ref=f2e97]:
+            - link "Settings" [ref=f2e98] [cursor=pointer]:
+              - /url: admin.php?page=wc-settings
+          - listitem [ref=f2e99]:
+            - link "Status" [ref=f2e100] [cursor=pointer]:
+              - /url: admin.php?page=wc-status
+          - listitem [ref=f2e101]:
+            - link "Extensions" [ref=f2e102] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/extensions
+      - listitem [ref=f2e103]:
+        - link "Products" [ref=f2e104] [cursor=pointer]:
+          - /url: edit.php?post_type=product
+          - generic [aria-hidden] [ref=f2e105]: 
+        - list [ref=f2e107]:
+          - listitem [ref=f2e108]:
+            - link "All Products" [ref=f2e109] [cursor=pointer]:
+              - /url: edit.php?post_type=product
+          - listitem [ref=f2e110]:
+            - link "Add new product" [ref=f2e111] [cursor=pointer]:
+              - /url: post-new.php?post_type=product
+          - listitem [ref=f2e112]:
+            - link "Bulk COGS Editor" [ref=f2e113] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=bulk-cogs-editor
+          - listitem [ref=f2e114]:
+            - link "Brands" [ref=f2e115] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_brand&post_type=product
+          - listitem [ref=f2e116]:
+            - link "Categories" [ref=f2e117] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_cat&post_type=product
+          - listitem [ref=f2e118]:
+            - link "Tags" [ref=f2e119] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_tag&post_type=product
+          - listitem [ref=f2e120]:
+            - link "Attributes" [ref=f2e121] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product_attributes
+          - listitem [ref=f2e122]:
+            - link "Reviews" [ref=f2e123] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product-reviews
+      - listitem [ref=f2e124]:
+        - link "Payments" [ref=f2e125] [cursor=pointer]:
+          - /url: admin.php?page=wc-settings&tab=checkout&from=PAYMENTS_MENU_ITEM
+      - listitem [ref=f2e128]:
+        - link "Analytics" [ref=f2e129] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/analytics/overview
+        - list [ref=f2e134]:
+          - listitem [ref=f2e135]:
+            - link "Overview" [ref=f2e136] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/overview
+          - listitem [ref=f2e137]:
+            - link "Products" [ref=f2e138] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/products
+          - listitem [ref=f2e139]:
+            - link "Revenue" [ref=f2e140] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/revenue
+          - listitem [ref=f2e141]:
+            - link "Orders" [ref=f2e142] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/orders
+          - listitem [ref=f2e143]:
+            - link "Variations" [ref=f2e144] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/variations
+          - listitem [ref=f2e145]:
+            - link "Categories" [ref=f2e146] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/categories
+          - listitem [ref=f2e147]:
+            - link "Coupons" [ref=f2e148] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/coupons
+          - listitem [ref=f2e149]:
+            - link "Taxes" [ref=f2e150] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/taxes
+          - listitem [ref=f2e151]:
+            - link "Downloads" [ref=f2e152] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/downloads
+          - listitem [ref=f2e153]:
+            - link "Stock" [ref=f2e154] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/stock
+          - listitem [ref=f2e155]:
+            - link "Settings" [ref=f2e156] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/settings
+      - listitem [ref=f2e157]:
+        - link "Marketing 1" [ref=f2e158] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/marketing
+          - generic [aria-hidden] [ref=f2e159]: 
+          - generic [ref=f2e160]:
+            - text: Marketing
+            - generic [ref=f2e161]: "1"
+        - list [ref=f2e162]:
+          - listitem [ref=f2e163]:
+            - link "Overview" [ref=f2e164] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/marketing
+          - listitem [ref=f2e165]:
+            - link "Coupons" [ref=f2e166] [cursor=pointer]:
+              - /url: edit.php?post_type=shop_coupon
+          - listitem [ref=f2e167]:
+            - link "Google for WooCommerce" [ref=f2e168] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/google/start
+      - listitem [aria-hidden] [ref=f2e169]
+      - listitem [ref=f2e171]:
+        - link "Appearance" [ref=f2e172] [cursor=pointer]:
+          - /url: themes.php
+        - list [ref=f2e177]:
+          - listitem [ref=f2e178]:
+            - link "Themes" [ref=f2e179] [cursor=pointer]:
+              - /url: themes.php
+          - listitem [ref=f2e180]:
+            - link "Add Theme" [ref=f2e181] [cursor=pointer]:
+              - /url: theme-install.php
+          - listitem [ref=f2e182]:
+            - link "Editor" [ref=f2e183] [cursor=pointer]:
+              - /url: site-editor.php
+          - listitem [ref=f2e184]:
+            - link "Fonts" [ref=f2e185] [cursor=pointer]:
+              - /url: font-library.php
+      - listitem [ref=f2e186]:
+        - link "Plugins" [ref=f2e187] [cursor=pointer]:
+          - /url: plugins.php
+        - list [ref=f2e192]:
+          - listitem [ref=f2e193]:
+            - link "Installed Plugins" [ref=f2e194] [cursor=pointer]:
+              - /url: plugins.php
+          - listitem [ref=f2e195]:
+            - link "Add Plugin" [ref=f2e196] [cursor=pointer]:
+              - /url: plugin-install.php
+      - listitem [ref=f2e197]:
+        - link "Users" [ref=f2e198] [cursor=pointer]:
+          - /url: users.php
+        - list [ref=f2e203]:
+          - listitem [ref=f2e204]:
+            - link "All Users" [ref=f2e205] [cursor=pointer]:
+              - /url: users.php
+          - listitem [ref=f2e206]:
+            - link "Add User" [ref=f2e207] [cursor=pointer]:
+              - /url: user-new.php
+          - listitem [ref=f2e208]:
+            - link "Profile" [ref=f2e209] [cursor=pointer]:
+              - /url: profile.php
+      - listitem [ref=f2e210]:
+        - link "Tools" [ref=f2e211] [cursor=pointer]:
+          - /url: tools.php
+        - list [ref=f2e216]:
+          - listitem [ref=f2e217]:
+            - link "Available Tools" [ref=f2e218] [cursor=pointer]:
+              - /url: tools.php
+          - listitem [ref=f2e219]:
+            - link "Import" [ref=f2e220] [cursor=pointer]:
+              - /url: import.php
+          - listitem [ref=f2e221]:
+            - link "Export" [ref=f2e222] [cursor=pointer]:
+              - /url: export.php
+          - listitem [ref=f2e223]:
+            - link "Site Health 2" [ref=f2e224] [cursor=pointer]:
+              - /url: site-health.php
+              - text: Site Health
+              - generic [ref=f2e225]: "2"
+          - listitem [ref=f2e226]:
+            - link "Export Personal Data" [ref=f2e227] [cursor=pointer]:
+              - /url: export-personal-data.php
+          - listitem [ref=f2e228]:
+            - link "Erase Personal Data" [ref=f2e229] [cursor=pointer]:
+              - /url: erase-personal-data.php
+          - listitem [ref=f2e230]:
+            - link "Plugin Check" [ref=f2e231] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check
+          - listitem [ref=f2e232]:
+            - link "Plugin Check Namer" [ref=f2e233] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-namer
+          - listitem [ref=f2e234]:
+            - link "Plugin Check SVN" [ref=f2e235] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-svn-checker
+          - listitem [ref=f2e236]:
+            - link "WCA Test Helper" [ref=f2e237] [cursor=pointer]:
+              - /url: tools.php?page=woocommerce-admin-test-helper
+          - listitem [ref=f2e238]:
+            - link "Beta Testing" [ref=f2e239] [cursor=pointer]:
+              - /url: tools.php?page=wp-beta-tester
+          - listitem [ref=f2e240]:
+            - link "Better Search Replace" [ref=f2e241] [cursor=pointer]:
+              - /url: tools.php?page=better-search-replace
+          - listitem [ref=f2e242]:
+            - link "Scheduled Actions" [ref=f2e243] [cursor=pointer]:
+              - /url: tools.php?page=action-scheduler
+          - listitem [ref=f2e244]:
+            - link "Rollback Core" [ref=f2e245] [cursor=pointer]:
+              - /url: tools.php?page=rollback
+          - listitem [ref=f2e246]:
+            - link "Abilities Explorer" [ref=f2e247] [cursor=pointer]:
+              - /url: tools.php?page=ai-abilities-explorer
+          - listitem [ref=f2e248]:
+            - link "AI Request Logs" [ref=f2e249] [cursor=pointer]:
+              - /url: tools.php?page=ai-request-logs
+          - listitem [ref=f2e250]:
+            - link "Connector Approvals" [ref=f2e251] [cursor=pointer]:
+              - /url: tools.php?page=ai-connector-approval
+          - listitem [ref=f2e252]:
+            - link "Theme File Editor" [ref=f2e253] [cursor=pointer]:
+              - /url: theme-editor.php
+          - listitem [ref=f2e254]:
+            - link "Plugin File Editor" [ref=f2e255] [cursor=pointer]:
+              - /url: plugin-editor.php
+      - listitem [ref=f2e256]:
+        - link "Settings" [ref=f2e257] [cursor=pointer]:
+          - /url: options-general.php
+        - list [ref=f2e262]:
+          - listitem [ref=f2e263]:
+            - link "General" [ref=f2e264] [cursor=pointer]:
+              - /url: options-general.php
+          - listitem [ref=f2e265]:
+            - link "Connectors" [ref=f2e266] [cursor=pointer]:
+              - /url: options-connectors.php
+          - listitem [ref=f2e267]:
+            - link "AI" [ref=f2e268] [cursor=pointer]:
+              - /url: options-general.php?page=ai-wp-admin
+          - listitem [ref=f2e269]:
+            - link "Writing" [ref=f2e270] [cursor=pointer]:
+              - /url: options-writing.php
+          - listitem [ref=f2e271]:
+            - link "Reading" [ref=f2e272] [cursor=pointer]:
+              - /url: options-reading.php
+          - listitem [ref=f2e273]:
+            - link "Discussion" [ref=f2e274] [cursor=pointer]:
+              - /url: options-discussion.php
+          - listitem [ref=f2e275]:
+            - link "Media" [ref=f2e276] [cursor=pointer]:
+              - /url: options-media.php
+          - listitem [ref=f2e277]:
+            - link "Permalinks" [ref=f2e278] [cursor=pointer]:
+              - /url: options-permalink.php
+          - listitem [ref=f2e279]:
+            - link "Privacy" [ref=f2e280] [cursor=pointer]:
+              - /url: options-privacy.php
+          - listitem [ref=f2e281]:
+            - link "Plugin Check" [ref=f2e282] [cursor=pointer]:
+              - /url: options-general.php?page=plugin-check-settings
+          - listitem [ref=f2e283]:
+            - link "DPM" [ref=f2e284] [cursor=pointer]:
+              - /url: options-general.php?page=dkdpm
+          - listitem [ref=f2e285]:
+            - link "WP PHP Console" [ref=f2e286] [cursor=pointer]:
+              - /url: options-general.php?page=wp_php_console
+      - listitem [ref=f2e287]:
+        - button "Collapse Main menu" [expanded] [ref=f2e288] [cursor=pointer]:
+          - generic [ref=f2e292]: Collapse Menu
+  - generic [ref=f2e293]:
+    - generic [ref=f2e294]:
+      - navigation "Toolbar":
+        - menu:
+          - group [ref=f2e295]:
+            - menuitem "About WordPress" [ref=f2e296] [cursor=pointer]
+          - group [ref=f2e301]:
+            - menuitem "WP Dev" [ref=f2e302] [cursor=pointer]
+          - group [ref=f2e303]:
+            - menuitem "Live" [ref=f2e304] [cursor=pointer]
+          - group [ref=f2e305]:
+            - menuitem "WC Beta Tester" [ref=f2e306]
+          - group [ref=f2e307]:
+            - menuitem "Ctrl+K Open command palette" [ref=f2e308] [cursor=pointer]:
+              - generic [ref=f2e312]:
+                - text: Ctrl+K
+                - generic [ref=f2e313]: Open command palette
+          - group [ref=f2e314]:
+            - menuitem "0 Comments in moderation" [ref=f2e315] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f2e319]: "0"
+          - group [ref=f2e321]:
+            - menuitem "New" [ref=f2e322] [cursor=pointer]
+          - group [ref=f2e327]:
+            - menuitem "WC Log" [ref=f2e328] [cursor=pointer]
+          - group [ref=f2e329]:
+            - link "6.90s 17.1MB 0.17s 152Q" [ref=f2e330] [cursor=pointer]:
+              - /url: "#qm-overview"
+        - menu [ref=f2e332]:
+          - group [ref=f2e333]:
+            - menuitem "admin" [ref=f2e334] [cursor=pointer]
+    - main [ref=f2e335]:
+      - generic [ref=f2e337]:
+        - generic [ref=f2e338]:
+          - generic [aria-hidden] [ref=f2e339]: 
+          - generic [ref=f2e340]:
+            - heading "Bulk COGS (Cost of Goods Sold) Editor" [level=1] [ref=f2e341]
+            - paragraph [ref=f2e342]: Review and update product costs, or transfer costs with CSV and Excel files.
+          - group [ref=f2e343]:
+            - generic "Help ( Bulk edit )" [ref=f2e344] [cursor=pointer]:
+              - text: Help (
+              - generic [ref=f2e345]: Bulk edit
+              - text: )
+        - generic [ref=f2e346]:
+          - group "Editor mode" [ref=f2e347]:
+            - button "Bulk edit" [pressed] [ref=f2e348] [cursor=pointer]
+            - button "Import / export" [ref=f2e349] [cursor=pointer]
+            - button "History" [ref=f2e350] [cursor=pointer]
+            - button "Presets" [ref=f2e351] [cursor=pointer]
+            - button "Settings" [ref=f2e352] [cursor=pointer]
+          - list "Bulk edit progress" [ref=f2e353]:
+            - listitem [ref=f2e354]:
+              - generic [aria-hidden] [ref=f2e355]: "1"
+              - generic [ref=f2e356]:
+                - strong [ref=f2e357]: Select products
+                - generic [ref=f2e358]: Find your selection
+            - listitem [ref=f2e359]:
+              - generic [aria-hidden] [ref=f2e360]: "2"
+              - generic [ref=f2e361]:
+                - strong [ref=f2e362]: Set cost update
+                - generic [ref=f2e363]: Choose an action and value
+            - listitem [ref=f2e364]:
+              - generic [aria-hidden] [ref=f2e365]: "3"
+              - generic [ref=f2e366]:
+                - strong [ref=f2e367]: Review & confirm
+                - generic [ref=f2e368]: Preview before applying
+          - text: 
+          - region "Select products" [ref=f2e369]:
+            - generic [ref=f2e370]:
+              - text: 
+              - generic [aria-hidden] [ref=f2e371]: "1"
+              - generic [ref=f2e372]:
+                - heading "Select products" [level=2] [ref=f2e373]
+                - paragraph [ref=f2e374]: Select one or more values per filter. Leave a filter empty to include all values.
+            - group [ref=f2e375]:
+              - generic "Product filters" [ref=f2e376] [cursor=pointer]
+              - generic [ref=f2e377]:
+                - paragraph [ref=f2e378]:
+                  - generic [ref=f2e379]: Search
+                  - searchbox "Search" [disabled] [ref=f2e380]
+                  - generic [ref=f2e381]: Search by name, SKU, GTIN, ISBN, EAN or UPC.
+                - paragraph [ref=f2e382]:
+                  - generic [ref=f2e383]: Product category
+                  - group [ref=f2e384]:
+                    - generic "Product category All categories" [ref=f2e385] [cursor=pointer]: All categories
+                - paragraph [ref=f2e386]:
+                  - generic [ref=f2e387]: Product type
+                  - group [ref=f2e388]:
+                    - generic "Product type All product types" [ref=f2e389] [cursor=pointer]: All product types
+              - group [ref=f2e390]:
+                - generic "More filters" [ref=f2e391] [cursor=pointer]
+            - group [ref=f2e392]:
+              - generic "Saved filters" [ref=f2e393] [cursor=pointer]
+            - generic [ref=f2e394]:
+              - generic "Find products. Another operation is in progress. This action is unavailable until it finishes. View progress to check its status or stop the remaining work. Changes already saved will be kept." [ref=f2e395]:
+                - button "Find products" [disabled]
+              - generic "Reset filters. Another operation is in progress. This action is unavailable until it finishes. View progress to check its status or stop the remaining work. Changes already saved will be kept." [ref=f2e396]:
+                - button "Reset filters" [disabled]
+              - generic "Start over. Another operation is in progress. This action is unavailable until it finishes. View progress to check its status or stop the remaining work. Changes already saved will be kept." [ref=f2e397]:
+                - button "Start over" [disabled]
+            - paragraph [ref=f2e398]: Reset filters keeps your draft cost update. Start over clears filters, selections, cost update, and operation note.
+          - region "Set cost update" [ref=f2e399]:
+            - generic [ref=f2e400]:
+              - text: 
+              - generic [aria-hidden] [ref=f2e401]: "2"
+              - generic [ref=f2e402]:
+                - heading "Set cost update" [level=2] [ref=f2e403]
+                - paragraph [ref=f2e404]: Select how you want to update COGS for matching products.
+            - status [ref=f2e405]: Start with your products. Cost update options unlock when products are found.
+          - region "Review & confirm" [ref=f2e406]:
+            - generic [ref=f2e407]:
+              - text: 
+              - generic [aria-hidden] [ref=f2e408]: "3"
+              - generic [ref=f2e409]:
+                - heading "Review & confirm" [level=2] [ref=f2e410]
+                - paragraph [ref=f2e411]: Review the products and calculated COGS changes before applying.
+            - text: 
+            - generic [ref=f2e412]:
+              - text: 
+              - paragraph [ref=f2e413]: Find products, then choose a cost update. Compare current and new costs here before you confirm.
+  - contentinfo [ref=f2e415]:
+    - paragraph [ref=f2e416]:
+      - generic [ref=f2e418]:
+        - text: Thank you for creating with
+        - link "WordPress" [ref=f2e419] [cursor=pointer]:
+          - /url: https://wordpress.org/
+        - text: .
+    - paragraph [ref=f2e420]:
+      - text: You are using a development version (7.2-beta4). Cool! Please
+      - link "stay updated" [ref=f2e421] [cursor=pointer]:
+        - /url: https://wsl.com/wpdev/wp-admin/update-core.php
+      - text: .

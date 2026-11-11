@@ -1,0 +1,25 @@
+# Directories
+graphify-out/
+node_modules/
+phpcs-results/
+test-results/
+tests/
+scripts/
+docs/
+languages/
+.agents/
+.claude/
+.playwright-cli/
+.vscode/
+
+# Root-level files
+bulk-cogs-editor-for-woocommerce.zip
+*.zip
+.gitignore
+.graphifyignore
+.pcpignore
+AGENTS.md
+CLAUDE.md
+README.md
+skills-lock.json
+webpack.config.js

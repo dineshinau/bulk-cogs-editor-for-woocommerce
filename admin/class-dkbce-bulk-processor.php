@@ -13,8 +13,8 @@ defined( 'ABSPATH' ) || exit;
 class DKBCE_Bulk_Processor {
 	const BATCH_SIZE          = 50;
 	const BATCH_TIME_LIMIT    = 20;
-	const PROGRESS_INTERVAL   = 25;
-	const PROGRESS_TIME_LIMIT = 2;
+	const PROGRESS_INTERVAL   = 50;
+	const PROGRESS_TIME_LIMIT = 10;
 	const CANCEL_INTERVAL     = 1;
 	const OPERATION_LOCK_TTL  = 180;
 	const STALE_OPERATION_AGE = 120;
@@ -103,13 +103,15 @@ class DKBCE_Bulk_Processor {
 	 * Queue bounded cleanup for a terminal operation.
 	 *
 	 * @param string $operation_id Operation UUID.
+	 * @param bool   $continuation Whether the running cleanup needs another batch.
 	 * @return bool
 	 */
-	private function enqueue_cleanup( $operation_id ) {
+	private function enqueue_cleanup( $operation_id, $continuation = false ) {
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
 			return false;
 		}
-		$queued = as_enqueue_async_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP, true );
+		// A unique action would reject a continuation while this batch is running.
+		$queued = as_enqueue_async_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP, ! $continuation );
 		return (bool) $queued || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( self::CLEANUP_HOOK, array( $operation_id ), self::GROUP ) );
 	}
 
@@ -155,6 +157,10 @@ class DKBCE_Bulk_Processor {
 			if ( $cursor <= absint( $state['snapshot_chunks'] ) ) {
 				$state['cleanup_cursor'] = min( absint( $state['snapshot_chunks'] ) + 1, $cursor + 100 );
 			}
+			if ( $done && 'none' === ( $state['rollback_mode'] ?? 'keep' ) ) {
+				$history = new DKBCE_History_Store();
+				$done    = $history->delete_retry_journal( $operation_id );
+			}
 			if ( $done && ! empty( $state['history_cleanup_pending'] ) ) {
 				$history = new DKBCE_History_Store();
 				$done    = $history->delete( $operation_id );
@@ -168,7 +174,7 @@ class DKBCE_Bulk_Processor {
 			}
 			$this->store->save( $state );
 			if ( ! $done ) {
-				$this->enqueue_cleanup( $operation_id );
+				$this->enqueue_cleanup( $operation_id, true );
 			}
 		} finally {
 			$this->release_operation_lock( $operation_id, $lock );
@@ -198,8 +204,9 @@ class DKBCE_Bulk_Processor {
 	 * @return void
 	 */
 	public function process_operation( $operation_id ) {
-		$started_at = microtime( true );
-		$lock_token = $this->acquire_operation_lock( $operation_id );
+		$diagnostics = defined( 'DKBCE_DIAGNOSTICS' ) && DKBCE_DIAGNOSTICS;
+		$started_at  = $diagnostics ? microtime( true ) : 0;
+		$lock_token  = $this->acquire_operation_lock( $operation_id );
 		if ( ! $lock_token ) {
 			return;
 		}
@@ -207,40 +214,42 @@ class DKBCE_Bulk_Processor {
 
 		$initial_state = false;
 		try {
-			$initial_state = $this->store->get( $operation_id );
+			$initial_state = $diagnostics ? $this->store->get( $operation_id ) : false;
 			$this->process_operation_locked( $operation_id );
 		} finally {
 			try {
 				// Read counters while locked so the next worker cannot advance them.
-				$state = $this->store->get( $operation_id );
+				$state = $diagnostics ? $this->store->get( $operation_id ) : false;
 			} finally {
 				$this->release_operation_lock( $operation_id, $lock_token );
 			}
-			$finished_at = microtime( true );
-			$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
-			$processed   = isset( $state['processed'] ) ? (int) $state['processed'] : null;
-			$total       = isset( $state['total'] ) ? (int) $state['total'] : null;
-			$stage       = $state['stage'] ?? 'unknown';
-			$remaining   = 'processing' === $stage && null !== $total && null !== $processed ? max( 0, $total - $processed ) : 'unknown';
-			// Persisted counter growth includes any outcomes recovered on retry.
-			$processed_delta = null !== $processed && isset( $initial_state['processed'] ) ? max( 0, $processed - (int) $initial_state['processed'] ) : 'unknown';
-			$message         = sprintf(
-				'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds, processed: %s, remaining: %s, batch_size: %s, processed_delta: %s, total: %s, stage: %s).',
-				$operation_id,
-				$runner,
-				$started_at,
-				$finished_at,
-				$finished_at - $started_at,
-				$processed ?? 'unknown',
-				$remaining,
-				$state['batch_size'] ?? 'unknown',
-				$processed_delta,
-				$total ?? 'unknown',
-				$stage
-			);
-			dkbce_wc_log( $message );
-			if ( 'WP-CLI' === $runner && class_exists( 'WP_CLI' ) ) {
-				WP_CLI::log( $message );
+			if ( $diagnostics ) {
+				$finished_at = microtime( true );
+				$runner      = defined( 'WP_CLI' ) && WP_CLI ? 'WP-CLI' : ( wp_doing_cron() ? 'WP-Cron' : 'HTTP' );
+				$processed   = isset( $state['processed'] ) ? (int) $state['processed'] : null;
+				$total       = isset( $state['total'] ) ? (int) $state['total'] : null;
+				$stage       = $state['stage'] ?? 'unknown';
+				$remaining   = 'processing' === $stage && null !== $total && null !== $processed ? max( 0, $total - $processed ) : 'unknown';
+				// Persisted counter growth includes any outcomes recovered on retry.
+				$processed_delta = null !== $processed && isset( $initial_state['processed'] ) ? max( 0, $processed - (int) $initial_state['processed'] ) : 'unknown';
+				$message         = sprintf(
+					'COGS worker timing (operation: %s, runner: %s, started_at: %.6f, finished_at: %.6f, elapsed: %.4f seconds, processed: %s, remaining: %s, batch_size: %s, processed_delta: %s, total: %s, stage: %s).',
+					$operation_id,
+					$runner,
+					$started_at,
+					$finished_at,
+					$finished_at - $started_at,
+					$processed ?? 'unknown',
+					$remaining,
+					$state['batch_size'] ?? 'unknown',
+					$processed_delta,
+					$total ?? 'unknown',
+					$stage
+				);
+				dkbce_wc_log( $message, true );
+				if ( 'WP-CLI' === $runner && class_exists( 'WP_CLI' ) ) {
+					WP_CLI::log( $message );
+				}
 			}
 		}
 	}
@@ -446,7 +455,7 @@ class DKBCE_Bulk_Processor {
 		$state['total_count'] = $state['total'];
 		$state['stage']       = 'processing';
 
-		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'] );
+		dkbce_wc_log( 'Total snapshot IDs: ' . $state['total'], true );
 
 		if ( 0 === $state['total'] ) {
 			$this->finish_operation( $state, 'completed' );
@@ -571,7 +580,9 @@ class DKBCE_Bulk_Processor {
 				}
 				return false;
 			}
-			$this->store->save_outcome( $state['operation_id'], $product_id, $outcome );
+			if ( 'none' !== ( $state['rollback_mode'] ?? 'keep' ) || 'success' !== $outcome['status'] ) {
+				$this->store->save_outcome( $state['operation_id'], $product_id, $outcome );
+			}
 			$chunk['results'][ $key ] = $outcome;
 			$this->record_outcome( $state, $product_id, $outcome );
 			++$since_checkpoint;
@@ -597,6 +608,30 @@ class DKBCE_Bulk_Processor {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Persist success before releasing the product lock.
+	 *
+	 * @param array               $state Frozen operation state.
+	 * @param int                 $product_id Product ID.
+	 * @param DKBCE_History_Store $history History store.
+	 * @return void
+	 */
+	private function confirm_product( $state, $product_id, $history ) {
+		if ( 'none' === ( $state['rollback_mode'] ?? 'keep' ) ) {
+			// The outcome replaces journal confirmation, without a replay window.
+			$this->store->save_outcome(
+				$state['operation_id'],
+				$product_id,
+				array(
+					'status'  => 'success',
+					'message' => '',
+				)
+			);
+		} else {
+			$history->confirm( $state['operation_id'], $product_id );
+		}
 	}
 
 	/**
@@ -764,7 +799,7 @@ class DKBCE_Bulk_Processor {
 	private function process_product( $product_id, $state, $import_values = array() ) {
 		$lock = $this->store->acquire_product_lock( $product_id, $state['operation_id'] );
 		if ( false === $lock ) {
-			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id );
+			dkbce_wc_log( 'Product lock already acquired for product ID: ' . $product_id, true );
 			return array(
 				'status'  => 'deferred',
 				'message' => '',
@@ -780,7 +815,7 @@ class DKBCE_Bulk_Processor {
 			}
 			$product = wc_get_product( $product_id );
 			if ( ! $product ) {
-				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id );
+				dkbce_wc_log( ' Product does not exist for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'skipped',
 					'message' => __( 'Product no longer exists.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -790,11 +825,11 @@ class DKBCE_Bulk_Processor {
 			if ( $state['operation_id'] === $product->get_meta( '_dkbce_last_bulk_cogs_operation', true ) ) {
 				$product_saved = true;
 				$history       = new DKBCE_History_Store();
-				$history->confirm( $state['operation_id'], $product_id );
+				$this->confirm_product( $state, $product_id, $history );
 				if ( 'rollback' === $state['action'] ) {
 					$history->mark_restored( $state['rollback_source'], $product_id );
 				}
-				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id );
+				dkbce_wc_log( 'Product already processed for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'success',
 					'message' => '',
@@ -871,7 +906,7 @@ class DKBCE_Bulk_Processor {
 				);
 			}
 			if ( 'skipped' === $result['status'] ) {
-				dkbce_wc_log( 'Product Skipped  for product ID: ' . $product_id );
+				dkbce_wc_log( 'Product Skipped  for product ID: ' . $product_id, true );
 				return array(
 					'status'  => 'skipped',
 					'message' => $result['reason'],
@@ -881,7 +916,7 @@ class DKBCE_Bulk_Processor {
 			// Record WooCommerce's normalized target, including zero becoming unset.
 			$product->set_cogs_value( null === $result['new'] ? null : (float) $result['new'] );
 			$result['new'] = $product->get_cogs_value();
-			$journal       = $history->prepare( $state['operation_id'], $product_id, $result );
+			$journal       = $history->prepare( $state['operation_id'], $product_id, $result, $recorded );
 			$product->set_cogs_value( null === $journal['target_value'] ? null : (float) $journal['target_value'] );
 			$product->update_meta_data( '_dkbce_last_bulk_cogs_operation', $state['operation_id'] );
 			if ( empty( $product->get_changes() ) ) {
@@ -891,7 +926,7 @@ class DKBCE_Bulk_Processor {
 				$product->save();
 			}
 			$product_saved = true;
-			$history->confirm( $state['operation_id'], $product_id );
+			$this->confirm_product( $state, $product_id, $history );
 			if ( 'rollback' === $state['action'] ) {
 				$history->mark_restored( $state['rollback_source'], $product_id );
 			}
@@ -910,7 +945,7 @@ class DKBCE_Bulk_Processor {
 					$record  = $history->product( $state['operation_id'], $product_id );
 					$target  = $record && null !== $record['target_value'] ? (float) $record['target_value'] : null;
 					if ( $record && $saved && $state['operation_id'] === $saved->get_meta( '_dkbce_last_bulk_cogs_operation', true ) && $saved->get_cogs_value() === $target ) {
-						$history->confirm( $state['operation_id'], $product_id );
+						$this->confirm_product( $state, $product_id, $history );
 						if ( 'rollback' === $state['action'] ) {
 							$history->mark_restored( $state['rollback_source'], $product_id );
 						}

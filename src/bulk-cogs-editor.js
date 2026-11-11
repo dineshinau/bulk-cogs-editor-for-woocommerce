@@ -3,6 +3,27 @@
 	'use strict';
 
 	const $ = ( selector ) => document.querySelector( selector );
+
+	// Read native controls outside plugin styles, including custom admin schemes.
+	const schemeProbe = document.createElement( 'div' );
+	schemeProbe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;';
+	schemeProbe.setAttribute( 'aria-hidden', 'true' );
+	const schemeButton = document.createElement( 'button' );
+	schemeButton.type = 'button'; schemeButton.className = 'button button-primary'; schemeButton.tabIndex = -1;
+	const schemeLink = document.createElement( 'a' );
+	schemeLink.href = '#'; schemeLink.tabIndex = -1;
+	schemeProbe.append( schemeButton, schemeLink );
+	document.body.appendChild( schemeProbe );
+	const nativeButtonStyle = window.getComputedStyle( schemeButton );
+	const workspaceStyle = $( '.dkbce-wrap' ).style;
+	workspaceStyle.setProperty( '--dkbce-accent', nativeButtonStyle.backgroundColor );
+	workspaceStyle.setProperty( '--dkbce-on-accent', nativeButtonStyle.color );
+	workspaceStyle.setProperty( '--dkbce-link', window.getComputedStyle( schemeLink ).color );
+	schemeProbe.remove();
+
+	const progressPollInterval = ( total ) => Number( total ) > 0 && Number( total ) < 1000 ? 10000 : 25000;
+	let operationPollInterval = progressPollInterval();
+	const ux = DKBCE.ux;
 	const state = {
 		mode: 'bulk',
 		editorMode: 'bulk',
@@ -119,10 +140,18 @@
 			.finally( () => setBusy( false, rangeButton ) );
 	} );
 	const actionSection = $( '.dkbce-action-section' );
+	const applySection = $( '.dkbce-apply-section' );
+	const applySectionAnchor = document.createComment( 'confirmation panel' );
+	applySection.before( applySectionAnchor );
 	$( '.dkbce-action-fields' ).appendChild( $( '#dkbce-value-wrap' ) );
 	$( '.dkbce-filters-section' ).appendChild( $( '.dkbce-filter-actions' ) );
 
 	const historyText = DKBCE.history;
+	const emptyRecovery = historyElement( 'div', '', 'dkbce-actions' );
+	emptyRecovery.id = 'dkbce-empty-recovery'; emptyRecovery.hidden = true;
+	emptyRecovery.append( historyButton( ux.adjustFilters, () => { $( '#dkbce-filter-panel' ).open = true; $( '#dkbce-search' ).focus(); } ), historyButton( $( '#dkbce-clear-filters' ).textContent, clearFilters ) );
+	$( '.dkbce-preview-empty' ).appendChild( emptyRecovery );
+
 	const historyState = { page: 1, size: 10, operationId: '', productPage: 1, productSize: 10, review: false, token: '', requestId: 0, detailRequestId: 0, loading: false, pollTimer: null };
 	const historyRoot = $( '#dkbce-history' );
 	const settingsRoot = $( '#dkbce-settings' );
@@ -295,9 +324,19 @@
 	historyFilters.addEventListener( 'submit', ( event ) => { event.preventDefault(); historyState.page = 1; loadHistory(); } );
 	const historyRows = historyElement( 'div' );
 	const historyDetails = historyElement( 'div' );
-	const historyProgress = historySection( historyText.progress, 4 );
+	const historyProgress = historySection( ux.currentOperation, 4 );
 	historyProgress.hidden = true;
-	historyList.append( historyFilters, historyRows );
+	const historyLoading = historyElement( 'p', '', 'dkbce-history-loading' );
+	historyLoading.setAttribute( 'role', 'status' );
+	historyLoading.hidden = true;
+	const clearHistoryFilters = historyButton( $( '#dkbce-clear-filters' ).textContent, () => {
+		historyFilters.reset();
+		historyState.page = 1;
+		loadHistory();
+	} );
+	clearHistoryFilters.classList.add( 'dkbce-history-reset' );
+	historyFilters.appendChild( clearHistoryFilters );
+	historyList.append( historyFilters, historyLoading, historyRows );
 	historyRoot.append( historyList, historyDetails, historyProgress );
 	function updateHistoryProgressVisibility() {
 		historyProgress.hidden = operationPanel.hidden || historyDetails.childElementCount > 0;
@@ -312,41 +351,77 @@
 		const requestId = ++historyState.requestId;
 		historyFilterButton.disabled = true;
 		historyRows.setAttribute( 'aria-busy', 'true' );
+		historyLoading.textContent = historyText.loading;
+		historyLoading.hidden = false;
 		try {
 			const values = Object.fromEntries( Object.entries( historyInputs ).map( ( [ name, input ] ) => [ name, input.value ] ) );
 			const data = await request( 'history', { ...values, page: historyState.page, size: historyState.size } );
 			if ( requestId !== historyState.requestId ) { return; }
 			const selectedUser = historyInputs.user_id.value;
 			historyInputs.user_id.replaceChildren( new Option( historyText.allUsers, '' ) );
-			data.users.forEach( ( user ) => historyInputs.user_id.add( new Option( user.display_name || historyText.userId + ' ' + user.user_id, user.user_id ) ) );
+			data.users.forEach( ( user ) => historyInputs.user_id.add( new Option( user.display_name || ux.unnamedUser + ' ' + user.user_id, user.user_id ) ) );
 			historyInputs.user_id.value = selectedUser;
 			historyRows.replaceChildren();
 			if ( ! data.indexed ) {
 				historyRows.appendChild( historyElement( 'p', historyText.indexing ) );
 				window.setTimeout( () => { if ( state.mode === 'history' ) { loadHistory(); } }, 500 );
 			}
-			const { wrap, body } = historyTable( [ historyText.id, historyText.date, historyText.action, historyText.products, historyText.status, historyText.user, historyText.note, historyText.view ] );
+			const { wrap, body } = historyTable( [ historyText.action, historyText.date, historyText.products, historyText.status, historyText.user, historyText.note, historyText.id, historyText.view ] );
 			data.rows.forEach( ( operation ) => {
 				const row = document.createElement( 'tr' );
-				appendCell( row, operation.operation_id );
-				// UUIDs remain copyable without stretching the table.
-				row.firstChild.classList.add( 'dkbce-history-id' );
-				appendCell( row, new Date( operation.created_at * 1000 ).toLocaleString() );
 				appendCell( row, historyAction( operation ) );
+				appendCell( row, new Date( operation.created_at * 1000 ).toLocaleString() );
 				appendCell( row, Number( operation.total ).toLocaleString() );
 				const status = document.createElement( 'td' ); status.appendChild( historyStatus( operation.status ) ); row.appendChild( status );
 				appendCell( row, operation.user ); appendCell( row, operation.note || '—' );
+				const idCell = document.createElement( 'td' );
+				const idDetails = document.createElement( 'details' );
+				idDetails.append( historyElement( 'summary', operation.operation_id.slice( 0, 8 ) + '…' ) );
+				const fullId = document.createElement( 'input' ); fullId.readOnly = true; fullId.value = operation.operation_id; fullId.setAttribute( 'aria-label', ux.fullId );
+				idDetails.append( fullId, historyButton( ux.copyId, async () => {
+					try { await navigator.clipboard.writeText( operation.operation_id ); setNotice( ux.copied, 'success', historyList ); }
+					catch ( error ) { fullId.focus(); fullId.select(); setNotice( ux.copyFailed, 'info', historyList ); }
+				} ) );
+				idCell.appendChild( idDetails ); row.appendChild( idCell );
+
 				const action = document.createElement( 'td' );
-				action.appendChild( historyButton( historyText.view, () => { historyState.operationId = operation.operation_id; historyState.productPage = 1; historyState.review = false; loadHistoryDetails( true ); } ) );
+				action.appendChild( historyButton( historyText.view, () => openHistoryOperation( operation.operation_id ) ) );
 				row.appendChild( action ); body.appendChild( row );
 			} );
-			historyRows.appendChild( wrap );
-			if ( ! data.total ) { historyRows.appendChild( historyElement( 'p', historyText.empty ) ); }
-			historyRows.appendChild( historyPagination( data.total, historyState.page, historyState.size, ( page ) => { historyState.page = page; loadHistory(); }, ( size ) => { historyState.size = size; historyState.page = 1; loadHistory(); } ) );
-		} catch ( error ) { setNotice( error.message, 'error', historyList ); }
-		finally { historyFilterButton.disabled = false; historyRows.removeAttribute( 'aria-busy' ); }
+			if ( data.total ) {
+				historyRows.appendChild( wrap );
+				historyRows.appendChild( historyPagination( data.total, historyState.page, historyState.size, ( page ) => { historyState.page = page; loadHistory(); }, ( size ) => { historyState.size = size; historyState.page = 1; loadHistory(); } ) );
+			} else {
+				historyRows.appendChild( historyElement( 'p', historyText.empty, 'dkbce-preview-empty' ) );
+			}
+		} catch ( error ) {
+			if ( requestId === historyState.requestId ) { setNotice( error.message, 'error', historyList ); }
+		}
+		finally {
+			if ( requestId === historyState.requestId ) {
+				historyFilterButton.disabled = false;
+				historyRows.removeAttribute( 'aria-busy' );
+				historyLoading.hidden = true;
+			}
+		}
 	}
 
+	let historyScrollY = 0;
+	function openHistoryOperation( id ) {
+		if ( state.busy || state.loadingPage ) { return; }
+		historyScrollY = window.scrollY;
+		historyState.operationId = id; historyState.productPage = 1; historyState.review = false;
+		state.mode = 'history'; updateCSVMode();
+		window.history.replaceState( null, '', '#dkbce-operation=' + encodeURIComponent( id ) );
+		loadHistoryDetails( true );
+	}
+	function backToHistory() {
+		window.clearTimeout( historyState.pollTimer ); historyState.detailRequestId++;
+		historyState.operationId = ''; historyState.token = ''; historyState.loading = false;
+		historyDetails.removeAttribute( 'aria-busy' ); historyDetails.replaceChildren(); historyList.hidden = false;
+		window.history.replaceState( null, '', window.location.pathname + window.location.search );
+		updateHistoryProgressVisibility(); loadHistory(); historyFilterButton.focus( { preventScroll: true } ); window.scrollTo( 0, historyScrollY );
+	}
 	async function loadHistoryDetails( scrollToDetails = false ) {
 		window.clearTimeout( historyState.pollTimer );
 		const requestId = ++historyState.detailRequestId;
@@ -357,12 +432,14 @@
 			const operationId = historyState.operationId;
 			const data = await request( 'history_detail', { operation_id: operationId, page: historyState.productPage, size: historyState.productSize, review: historyState.review ? '1' : '' } );
 			if ( requestId !== historyState.detailRequestId || operationId !== historyState.operationId ) { return; }
+			historyList.hidden = true;
 			historyState.token = data.review_token;
 			historyDetails.replaceChildren();
 			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
-			details.appendChild( historyButton( historyText.back, () => { window.clearTimeout( historyState.pollTimer ); historyState.detailRequestId++; historyState.operationId = ''; historyState.token = ''; historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); historyDetails.replaceChildren(); updateHistoryProgressVisibility(); } ) );
+			details.appendChild( historyButton( historyText.back, backToHistory ) );
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
 			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
+			if ( data.rollback_expires_at ) { metadata.append( historyElement( 'dt', ux.expiry ), historyElement( 'dd', new Date( data.rollback_expires_at * 1000 ).toLocaleString() ) ); }
 			details.appendChild( metadata );
 			const products = historySection( historyState.review ? historyText.review : historyText.changes, 3 );
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
@@ -370,16 +447,28 @@
 				const row = document.createElement( 'tr' );
 				appendProductCell( row, item ); appendCell( row, item.sku || '—' ); appendCell( row, money( item.current ) ); appendCell( row, money( item.new ) ); appendChangeCell( row, item ); body.appendChild( row );
 			} );
-			products.appendChild( wrap );
+			if ( data.total || data.can_rollback ) {
+				products.appendChild( wrap );
+			}
 			if ( ! historyState.review && data.total < data.state.succeeded ) { products.appendChild( historyElement( 'p', historyText.partialHistory.replace( '%1$d', data.total ).replace( '%2$d', data.state.succeeded ), 'description' ) ); }
-			if ( ! data.total ) { products.appendChild( historyElement( 'p', historyText.noChanges ) ); }
-			products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			if ( ! data.total ) { products.appendChild( historyElement( 'p', data.state.rollback_mode === 'none' ? historyText.noRollbackHelp : historyText.noChanges ) ); }
+			if ( data.total || data.can_rollback ) {
+				products.appendChild( historyPagination( data.total, historyState.productPage, historyState.productSize, ( page ) => { historyState.productPage = page; loadHistoryDetails(); }, ( size ) => { historyState.productSize = size; historyState.productPage = 1; loadHistoryDetails(); }, 'dkbce-history-product-jump-page' ) );
+			}
+			if ( ! data.can_rollback ) {
+				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
+				const reasons = historyElement( 'ul', '', 'description' );
+				( data.rollback_unavailable_reasons || [] ).forEach( ( reason ) => reasons.appendChild( historyElement( 'li', reason ) ) );
+				products.appendChild( reasons );
+			}
 			if ( historyState.review ) {
+				products.appendChild( historyElement( 'p', ux.effectivePolicy + ': ' + ( data.rollback_policy === 'skip_changed' ? historyText.skipChanged : historyText.overwrite ) ) );
 				products.appendChild( historyElement( 'p', data.rollback_policy === 'skip_changed' ? historyText.skipWarning : historyText.warning, 'notice notice-warning inline dkbce-history-warning' ) );
 				const checked = document.createElement( 'input' ); checked.type = 'checkbox';
 				const confirm = historyButton( historyText.confirm, () => startRollback( confirm ), true );
 				confirm.classList.add( 'dkbce-rollback-confirm' ); confirm.disabled = true;
-				checked.addEventListener( 'change', () => { confirm.disabled = ! checked.checked || ! data.can_rollback || isOperationRunning(); } );
+				confirm.dataset.canRollback = String( data.can_rollback );
+				checked.addEventListener( 'change', updateOperationControls );
 				const confirmation = historyElement( 'label', '', 'dkbce-rollback-confirmation' );
 				confirmation.append( checked, document.createTextNode( data.rollback_policy === 'skip_changed' ? historyText.skipConfirm : historyText.confirmCheck ) );
 				const rollbackActions = historyElement( 'div', '', 'dkbce-rollback-actions' );
@@ -388,31 +477,30 @@
 				products.appendChild( rollbackActions );
 			} else if ( data.can_rollback ) {
 				products.appendChild( historyButton( historyText.review, () => { historyState.review = true; historyState.productPage = 1; loadHistoryDetails(); } ) );
-			} else {
-				products.appendChild( historyElement( 'p', historyText.unavailable, 'description' ) );
 			}
-			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => { historyState.operationId = data.rollback_id; historyState.review = false; historyState.productPage = 1; loadHistoryDetails(); } ) ); }
+			if ( data.rollback_id ) { products.appendChild( historyButton( historyText.rollbackExists, () => openHistoryOperation( data.rollback_id ) ) ); }
 			historyDetails.append( details, products );
-			const result = historySection( historyText.progress, 4 );
+			const result = historySection( ux.operationProgress + ' · ' + historyAction( data.state ) + ' · ' + data.state.operation_id, 4 );
 			const panel = historyElement( 'div', '', 'dkbce-operation' ); result.appendChild( panel );
 			renderOperation( data.state, panel, true );
 			historyDetails.appendChild( result );
 			updateHistoryProgressVisibility();
 			if ( scrollToDetails ) {
+				const title = details.querySelector( 'h2' ); title.tabIndex = -1; title.focus( { preventScroll: true } );
 				historyDetails.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			}
 			if ( ! [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ].includes( data.state.status ) ) {
-				result.appendChild( historyButton( DKBCE.i18n.refreshStatus, loadHistoryDetails ) );
-				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, 2500 ); }
+				if ( state.mode === 'history' && historyState.operationId === operationId ) { historyState.pollTimer = window.setTimeout( loadHistoryDetails, progressPollInterval( data.state.polling_total ) ); }
 			}
-		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { setNotice( error.message, 'error', historyList ); } }
-		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); } }
+		} catch ( error ) { if ( requestId === historyState.detailRequestId ) { historyList.hidden = false; historyDetails.replaceChildren(); setNotice( error.message, 'error', historyList ); } }
+		finally { if ( requestId === historyState.detailRequestId ) { historyState.loading = false; historyDetails.removeAttribute( 'aria-busy' ); updateOperationControls(); } }
 	}
 
 	async function startRollback( button ) {
 		if ( isOperationRunning() || ! historyState.token || historyState.loading ) { return; }
 		button.disabled = true;
 		state.startingOperation = true;
+		updateOperationControls();
 		try {
 			const data = await request( 'rollback', { operation_id: historyState.operationId, review_token: historyState.token, confirmed: '1' } );
 			historyState.token = '';
@@ -428,20 +516,67 @@
 		finally { state.startingOperation = false; updateOperationControls(); }
 	}
 
+	let savedRetentionDays = null;
 	const settingsSection = historySection( historyText.settings, 1 );
 	const settingsForm = historyElement( 'form', '', 'dkbce-settings-form' );
 	const retentionChoice = historySelect( [ [ '30', historyText.days30 ], [ '90', historyText.days90 ], [ 'custom', historyText.custom ] ], '30' );
 	const retentionDays = document.createElement( 'input' ); retentionDays.type = 'number'; retentionDays.min = '1'; retentionDays.max = '36500'; retentionDays.step = '1'; retentionDays.required = true; retentionDays.value = '30';
 	const customRetention = historyField( historyText.days, retentionDays ); customRetention.hidden = true;
 	retentionChoice.addEventListener( 'change', () => { customRetention.hidden = retentionChoice.value !== 'custom'; if ( retentionChoice.value !== 'custom' ) { retentionDays.value = retentionChoice.value; } } );
+
+	let defaultRollbackMode = DKBCE.rollbackMode || 'keep';
+	const rollbackModeGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	rollbackModeGroup.appendChild( historyElement( 'legend', historyText.defaultRollbackMode ) );
+	const rollbackModes = {};
+	[ [ 'keep', historyText.keepRollbackHistory ], [ 'none', historyText.noRollbackHistory ] ].forEach( ( [ value, text ] ) => {
+		const label = historyElement( 'label', '', 'dkbce-rollback-mode-option' );
+		const input = document.createElement( 'input' );
+		input.type = 'radio'; input.name = 'dkbce-default-rollback-mode'; input.value = value;
+		input.checked = defaultRollbackMode === value;
+		rollbackModes[ value ] = input;
+		label.append( input, document.createTextNode( text ) ); rollbackModeGroup.appendChild( label );
+		const help = historyElement( 'p', value === 'keep' ? historyText.keepRollbackHelp : historyText.noRollbackHelp, 'description' );
+		help.id = 'dkbce-rollback-mode-' + value + '-help'; input.setAttribute( 'aria-describedby', help.id );
+		rollbackModeGroup.appendChild( help );
+	} );
+	rollbackModeGroup.appendChild( historyElement( 'p', historyText.rollbackModeHelp, 'description' ) );
+	const rollbackChoice = historyElement( 'div', '', 'dkbce-confirm-rollback-mode' );
+	rollbackChoice.hidden = true;
+	const keepRollback = document.createElement( 'input' ); keepRollback.type = 'checkbox';
+	const rollbackChoiceLabel = historyElement( 'label' );
+	rollbackChoiceLabel.append( keepRollback, document.createTextNode( historyText.keepRollbackHistory ) );
+	const rollbackChoiceHelp = historyElement( 'p', '', 'description' );
+	rollbackChoiceHelp.id = 'dkbce-confirm-rollback-help'; rollbackChoiceHelp.setAttribute( 'aria-live', 'polite' );
+	keepRollback.setAttribute( 'aria-describedby', rollbackChoiceHelp.id );
+	const updateRollbackHelp = () => { rollbackChoiceHelp.textContent = keepRollback.checked ? historyText.keepRollbackHelp : historyText.noRollbackHelp; };
+	keepRollback.addEventListener( 'change', updateRollbackHelp );
+	rollbackChoice.append( rollbackChoiceLabel, rollbackChoiceHelp );
+	$( '#dkbce-confirm-warning' ).after( rollbackChoice );
 	const rollbackPolicy = historySelect( [ [ 'overwrite', historyText.overwrite ], [ 'skip_changed', historyText.skipChanged ] ], 'overwrite' );
 	const saveSettings = historyButton( historyText.save, () => {}, true ); saveSettings.type = 'submit';
-	settingsForm.append( historyField( historyText.retention, retentionChoice ), customRetention, historyElement( 'p', historyText.retentionHelp, 'description' ), historyField( historyText.rollbackBehavior, rollbackPolicy ), historyElement( 'p', historyText.policyHelp, 'description' ), saveSettings );
+	const retentionGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	retentionGroup.appendChild( historyElement( 'legend', historyText.retention ) );
+	retentionChoice.setAttribute( 'aria-label', historyText.retention );
+	retentionChoice.setAttribute( 'aria-describedby', 'dkbce-retention-help' );
+	retentionDays.setAttribute( 'aria-describedby', 'dkbce-retention-help' );
+	const retentionHelp = historyElement( 'p', historyText.retentionHelp, 'description' );
+	retentionHelp.id = 'dkbce-retention-help';
+	retentionGroup.append( retentionChoice, customRetention, retentionHelp );
+	const policyGroup = historyElement( 'fieldset', '', 'dkbce-settings-group' );
+	policyGroup.appendChild( historyElement( 'legend', historyText.rollbackBehavior ) );
+	rollbackPolicy.setAttribute( 'aria-label', historyText.rollbackBehavior );
+	rollbackPolicy.setAttribute( 'aria-describedby', 'dkbce-policy-help' );
+	const policyHelp = historyElement( 'p', historyText.policyHelp, 'description' );
+	policyHelp.id = 'dkbce-policy-help';
+	policyGroup.append( rollbackPolicy, policyHelp );
+	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
 	let pendingCancellation = null;
+	let pendingPresetDeletion = null;
 	const forceClearSection = historySection( historyText.forceClear, 2 );
+	forceClearSection.classList.add( 'dkbce-maintenance-section' );
 	const forceClearButton = historyButton( historyText.forceClear, () => {
 		if ( ! clearReferences ) { return; }
 		pendingCancellation = null;
@@ -454,6 +589,7 @@
 		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-apply' ).textContent = historyText.forceClear;
 		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	} );
@@ -472,22 +608,28 @@
 	forceClearSection.append( historyElement( 'p', historyText.forceClearWarning, 'description' ), forceClearButton );
 	settingsRoot.appendChild( forceClearSection );
 	async function loadSettings() {
-		saveSettings.disabled = true;
+		settingsForm.setAttribute( 'aria-busy', 'true' );
+		settingsForm.querySelectorAll( 'input, select, button' ).forEach( ( input ) => { input.disabled = true; } );
 		forceClearButton.disabled = true;
 		clearReferences = null;
 		try {
 			const data = await request( 'settings' );
 			clearReferences = { dkbce_latest_operation: data.dkbce_latest_operation, dkbce_latest_import: data.dkbce_latest_import };
 			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
+			savedRetentionDays = Number( data.days );
 			rollbackPolicy.value = data.rollback_policy;
+			defaultRollbackMode = data.rollback_mode;
+			Object.entries( rollbackModes ).forEach( ( [ mode, input ] ) => { input.checked = mode === defaultRollbackMode; } );
 			retentionDays.value = String( data.days ); retentionChoice.value = [ 30, 90 ].includes( Number( data.days ) ) ? String( data.days ) : 'custom'; customRetention.hidden = retentionChoice.value !== 'custom';
+			settingsForm.querySelectorAll( 'input, select, button' ).forEach( ( input ) => { input.disabled = false; } );
 		} catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
-		finally { saveSettings.disabled = false; }
+		finally { settingsForm.removeAttribute( 'aria-busy' ); }
 	}
 	settingsForm.addEventListener( 'submit', async ( event ) => {
 		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
+		if ( savedRetentionDays !== null && Number( retentionDays.value ) < savedRetentionDays && ! window.confirm( ux.retentionConfirm ) ) { return; }
 		saveSettings.disabled = true;
-		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value } ); setNotice( historyText.saved, 'success', settingsSection ); }
+		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
 		catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
 		finally { saveSettings.disabled = false; }
 	} );
@@ -509,10 +651,15 @@
 
 	function updateCSVMode() {
 		const active = state.mode === 'csv';
+		if ( state.mode === 'bulk' ) {
+			$( '#dkbce-selection-toolbar' ).before( applySection );
+		} else {
+			applySectionAnchor.after( applySection );
+		}
 		setNotice( '', 'info' );
 		$( '#dkbce-range-menu' ).open = false;
 		const importing = active && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
-		const helpMode = [ 'history', 'settings' ].includes( state.mode ) ? state.mode : active ? ( importing ? 'import' : 'export' ) : 'bulk';
+		const helpMode = [ 'history', 'presets', 'settings' ].includes( state.mode ) ? state.mode : active ? ( importing ? 'import' : 'export' ) : 'bulk';
 		document.querySelectorAll( '[data-dkbce-help]' ).forEach( ( section ) => {
 			section.hidden = section.dataset.dkbceHelp !== helpMode;
 		} );
@@ -529,11 +676,15 @@
 		rangeControls.hidden = importing;
 		applyButton.textContent = active && ! importing ? DKBCE.ui.createCSV : DKBCE.ui.review;
 		$( '#dkbce-preview-title' ).textContent = importing ? DKBCE.ui.importTitle : active ? DKBCE.ui.exportTitle : DKBCE.ui.bulkTitle;
-		$( '.dkbce-preview-empty h3' ).textContent = DKBCE.ui.emptyTitle;
+		$( '.dkbce-preview-empty h3' ).textContent = active && ! importing ? ux.exportEmptyTitle : DKBCE.ui.emptyTitle;
+		const emptyNote = $( '.dkbce-empty-note' );
+		if ( ! emptyNote.dataset.originalText ) { emptyNote.dataset.originalText = emptyNote.textContent; }
+		emptyNote.textContent = active && ! importing ? ux.exportNote : emptyNote.dataset.originalText;
+		$( '#dkbce-empty-recovery' ).hidden = true;
 		$( '.dkbce-preview-empty p' ).textContent = importing ? DKBCE.ui.importEmpty : active ? DKBCE.ui.exportEmpty : DKBCE.ui.bulkEmpty;
 		$( '.dkbce-preview-controls' ).hidden = ! state.rows.length;
 		$( '#dkbce-csv-title' ).textContent = importing ? DKBCE.ui.importTask : DKBCE.ui.exportTask;
-		$( '#dkbce-apply-title' ).textContent = applyButton.textContent;
+		$( '#dkbce-apply-title' ).textContent = active && ! importing ? DKBCE.ui.createCSV : DKBCE.ui.confirmUpdate;
 		const help = $( '.dkbce-apply-section .dkbce-section-heading p' );
 		if ( ! help.dataset.originalText ) { help.dataset.originalText = help.textContent; }
 		help.textContent = active && ! importing ? DKBCE.csv.exportHelp : help.dataset.originalText;
@@ -545,6 +696,8 @@
 		$( '.dkbce-csv-section .dkbce-step-icon' ).hidden = ! active;
 		$( '.dkbce-csv-section .dkbce-section-heading > span' ).hidden = ! active;
 		$( '.dkbce-workspace' ).classList.toggle( 'dkbce-csv-workflow', active );
+		$( '.dkbce-workspace' ).classList.toggle( 'dkbce-bulk-workflow', state.mode === 'bulk' );
+		$( '.dkbce-workflow' ).hidden = state.mode !== 'bulk';
 		$( '#dkbce-csv-preview-wrap' ).hidden = active && ! importing;
 		$( '#dkbce-csv-preview' ).textContent = DKBCE.csv.previewImport;
 		const previewHelp = $( '#dkbce-preview-help' );
@@ -556,14 +709,16 @@
 		filterHelp.textContent = active && ! importing ? DKBCE.csv.filterHelp : filterHelp.dataset.originalText;
 		updateColumnVisibility();
 		$( '.dkbce-apply-section .dkbce-section-heading > span' ).textContent = active && importing ? '3' : '4';
+		$( '.dkbce-apply-section .dkbce-section-heading > span' ).hidden = ! active;
 		document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
 			const selected = button.dataset.dkbceMode === state.mode;
 			button.setAttribute( 'aria-pressed', String( selected ) );
 			button.classList.toggle( 'button-primary', selected );
 		} );
-		const extra = [ 'history', 'settings' ].includes( state.mode );
+		const extra = [ 'history', 'presets', 'settings' ].includes( state.mode );
 		$( '#dkbce-history' ).hidden = state.mode !== 'history';
 		$( '#dkbce-settings' ).hidden = state.mode !== 'settings';
+		$( '#dkbce-presets' ).hidden = state.mode !== 'presets';
 		if ( extra ) {
 			document.querySelectorAll( '.dkbce-workspace > section' ).forEach( ( section ) => { section.hidden = true; } );
 		}
@@ -572,7 +727,7 @@
 		} else { operationAnchor.after( operationPanel ); historyProgress.hidden = true; }
 		$( '.dkbce-preview-section' ).hidden = extra;
 		$( '.dkbce-apply-section' ).hidden = extra;
-		if ( state.mode === 'settings' ) { historyProgress.appendChild( operationPanel ); }
+		if ( [ 'presets', 'settings' ].includes( state.mode ) ) { historyProgress.appendChild( operationPanel ); }
 		updateOperationControls();
 	}
 
@@ -583,10 +738,12 @@
 		const button = $( '#dkbce-csv-preview' );
 		const mode = $( 'input[name="dkbce-csv-action"]:checked' ).value;
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
-		if ( mode === 'import' && ( ! file || file.size > DKBCE.maxUploadSize ) ) {
-			setNotice( DKBCE.csv.file, 'error', $( '#dkbce-csv' ) );
-			return;
+		if ( mode === 'import' ) {
+			const error = ! file ? ux.missingFile : ! /\.(csv|xlsx)$/i.test( file.name ) ? ux.invalidFile : file.size > DKBCE.maxUploadSize ? ux.largeFile.replace( '%s', DKBCE.maxUploadLabel ) : '';
+			setFileError( error );
+			if ( error ) { $( '#dkbce-csv-file' ).focus(); return; }
 		}
+
 		invalidatePreview( 'import' === mode, 'import' === mode );
 		$( '#dkbce-csv-errors' ).hidden = true;
 		setNotice( '', 'info' );
@@ -635,7 +792,7 @@
 			if ( 'failed' === status.status || 'cancelled' === status.status ) {
 				throw new Error( status.message || DKBCE.csv.downloadFailed );
 			}
-			await new Promise( ( resolve ) => window.setTimeout( resolve, 1500 ) );
+			await new Promise( ( resolve ) => window.setTimeout( resolve, progressPollInterval() ) );
 		}
 	}
 
@@ -654,13 +811,24 @@
 		report.className = 'button';
 		report.textContent = DKBCE.csv.report;
 		report.addEventListener( 'click', () => downloadImportReport( data.report_source, false, report ) );
-		const list = document.createElement( 'ul' );
+		const list = document.createElement( 'div' );
+		const groups = new Map();
 		data.errors.forEach( ( error ) => {
-			const item = document.createElement( 'li' );
-			item.textContent = DKBCE.csv.row + ' ' + error.row_no + ': ' + error.error;
-			list.appendChild( item );
+			if ( ! groups.has( error.error ) ) { groups.set( error.error, [] ); }
+			groups.get( error.error ).push( error );
 		} );
-		errors.append( explanation, report, list );
+		groups.forEach( ( rows, reason ) => {
+			const group = document.createElement( 'details' ); group.open = groups.size === 1;
+			group.appendChild( historyElement( 'summary', reason + ' (' + rows.length.toLocaleString() + ')' ) );
+			const items = document.createElement( 'ul' );
+			rows.forEach( ( error ) => {
+				const identifier = error.sku || error.product_id || '';
+				items.appendChild( historyElement( 'li', DKBCE.csv.row + ' ' + error.row_no + ( identifier ? ' · ' + identifier : '' ) ) );
+			} );
+			group.appendChild( items ); list.appendChild( group );
+		} );
+
+		errors.append( explanation, historyElement( 'p', ux.fileCorrection ), report, list );
 	}
 
 	async function pollImport() {
@@ -711,7 +879,7 @@
 					? DKBCE.csv.cancelling
 					: data.stage === 'import_strings' ? DKBCE.csv.readingStrings : DKBCE.csv.preparing;
 				status.textContent += data.sheet ? ' — ' + data.sheet : '';
-				window.setTimeout( pollImport, 2000 );
+				window.setTimeout( pollImport, progressPollInterval( data.total_rows ) );
 				return;
 			}
 			state.importPreparing = false;
@@ -738,7 +906,7 @@
 				return;
 			}
 			status.textContent = error.message + ' ' + DKBCE.csv.retrying;
-			window.setTimeout( pollImport, 5000 );
+			window.setTimeout( pollImport, progressPollInterval() );
 		}
 	}
 
@@ -757,7 +925,7 @@
 			return;
 		}
 		const columns = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.value );
-		if ( ! columns.length ) {
+		if ( ! hasCSVIdentifierColumn() ) {
 			setNotice( DKBCE.csv.columns, 'error', $( '#dkbce-csv' ) );
 			return;
 		}
@@ -798,7 +966,7 @@
 			}
 		} );
 		operationPanel.classList.remove( 'is-history' );
-		operationPanel.replaceChildren( heading, status, track, time, cancel );
+		operationPanel.replaceChildren( operationHeading( heading ), status, track, time, cancel );
 		operationPanel.hidden = false;
 		const renderProgress = ( done = false ) => {
 			const elapsed = Math.floor( ( window.performance.now() - startedAt ) / 1000 );
@@ -863,6 +1031,8 @@
 			if ( state.busy || state.loadingPage ) {
 				return;
 			}
+			if ( presetBusy ) { return; }
+			if ( editedPreset ) { closePresetEditor(); }
 			const nextMode = button.dataset.dkbceMode;
 			window.clearTimeout( historyState.pollTimer );
 			window.clearTimeout( state.previewTimer );
@@ -875,6 +1045,7 @@
 			updateCSVMode();
 			if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
 			if ( state.mode === 'settings' ) { loadSettings(); }
+			if ( state.mode === 'presets' ) { loadPresetTable(); }
 		} );
 	} );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
@@ -884,7 +1055,44 @@
 			updateCSVMode();
 		} );
 	} );
+	const csvColumnInputs = Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]' ) );
+	const csvSelectAll = $( '#dkbce-csv-select-all' );
+	const csvColumnsError = $( '#dkbce-csv-columns-error' );
+	let csvColumnsErrorTimer;
+	function hasCSVIdentifierColumn() {
+		return Boolean( $( '[name="dkbce-csv-column"][value="id"]:checked, [name="dkbce-csv-column"][value="sku"]:checked' ) );
+	}
+	function updateCSVColumnToggle() {
+		const selected = csvColumnInputs.filter( ( input ) => input.checked ).length;
+		csvSelectAll.checked = selected === csvColumnInputs.length;
+		csvSelectAll.indeterminate = selected > 0 && selected < csvColumnInputs.length;
+		window.clearTimeout( csvColumnsErrorTimer );
+		csvColumnsError.hidden = hasCSVIdentifierColumn();
+		csvColumnsError.textContent = csvColumnsError.hidden ? '' : DKBCE.csv.columns;
+		if ( ! csvColumnsError.hidden ) {
+			csvColumnsErrorTimer = window.setTimeout( () => {
+				csvColumnsError.hidden = true;
+				csvColumnsError.textContent = '';
+			}, 10000 );
+		}
+		updateOperationControls();
+	}
+	csvSelectAll.addEventListener( 'change', () => {
+		csvColumnInputs.forEach( ( input ) => { input.checked = csvSelectAll.checked; } );
+		updateCSVColumnToggle();
+	} );
+	csvColumnInputs.forEach( ( input ) => input.addEventListener( 'change', updateCSVColumnToggle ) );
+
+	const fileError = historyElement( 'p', '', 'dkbce-file-error' );
+	fileError.id = 'dkbce-file-error'; fileError.hidden = true; fileError.setAttribute( 'role', 'alert' );
+	$( '#dkbce-csv-drop' ).after( fileError );
+	$( '#dkbce-csv-file' ).setAttribute( 'aria-describedby', fileError.id );
+	function setFileError( message ) {
+		fileError.textContent = message; fileError.hidden = ! message;
+		$( '#dkbce-csv-file' ).setAttribute( 'aria-invalid', message ? 'true' : 'false' );
+	}
 	function updateFileDetails() {
+		setFileError( '' );
 		const file = $( '#dkbce-csv-file' ).files[ 0 ];
 		$( '#dkbce-file-details' ).hidden = ! file;
 		$( '#dkbce-file-details span' ).textContent = file ? file.name + ' · ' + Math.ceil( file.size / 1024 ) + ' KB' : '';
@@ -1217,7 +1425,12 @@
 
 	function updateOperationControls() {
 		renderFilterChips();
+		const matchHelp = $( '#dkbce-match-help' );
+		if ( matchHelp && ! csvMode() ) {
+			matchHelp.textContent = hasValidActionValue() ? DKBCE.i18n.matchPreviewHelp : DKBCE.i18n.matchActionHelp;
+		}
 		const running = isOperationRunning();
+		document.querySelectorAll( '[data-start-another]' ).forEach( ( button ) => { button.disabled = running || state.busy || state.loadingPage; } );
 		updateSelectionSummary();
 		previewContent.inert = state.previewNeedsRefresh || state.loadingPage;
 		previewContent.classList.toggle( 'is-stale', state.previewNeedsRefresh );
@@ -1227,7 +1440,7 @@
 		refreshPreviewButton.hidden = state.loadingPage || ( state.busy && ! state.previewNeedsRefresh );
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
 		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
-		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input, #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
+		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input:not(#dkbce-csv-new-cogs), #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
 			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
 		$( '#dkbce-action-prerequisite' ).hidden = state.hasQuery && state.count > 0;
@@ -1251,15 +1464,113 @@
 					delete input.dataset.disabledBeforeOperation;
 				}
 			} );
+		// Reflect the existing selection and preview state without changing its guards.
+		const hasProducts = state.hasQuery && state.count > 0;
+		const hasPreview = Boolean( state.previewId ) && ! state.previewNeedsRefresh && state.rows.length > 0;
+		const currentStep = hasPreview ? 2 : hasProducts ? 1 : 0;
+		if ( state.mode === 'bulk' ) {
+			const empty = $( '.dkbce-preview-empty' );
+			const noMatches = state.hasQuery && state.count === 0 && ! state.busy;
+			empty.querySelector( 'p' ).textContent = noMatches ? DKBCE.i18n.noProducts + ' ' + ux.noMatchesHelp : DKBCE.ui.bulkEmpty;
+			$( '#dkbce-empty-recovery' ).hidden = ! noMatches;
+		}
+
+		document.querySelectorAll( '.dkbce-workflow li' ).forEach( ( step, index ) => {
+			step.classList.toggle( 'is-complete', index < currentStep );
+			if ( index === currentStep ) {
+				step.setAttribute( 'aria-current', 'step' );
+			} else {
+				step.removeAttribute( 'aria-current' );
+			}
+		} );
+		actionSection.classList.toggle( 'is-locked', ! hasProducts );
+		$( '.dkbce-workspace' ).classList.toggle( 'has-preview-rows', state.rows.length > 0 );
+		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
-			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length;
+			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
+			( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' && ! hasCSVIdentifierColumn() );
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
 		}
+		document.querySelectorAll( '.dkbce-rollback-confirm' ).forEach( ( button ) => {
+			const acknowledged = button.closest( '.dkbce-rollback-actions' ).querySelector( '.dkbce-rollback-confirmation input' ).checked;
+			button.disabled = running || state.busy || historyState.loading || ! historyState.token || ! acknowledged || button.dataset.canRollback !== 'true';
+		} );
+		updateOperationTooltips( running );
+	}
+
+	function updateOperationTooltips( running ) {
+		document.querySelectorAll( '.dkbce-csv-action label' ).forEach( ( label ) => {
+			const locked = running && label.querySelector( 'input' ).disabled;
+			if ( locked ) {
+				if ( ! label.classList.contains( 'dkbce-disabled-action' ) ) { addOperationHint( label, label.textContent.trim() ); }
+			} else {
+				label.classList.remove( 'dkbce-disabled-action', 'is-dismissed' );
+				label.querySelector( '.dkbce-operation-hint' )?.remove();
+				label.onpointerenter = label.onfocusin = label.onkeydown = null;
+				[ 'tabindex', 'aria-label' ].forEach( ( attribute ) => label.removeAttribute( attribute ) );
+			}
+		} );
+		const selector = '#dkbce-get-products, #dkbce-clear-filters, #dkbce-reset, #dkbce-apply, #dkbce-refresh-preview, #dkbce-selection-toolbar button, .dkbce-range-selection button, .dkbce-filter-grid button, #dkbce-csv-preview, #dkbce-file-details button, .dkbce-filter-chip, .dkbce-rollback-confirm';
+		document.querySelectorAll( selector ).forEach( ( button ) => {
+			const wrapper = button.parentElement;
+			if ( running && button.disabled ) {
+				if ( wrapper.classList.contains( 'dkbce-disabled-action' ) ) { return; }
+				const hint = document.createElement( 'span' );
+				button.before( hint );
+				hint.appendChild( button );
+				addOperationHint( hint, button.textContent.trim() );
+			} else if ( wrapper.classList.contains( 'dkbce-disabled-action' ) ) {
+				wrapper.replaceWith( button );
+			}
+		} );
+	}
+
+	function addOperationHint( target, actionLabel ) {
+		target.classList.add( 'dkbce-disabled-action' );
+		target.tabIndex = 0;
+		target.setAttribute( 'aria-label', actionLabel + '. ' + DKBCE.i18n.operationRunning );
+		const hint = document.createElement( 'span' );
+		hint.className = 'dkbce-operation-hint';
+		const message = document.createElement( 'span' );
+		message.textContent = DKBCE.i18n.operationRunning;
+		const link = document.createElement( 'a' );
+		link.href = state.importPreparing ? '#dkbce-import-progress' : '#dkbce-operation';
+		link.textContent = DKBCE.i18n.viewProgress;
+		link.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			event.stopPropagation();
+			if ( state.importPreparing || [ 'history', 'presets', 'settings' ].includes( state.mode ) ) {
+				state.mode = state.importPreparing ? 'csv' : state.editorMode;
+				updateCSVMode();
+			}
+			const panel = state.importPreparing ? $( '#dkbce-import-progress' ) : operationPanel;
+			panel.setAttribute( 'tabindex', '-1' );
+			panel.focus( { preventScroll: true } );
+			panel.scrollIntoView( { behavior: window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ? 'auto' : 'smooth', block: 'start' } );
+			target.classList.add( 'is-dismissed' );
+		} );
+		hint.append( message, link );
+		target.appendChild( hint );
+		const position = () => {
+			target.classList.remove( 'is-dismissed' );
+			const bounds = target.getBoundingClientRect();
+			hint.style.left = Math.max( 12, Math.min( bounds.left, window.innerWidth - hint.offsetWidth - 12 ) ) + 'px';
+			hint.style.top = ( bounds.bottom + hint.offsetHeight <= window.innerHeight ? bounds.bottom : Math.max( 0, bounds.top - hint.offsetHeight ) ) + 'px';
+		};
+		target.onpointerenter = position;
+		target.onfocusin = position;
+		target.onkeydown = ( event ) => {
+			if ( event.key === 'Escape' ) {
+				target.focus( { preventScroll: true } );
+				target.classList.add( 'is-dismissed' );
+				event.stopPropagation();
+			}
+		};
 	}
 
 	function setBusy( busy, button, label ) {
@@ -1492,9 +1803,9 @@
 		$( '#dkbce-select-all' ).textContent = DKBCE.ui.all.replace( '%d', state.count.toLocaleString() );
 		$( '#dkbce-selection-count' ).textContent = DKBCE.ui.selected.replace( '%d', count.toLocaleString() );
 		$( '#dkbce-page-selection-count' ).textContent = DKBCE.ui.pageSelected.replace( '%d', state.rows.filter( ( item ) => productSelected( item.id ) ).length );
-		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.previewId ? count.toLocaleString() + ' · ' + ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
+		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.previewId ? ux.scopeSummary.replace( '%2$s', count.toLocaleString() ).replace( '%1$s', ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
 		if ( ! state.busy ) {
-			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
+			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : state.previewId && count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
 		$( '#dkbce-selection-context' ).hidden = ! state.selectionNarrowed && ! state.reusedSelection;
 		$( '#dkbce-selection-context' ).textContent = state.reusedSelection ? DKBCE.ui.reused : state.selectionNarrowed ? DKBCE.ui.narrowed : '';
@@ -1554,15 +1865,16 @@
 		const summary = document.createElement( 'p' );
 		summary.className = 'dkbce-preview-summary';
 		summary.textContent =
-			data.count +
+			Number( data.count ).toLocaleString() +
 			' ' +
 			( data.count === 1
 				? DKBCE.i18n.productOne
 				: DKBCE.i18n.productMany );
 		previewContent.appendChild( summary );
 		if ( ! csvMode() ) {
-			const freshness = document.createElement( 'p' );
-			freshness.textContent = DKBCE.i18n.previewFreshness;
+			const freshness = document.createElement( 'details' );
+			freshness.className = 'dkbce-preview-checks';
+			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
 			previewContent.appendChild( freshness );
 		}
 		if ( data.rows.some( ( item ) => item.status === 'success' && item.new === null ) ) {
@@ -1593,7 +1905,10 @@
 				selectAll.type = 'checkbox';
 				selectAll.className = 'dkbce-select-page';
 				selectAll.setAttribute( 'aria-label', DKBCE.i18n.selectPageProducts );
-				cell.append( selectAll, document.createTextNode( ' ' + label ) );
+				const selectLabel = document.createElement( 'label' );
+				selectLabel.className = 'dkbce-select-page-label';
+				selectLabel.append( selectAll, document.createTextNode( label ) );
+				cell.appendChild( selectLabel );
 			} else {
 				cell.textContent = label;
 			}
@@ -1646,8 +1961,13 @@
 		} );
 		[ header, ...tbody.children ].forEach( ( row ) => {
 			const cells = Array.from( row.children );
-			cells.forEach( ( cell, index ) => { cell.dataset.column = String( index ); } );
-			[ 0, 2, 5, 6, 7, 1, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
+			cells.forEach( ( cell, index ) => {
+				cell.dataset.column = String( index );
+				if ( row !== header ) {
+					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
+				}
+			} );
+			[ 0, 1, 2, 5, 6, 7, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
@@ -1669,7 +1989,7 @@
 		pageSummary.textContent = DKBCE.i18n.pageSummary
 			.replace( '%1$d', String( firstProduct ) )
 			.replace( '%2$d', String( lastProduct ) )
-			.replace( '%3$d', String( data.count ) );
+			.replace( '%3$d', Number( data.count ).toLocaleString() );
 		footer.append( pageSizeLabel, pageSizeSelect, pageSummary );
 		previewContent.appendChild( footer );
 		updatePageSelectionControls();
@@ -1758,13 +2078,18 @@
 				state.hasQuery = true;
 				$( '#dkbce-product-count' ).textContent = data.count
 					? DKBCE.i18n.matchCount
-						.replace( '%1$d', String( data.count ) )
-						.replace( '%2$d', String( data.product_count ) )
-						.replace( '%3$d', String( data.variation_count ) )
+						.replace( '%1$d', Number( data.count ).toLocaleString() )
+						.replace( '%2$d', Number( data.product_count ).toLocaleString() )
+						.replace( '%3$d', Number( data.variation_count ).toLocaleString() )
 					: DKBCE.i18n.noProducts;
+				if ( data.count && ! csvMode() ) {
+					const matchHelp = document.createElement( 'span' );
+					matchHelp.id = 'dkbce-match-help';
+					$( '#dkbce-product-count' ).append( ' ', matchHelp );
+				}
 				if ( 0 === data.count ) {
 					invalidatePreview( false, true );
-					setNotice( DKBCE.i18n.noProducts, 'info', $( '.dkbce-filters-section' ) );
+					if ( ! csvMode() ) { $( '#dkbce-product-count' ).textContent = ''; }
 				}
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-filters-section' ) ) )
@@ -1805,6 +2130,7 @@
 		previewContent.setAttribute( 'aria-busy', 'true' );
 		const requestedFilters = filters();
 		const previousPreviewId = state.selectionPreviewId;
+		const freshSelection = ! previousPreviewId && ! state.selectionOperationId;
 		request( 'preview', {
 			previous_preview_id: previousPreviewId,
 			previous_operation_id: state.selectionOperationId,
@@ -1827,6 +2153,14 @@
 				) {
 					return;
 				}
+				if ( freshSelection ) {
+					// Require an explicit selection before a new bulk update.
+					data.selected_ids = [];
+					data.selected_count = 0;
+				}
+				if ( data.selection_notice ) {
+					resetSelection();
+				}
 				renderPreview( data, true );
 				state.selectionOperationId = '';
 				if ( state.selectionFiltersChanged && previousPreviewId ) {
@@ -1834,6 +2168,10 @@
 				}
 				state.selectionNarrowed = Boolean( previousPreviewId && state.selectionFiltersChanged ) || state.selectionNarrowed;
 				state.selectionFiltersChanged = false;
+				if ( data.selection_notice ) {
+					state.selectionNarrowed = false;
+					setNotice( data.selection_notice, 'info', $( '.dkbce-preview-section' ) );
+				}
 				updateSelectionSummary();
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-preview-section' ) ) )
@@ -1859,6 +2197,10 @@
 		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || state.previewNeedsRefresh || ! state.count ) {
 			return;
 		}
+		if ( exporting && ! hasCSVIdentifierColumn() ) {
+			setNotice( DKBCE.csv.columns, 'error', $( '#dkbce-csv' ) );
+			return;
+		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
 		const selectedCount = selectionCount();
 		const count = selectedOnly ? selectedCount : state.count;
@@ -1873,19 +2215,19 @@
 		$( '#dkbce-confirm-warning' ).hidden = false;
 		$( '#dkbce-confirm-title' ).textContent = exporting ? DKBCE.i18n.confirmExportTitle : DKBCE.i18n.confirmTitle;
 		confirmButton.disabled = false;
-		confirmButton.textContent = exporting ? DKBCE.ui.createCSV : DKBCE.ui.updateCount.replace( '%d', count );
+		confirmButton.textContent = exporting ? DKBCE.ui.createCSV : DKBCE.ui.updateCount.replace( '%d', count.toLocaleString() );
 		const confirmText = exporting
 			? ( count === 1 ? DKBCE.i18n.confirmExportOne : DKBCE.i18n.confirmExportText )
 			: ( count === 1 ? DKBCE.i18n.confirmTextOne : DKBCE.i18n.confirmText );
-		$( '#dkbce-confirm-text' ).textContent = confirmText.replace( '%d', String( count ) );
+		$( '#dkbce-confirm-text' ).textContent = exporting ? confirmText.replace( '%d', count.toLocaleString() ) : ux.scopeSummary.replace( '%1$s', operationDescription() ).replace( '%2$s', count.toLocaleString() );
 		const summary = $( '#dkbce-confirm-summary' );
 		summary.replaceChildren();
 		const reviewed = Array.from( state.reviewedIds ).filter( productSelected ).length;
-		const entries = [ [ DKBCE.ui.operation, exporting ? DKBCE.ui.format : operationDescription() ], [ DKBCE.ui.scope, String( count ) ] ];
+		const entries = [ [ DKBCE.ui.operation, exporting ? DKBCE.ui.format : operationDescription() ], [ DKBCE.ui.scope, count.toLocaleString() ] ];
 		if ( exporting ) {
 			entries.push( [ DKBCE.ui.fileColumns, Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.parentElement.textContent.trim() ).join( ', ' ) + ', new_cogs' ] );
 		} else {
-			entries.push( [ DKBCE.ui.coverage, reviewed >= count ? DKBCE.ui.allReviewed : DKBCE.ui.reviewed.replace( '%d', reviewed ) ] );
+			entries.push( [ DKBCE.ui.coverage, reviewed >= count ? DKBCE.ui.allReviewed : DKBCE.ui.reviewed.replace( '%d', reviewed.toLocaleString() ) ] );
 		}
 		entries.forEach( ( [ label, value ] ) => {
 			const term = document.createElement( 'dt' );
@@ -1895,12 +2237,21 @@
 			summary.append( term, description );
 		} );
 		$( '#dkbce-confirm-warning' ).textContent = exporting ? '' : DKBCE.ui.persistence + ( selectedAction() === 'clear' || ( selectedAction() === 'set' && numericActionValue() !== '' && Number( numericActionValue() ) === 0 ) || state.rows.some( ( item ) => productSelected( item.id ) && item.status === 'success' && item.new === null ) ? ' ' + DKBCE.i18n.zeroClears : '' );
+		rollbackChoice.hidden = exporting;
+		keepRollback.checked = defaultRollbackMode === 'keep';
+		updateRollbackHelp();
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
 
 	function confirmAction() {
 		if ( modal.hidden ) { return; }
+		if ( pendingPresetDeletion ) {
+			const { ids } = pendingPresetDeletion;
+			closeConfirm();
+			deletePresets( ids );
+			return;
+		}
 		if ( pendingCancellation ) {
 			cancelOperation();
 			return;
@@ -1986,6 +2337,7 @@
 		window.clearTimeout( state.previewTimer );
 		setBusy( true, applyButton, DKBCE.i18n.starting );
 		const payload = {
+			rollback_mode: keepRollback.checked ? 'keep' : 'none',
 			note: noteInput.value,
 			confirmed_count: selectionCount(),
 			selected_ids: state.explicitSelection ? Array.from( state.selectedIds ) : [],
@@ -2023,33 +2375,42 @@
 
 	function formatDuration( seconds ) {
 		const duration = Math.max( 0, Math.floor( seconds ) );
-		const hours = Math.floor( duration / 3600 );
+		const days = Math.floor( duration / 86400 );
+		const hours = Math.floor( ( duration % 86400 ) / 3600 );
 		const minutes = Math.floor( ( duration % 3600 ) / 60 );
 		const remainingSeconds = duration % 60;
-		return [ hours, minutes, remainingSeconds ]
+		const clock = [ hours, minutes, remainingSeconds ]
 			.map( ( value ) => String( value ).padStart( 2, '0' ) )
 			.join( ':' );
+		return days ? DKBCE.i18n.durationDays.replace( '%1$s', days.toLocaleString() ).replace( '%2$s', clock ) : clock;
 	}
 
-	function updateOperationTime( operation, timeElement ) {
+	const operationEstimates = new Map();
+
+	function updateOperationTime( operation, timeElement, historyView = false ) {
 		const terminalStatuses = [ 'completed', 'completed_with_errors', 'failed', 'cancelled' ];
 		const isTerminal = terminalStatuses.includes( operation.status );
-		const elapsedSeconds = isTerminal
+		const elapsedSeconds = isTerminal || historyView
 			? operation.elapsed_seconds
 			: Math.floor( ( window.performance.now() - state.operationStartedAt ) / 1000 );
 		let remaining = DKBCE.i18n.estimatingTime;
-
+		const progressAge = Number( operation.progress_age ) + Math.max( 0, elapsedSeconds - operation.elapsed_seconds );
+		const waiting = ! operation.queue_available || progressAge >= 120 || operation.status === 'pending' || operation.cancel_requested || operation.stage === 'snapshot';
+		let sample = operationEstimates.get( operation.operation_id );
 		if ( isTerminal ) {
-			remaining = [ 'completed', 'completed_with_errors' ].includes(
-				operation.status
-			)
-				? formatDuration( 0 )
-				: '—';
-		} else if ( 'snapshot' !== operation.stage && operation.processed > 0 ) {
-			remaining = formatDuration(
-				( elapsedSeconds / operation.processed ) *
-					Math.max( 0, operation.total - operation.processed )
-			);
+			operationEstimates.delete( operation.operation_id );
+		} else if ( waiting || ! sample || sample.waiting || operation.processed < sample.processed ) {
+			sample = { processed: operation.processed, elapsed: elapsedSeconds, rate: 0, waiting };
+			operationEstimates.set( operation.operation_id, sample );
+		} else if ( operation.processed > sample.processed && elapsedSeconds > sample.elapsed ) {
+			sample.rate = ( operation.processed - sample.processed ) / ( elapsedSeconds - sample.elapsed );
+			sample.processed = operation.processed;
+			sample.elapsed = elapsedSeconds;
+		}
+		if ( waiting ) {
+			remaining = DKBCE.i18n.estimateUnavailable;
+		} else if ( sample && sample.rate > 0 ) {
+			remaining = formatDuration( Math.max( 0, operation.total - operation.processed ) / sample.rate );
 		}
 
 		timeElement.replaceChildren();
@@ -2068,6 +2429,12 @@
 		} );
 	}
 
+	function operationHeading( heading ) {
+		const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
+		sectionHeading.appendChild( heading );
+		return sectionHeading;
+	}
+
 	function renderOperation( operation, operationPanel = $( '#dkbce-operation' ), historyView = false ) {
 		const completionMessage = {
 			completed: DKBCE.i18n.completedStatus,
@@ -2077,7 +2444,7 @@
 		};
 		const focusedControl = operationPanel.contains( document.activeElement ) ? document.activeElement.dataset.operationControl : '';
 		if ( ! historyView ) {
-			state.operationStatus = operation.status; updateOperationControls();
+			state.operationStatus = operation.status; operationPollInterval = progressPollInterval( operation.polling_total ); updateOperationControls();
 			if ( state.mode === 'history' ) { updateHistoryProgressVisibility(); }
 		}
 		if ( ! historyView && null === state.operationStartedAt ) {
@@ -2109,6 +2476,8 @@
 		const unavailable = ! terminal && ! operation.queue_available;
 		if ( terminal ) {
 			heading.textContent = completionMessage[ operation.status ];
+		} else if ( operation.cancel_requested ) {
+			heading.textContent = DKBCE.i18n.cancelling;
 		} else if ( unavailable || delayed || operation.status === 'pending' ) {
 			heading.textContent = DKBCE.i18n.queued;
 		} else if ( 'snapshot' === operation.stage ) {
@@ -2125,21 +2494,21 @@
 			);
 		}
 		if ( ! terminal ) { heading.textContent = operationPanel.dataset.task + ' · ' + heading.textContent; }
-		if ( ! historyView && csvMode() && operation.action === 'csv_import' ) {
-			const sectionHeading = historyElement( 'div', '', 'dkbce-section-heading' );
-			const icon = historyElement( 'i', '', 'dkbce-step-icon dashicons dashicons-update' );
-			const number = historyElement( 'span', '4' );
-			icon.setAttribute( 'aria-hidden', 'true' );
-			number.setAttribute( 'aria-hidden', 'true' );
-			sectionHeading.append( icon, number, heading );
-			operationPanel.appendChild( sectionHeading );
-		} else {
-			operationPanel.appendChild( heading );
-		}
+		operationPanel.appendChild( ! historyView && ! terminal ? operationHeading( heading ) : heading );
 		heading.setAttribute( 'role', 'status' );
 		const checkpoint = document.createElement( 'p' );
-		checkpoint.textContent = DKBCE.i18n.lastProgress.replace( '%s', new Date( operation.last_progress_at * 1000 ).toLocaleString() );
-		operationPanel.appendChild( checkpoint );
+		const refreshSeconds = Math.round( operationPollInterval / 1000 );
+		const refreshInterval = refreshSeconds + ' ' + ( refreshSeconds === 1 ? 'second' : 'seconds' );
+		checkpoint.textContent = DKBCE.i18n.lastProgress.replace(
+			/%1\$s|%2\$s/g,
+			( placeholder ) => placeholder === '%1$s'
+				? new Date( operation.last_progress_at * 1000 ).toLocaleString()
+				: refreshInterval
+		);
+		const statusRow = document.createElement( 'div' );
+		statusRow.className = 'dkbce-operation-status-row';
+		statusRow.appendChild( checkpoint );
+		operationPanel.appendChild( statusRow );
 		if ( ! terminal ) {
 			if ( unavailable || delayed ) {
 				const recovery = document.createElement( 'p' );
@@ -2152,7 +2521,14 @@
 			refresh.dataset.operationControl = 'refresh';
 			refresh.textContent = DKBCE.i18n.refreshStatus;
 			refresh.addEventListener( 'click', historyView ? loadHistoryDetails : pollProgress );
-			operationPanel.appendChild( refresh );
+			const refreshControls = document.createElement( 'div' );
+			refreshControls.className = 'dkbce-operation-refresh';
+			const progressSpinner = document.createElement( 'span' );
+			progressSpinner.className = 'spinner dkbce-operation-spinner';
+			progressSpinner.classList.toggle( 'is-active', ! delayed && ! unavailable );
+			progressSpinner.setAttribute( 'aria-hidden', 'true' );
+			refreshControls.append( progressSpinner, refresh );
+			statusRow.appendChild( refreshControls );
 		}
 		if ( ! historyView ) { setApplySpinner( ! terminal && ! delayed && ! unavailable ); }
 
@@ -2228,7 +2604,7 @@
 		time.className = 'dkbce-operation-time';
 		time.setAttribute( 'aria-live', 'off' );
 		metrics.appendChild( time );
-		if ( historyView ) { time.textContent = DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) ); } else { updateOperationTime( operation, time ); }
+		updateOperationTime( operation, time, historyView );
 		if ( ! historyView && ! terminalStatuses.includes( operation.status ) ) {
 			state.operationTimer = window.setInterval(
 				() => updateOperationTime( operation, time ),
@@ -2376,7 +2752,24 @@
 				operation.failed > 0 ? Number( operation.failed ).toLocaleString() + ' ' + DKBCE.i18n.failedLabel : '',
 			].filter( Boolean ).join( ' · ' );
 			outcome.hidden = ! outcome.textContent;
-			operationPanel.append( title, result, outcome, details );
+			operationPanel.append( historyView ? title : operationHeading( title ), result, outcome, details );
+			const nextActions = historyElement( 'div', '', 'dkbce-actions' );
+			if ( ! historyView && ! [ 'csv_export', 'server_download', 'import_preview' ].includes( operation.action ) ) {
+				nextActions.appendChild( historyButton( operation.succeeded > 0 && operation.rollback_mode !== 'none' ? ux.viewChanges : ux.viewHistory, () => openHistoryOperation( operation.operation_id ) ) );
+			}
+			if ( operation.failed > 0 || operation.skipped > 0 ) {
+				nextActions.appendChild( historyButton( ux.reviewOutcomes, () => { details.open = true; details.querySelector( 'summary' ).focus(); } ) );
+				details.appendChild( historyElement( 'p', ux.outcomesHelp, 'description' ) );
+			}
+			const startAnother = historyButton( ux.startAnother, () => {
+				if ( isOperationRunning() || state.busy || state.loadingPage ) { return; }
+				state.mode = 'bulk'; state.editorMode = 'bulk'; updateCSVMode(); startOver();
+			} );
+			startAnother.dataset.startAnother = 'true';
+			startAnother.disabled = isOperationRunning() || state.busy || state.loadingPage;
+			nextActions.appendChild( startAnother );
+			operationPanel.appendChild( nextActions );
+
 		}
 		if ( focusedControl ) { operationPanel.querySelector( '[data-operation-control="' + focusedControl + '"]' )?.focus(); }
 
@@ -2404,7 +2797,7 @@
 						'cancelled',
 					].includes( data.state.status )
 				) {
-					state.pollTimer = window.setTimeout( pollProgress, 2500 );
+					state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 				}
 			} )
 			.catch( () => {
@@ -2418,6 +2811,7 @@
 					message.textContent = DKBCE.i18n.progressUnavailable;
 					operationPanel.replaceChildren( message );
 				}
+				operationPanel.querySelector( '.dkbce-operation-spinner' )?.classList.remove( 'is-active' );
 				const track = operationPanel.querySelector( '.dkbce-progress-track' );
 				if ( track ) { track.classList.remove( 'is-active' ); }
 				const background = operationPanel.querySelector( '.dkbce-background-message' );
@@ -2432,7 +2826,7 @@
 					refresh.addEventListener( 'click', pollProgress );
 					operationPanel.appendChild( refresh );
 				}
-				state.pollTimer = window.setTimeout( pollProgress, 10000 );
+				state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 			} );
 	}
 
@@ -2456,6 +2850,7 @@
 		$( '#dkbce-confirm-warning' ).hidden = true;
 		$( '#dkbce-confirm-apply' ).textContent = button.textContent;
 		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
 		modal.hidden = false;
 		$( '#dkbce-confirm-cancel' ).focus();
 	}
@@ -2472,6 +2867,14 @@
 				state.importCancel = true;
 				cancellation.button.disabled = true;
 				$( '#dkbce-import-status' ).textContent = DKBCE.csv.cancelling;
+				request( 'import_status', { import_id: cancellation.operationId, cancel: '1' } )
+					.catch( ( error ) => {
+						if ( state.importId !== cancellation.operationId || ! state.importPreparing ) { return; }
+						state.importCancel = false;
+						cancellation.button.disabled = false;
+						$( '#dkbce-import-status' ).textContent = error.message;
+						setNotice( error.message, 'error', cancellation.panel );
+					} );
 			}
 			return;
 		}
@@ -2493,7 +2896,7 @@
 				if ( state.pollTimer ) {
 					window.clearTimeout( state.pollTimer );
 				}
-				state.pollTimer = window.setTimeout( pollProgress, 2500 );
+				state.pollTimer = window.setTimeout( pollProgress, operationPollInterval );
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', operationPanel ) );
 	}
@@ -2526,9 +2929,11 @@
 		if ( pendingCancellation && pendingCancellation.importPreparation && ! state.importPreparing ) {
 			focusTarget = $( '#dkbce-csv-preview' );
 		}
+		if ( pendingPresetDeletion ) { focusTarget = pendingPresetDeletion.trigger; }
 		modal.hidden = true;
 		forceClearReferences = null;
 		pendingCancellation = null;
+		pendingPresetDeletion = null;
 		if ( focusTarget ) { focusTarget.focus(); }
 	}
 	$( '#dkbce-confirm-cancel' ).addEventListener( 'click', closeConfirm );
@@ -2557,6 +2962,24 @@
 			}
 		}
 	} );
+	function startOver() {
+		if ( state.busy || state.loadingPage || isOperationRunning() ) { return; }
+		if ( window.location.hash.startsWith( '#dkbce-operation=' ) ) {
+			window.history.replaceState( null, '', window.location.pathname + window.location.search );
+		}
+		window.clearTimeout( state.previewTimer );
+		loadedPresetId = 0; updatePresetControls();
+		resetSelection(); clearFilters();
+		$( '#dkbce-action-kind' ).value = 'set';
+		$( '#dkbce-action-direction' ).value = 'increase';
+		$( '#dkbce-action-unit' ).value = 'percent';
+		$( '#dkbce-value' ).value = '';
+		noteInput.value = '';
+		actionLabel(); invalidatePreview( true, true );
+		$( '#dkbce-product-count' ).textContent = '';
+		setNotice( '', 'info' );
+		$( '#dkbce-search' ).focus();
+	}
 	function clearFilters() {
 		document
 			.querySelectorAll(
@@ -2573,8 +2996,13 @@
 		state.count = 0;
 		invalidatePreview( true );
 	}
+	const resetHelp = historyElement( 'p', ux.resetHelp, 'description' );
+	resetHelp.id = 'dkbce-reset-help';
+	$( '.dkbce-filter-actions' ).after( resetHelp );
+	$( '#dkbce-reset' ).setAttribute( 'aria-describedby', resetHelp.id );
+	$( '#dkbce-clear-filters' ).setAttribute( 'aria-describedby', resetHelp.id );
 	$( '#dkbce-clear-filters' ).addEventListener( 'click', clearFilters );
-	$( '#dkbce-reset' ).addEventListener( 'click', () => { resetSelection(); clearFilters(); invalidatePreview( true, true ); } );
+	$( '#dkbce-reset' ).addEventListener( 'click', startOver );
 	document.querySelectorAll( '.dkbce-action-fields select' ).forEach( ( input ) => {
 		input.addEventListener( 'change', () => {
 			actionLabel();
@@ -2607,7 +3035,7 @@
 	$( '#dkbce-value' ).addEventListener( 'keyup', schedulePreviewRefresh );
 	actionLabel();
 	updateCSVMode();
-	updateOperationControls();
+	updateCSVColumnToggle();
 	if ( DKBCE.operationMode === 'rollback' ) { state.mode = 'history'; updateCSVMode(); loadHistory(); }
 	if ( state.importId || DKBCE.operationMode === 'csv_import' ) {
 		state.mode = 'csv';
@@ -2623,4 +3051,179 @@
 		operationPanel.hidden = false;
 		pollProgress();
 	}
+	let presets = [];
+	let presetBusy = false;
+	let presetsLoaded = false;
+	let loadedPresetId = 0;
+	let editedPreset = null;
+	let presetDraft = null;
+	let presetPage = 1;
+	const presetRoot = $( '#dkbce-presets' );
+	const presetHeading = historyElement( 'h2', ux.presetTab );
+	const presetTable = document.createElement( 'form' );
+	presetTable.className = 'dkbce-preset-table';
+	const presetEditor = historyElement( 'div', '', 'dkbce-preset-editor' ); presetEditor.hidden = true;
+	const editName = document.createElement( 'input' ); editName.type = 'text'; editName.maxLength = 60;
+	const editTitle = historyElement( 'h3', ux.editPreset ); editTitle.tabIndex = -1;
+	const editActions = historyElement( 'div', '', 'dkbce-actions' );
+	presetEditor.append( editTitle, historyField( ux.presetName, editName ), editActions );
+	presetRoot.append( presetHeading, presetTable, presetEditor );
+	const filterPanel = $( '#dkbce-filter-panel' );
+	const filterAnchor = document.createComment( 'product filters' ); filterPanel.before( filterAnchor );
+	const presetPanel = historyElement( 'details', '', 'dkbce-presets' );
+	presetPanel.appendChild( historyElement( 'summary', ux.presets ) );
+	const presetSelect = document.createElement( 'select' ); presetSelect.setAttribute( 'aria-label', ux.presets );
+	const presetName = document.createElement( 'input' ); presetName.type = 'text'; presetName.maxLength = 60;
+	const presetSave = historyElement( 'div', '', 'dkbce-preset-row' );
+	const presetLoad = historyElement( 'div', '', 'dkbce-preset-row' );
+	const loadedHelp = historyElement( 'p', ux.loadedPreset, 'description' ); loadedHelp.hidden = true;
+	function renderPresets() {
+		presetSelect.replaceChildren( new Option( ux.presets, '' ) );
+		presets.forEach( ( preset ) => presetSelect.add( new Option( preset.name, String( preset.id ) ) ) );
+		if ( presets.some( ( preset ) => preset.id === loadedPresetId ) ) { presetSelect.value = String( loadedPresetId ); }
+	}
+	function updatePresetControls() {
+		savePreset.disabled = presetBusy || ! presetsLoaded;
+		presetName.disabled = presetBusy;
+		presetSelect.disabled = presetBusy;
+		presetPanel.setAttribute( 'aria-busy', String( presetBusy ) );
+		loadPreset.disabled = presetBusy || ! presetsLoaded || presetSelect.value === '';
+		presetLoad.hidden = ! presets.length;
+		presetSave.hidden = Boolean( loadedPresetId ); loadedHelp.hidden = ! loadedPresetId;
+	}
+	const presetLocked = () => presetBusy || ! presetsLoaded || state.busy || state.loadingPage || isOperationRunning();
+	async function loadPresets() {
+		if ( presetBusy ) { return; }
+		presetBusy = true; presetsLoaded = false; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets' );
+			presets = data.presets; presetsLoaded = true; renderPresets();
+		} catch ( error ) { setNotice( error.message || ux.presetError, 'error', $( '.dkbce-filters-section' ) ); }
+		finally { presetBusy = false; updatePresetControls(); }
+	}
+	function applyPresetRules( preset ) {
+		resetSelection(); clearFilters();
+		let missing = false;
+		const mapping = { search: 'search', category: 'category', type: 'type', stock_status: 'stock', brand: 'brand', price_min: 'price-min', price_max: 'price-max', cogs_min: 'cogs-min', cogs_max: 'cogs-max' };
+		Object.entries( mapping ).forEach( ( [ key, id ] ) => {
+			const input = $( '#dkbce-' + id ); const value = preset.filters[ key ];
+			if ( ! input ) { if ( value && value.length ) { missing = true; } return; }
+			if ( input.tagName === 'SELECT' ) {
+				const values = Array.isArray( value ) ? value.map( String ) : [];
+				const available = Array.from( input.options, ( option ) => option.value );
+				if ( values.some( ( item ) => ! available.includes( item ) ) ) { missing = true; }
+				Array.from( input.options ).forEach( ( option ) => { option.selected = values.includes( option.value ); } );
+				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			} else { input.value = typeof value === 'string' || typeof value === 'number' ? String( value ).slice( 0, 100 ) : ''; }
+		} );
+		invalidatePreview( true, true ); filterPanel.open = true; $( '.dkbce-more-filters' ).open = true;
+		return missing;
+	}
+	const savePreset = historyButton( ux.savePreset, async () => {
+		if ( presetLocked() || loadedPresetId ) { return; }
+		const name = presetName.value.trim();
+		if ( ! name || presets.some( ( preset ) => preset.name.toLocaleLowerCase() === name.toLocaleLowerCase() ) ) { setNotice( ux.presetNameRequired, 'error', $( '.dkbce-filters-section' ) ); presetName.focus(); return; }
+		presetBusy = true; updatePresetControls();
+		try {
+			const data = await request( 'filter_presets', { preset_action: 'save', name, filters: filters() } );
+			presets = data.presets; loadedPresetId = presets.find( ( preset ) => preset.name.toLocaleLowerCase() === name.toLocaleLowerCase() )?.id || 0; renderPresets(); presetName.value = ''; setNotice( ux.presetSaved, 'success', $( '.dkbce-filters-section' ) );
+		} catch ( error ) { setNotice( error.message, 'error', $( '.dkbce-filters-section' ) ); }
+		finally { presetBusy = false; updatePresetControls(); }
+	} );
+	const loadPreset = historyButton( ux.loadPreset, () => {
+		if ( presetLocked() || presetSelect.value === '' ) { return; }
+		const preset = presets.find( ( item ) => item.id === Number( presetSelect.value ) ); if ( ! preset ) { return; }
+		const missing = applyPresetRules( preset ); loadedPresetId = preset.id; updatePresetControls();
+		setNotice( missing ? ux.presetMissing : DKBCE.i18n.filtersChanged, missing ? 'warning' : 'info', $( '.dkbce-filters-section' ) ); getButton.focus();
+	} );
+	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
+	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset );
+	presetPanel.append( presetLoad, presetSave, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
+	filterPanel.after( presetPanel );
+	presetSelect.addEventListener( 'change', updatePresetControls );
+	presetPanel.addEventListener( 'toggle', () => { if ( presetPanel.open ) { loadPresets(); } } );
+	updatePresetControls();
+	function closePresetEditor() {
+		filterAnchor.after( filterPanel ); presetEditor.hidden = true; presetTable.hidden = false; editedPreset = null;
+		if ( presetDraft ) { applyPresetRules( { filters: presetDraft } ); presetDraft = null; }
+	}
+	async function loadPresetTable() {
+		if ( presetBusy ) { return; }
+		presetBusy = true; presetRoot.setAttribute( 'aria-busy', 'true' ); updatePresetControls();
+		try {
+			const data = await request( 'filter_presets', { preset_action: 'table', preset_page: presetPage } );
+			presets = data.presets; presetsLoaded = true; renderPresets(); presetTable.innerHTML = data.html;
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); updatePresetControls(); }
+	}
+	function confirmPresetDeletion( ids ) {
+		if ( ! ids.length || presetBusy ) { return; }
+		pendingPresetDeletion = { ids, trigger: document.activeElement };
+		pendingCancellation = null; forceClearReferences = null;
+		$( '#dkbce-confirm-title' ).textContent = ux.deletePresetConfirm;
+		$( '#dkbce-confirm-text' ).textContent = presets.filter( ( preset ) => ids.includes( preset.id ) ).map( ( preset ) => preset.name ).join( ', ' );
+		$( '#dkbce-confirm-summary' ).replaceChildren();
+		$( '#dkbce-confirm-summary' ).hidden = true;
+		$( '#dkbce-confirm-warning' ).textContent = '';
+		$( '#dkbce-confirm-warning' ).hidden = true;
+		$( '#dkbce-confirm-apply' ).textContent = presetTable.querySelector( 'option[value="delete"]' ).textContent;
+		$( '#dkbce-confirm-apply' ).disabled = false;
+		rollbackChoice.hidden = true;
+		modal.hidden = false;
+		$( '#dkbce-confirm-cancel' ).focus();
+	}
+	async function deletePresets( ids ) {
+		if ( ! ids.length || presetBusy ) { return; }
+		presetBusy = true; presetRoot.setAttribute( 'aria-busy', 'true' );
+		try {
+			await request( 'filter_presets', { preset_action: 'delete', ids } );
+			if ( ids.includes( loadedPresetId ) ) { loadedPresetId = 0; }
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; presetRoot.removeAttribute( 'aria-busy' ); }
+		presetPage = 1; await loadPresetTable();
+		if ( state.mode === 'presets' ) { presetHeading.tabIndex = -1; presetHeading.focus(); }
+	}
+	presetTable.addEventListener( 'click', ( event ) => {
+		const edit = event.target.closest( '[data-preset-edit]' );
+		const remove = event.target.closest( '[data-preset-delete]' );
+		const pagination = event.target.closest( '.tablenav-pages a' );
+		if ( presetBusy ) { event.preventDefault(); return; }
+		if ( edit ) {
+			if ( state.busy || state.loadingPage || isOperationRunning() ) { return; }
+			editedPreset = presets.find( ( item ) => item.id === Number( edit.dataset.presetEdit ) );
+			if ( ! editedPreset ) { return; }
+			presetDraft = filters();
+			editName.value = editedPreset.name; const missing = applyPresetRules( editedPreset );
+			editActions.before( filterPanel ); presetEditor.hidden = false; presetTable.hidden = true;
+			if ( missing ) { setNotice( ux.presetMissing, 'warning', presetRoot ); }
+			editTitle.focus();
+		} else if ( remove ) { event.preventDefault(); confirmPresetDeletion( [ Number( remove.dataset.presetDelete ) ] ); }
+		else if ( pagination ) { event.preventDefault(); presetPage = Number( new URL( pagination.href ).searchParams.get( 'paged' ) ) || 1; loadPresetTable(); }
+	} );
+	presetTable.addEventListener( 'submit', ( event ) => {
+		event.preventDefault();
+		const submitted = event.submitter;
+		const bottom = submitted && submitted.id === 'doaction2';
+		const action = presetTable.querySelector( bottom ? '[name="action2"]' : '[name="action"]' );
+		if ( action && action.value === 'delete' ) { confirmPresetDeletion( Array.from( presetTable.querySelectorAll( '[name="preset_ids[]"]:checked' ), ( input ) => Number( input.value ) ) ); }
+		else { const pageInput = presetTable.querySelector( '.current-page' ); presetPage = pageInput ? Math.max( 1, Number( pageInput.value ) || 1 ) : 1; loadPresetTable(); }
+	} );
+	// Native list-table checkbox behavior without requiring the core list-table script.
+	presetTable.addEventListener( 'change', ( event ) => {
+		if ( event.target.matches( 'thead .check-column input, tfoot .check-column input' ) ) { presetTable.querySelectorAll( '[type="checkbox"]' ).forEach( ( input ) => { input.checked = event.target.checked; } ); }
+	} );
+	const updatePreset = historyButton( ux.updatePreset, async () => {
+		if ( ! editedPreset || presetBusy || state.busy || isOperationRunning() ) { return; }
+		presetBusy = true; updatePreset.disabled = true;
+		try {
+			await request( 'filter_presets', { preset_action: 'save', preset_id: editedPreset.id, revision: editedPreset.revision, name: editName.value.trim(), filters: filters() } );
+			closePresetEditor(); setNotice( ux.presetSaved, 'success', presetRoot );
+		} catch ( error ) { setNotice( error.message, 'error', presetRoot ); }
+		finally { presetBusy = false; updatePreset.disabled = false; }
+		if ( ! editedPreset ) { await loadPresetTable(); }
+	} );
+	editActions.append( updatePreset, historyButton( ux.cancelPreset, () => { if ( ! presetBusy ) { closePresetEditor(); } } ) );
+
+	const linkedOperation = new URLSearchParams( window.location.hash.slice( 1 ) ).get( 'dkbce-operation' );
+	if ( linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation ) ) { openHistoryOperation( linkedOperation ); }
 } )();
