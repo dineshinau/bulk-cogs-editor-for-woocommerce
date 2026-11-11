@@ -1,0 +1,724 @@
+- generic [ref=e2]:
+  - navigation "Main menu":
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - link "Skip to toolbar" [ref=e4] [cursor=pointer]:
+      - /url: "#wp-toolbar"
+    - list [ref=e7]:
+      - listitem [ref=e8]:
+        - link "Dashboard" [ref=e9] [cursor=pointer]:
+          - /url: index.php
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link "Home" [ref=e16] [cursor=pointer]:
+              - /url: index.php
+          - listitem [ref=e17]:
+            - link "Updates" [ref=e18] [cursor=pointer]:
+              - /url: update-core.php
+      - listitem [aria-hidden] [ref=e19]
+      - listitem [ref=e21]:
+        - link "Posts" [ref=e22] [cursor=pointer]:
+          - /url: edit.php
+        - list [ref=e27]:
+          - listitem [ref=e28]:
+            - link "All Posts" [ref=e29] [cursor=pointer]:
+              - /url: edit.php
+          - listitem [ref=e30]:
+            - link "Add Post" [ref=e31] [cursor=pointer]:
+              - /url: post-new.php
+          - listitem [ref=e32]:
+            - link "Categories" [ref=e33] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=category
+          - listitem [ref=e34]:
+            - link "Tags" [ref=e35] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=post_tag
+      - listitem [ref=e36]:
+        - link "Media" [ref=e37] [cursor=pointer]:
+          - /url: upload.php
+        - list [ref=e46]:
+          - listitem [ref=e47]:
+            - link "Library" [ref=e48] [cursor=pointer]:
+              - /url: upload.php
+          - listitem [ref=e49]:
+            - link "Add Media File" [ref=e50] [cursor=pointer]:
+              - /url: media-new.php
+          - listitem [ref=e51]:
+            - link "Generate Image" [ref=e52] [cursor=pointer]:
+              - /url: upload.php?page=generate-image
+      - listitem [ref=e53]:
+        - link "Pages" [ref=e54] [cursor=pointer]:
+          - /url: edit.php?post_type=page
+        - list [ref=e59]:
+          - listitem [ref=e60]:
+            - link "All Pages" [ref=e61] [cursor=pointer]:
+              - /url: edit.php?post_type=page
+          - listitem [ref=e62]:
+            - link "Add Page" [ref=e63] [cursor=pointer]:
+              - /url: post-new.php?post_type=page
+      - listitem [ref=e64]:
+        - link "Comments" [ref=e65] [cursor=pointer]:
+          - /url: edit-comments.php
+      - listitem [ref=e70]:
+        - link "WP Mail Log" [ref=e71] [cursor=pointer]:
+          - /url: admin.php?page=wp-mail-log
+      - listitem [aria-hidden] [ref=e76]
+      - listitem [ref=e78]:
+        - link "WooCommerce" [ref=e79] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin
+        - list [ref=e82]:
+          - listitem [ref=e83]:
+            - link "Home 1" [ref=e84] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin
+              - text: Home
+              - generic [ref=e85]: "1"
+          - listitem [ref=e86]:
+            - link "Orders 8" [ref=e87] [cursor=pointer]:
+              - /url: admin.php?page=wc-orders
+              - text: Orders
+              - generic [ref=e88]: "8"
+          - listitem [ref=e89]:
+            - link "Live Branches" [ref=e90] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/live-branches
+          - listitem [ref=e91]:
+            - link "Customers" [ref=e92] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/customers
+          - listitem [ref=e93]:
+            - link "Coupons" [ref=e94] [cursor=pointer]:
+              - /url: admin.php?page=coupons-moved
+          - listitem [ref=e95]:
+            - link "Reports" [ref=e96] [cursor=pointer]:
+              - /url: admin.php?page=wc-reports
+          - listitem [ref=e97]:
+            - link "Settings" [ref=e98] [cursor=pointer]:
+              - /url: admin.php?page=wc-settings
+          - listitem [ref=e99]:
+            - link "Status" [ref=e100] [cursor=pointer]:
+              - /url: admin.php?page=wc-status
+          - listitem [ref=e101]:
+            - link "Extensions" [ref=e102] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/extensions
+      - listitem [ref=e103]:
+        - link "Products" [ref=e104] [cursor=pointer]:
+          - /url: edit.php?post_type=product
+          - generic [aria-hidden] [ref=e105]: 
+        - list [ref=e107]:
+          - listitem [ref=e108]:
+            - link "All Products" [ref=e109] [cursor=pointer]:
+              - /url: edit.php?post_type=product
+          - listitem [ref=e110]:
+            - link "Add new product" [ref=e111] [cursor=pointer]:
+              - /url: post-new.php?post_type=product
+          - listitem [ref=e112]:
+            - link "Bulk COGS Editor" [ref=e113] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=bulk-cogs-editor
+          - listitem [ref=e114]:
+            - link "Brands" [ref=e115] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_brand&post_type=product
+          - listitem [ref=e116]:
+            - link "Categories" [ref=e117] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_cat&post_type=product
+          - listitem [ref=e118]:
+            - link "Tags" [ref=e119] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_tag&post_type=product
+          - listitem [ref=e120]:
+            - link "Attributes" [ref=e121] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product_attributes
+          - listitem [ref=e122]:
+            - link "Reviews" [ref=e123] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product-reviews
+      - listitem [ref=e124]:
+        - link "Payments" [ref=e125] [cursor=pointer]:
+          - /url: admin.php?page=wc-settings&tab=checkout&from=PAYMENTS_MENU_ITEM
+      - listitem [ref=e128]:
+        - link "Analytics" [ref=e129] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/analytics/overview
+        - list [ref=e134]:
+          - listitem [ref=e135]:
+            - link "Overview" [ref=e136] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/overview
+          - listitem [ref=e137]:
+            - link "Products" [ref=e138] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/products
+          - listitem [ref=e139]:
+            - link "Revenue" [ref=e140] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/revenue
+          - listitem [ref=e141]:
+            - link "Orders" [ref=e142] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/orders
+          - listitem [ref=e143]:
+            - link "Variations" [ref=e144] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/variations
+          - listitem [ref=e145]:
+            - link "Categories" [ref=e146] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/categories
+          - listitem [ref=e147]:
+            - link "Coupons" [ref=e148] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/coupons
+          - listitem [ref=e149]:
+            - link "Taxes" [ref=e150] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/taxes
+          - listitem [ref=e151]:
+            - link "Downloads" [ref=e152] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/downloads
+          - listitem [ref=e153]:
+            - link "Stock" [ref=e154] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/stock
+          - listitem [ref=e155]:
+            - link "Settings" [ref=e156] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/settings
+      - listitem [ref=e157]:
+        - link "Marketing 1" [ref=e158] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/marketing
+          - generic [aria-hidden] [ref=e159]: 
+          - generic [ref=e160]:
+            - text: Marketing
+            - generic [ref=e161]: "1"
+        - list [ref=e162]:
+          - listitem [ref=e163]:
+            - link "Overview" [ref=e164] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/marketing
+          - listitem [ref=e165]:
+            - link "Coupons" [ref=e166] [cursor=pointer]:
+              - /url: edit.php?post_type=shop_coupon
+          - listitem [ref=e167]:
+            - link "Google for WooCommerce" [ref=e168] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/google/start
+      - listitem [aria-hidden] [ref=e169]
+      - listitem [ref=e171]:
+        - link "Appearance" [ref=e172] [cursor=pointer]:
+          - /url: themes.php
+        - list [ref=e177]:
+          - listitem [ref=e178]:
+            - link "Themes" [ref=e179] [cursor=pointer]:
+              - /url: themes.php
+          - listitem [ref=e180]:
+            - link "Add Theme" [ref=e181] [cursor=pointer]:
+              - /url: theme-install.php
+          - listitem [ref=e182]:
+            - link "Editor" [ref=e183] [cursor=pointer]:
+              - /url: site-editor.php
+          - listitem [ref=e184]:
+            - link "Fonts" [ref=e185] [cursor=pointer]:
+              - /url: font-library.php
+      - listitem [ref=e186]:
+        - link "Plugins" [ref=e187] [cursor=pointer]:
+          - /url: plugins.php
+        - list [ref=e192]:
+          - listitem [ref=e193]:
+            - link "Installed Plugins" [ref=e194] [cursor=pointer]:
+              - /url: plugins.php
+          - listitem [ref=e195]:
+            - link "Add Plugin" [ref=e196] [cursor=pointer]:
+              - /url: plugin-install.php
+      - listitem [ref=e197]:
+        - link "Users" [ref=e198] [cursor=pointer]:
+          - /url: users.php
+        - list [ref=e203]:
+          - listitem [ref=e204]:
+            - link "All Users" [ref=e205] [cursor=pointer]:
+              - /url: users.php
+          - listitem [ref=e206]:
+            - link "Add User" [ref=e207] [cursor=pointer]:
+              - /url: user-new.php
+          - listitem [ref=e208]:
+            - link "Profile" [ref=e209] [cursor=pointer]:
+              - /url: profile.php
+      - listitem [ref=e210]:
+        - link "Tools" [ref=e211] [cursor=pointer]:
+          - /url: tools.php
+        - list [ref=e216]:
+          - listitem [ref=e217]:
+            - link "Available Tools" [ref=e218] [cursor=pointer]:
+              - /url: tools.php
+          - listitem [ref=e219]:
+            - link "Import" [ref=e220] [cursor=pointer]:
+              - /url: import.php
+          - listitem [ref=e221]:
+            - link "Export" [ref=e222] [cursor=pointer]:
+              - /url: export.php
+          - listitem [ref=e223]:
+            - link "Site Health 2" [ref=e224] [cursor=pointer]:
+              - /url: site-health.php
+              - text: Site Health
+              - generic [ref=e225]: "2"
+          - listitem [ref=e226]:
+            - link "Export Personal Data" [ref=e227] [cursor=pointer]:
+              - /url: export-personal-data.php
+          - listitem [ref=e228]:
+            - link "Erase Personal Data" [ref=e229] [cursor=pointer]:
+              - /url: erase-personal-data.php
+          - listitem [ref=e230]:
+            - link "Plugin Check" [ref=e231] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check
+          - listitem [ref=e232]:
+            - link "Plugin Check Namer" [ref=e233] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-namer
+          - listitem [ref=e234]:
+            - link "Plugin Check SVN" [ref=e235] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-svn-checker
+          - listitem [ref=e236]:
+            - link "WCA Test Helper" [ref=e237] [cursor=pointer]:
+              - /url: tools.php?page=woocommerce-admin-test-helper
+          - listitem [ref=e238]:
+            - link "Beta Testing" [ref=e239] [cursor=pointer]:
+              - /url: tools.php?page=wp-beta-tester
+          - listitem [ref=e240]:
+            - link "Better Search Replace" [ref=e241] [cursor=pointer]:
+              - /url: tools.php?page=better-search-replace
+          - listitem [ref=e242]:
+            - link "Scheduled Actions" [ref=e243] [cursor=pointer]:
+              - /url: tools.php?page=action-scheduler
+          - listitem [ref=e244]:
+            - link "Rollback Core" [ref=e245] [cursor=pointer]:
+              - /url: tools.php?page=rollback
+          - listitem [ref=e246]:
+            - link "Abilities Explorer" [ref=e247] [cursor=pointer]:
+              - /url: tools.php?page=ai-abilities-explorer
+          - listitem [ref=e248]:
+            - link "AI Request Logs" [ref=e249] [cursor=pointer]:
+              - /url: tools.php?page=ai-request-logs
+          - listitem [ref=e250]:
+            - link "Connector Approvals" [ref=e251] [cursor=pointer]:
+              - /url: tools.php?page=ai-connector-approval
+          - listitem [ref=e252]:
+            - link "Theme File Editor" [ref=e253] [cursor=pointer]:
+              - /url: theme-editor.php
+          - listitem [ref=e254]:
+            - link "Plugin File Editor" [ref=e255] [cursor=pointer]:
+              - /url: plugin-editor.php
+      - listitem [ref=e256]:
+        - link "Settings" [ref=e257] [cursor=pointer]:
+          - /url: options-general.php
+        - list [ref=e262]:
+          - listitem [ref=e263]:
+            - link "General" [ref=e264] [cursor=pointer]:
+              - /url: options-general.php
+          - listitem [ref=e265]:
+            - link "Connectors" [ref=e266] [cursor=pointer]:
+              - /url: options-connectors.php
+          - listitem [ref=e267]:
+            - link "AI" [ref=e268] [cursor=pointer]:
+              - /url: options-general.php?page=ai-wp-admin
+          - listitem [ref=e269]:
+            - link "Writing" [ref=e270] [cursor=pointer]:
+              - /url: options-writing.php
+          - listitem [ref=e271]:
+            - link "Reading" [ref=e272] [cursor=pointer]:
+              - /url: options-reading.php
+          - listitem [ref=e273]:
+            - link "Discussion" [ref=e274] [cursor=pointer]:
+              - /url: options-discussion.php
+          - listitem [ref=e275]:
+            - link "Media" [ref=e276] [cursor=pointer]:
+              - /url: options-media.php
+          - listitem [ref=e277]:
+            - link "Permalinks" [ref=e278] [cursor=pointer]:
+              - /url: options-permalink.php
+          - listitem [ref=e279]:
+            - link "Privacy" [ref=e280] [cursor=pointer]:
+              - /url: options-privacy.php
+          - listitem [ref=e281]:
+            - link "Plugin Check" [ref=e282] [cursor=pointer]:
+              - /url: options-general.php?page=plugin-check-settings
+          - listitem [ref=e283]:
+            - link "DPM" [ref=e284] [cursor=pointer]:
+              - /url: options-general.php?page=dkdpm
+          - listitem [ref=e285]:
+            - link "WP PHP Console" [ref=e286] [cursor=pointer]:
+              - /url: options-general.php?page=wp_php_console
+      - listitem [ref=e287]:
+        - button "Collapse Main menu" [expanded] [ref=e288] [cursor=pointer]:
+          - generic [ref=e292]: Collapse Menu
+  - generic [ref=e293]:
+    - generic [ref=e294]:
+      - navigation "Toolbar":
+        - menu:
+          - group [ref=e295]:
+            - menuitem "About WordPress" [ref=e296] [cursor=pointer]
+          - group [ref=e301]:
+            - menuitem "WP Dev" [ref=e302] [cursor=pointer]
+          - group [ref=e303]:
+            - menuitem "Live" [ref=e304] [cursor=pointer]
+          - group [ref=e305]:
+            - menuitem "WC Beta Tester" [ref=e306]
+          - group [ref=e307]:
+            - menuitem "Ctrl+K Open command palette" [ref=e308] [cursor=pointer]:
+              - generic [ref=e312]:
+                - text: Ctrl+K
+                - generic [ref=e313]: Open command palette
+          - group [ref=e314]:
+            - menuitem "0 Comments in moderation" [ref=e315] [cursor=pointer]:
+              - generic [aria-hidden] [ref=e319]: "0"
+          - group [ref=e321]:
+            - menuitem "New" [ref=e322] [cursor=pointer]
+          - group [ref=e327]:
+            - menuitem "WC Log" [ref=e328] [cursor=pointer]
+          - group [ref=e329]:
+            - link "2.64s 19.2MB 0.55s 230Q" [ref=e330] [cursor=pointer]:
+              - /url: "#qm-overview"
+        - menu [ref=e332]:
+          - group [ref=e333]:
+            - menuitem "admin" [ref=e334] [cursor=pointer]
+    - main [ref=e335]:
+      - generic [ref=e336]:
+        - button "Help" [ref=e339] [cursor=pointer]
+        - generic [ref=e340]:
+          - heading "Profile" [level=1] [ref=e341]
+          - generic [ref=e342]:
+            - paragraph
+            - heading "Personal Options" [level=2] [ref=e343]
+            - text: Syntax Highlighting
+            - generic [ref=e344]:
+              - checkbox "Disable syntax highlighting when editing code" [ref=e345] [cursor=pointer]
+              - text: Disable syntax highlighting when editing code
+            - text: Administration Color Scheme
+            - group "Administration Color Scheme" [ref=e346]:
+              - generic [ref=e349] [cursor=pointer]:
+                - radio "Default" [checked] [ref=e350]
+                - generic [ref=e351]: Default
+              - generic [ref=e356] [cursor=pointer]:
+                - radio "Fresh" [ref=e357]
+                - generic [ref=e358]: Fresh
+              - generic [ref=e364] [cursor=pointer]:
+                - radio "Light" [ref=e365]
+                - generic [ref=e366]: Light
+              - generic [ref=e372] [cursor=pointer]:
+                - radio "Blue" [ref=e373]
+                - generic [ref=e374]: Blue
+              - generic [ref=e380] [cursor=pointer]:
+                - radio "Coffee" [ref=e381]
+                - generic [ref=e382]: Coffee
+              - generic [ref=e388] [cursor=pointer]:
+                - radio "Ectoplasm" [ref=e389]
+                - generic [ref=e390]: Ectoplasm
+              - generic [ref=e396] [cursor=pointer]:
+                - radio "Midnight" [ref=e397]
+                - generic [ref=e398]: Midnight
+              - generic [ref=e404] [cursor=pointer]:
+                - radio "Ocean" [ref=e405]
+                - generic [ref=e406]: Ocean
+              - generic [ref=e412] [cursor=pointer]:
+                - radio "Sunrise" [ref=e413]
+                - generic [ref=e414]: Sunrise
+            - text: Keyboard Shortcuts
+            - generic [ref=e420]:
+              - checkbox "Enable keyboard shortcuts for comment moderation." [ref=e421] [cursor=pointer]
+              - text: Enable keyboard shortcuts for comment moderation.
+            - link "Documentation on Keyboard Shortcuts" [ref=e422] [cursor=pointer]:
+              - /url: https://wordpress.org/documentation/article/keyboard-shortcuts-classic-editor/#keyboard-shortcuts-for-comments
+            - text: Toolbar
+            - generic [ref=e423]:
+              - checkbox "Show Toolbar when viewing site" [checked] [ref=e424] [cursor=pointer]
+              - text: Show Toolbar when viewing site
+            - text: Infinite Scrolling
+            - generic [ref=e425]:
+              - checkbox "Disable infinite scrolling in the Media Library grid view" [ref=e426] [cursor=pointer]
+              - text: Disable infinite scrolling in the Media Library grid view
+            - generic [ref=e427]:
+              - text: Language
+              - generic [aria-hidden] [ref=e428]: 
+            - combobox "Language" [ref=e429] [cursor=pointer]:
+              - option "Site Default" [selected]
+              - option "English (United States)"
+              - option "Afrikaans"
+              - option "አማርኛ"
+              - option "Aragonés"
+              - option "العربية"
+              - option "العربية المغربية"
+              - option "অসমীয়া"
+              - option "گؤنئی آذربایجان"
+              - option "Azərbaycan dili"
+              - option "بلوچی مکرانی"
+              - option "Беларуская мова"
+              - option "Български"
+              - option "বাংলা"
+              - option "བོད་ཡིག"
+              - option "Bosanski"
+              - option "Català"
+              - option "Català (Valencià)"
+              - option "Cebuano"
+              - option "Čeština"
+              - option "Cymraeg"
+              - option "Dansk"
+              - option "Deutsch (Österreich)"
+              - option "Deutsch (Schweiz)"
+              - option "Deutsch (Sie)"
+              - option "Deutsch"
+              - option "Deutsch (Schweiz, Du)"
+              - option "Dolnoserbšćina"
+              - option "རྫོང་ཁ"
+              - option "Ελληνικά"
+              - option "English (Australia)"
+              - option "English (New Zealand)"
+              - option "English (South Africa)"
+              - option "English (Canada)"
+              - option "English (UK)"
+              - option "Esperanto"
+              - option "Español de Argentina"
+              - option "Español de México"
+              - option "Español de Chile"
+              - option "Español de Colombia"
+              - option "Español"
+              - option "Español de Perú"
+              - option "Español de Venezuela"
+              - option "Español de Ecuador"
+              - option "Español de República Dominicana"
+              - option "Español de Uruguay"
+              - option "Español de Puerto Rico"
+              - option "Español de Guatemala"
+              - option "Español de Costa Rica"
+              - option "Eesti"
+              - option "Euskara"
+              - option "فارسی"
+              - option "(فارسی (افغانستان"
+              - option "Suomi"
+              - option "Føroyskt"
+              - option "Français du Canada"
+              - option "Français"
+              - option "Français de Belgique"
+              - option "Friulian"
+              - option "Frysk"
+              - option "Gàidhlig"
+              - option "Galego"
+              - option "ગુજરાતી"
+              - option "هزاره گی"
+              - option "עִבְרִית"
+              - option "हिन्दी"
+              - option "Hrvatski"
+              - option "Hornjoserbšćina"
+              - option "Magyar"
+              - option "Հայերեն"
+              - option "Bahasa Indonesia"
+              - option "Íslenska"
+              - option "Italiano"
+              - option "日本語"
+              - option "Basa Jawa"
+              - option "ქართული"
+              - option "Taqbaylit"
+              - option "Қазақ тілі"
+              - option "ភាសាខ្មែរ"
+              - option "ಕನ್ನಡ"
+              - option "한국어"
+              - option "كوردی‎"
+              - option "Кыргызча"
+              - option "ພາສາລາວ"
+              - option "Lietuvių kalba"
+              - option "Latviešu valoda"
+              - option "Македонски јазик"
+              - option "മലയാളം"
+              - option "Монгол"
+              - option "मराठी"
+              - option "Bahasa Melayu"
+              - option "ဗမာစာ"
+              - option "Norsk bokmål"
+              - option "नेपाली"
+              - option "Nederlands"
+              - option "Nederlands (België)"
+              - option "Nederlands (Formeel)"
+              - option "Norsk nynorsk"
+              - option "Occitan"
+              - option "ਪੰਜਾਬੀ"
+              - option "Nigerian Pidgin"
+              - option "Polski"
+              - option "پښتو"
+              - option "Português"
+              - option "Português do Brasil"
+              - option "Português de Angola"
+              - option "Português (AO90)"
+              - option "Ruáinga"
+              - option "Română"
+              - option "Русский"
+              - option "Сахалыы"
+              - option "سنڌي"
+              - option "සිංහල"
+              - option "Slovenčina"
+              - option "سرائیکی"
+              - option "Slovenščina"
+              - option "Shqip"
+              - option "Српски језик"
+              - option "Svenska"
+              - option "Kiswahili"
+              - option "Ślōnskŏ gŏdka"
+              - option "தமிழ்"
+              - option "தமிழ்"
+              - option "తెలుగు"
+              - option "ไทย"
+              - option "Tagalog"
+              - option "Türkçe"
+              - option "Татар теле"
+              - option "Reo Tahiti"
+              - option "ئۇيغۇرچە"
+              - option "Українська"
+              - option "اردو"
+              - option "O‘zbekcha"
+              - option "Tiếng Việt"
+              - option "Yorùbá"
+              - option "简体中文"
+              - option "繁體中文"
+              - option "香港中文"
+            - heading "Name" [level=2] [ref=e430]
+            - text: Username
+            - textbox "Username" [ref=e431]: admin
+            - text: Usernames cannot be changed. First Name
+            - textbox "First Name" [ref=e432]
+            - text: Last Name
+            - textbox "Last Name" [ref=e433]
+            - generic [ref=e434]: Nickname (required)
+            - textbox "Nickname (required)" [ref=e435]: admin
+            - text: Display name publicly as
+            - combobox "Display name publicly as" [ref=e436] [cursor=pointer]:
+              - option "admin" [selected]
+            - heading "Contact Info" [level=2] [ref=e437]
+            - generic [ref=e438]: Email (required)
+            - textbox "Email (required)" [ref=e439]: happyravi.patel@gmail.com
+            - paragraph [ref=e440]:
+              - text: If you change this, an email will be sent at your new address to confirm it.
+              - strong [ref=e441]: The new address will not become active until confirmed.
+            - text: Website
+            - textbox "Website" [ref=e442]: http://localhost/wpdev
+            - heading "About Yourself" [level=2] [ref=e443]
+            - text: Biographical Info
+            - textbox "Biographical Info" [ref=e444]
+            - paragraph [ref=e445]: Share a little biographical information to fill out your profile. This may be shown publicly.
+            - text: Profile Picture
+            - paragraph [ref=e446]:
+              - link "You can change your profile picture on Gravatar" [ref=e447] [cursor=pointer]:
+                - /url: https://gravatar.com/
+              - text: .
+            - heading "Account Management" [level=2] [ref=e448]
+            - text: New Password
+            - button "Set New Password" [ref=e449] [cursor=pointer]
+            - text:   Sessions
+            - button "Log Out Everywhere Else" [ref=e451] [cursor=pointer]
+            - paragraph [ref=e452]: Did you lose your phone or leave your account logged in at a public computer? You can log out everywhere else, and stay logged in here.
+            - generic [ref=e453]:
+              - heading "Application Passwords" [level=2] [ref=e454]
+              - paragraph [ref=e455]: Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.
+              - generic [ref=e456]:
+                - generic [ref=e457]:
+                  - generic [ref=e458]: New Application Password Name
+                  - textbox "New Application Password Name" [ref=e459]
+                  - paragraph [ref=e460]: Required to create an Application Password, but not to update the user.
+                - button "Add Application Password" [ref=e461] [cursor=pointer]
+            - heading "Email confirmation" [level=2] [ref=e462]
+            - text: Email address confirmed
+            - generic [ref=e463]:
+              - checkbox "The customer has confirmed they own this email address." [ref=e464] [cursor=pointer]
+              - text: The customer has confirmed they own this email address.
+            - paragraph [ref=e465]: Confirming the email address also links any past guest orders placed with it to this account.
+            - heading "Customer billing address" [level=2] [ref=e466]
+            - table [ref=e467]:
+              - rowgroup [ref=e468]:
+                - row [ref=e469]:
+                  - rowheader "First name" [ref=e470]
+                  - cell [ref=e471]:
+                    - textbox "First name" [ref=e472]: Dinesh
+                - row [ref=e473]:
+                  - rowheader "Last name" [ref=e474]
+                  - cell [ref=e475]:
+                    - textbox "Last name" [ref=e476]: Yadav
+                - row [ref=e477]:
+                  - rowheader "Company" [ref=e478]
+                  - cell [ref=e479]:
+                    - textbox "Company" [ref=e480]
+                - row [ref=e481]:
+                  - rowheader "Address line 1" [ref=e482]
+                  - cell [ref=e483]:
+                    - textbox "Address line 1" [ref=e484]: Flat no 306 Block BC/2 Sunlight Apartment Defence Enclave Noida Sector-45
+                - row [ref=e485]:
+                  - rowheader "Address line 2" [ref=e486]
+                  - cell [ref=e487]:
+                    - textbox "Address line 2" [ref=e488]
+                - row [ref=e489]:
+                  - rowheader "City" [ref=e490]
+                  - cell [ref=e491]:
+                    - textbox "City" [ref=e492]: GAUTAM BUDDHA NAGAR
+                - row [ref=e493]:
+                  - rowheader "Postcode / ZIP" [ref=e494]
+                  - cell [ref=e495]:
+                    - textbox "Postcode / ZIP" [ref=e496]: "201301"
+                - row [ref=e497]:
+                  - rowheader "Country / Region" [ref=e498]
+                  - cell [ref=e499]:
+                    - combobox [aria-hidden] [ref=e500] [cursor=pointer]
+                    - combobox [ref=e503] [cursor=pointer]:
+                      - textbox "India" [ref=e504]
+                - row [ref=e505]:
+                  - rowheader "State / County" [ref=e506]
+                  - cell [ref=e507]:
+                    - combobox [ref=e510] [cursor=pointer]:
+                      - textbox "Uttar Pradesh" [ref=e511]
+                    - paragraph [ref=e512]: State / County or state code
+                - row [ref=e513]:
+                  - rowheader "Phone" [ref=e514]
+                  - cell [ref=e515]:
+                    - textbox "Phone" [ref=e516]
+                - row [ref=e517]:
+                  - rowheader "Email address" [ref=e518]
+                  - cell [ref=e519]:
+                    - textbox "Email address" [ref=e520]: happydinesh.yadav@gmail.com
+            - heading "Customer shipping address" [level=2] [ref=e521]
+            - table [ref=e522]:
+              - rowgroup [ref=e523]:
+                - row [ref=e524]:
+                  - rowheader "Copy from billing address" [ref=e525]
+                  - cell "Copy from billing address" [ref=e526]:
+                    - button "Copy from billing address" [ref=e527] [cursor=pointer]: Copy
+                - row [ref=e528]:
+                  - rowheader "First name" [ref=e529]
+                  - cell [ref=e530]:
+                    - textbox "First name" [ref=e531]: Dinesh
+                - row [ref=e532]:
+                  - rowheader "Last name" [ref=e533]
+                  - cell [ref=e534]:
+                    - textbox "Last name" [ref=e535]: Yadav
+                - row [ref=e536]:
+                  - rowheader "Company" [ref=e537]
+                  - cell [ref=e538]:
+                    - textbox "Company" [ref=e539]
+                - row [ref=e540]:
+                  - rowheader "Address line 1" [ref=e541]
+                  - cell [ref=e542]:
+                    - textbox "Address line 1" [ref=e543]: Flat no 306 Block BC/2 Sunlight Apartment Defence Enclave Noida Sector-45
+                - row [ref=e544]:
+                  - rowheader "Address line 2" [ref=e545]
+                  - cell [ref=e546]:
+                    - textbox "Address line 2" [ref=e547]
+                - row [ref=e548]:
+                  - rowheader "City" [ref=e549]
+                  - cell [ref=e550]:
+                    - textbox "City" [ref=e551]: GAUTAM BUDDHA NAGAR
+                - row [ref=e552]:
+                  - rowheader "Postcode / ZIP" [ref=e553]
+                  - cell [ref=e554]:
+                    - textbox "Postcode / ZIP" [ref=e555]: "201301"
+                - row [ref=e556]:
+                  - rowheader "Country / Region" [ref=e557]
+                  - cell [ref=e558]:
+                    - combobox [aria-hidden] [ref=e559] [cursor=pointer]
+                    - combobox [ref=e562] [cursor=pointer]:
+                      - textbox "India" [ref=e563]
+                - row [ref=e564]:
+                  - rowheader "State / County" [ref=e565]
+                  - cell [ref=e566]:
+                    - combobox [ref=e569] [cursor=pointer]:
+                      - textbox "Uttar Pradesh" [ref=e570]
+                    - paragraph [ref=e571]: State / County or state code
+                - row [ref=e572]:
+                  - rowheader "Phone" [ref=e573]
+                  - cell [ref=e574]:
+                    - textbox "Phone" [ref=e575]
+            - paragraph [ref=e576]:
+              - button "Update Profile" [ref=e577] [cursor=pointer]
+  - contentinfo [ref=e578]:
+    - paragraph [ref=e579]:
+      - generic [ref=e581]:
+        - text: Thank you for creating with
+        - link "WordPress" [ref=e582] [cursor=pointer]:
+          - /url: https://wordpress.org/
+        - text: .
+    - paragraph [ref=e583]:
+      - text: You are using a development version (7.2-beta5). Cool! Please
+      - link "stay updated" [ref=e584] [cursor=pointer]:
+        - /url: https://wsl.com/wpdev/wp-admin/update-core.php
+      - text: .
