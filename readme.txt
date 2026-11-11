@@ -20,10 +20,7 @@ There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCom
 
 = Watch the plugin in action =
 
-https://youtu.be/VrmqxXouvXw
-
-= Quick 60-Second Demo =
-https://www.youtube.com/watch?v=NH3DH9c7FSQ
+https://youtu.be/K-zo4dw7og4
 
 = Why use Bulk COGS Editor? =
 
