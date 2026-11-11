@@ -2,18 +2,19 @@
 
 Review and update product costs in bulk, or transfer costs with CSV and Excel files, directly from your WooCommerce admin.
 
-Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)** feature. Find the right products, preview the exact changes, choose which records to update, and explicitly confirm before background processing starts. Product selling prices stay untouched. Inspect past operations in **History**, review a rollback to recorded original costs, and choose retention and rollback behavior in **Settings**.
+Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)** feature. Its refreshed three-step editor helps you find products, compare current and proposed costs, choose which records to update, and explicitly confirm before background processing starts. Product selling prices stay untouched. Save reusable filters in **Presets**, inspect past operations in **History**, review rollbacks, and manage retention in **Settings**.
 
-**Version:** 1.1.2 · **License:** GPLv3 · **HPOS compatible**
+**Version:** 1.3.0 · **License:** GPLv3 · **HPOS compatible**
 
 [Documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/) · [Video demonstration](https://youtu.be/sOEOg0xiqYs) · [Report an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
 
-![Bulk editing workflow with product filters, cost action controls, and a preview of proposed changes](docs/screenshots/bulk-editor.png)
+![Version 1.3.0 bulk editor showing its three numbered stages, product filters, and update preview area](docs/screenshots/bulk-editor.png)
 
 ## Contents
 
 - [Requirements and installation](#requirements-and-installation)
 - [Features](#features)
+- [Saved filter presets](#saved-filter-presets)
 - [Bulk editing workflow](#bulk-editing-workflow)
 - [CSV export](#csv-export)
 - [CSV and Excel import](#csv-and-excel-import)
@@ -41,10 +42,11 @@ If COGS is unavailable or disabled, the editor explains what is required. Use a 
 
 ## Features
 
-Version **1.1.2** adds CSV and Excel transfer workflows, a searchable **History**
-tab with reviewed background rollbacks, and a **Settings** tab for retention and
-rollback policy. Recovery fixes preserve recorded changes, allow retries for
-remaining rollback products, and keep editor drafts when switching tabs.
+Version **1.3.0** refreshes the editor around a three-step workflow, adds
+account-based filter presets in a dedicated **Presets** tab, and improves
+history, import/export, and recovery guidance. The top-level tabs are **Bulk
+edit**, **Import / export**, **History**, **Presets**, and **Settings** (for
+users with WooCommerce management access).
 
 ### Find the products you need
 
@@ -75,7 +77,7 @@ Relative adjustments skip products without a saved cost. Use **Set exact cost** 
 ### Preview and choose your update scope
 
 - Compare current COGS, new COGS, and the amount and percentage of each change before applying. Increases are green and decreases red, with directional arrows.
-- Keep your preview and selection when visiting History or Settings and returning to the same editor.
+- Keep your preview and selection when visiting another tab and returning to the same editor.
 - Identify products through images, names, SKUs, and product edit links.
 - Show or hide optional columns and retain display preferences.
 - Browse 10, 20, 50, or 100 records per page, or jump directly to a page.
@@ -91,7 +93,7 @@ Previous rows can remain visible while results refresh or another page loads. Wa
 
 ### Guidance and responsive controls
 
-Help and instructions follow the selected **Bulk edit**, **CSV Import**, or **CSV Export** task. File requirements, cost examples, nearby validation messages, and recovery controls guide each workflow. Documentation and video links remain available.
+The **Bulk edit** workflow is arranged in three numbered stages: **Select products**, **Set cost update**, and **Review & confirm**. Contextual Help follows the selected **Bulk edit**, **Import**, or **Export** task. File requirements, cost examples, nearby validation messages, and recovery controls guide each workflow. Documentation and video links remain available.
 
 The interface uses colored workflow icons, clear step numbers, larger mobile touch controls, sticky table headers, and fixed selection and product columns on small screens. The action summary accounts for device safe areas.
 
@@ -101,20 +103,22 @@ Costs are written through WooCommerce CRUD APIs for simple, variable, grouped, e
 
 ## Bulk editing workflow
 
-1. Choose **Bulk edit**.
-2. Set your filters and choose **Find products**.
-3. Choose **Set exact cost**, **Adjust existing cost**, or **Clear cost**. Enter the value where applicable.
-4. Review the automatically generated preview and select the products to update.
-5. Choose **Review changes**, inspect the confirmation summary, and confirm when ready.
-6. Follow progress and review the final outcome.
+1. In **Select products**, set filters and choose **Find products**. Review the matching products and their current costs.
+2. In **Set cost update**, choose an exact cost, a percentage or fixed adjustment, or clear the cost. The preview shows proposed costs and changes; select the products to update.
+3. In **Review & confirm**, add an operation note if useful, review the selected scope and rollback choice, then confirm. Follow background progress and inspect the completed results.
 
 Previewing does not change product costs. Updating begins only after confirmation.
+
+After the update completes, you can verify saved values in **Products → All
+Products**, where WooCommerce displays the **Cost** column.
+
+![WooCommerce product list showing product costs after the example update](docs/screenshots/products-after.png)
 
 ## CSV export
 
 Use exports to review existing costs in a spreadsheet or prepare a file for importing new values.
 
-1. Choose **CSV import / export → Export CSV**.
+1. Open **Import / export** and choose **Export CSV**.
 2. Choose the output columns and filter the products.
 3. Find and preview the matching products.
 4. Start the export and wait for server-side file generation.
@@ -155,7 +159,7 @@ TSHIRT-BLUE-M,13.25
 
 ### Validate, review, then apply
 
-1. Choose **CSV import / export → Import CSV**.
+1. Open **Import / export** and choose **Import CSV / XLSX**.
 2. Drop a CSV or XLSX file onto the upload area, or choose a file. Replace or remove it if needed.
 3. Choose **Validate file** to prepare a preview in background batches.
 4. Review the paginated results and download validation errors when available.
@@ -166,9 +170,20 @@ Preparing an import preview does not update products. Preparation can be cancell
 
 Original uploads are deleted when preparation ends. Staged previews and reports expire through scheduled cleanup after approximately **24 hours**, with retention extended while an applied update is active. Generated export and report download files have scheduled cleanup after **two days**.
 
+## Saved filter presets
+
+Save frequently used filter rules from **Bulk edit** and manage them in the
+**Presets** tab. Presets are stored with your WordPress user account, so they
+are available across browsers and devices on the same site. Use **Edit** to
+rename a preset or revise its rules; use **Delete** or the bulk actions to
+remove presets. Loading a preset restores its filters, and you can run **Find
+products** to check the current matching products before an update.
+
+![Presets tab showing saved filters, creation dates, and bulk actions](docs/screenshots/presets.png)
+
 ## History and rollback
 
-The third tab, **History**, keeps bulk updates, imports, and rollback operations
+The **History** tab keeps bulk updates, imports, and rollback operations
 in one place. Filter by status, operation type, user, and date range, or search
 by operation ID, note, or product ID. Use numbered pages, page-size choices, or
 **Go to page** to navigate. An optional note entered before starting an update
@@ -204,14 +219,14 @@ attempt rather than creating another concurrent rollback.
 
 **Older operations can have summary history only.** They cannot be rolled back
 without recorded originals. Expired or deleted original values are unavailable
-for rollback too. The wpdev store used for these screenshots currently has only
-summary records, so its details screenshot shows that actual limitation; no
-sample operations or product updates were created for the screenshots.
+for rollback too. The operation-details screenshot shows a summary-only record
+from the earlier wpdev data; new operations with rollback history enabled include
+the recorded costs needed to review a rollback.
 
 ## Settings
 
-The fourth tab, **Settings**, controls retained history and the policy applied to
-new rollbacks.
+The **Settings** tab controls retained history and the policy applied to new
+rollbacks. It is shown to users with WooCommerce management access.
 
 ![Settings tab with 30-day, 90-day, and custom retention plus rollback behavior choices](docs/screenshots/settings.png)
 
@@ -324,7 +339,7 @@ npm ci
 npm run build
 ```
 
-Use the repository’s [project instructions](AGENTS.md) for contribution conventions and supported checks. See [readme.txt](readme.txt) for the full release history, including version **1.1.2**.
+Use the repository’s [project instructions](AGENTS.md) for contribution conventions and supported checks. See [readme.txt](readme.txt) for the full release history, including version **1.3.0**.
 
 - [Usage documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/)
 - [Video demonstration](https://youtu.be/sOEOg0xiqYs)

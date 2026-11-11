@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-10)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-11)
 
 ## Corpus Check
-- 36 files · ~76,803 words
+- 36 files · ~85,243 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
+- Unclassified: 7 file(s) not represented in the graph (top: (none) 3, .csv 2, .xml 1)
 
 ## Summary
-- 494 nodes · 1059 edges · 26 communities (13 shown, 13 thin omitted)
+- 495 nodes · 1060 edges · 26 communities (13 shown, 13 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 112 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5242fb51`
+- Built from commit: `bf248f45`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -94,7 +94,7 @@ Nodes (3): DKBCE_Admin_Hooks, DKBCE_History_Controller, DKBCE_Retention_Processo
 
 ### Community 13 - "Bulk COGS Editor for WooCommerce"
 Cohesion: 0.06
-Nodes (32): Background processing and recovery, Bulk COGS Editor for WooCommerce, Bulk editing workflow, Can I preview without changing my store?, Can I update variations without changing their parents?, Can rollback overwrite a later cost edit?, Contents, CSV and Excel import (+24 more)
+Nodes (33): Background processing and recovery, Bulk COGS Editor for WooCommerce, Bulk editing workflow, Can I preview without changing my store?, Can I update variations without changing their parents?, Can rollback overwrite a later cost edit?, Contents, CSV and Excel import (+25 more)
 
 ### Community 14 - "global-setup.cjs"
 Cohesion: 0.18
@@ -121,8 +121,8 @@ Cohesion: 0.16
 Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_database(), dkbce_wc_log()
 
 ## Knowledge Gaps
-- **80 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+75 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 178 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **81 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+76 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 179 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
