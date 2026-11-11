@@ -8,15 +8,15 @@ Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with CSV/XLSX import, live progress, safe previews, history, and rollback for efficient product cost management.
+Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient product cost management.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a fast and the most powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly edit product cost values for large catalogs by relevant filtering criteria, preview proposed changes, and apply updates through background processing with live progress and cancellation.
+**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
 
-Import product costs from CSV or Excel (XLSX), export cost data to CSV, and review operation history or roll back eligible changes while original values are retained. Product prices are not changed.
+Save reusable presets for recurring supplier cost adjustments, import product costs from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-There is nothing extra to set up beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 

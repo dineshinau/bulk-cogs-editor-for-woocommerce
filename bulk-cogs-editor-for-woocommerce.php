@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Bulk COGS Editor for WooCommerce
  * Plugin URI: https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/
- * Description: Bulk edit WooCommerce product costs (COGS) with previews, background updates, CSV/XLSX import, history, and eligible rollback.
+ * Description: Bulk edit WooCommerce product costs (COGS) with presets, previews, background updates, CSV/XLSX import, history, and rollback.
  * Version: 1.3.0
  * Author: Dinesh Yadav
  * Author URI: https://github.com/dineshinau/
@@ -14,7 +14,7 @@
  * Requires at least: 6.7
  * Requires PHP: 7.4
  * WC requires at least: 10.3
- * WC tested up to: 11.2
+ * WC tested up to: 11.3
  * Requires Plugins: woocommerce
  *
  * Bulk COGS Editor for WooCommerce is free software: you can redistribute it and/or modify
