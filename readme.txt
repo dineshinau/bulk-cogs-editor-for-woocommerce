@@ -274,14 +274,36 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 
 == Screenshots ==
 
-1. **Bulk editor:** Product filters, cost actions, a preview, and explicit confirmation in the Bulk edit tab.
-2. **Product preview:** Current and proposed COGS, green increases and red decreases, cross-page selection, optional columns, and numbered pagination.
-3. **CSV export:** Output column choices and product filters for spreadsheet workflows.
-4. **CSV and Excel import:** Template download, file requirements, and CSV or XLSX upload controls.
-5. **Operation history:** Filterable operation records with statuses, outcomes, notes, and numbered page navigation.
-6. **Operation details:** Existing summary-only history with operation metadata, results, and the notice explaining that original values are unavailable.
-7. **Settings:** History retention presets and custom days, plus overwrite or skip-changed rollback behavior.
-8. **Completed bulk update:** 10,000 products updated in 15 minutes 24 seconds, with zero skipped and zero failed. The elapsed time shown is from a single reported benchmark run; actual completion time varies by store.
+1. **Bulk edit overview:** Follow the three steps to select products, set cost updates, and review changes.
+2. **Enable WooCommerce COGS:** Enable native Cost of Goods Sold in WooCommerce settings before using the editor.
+3. **Filters and cost actions:** Filter products, configure cost adjustments, and save reusable filter presets to your account.
+4. **Product preview:** Compare current and proposed COGS for 1,000 selected products before reviewing the update.
+5. **Confirm with rollback history:** Review the operation and selection; retain original costs and product changes for rollback.
+6. **Confirm without rollback history:** Confirm an update without retaining original costs or detailed changes for rollback.
+7. **Update started:** Background processing begins for 1,000 products, with 0% progress and live outcome counters.
+8. **Update progress:** Halfway through processing: 500 of 1,000 products updated, with elapsed time and estimated time remaining.
+9. **Stop updates confirmation:** Review the cancellation warning before stopping remaining updates; already saved cost changes remain.
+10. **Update completed:** All 1,000 products processed successfully, with zero skipped and zero failed.
+11. **CSV export setup:** Choose product filters and export columns, including the blank `new_cogs` column for future cost imports.
+12. **Confirm CSV export:** Review the selected product count and output columns before creating the CSV file.
+13. **CSV export progress:** Follow CSV generation progress, elapsed time, estimated remaining time, and cancellation controls.
+14. **CSV download ready:** Download the completed export after all selected products have been processed.
+15. **Exported CSV file:** View product identifiers, current costs, and the blank `new_cogs` column in the exported spreadsheet.
+16. **Edit CSV costs:** Enter replacement values under `new_cogs`, preserving product identifiers before importing the updated file.
+17. **Import preparation:** Review CSV/XLSX requirements, upload a file, and follow background preview preparation without changing product costs.
+18. **Cancel preparation confirmation:** Confirm cancellation of import preview preparation; product costs remain unchanged.
+19. **Import preview:** Review validated products, current costs, proposed costs, differences, and readiness before choosing which changes to apply.
+20. **Confirm imported costs:** Review the selected import changes and choose whether to retain rollback history before applying.
+21. **Operation history:** Filter operations by status, type, user, dates, or search; inspect recorded results and notes.
+22. **Recorded product changes:** Compare original and updated COGS, product identifiers, and differences; review eligible operations for rollback.
+23. **Rollback review:** Compare current costs with original values, review the rollback policy, and acknowledge the warning before confirming.
+24. **Rollback completed:** A completed rollback shows 1,000 restored products, outcome counters, and elapsed time.
+25. **Saved presets:** Manage account presets, view creation dates, and access row actions or bulk deletion.
+26. **Edit preset:** Rename a preset or adjust its product filters, then update it or cancel editing.
+27. **Delete preset confirmation:** Review the selected preset before confirming or cancelling its deletion.
+28. **Bulk delete presets:** Review multiple selected presets in one confirmation before deleting them or cancelling.
+29. **Plugin settings:** Configure default rollback history, custom retention days, and rollback behavior; access operation recovery controls.
+30. **Force clear confirmation:** Review the warning: clearing editor references does not restore costs or immediately stop active workers.
 
 
 == Upgrade Notice ==
@@ -291,7 +313,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.0 (2026-11-11) =
+= 1.3.0 (2026-11-12) =
 
 * Fixed: Clear obsolete review counts after empty searches and require explicit product selection for new bulk previews.
 * Fixed: Keep current and proposed costs together on mobile and prevent progress estimate text from overflowing its card.
