@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-10)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-11)
 
 ## Corpus Check
-- 36 files · ~76,803 words
+- 36 files · ~94,786 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 4 file(s) not represented in the graph (top: (none) 2, .xml 1, .scss 1)
+- Unclassified: 18 file(s) not represented in the graph (top: .csv 13, (none) 3, .xml 1)
 
 ## Summary
-- 494 nodes · 1059 edges · 26 communities (13 shown, 13 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 112 edges (avg confidence: 0.85)
+- 525 nodes · 1090 edges · 34 communities (21 shown, 13 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 112 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5242fb51`
+- Built from commit: `7d730ce2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -28,13 +28,21 @@
 - scripts
 - DKBCE_History_Controller
 - DKBCE_Admin_Functions
-- Bulk COGS Editor for WooCommerce
+- Frequently asked questions
 - global-setup.cjs
 - DKBCE_History_Store
 - global-teardown.cjs
 - bulk-cogs-editor.js
 - playwright.config.cjs
 - DKBCE_Preset_List_Table
+- Bulk COGS Editor for WooCommerce
+- Bulk editing workflow
+- CSV export
+- CSV and Excel import
+- History and rollback
+- Features
+- Saved filter presets
+- Settings
 - DKBCE_COGS_Service
 - DKBCE_Bulk_Processor
 - DKBCE_Operation_Store
@@ -66,7 +74,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (26 total, 13 thin omitted)
+## Communities (34 total, 13 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.09
@@ -92,9 +100,9 @@ Nodes (34): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wo
 Cohesion: 0.13
 Nodes (3): DKBCE_Admin_Hooks, DKBCE_History_Controller, DKBCE_Retention_Processor
 
-### Community 13 - "Bulk COGS Editor for WooCommerce"
-Cohesion: 0.06
-Nodes (32): Background processing and recovery, Bulk COGS Editor for WooCommerce, Bulk editing workflow, Can I preview without changing my store?, Can I update variations without changing their parents?, Can rollback overwrite a later cost edit?, Contents, CSV and Excel import (+24 more)
+### Community 13 - "Frequently asked questions"
+Cohesion: 0.18
+Nodes (11): Can I preview without changing my store?, Can I update variations without changing their parents?, Can rollback overwrite a later cost edit?, Does the plugin send store data to external services?, Does this replace WooCommerce’s native COGS feature?, Frequently asked questions, Is cancellation the same as rollback?, Why are some preview controls disabled? (+3 more)
 
 ### Community 14 - "global-setup.cjs"
 Cohesion: 0.18
@@ -116,24 +124,56 @@ Nodes (88): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(),
 Cohesion: 0.29
 Nodes (6): ref_node_os, ref_node_path, { defineConfig }, os, path, stateDirectory
 
+### Community 23 - "Bulk COGS Editor for WooCommerce"
+Cohesion: 0.20
+Nodes (9): 1. Bulk edit overview, 2. Enable WooCommerce Cost of Goods Sold, Background processing and recovery, Bulk COGS Editor for WooCommerce, Contents, Development and support, Optional WP-CLI runner, Performance (+1 more)
+
+### Community 24 - "Bulk editing workflow"
+Cohesion: 0.22
+Nodes (9): 10. Update completed: 1,000 of 1,000, 3. Choose filters and a cost action, 4. Review 1,000 selected products, 5. Confirm with rollback history, 6. Confirm without rollback history, 7. Update started: 0 of 1,000, 8. Update halfway: 500 of 1,000, 9. Confirm stopping remaining updates (+1 more)
+
+### Community 25 - "CSV export"
+Cohesion: 0.29
+Nodes (7): 11. Configure a CSV export, 12. Confirm the CSV export, 13. Follow CSV generation progress, 14. Download the completed CSV, 15. Inspect the exported spreadsheet, 16. Enter replacement costs in new_cogs, CSV export
+
+### Community 26 - "CSV and Excel import"
+Cohesion: 0.29
+Nodes (7): 17. Upload and prepare an import, 18. Confirm cancelling import preparation, 19. Review validated import rows, 20. Confirm selected imported costs, CSV and Excel import, File format, Validate, review, then apply
+
+### Community 27 - "History and rollback"
+Cohesion: 0.33
+Nodes (6): 21. Find an operation in History, 22. Inspect recorded product changes, 23. Review and confirm a rollback, 24. Inspect a completed rollback, History and rollback, Rollback steps and retry behavior
+
+### Community 28 - "Features"
+Cohesion: 0.33
+Nodes (6): Features, Find the products you need, Guidance and responsive controls, Preview and choose your update scope, Product and variation support, Set, adjust, or clear costs
+
+### Community 29 - "Saved filter presets"
+Cohesion: 0.40
+Nodes (5): 25. Manage saved filter presets, 26. Edit a preset, 27. Confirm deleting one preset, 28. Confirm bulk deletion of presets, Saved filter presets
+
+### Community 30 - "Settings"
+Cohesion: 0.67
+Nodes (3): 29. Configure history and rollback settings, 30. Confirm force clearing a stuck operation, Settings
+
 ### Community 135 - "DKBCE_Bulk_Processor"
 Cohesion: 0.16
 Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_database(), dkbce_wc_log()
 
 ## Knowledge Gaps
-- **80 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+75 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 178 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **106 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+101 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 204 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+  _High betweenness centrality (0.059) - this node is a cross-community bridge._
 - **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
 - **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_Import_Store`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+  _High betweenness centrality (0.045) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
   _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**

@@ -1,0 +1,119 @@
+- generic [ref=f5e1]:
+  - banner [ref=f5e2]:
+    - generic [ref=f5e3]: ▤
+    - generic [ref=f5e4]: CSV Editor
+    - generic [ref=f5e5]: Spreadsheet view · Local file
+  - main [ref=f5e6]:
+    - generic [ref=f5e7]:
+      - generic [ref=f5e8]: WooCommerce · Product costs
+      - heading "Edit your exported CSV" [level=1] [ref=f5e9]
+      - generic [ref=f5e10]: export-demo.csv · exported product data
+      - generic [ref=f5e11]:
+        - button "Open CSV file" [active] [ref=f5e12]
+        - button "Save edited CSV" [ref=f5e13]
+        - generic [ref=f5e14]: 8 product rows · CSV opened
+    - generic [ref=f5e15]:
+      - text: "New COGS: Enter a decimal amount in the"
+      - code [ref=f5e16]: new_cogs
+      - text: column for each product you want to update. Use a period for decimals and omit the currency symbol.
+    - table [ref=f5e18]:
+      - rowgroup [ref=f5e19]:
+        - row [ref=f5e20]:
+          - columnheader "id" [ref=f5e21]
+          - columnheader "sku" [ref=f5e22]
+          - columnheader "name" [ref=f5e23]
+          - columnheader "cogs" [ref=f5e24]
+          - columnheader "regular_price" [ref=f5e25]
+          - columnheader "sale_price" [ref=f5e26]
+          - columnheader "type" [ref=f5e27]
+          - columnheader "new_cogs" [ref=f5e28]
+      - rowgroup [ref=f5e29]:
+        - row [ref=f5e30]:
+          - cell "64" [ref=f5e31]
+          - cell "woo-hoodie" [ref=f5e32]
+          - cell "Hoodie" [ref=f5e33]
+          - cell "7.55" [ref=f5e34]
+          - cell [ref=f5e35]
+          - cell [ref=f5e36]
+          - cell "variable" [ref=f5e37]
+          - cell [ref=f5e38]:
+            - textbox "new_cogs row 2" [ref=f5e39]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e40]:
+          - cell "65" [ref=f5e41]
+          - cell "woo-hoodie-with-logo" [ref=f5e42]
+          - cell "Hoodie with Logo" [ref=f5e43]
+          - cell "7.55" [ref=f5e44]
+          - cell "45" [ref=f5e45]
+          - cell [ref=f5e46]
+          - cell "simple" [ref=f5e47]
+          - cell [ref=f5e48]:
+            - textbox "new_cogs row 3" [ref=f5e49]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e50]:
+          - cell "71" [ref=f5e51]
+          - cell "woo-hoodie-with-pocket" [ref=f5e52]
+          - cell "Hoodie with Pocket" [ref=f5e53]
+          - cell "7.55" [ref=f5e54]
+          - cell "45" [ref=f5e55]
+          - cell "35" [ref=f5e56]
+          - cell "simple" [ref=f5e57]
+          - cell [ref=f5e58]:
+            - textbox "new_cogs row 4" [ref=f5e59]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e60]:
+          - cell "72" [ref=f5e61]
+          - cell "woo-hoodie-with-zipper" [ref=f5e62]
+          - cell "Hoodie with Zipper" [ref=f5e63]
+          - cell "7.55" [ref=f5e64]
+          - cell "45" [ref=f5e65]
+          - cell [ref=f5e66]
+          - cell "simple" [ref=f5e67]
+          - cell [ref=f5e68]:
+            - textbox "new_cogs row 5" [ref=f5e69]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e70]:
+          - cell "80" [ref=f5e71]
+          - cell "woo-hoodie-red" [ref=f5e72]
+          - cell "Hoodie - Red, No" [ref=f5e73]
+          - cell "7.55" [ref=f5e74]
+          - cell "45" [ref=f5e75]
+          - cell "42" [ref=f5e76]
+          - cell "variation" [ref=f5e77]
+          - cell [ref=f5e78]:
+            - textbox "new_cogs row 6" [ref=f5e79]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e80]:
+          - cell "81" [ref=f5e81]
+          - cell "woo-hoodie-green" [ref=f5e82]
+          - cell "Hoodie - Green, No" [ref=f5e83]
+          - cell "7.55" [ref=f5e84]
+          - cell "45" [ref=f5e85]
+          - cell [ref=f5e86]
+          - cell "variation" [ref=f5e87]
+          - cell [ref=f5e88]:
+            - textbox "new_cogs row 7" [ref=f5e89]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e90]:
+          - cell "82" [ref=f5e91]
+          - cell "woo-hoodie-blue" [ref=f5e92]
+          - cell "Hoodie - Blue, No" [ref=f5e93]
+          - cell "7.55" [ref=f5e94]
+          - cell "45" [ref=f5e95]
+          - cell [ref=f5e96]
+          - cell "variation" [ref=f5e97]
+          - cell [ref=f5e98]:
+            - textbox "new_cogs row 8" [ref=f5e99]:
+              - /placeholder: Enter new cost
+        - row [ref=f5e100]:
+          - cell "87" [ref=f5e101]
+          - cell "woo-hoodie-blue-logo" [ref=f5e102]
+          - cell "Hoodie - Blue, Yes" [ref=f5e103]
+          - cell "7.55" [ref=f5e104]
+          - cell "45" [ref=f5e105]
+          - cell [ref=f5e106]
+          - cell "variation" [ref=f5e107]
+          - cell [ref=f5e108]:
+            - textbox "new_cogs row 9" [ref=f5e109]:
+              - /placeholder: Enter new cost
+    - generic [ref=f5e110]: Changes stay in this browser until you save the CSV file. Blank new_cogs cells are left unchanged.

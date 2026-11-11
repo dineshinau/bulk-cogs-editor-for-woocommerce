@@ -1,0 +1,562 @@
+- generic [ref=e2]:
+  - navigation "Main menu":
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - link "Skip to toolbar" [ref=e4] [cursor=pointer]:
+      - /url: "#wp-toolbar"
+    - list [ref=e7]:
+      - listitem [ref=e8]:
+        - link "Dashboard" [ref=e9] [cursor=pointer]:
+          - /url: index.php
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link "Home" [ref=e16] [cursor=pointer]:
+              - /url: index.php
+          - listitem [ref=e17]:
+            - link "Updates" [ref=e18] [cursor=pointer]:
+              - /url: update-core.php
+      - listitem [aria-hidden] [ref=e19]
+      - listitem [ref=e21]:
+        - link "Posts" [ref=e22] [cursor=pointer]:
+          - /url: edit.php
+        - list [ref=e27]:
+          - listitem [ref=e28]:
+            - link "All Posts" [ref=e29] [cursor=pointer]:
+              - /url: edit.php
+          - listitem [ref=e30]:
+            - link "Add Post" [ref=e31] [cursor=pointer]:
+              - /url: post-new.php
+          - listitem [ref=e32]:
+            - link "Categories" [ref=e33] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=category
+          - listitem [ref=e34]:
+            - link "Tags" [ref=e35] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=post_tag
+      - listitem [ref=e36]:
+        - link "Media" [ref=e37] [cursor=pointer]:
+          - /url: upload.php
+        - list [ref=e46]:
+          - listitem [ref=e47]:
+            - link "Library" [ref=e48] [cursor=pointer]:
+              - /url: upload.php
+          - listitem [ref=e49]:
+            - link "Add Media File" [ref=e50] [cursor=pointer]:
+              - /url: media-new.php
+      - listitem [ref=e51]:
+        - link "Pages" [ref=e52] [cursor=pointer]:
+          - /url: edit.php?post_type=page
+        - list [ref=e57]:
+          - listitem [ref=e58]:
+            - link "All Pages" [ref=e59] [cursor=pointer]:
+              - /url: edit.php?post_type=page
+          - listitem [ref=e60]:
+            - link "Add Page" [ref=e61] [cursor=pointer]:
+              - /url: post-new.php?post_type=page
+      - listitem [ref=e62]:
+        - link "Comments" [ref=e63] [cursor=pointer]:
+          - /url: edit-comments.php
+      - listitem [aria-hidden] [ref=e68]
+      - listitem [ref=e70]:
+        - link "WooCommerce" [ref=e71] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin
+        - list [ref=e74]:
+          - listitem [ref=e75]:
+            - link "Home 1" [ref=e76] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin
+              - text: Home
+              - generic [ref=e77]: "1"
+          - listitem [ref=e78]:
+            - link "Orders 8" [ref=e79] [cursor=pointer]:
+              - /url: admin.php?page=wc-orders
+              - text: Orders
+              - generic [ref=e80]: "8"
+          - listitem [ref=e81]:
+            - link "Customers" [ref=e82] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/customers
+          - listitem [ref=e83]:
+            - link "Coupons" [ref=e84] [cursor=pointer]:
+              - /url: admin.php?page=coupons-moved
+          - listitem [ref=e85]:
+            - link "Reports" [ref=e86] [cursor=pointer]:
+              - /url: admin.php?page=wc-reports
+          - listitem [ref=e87]:
+            - link "Settings" [ref=e88] [cursor=pointer]:
+              - /url: admin.php?page=wc-settings
+          - listitem [ref=e89]:
+            - link "Status" [ref=e90] [cursor=pointer]:
+              - /url: admin.php?page=wc-status
+          - listitem [ref=e91]:
+            - link "Extensions" [ref=e92] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/extensions
+      - listitem [ref=e93]:
+        - link "Products" [ref=e94] [cursor=pointer]:
+          - /url: edit.php?post_type=product
+          - generic [aria-hidden] [ref=e95]: 
+        - list [ref=e97]:
+          - listitem [ref=e98]:
+            - link "All Products" [ref=e99] [cursor=pointer]:
+              - /url: edit.php?post_type=product
+          - listitem [ref=e100]:
+            - link "Add new product" [ref=e101] [cursor=pointer]:
+              - /url: post-new.php?post_type=product
+          - listitem [ref=e102]:
+            - link "Bulk COGS Editor" [ref=e103] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=bulk-cogs-editor
+          - listitem [ref=e104]:
+            - link "Brands" [ref=e105] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_brand&post_type=product
+          - listitem [ref=e106]:
+            - link "Categories" [ref=e107] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_cat&post_type=product
+          - listitem [ref=e108]:
+            - link "Tags" [ref=e109] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_tag&post_type=product
+          - listitem [ref=e110]:
+            - link "Attributes" [ref=e111] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product_attributes
+          - listitem [ref=e112]:
+            - link "Reviews" [ref=e113] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product-reviews
+      - listitem [ref=e114]:
+        - link "Payments" [ref=e115] [cursor=pointer]:
+          - /url: admin.php?page=wc-settings&tab=checkout&from=PAYMENTS_MENU_ITEM
+      - listitem [ref=e118]:
+        - link "Analytics" [ref=e119] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/analytics/overview
+        - list [ref=e124]:
+          - listitem [ref=e125]:
+            - link "Overview" [ref=e126] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/overview
+          - listitem [ref=e127]:
+            - link "Products" [ref=e128] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/products
+          - listitem [ref=e129]:
+            - link "Revenue" [ref=e130] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/revenue
+          - listitem [ref=e131]:
+            - link "Orders" [ref=e132] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/orders
+          - listitem [ref=e133]:
+            - link "Variations" [ref=e134] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/variations
+          - listitem [ref=e135]:
+            - link "Categories" [ref=e136] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/categories
+          - listitem [ref=e137]:
+            - link "Coupons" [ref=e138] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/coupons
+          - listitem [ref=e139]:
+            - link "Taxes" [ref=e140] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/taxes
+          - listitem [ref=e141]:
+            - link "Downloads" [ref=e142] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/downloads
+          - listitem [ref=e143]:
+            - link "Stock" [ref=e144] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/stock
+          - listitem [ref=e145]:
+            - link "Settings" [ref=e146] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/settings
+      - listitem [ref=e147]:
+        - link "Marketing" [ref=e148] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/marketing
+          - generic [aria-hidden] [ref=e149]: 
+        - list [ref=e151]:
+          - listitem [ref=e152]:
+            - link "Overview" [ref=e153] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/marketing
+          - listitem [ref=e154]:
+            - link "Coupons" [ref=e155] [cursor=pointer]:
+              - /url: edit.php?post_type=shop_coupon
+      - listitem [aria-hidden] [ref=e156]
+      - listitem [ref=e158]:
+        - link "Appearance" [ref=e159] [cursor=pointer]:
+          - /url: themes.php
+        - list [ref=e164]:
+          - listitem [ref=e165]:
+            - link "Themes" [ref=e166] [cursor=pointer]:
+              - /url: themes.php
+          - listitem [ref=e167]:
+            - link "Add Theme" [ref=e168] [cursor=pointer]:
+              - /url: theme-install.php
+          - listitem [ref=e169]:
+            - link "Editor" [ref=e170] [cursor=pointer]:
+              - /url: site-editor.php
+          - listitem [ref=e171]:
+            - link "Fonts" [ref=e172] [cursor=pointer]:
+              - /url: font-library.php
+      - listitem [ref=e173]:
+        - link "Plugins" [ref=e174] [cursor=pointer]:
+          - /url: plugins.php
+        - list [ref=e179]:
+          - listitem [ref=e180]:
+            - link "Installed Plugins" [ref=e181] [cursor=pointer]:
+              - /url: plugins.php
+          - listitem [ref=e182]:
+            - link "Add Plugin" [ref=e183] [cursor=pointer]:
+              - /url: plugin-install.php
+      - listitem [ref=e184]:
+        - link "Users" [ref=e185] [cursor=pointer]:
+          - /url: users.php
+        - list [ref=e190]:
+          - listitem [ref=e191]:
+            - link "All Users" [ref=e192] [cursor=pointer]:
+              - /url: users.php
+          - listitem [ref=e193]:
+            - link "Add User" [ref=e194] [cursor=pointer]:
+              - /url: user-new.php
+          - listitem [ref=e195]:
+            - link "Profile" [ref=e196] [cursor=pointer]:
+              - /url: profile.php
+      - listitem [ref=e197]:
+        - link "Tools" [ref=e198] [cursor=pointer]:
+          - /url: tools.php
+        - list [ref=e203]:
+          - listitem [ref=e204]:
+            - link "Available Tools" [ref=e205] [cursor=pointer]:
+              - /url: tools.php
+          - listitem [ref=e206]:
+            - link "Import" [ref=e207] [cursor=pointer]:
+              - /url: import.php
+          - listitem [ref=e208]:
+            - link "Export" [ref=e209] [cursor=pointer]:
+              - /url: export.php
+          - listitem [ref=e210]:
+            - link "Site Health 2" [ref=e211] [cursor=pointer]:
+              - /url: site-health.php
+              - text: Site Health
+              - generic [ref=e212]: "2"
+          - listitem [ref=e213]:
+            - link "Export Personal Data" [ref=e214] [cursor=pointer]:
+              - /url: export-personal-data.php
+          - listitem [ref=e215]:
+            - link "Erase Personal Data" [ref=e216] [cursor=pointer]:
+              - /url: erase-personal-data.php
+          - listitem [ref=e217]:
+            - link "Scheduled Actions" [ref=e218] [cursor=pointer]:
+              - /url: tools.php?page=action-scheduler
+          - listitem [ref=e219]:
+            - link "Theme File Editor" [ref=e220] [cursor=pointer]:
+              - /url: theme-editor.php
+          - listitem [ref=e221]:
+            - link "Plugin File Editor" [ref=e222] [cursor=pointer]:
+              - /url: plugin-editor.php
+      - listitem [ref=e223]:
+        - link "Settings" [ref=e224] [cursor=pointer]:
+          - /url: options-general.php
+        - list [ref=e229]:
+          - listitem [ref=e230]:
+            - link "General" [ref=e231] [cursor=pointer]:
+              - /url: options-general.php
+          - listitem [ref=e232]:
+            - link "Connectors" [ref=e233] [cursor=pointer]:
+              - /url: options-connectors.php
+          - listitem [ref=e234]:
+            - link "Writing" [ref=e235] [cursor=pointer]:
+              - /url: options-writing.php
+          - listitem [ref=e236]:
+            - link "Reading" [ref=e237] [cursor=pointer]:
+              - /url: options-reading.php
+          - listitem [ref=e238]:
+            - link "Discussion" [ref=e239] [cursor=pointer]:
+              - /url: options-discussion.php
+          - listitem [ref=e240]:
+            - link "Media" [ref=e241] [cursor=pointer]:
+              - /url: options-media.php
+          - listitem [ref=e242]:
+            - link "Permalinks" [ref=e243] [cursor=pointer]:
+              - /url: options-permalink.php
+          - listitem [ref=e244]:
+            - link "Privacy" [ref=e245] [cursor=pointer]:
+              - /url: options-privacy.php
+          - listitem [ref=e246]:
+            - link "DPM" [ref=e247] [cursor=pointer]:
+              - /url: options-general.php?page=dkdpm
+      - listitem [ref=e248]:
+        - button "Collapse Main menu" [expanded] [ref=e249] [cursor=pointer]:
+          - generic [ref=e253]: Collapse Menu
+  - generic [ref=e254]:
+    - generic [ref=e255]:
+      - navigation "Toolbar":
+        - menu:
+          - group [ref=e256]:
+            - menuitem "About WordPress" [ref=e257] [cursor=pointer]
+          - group [ref=e262]:
+            - menuitem "WP Dev" [ref=e263] [cursor=pointer]
+          - group [ref=e264]:
+            - menuitem "Live" [ref=e265] [cursor=pointer]
+          - group [ref=e266]:
+            - menuitem "Ctrl+K Open command palette" [ref=e267] [cursor=pointer]:
+              - generic [ref=e271]:
+                - text: Ctrl+K
+                - generic [ref=e272]: Open command palette
+          - group [ref=e273]:
+            - menuitem "0 Comments in moderation" [ref=e274] [cursor=pointer]:
+              - generic [aria-hidden] [ref=e278]: "0"
+          - group [ref=e280]:
+            - menuitem "New" [ref=e281] [cursor=pointer]
+          - group [ref=e286]:
+            - menuitem "WC Log" [ref=e287] [cursor=pointer]
+        - menu [ref=e288]:
+          - group [ref=e289]:
+            - menuitem "admin" [ref=e290] [cursor=pointer]
+    - main [ref=e291]:
+      - generic [ref=e293]:
+        - generic [ref=e294]:
+          - generic [aria-hidden] [ref=e295]: 
+          - generic [ref=e296]:
+            - heading "Bulk COGS (Cost of Goods Sold) Editor" [level=1] [ref=e297]
+            - paragraph [ref=e298]: Review and update product costs, or transfer costs with CSV and Excel files.
+          - group [ref=e299]:
+            - generic "Help ( History )" [ref=e300] [cursor=pointer]:
+              - text: Help (
+              - generic [ref=e301]: History
+              - text: )
+        - generic [ref=e302]:
+          - group "Editor mode" [ref=e303]:
+            - button "Bulk edit" [ref=e304] [cursor=pointer]
+            - button "Import / export" [ref=e305] [cursor=pointer]
+            - button "History" [pressed] [ref=e306] [cursor=pointer]
+            - button "Presets" [ref=e307] [cursor=pointer]
+            - button "Settings" [ref=e308] [cursor=pointer]
+          - generic [ref=e309]:
+            - generic [ref=e310]:
+              - generic [ref=e311]:
+                - generic [ref=e312]: "1"
+                - generic [ref=e313]:
+                  - heading "Operation history" [level=2] [ref=e314]
+                  - paragraph [ref=e315]: Select an operation to view details or review a rollback.
+              - generic [ref=e316]:
+                - generic [ref=e317]:
+                  - generic [ref=e318]: All statuses
+                  - combobox "All statuses" [ref=e319] [cursor=pointer]:
+                    - option "All statuses" [selected]
+                    - option "Queued"
+                    - option "Processing"
+                    - option "Completed"
+                    - option "Partially completed"
+                    - option "Failed"
+                    - option "Cancelled"
+                - generic [ref=e320]:
+                  - generic [ref=e321]: All operation types
+                  - combobox "All operation types" [ref=e322] [cursor=pointer]:
+                    - option "All operation types" [selected]
+                    - option "Set exact cost"
+                    - option "Clear cost"
+                    - option "Percentage increase"
+                    - option "Percentage decrease"
+                    - option "Fixed increase"
+                    - option "Fixed decrease"
+                    - option "CSV import"
+                    - option "Rollback"
+                - generic [ref=e323]:
+                  - generic [ref=e324]: User
+                  - combobox "User" [ref=e325] [cursor=pointer]:
+                    - option "All users" [selected]
+                    - option "Unavailable user name · ID 5"
+                    - option "Unavailable user name · ID 7"
+                    - option "Unavailable user name · ID 9"
+                    - option "Unavailable user name · ID 11"
+                    - option "Unavailable user name · ID 13"
+                    - option "Unavailable user name · ID 15"
+                    - option "Unavailable user name · ID 17"
+                    - option "Unavailable user name · ID 19"
+                    - option "Unavailable user name · ID 21"
+                    - option "Unavailable user name · ID 23"
+                    - option "Unavailable user name · ID 25"
+                    - option "Unavailable user name · ID 27"
+                    - option "Unavailable user name · ID 29"
+                    - option "Unavailable user name · ID 31"
+                    - option "admin"
+                    - option "dkbce_e2e_manager_9b51850ee3d431a9"
+                - generic [ref=e326]:
+                  - generic [ref=e327]: From date
+                  - textbox "From date" [ref=e328]
+                - generic [ref=e329]:
+                  - generic [ref=e330]: To date
+                  - textbox "To date" [ref=e331]
+                - generic [ref=e332]:
+                  - generic [ref=e333]: Search by operation ID, note, or product ID
+                  - searchbox "Search by operation ID, note, or product ID" [ref=e334]
+                - button "Filter" [ref=e335] [cursor=pointer]
+                - button "Reset filters" [ref=e336] [cursor=pointer]
+              - generic [ref=e337]:
+                - table [ref=e339]:
+                  - rowgroup [ref=e340]:
+                    - row [ref=e341]:
+                      - columnheader "Operation type" [ref=e342]
+                      - columnheader "Date & time" [ref=e343]
+                      - columnheader "Products" [ref=e344]
+                      - columnheader "Status" [ref=e345]
+                      - columnheader "User" [ref=e346]
+                      - columnheader "Note / description" [ref=e347]
+                      - columnheader "Operation ID" [ref=e348]
+                      - columnheader "View details" [ref=e349]
+                  - rowgroup [ref=e350]:
+                    - row [ref=e351]:
+                      - cell "Rollback" [ref=e352]
+                      - cell "11/11/2026, 2:01:14 PM" [ref=e353]
+                      - cell "3" [ref=e354]
+                      - cell "Completed" [ref=e355]
+                      - cell "admin" [ref=e357]
+                      - cell "Version 1.3.0 refreshed walkthrough — three hoodie costs" [ref=e358]
+                      - cell [ref=e359]:
+                        - group [ref=e360]:
+                          - generic "112c5521…" [ref=e361] [cursor=pointer]
+                      - cell [ref=e362]:
+                        - button "View details" [ref=e363] [cursor=pointer]
+                    - row [ref=e364]:
+                      - cell "Set exact cost · $18.00" [ref=e365]
+                      - cell "11/11/2026, 2:00:28 PM" [ref=e366]
+                      - cell "3" [ref=e367]
+                      - cell "Completed" [ref=e368]
+                      - cell "admin" [ref=e370]
+                      - cell "Version 1.3.0 refreshed walkthrough — three hoodie costs" [ref=e371]
+                      - cell [ref=e372]:
+                        - group [ref=e373]:
+                          - generic "c8c7dffb…" [ref=e374] [cursor=pointer]
+                      - cell [ref=e375]:
+                        - button "View details" [ref=e376] [cursor=pointer]
+                    - row [ref=e377]:
+                      - cell "Rollback" [ref=e378]
+                      - cell "11/11/2026, 1:56:55 PM" [ref=e379]
+                      - cell "3" [ref=e380]
+                      - cell "Completed" [ref=e381]
+                      - cell "admin" [ref=e383]
+                      - cell "Version 1.3.0 refreshed walkthrough — Excel import" [ref=e384]
+                      - cell [ref=e385]:
+                        - group [ref=e386]:
+                          - generic "ed9bd3b2…" [ref=e387] [cursor=pointer]
+                      - cell [ref=e388]:
+                        - button "View details" [ref=e389] [cursor=pointer]
+                    - row [ref=e390]:
+                      - cell "CSV import" [ref=e391]
+                      - cell "11/11/2026, 1:52:04 PM" [ref=e392]
+                      - cell "3" [ref=e393]
+                      - cell "Completed" [ref=e394]
+                      - cell "admin" [ref=e396]
+                      - cell "Version 1.3.0 refreshed walkthrough — Excel import" [ref=e397]
+                      - cell [ref=e398]:
+                        - group [ref=e399]:
+                          - generic "998db74c…" [ref=e400] [cursor=pointer]
+                      - cell [ref=e401]:
+                        - button "View details" [ref=e402] [cursor=pointer]
+                    - row [ref=e403]:
+                      - cell "Rollback" [ref=e404]
+                      - cell "11/11/2026, 1:38:23 PM" [ref=e405]
+                      - cell "3" [ref=e406]
+                      - cell "Completed" [ref=e407]
+                      - cell "admin" [ref=e409]
+                      - cell "Version 1.3.0 video — three hoodie costs" [ref=e410]
+                      - cell [ref=e411]:
+                        - group [ref=e412]:
+                          - generic "6f523e78…" [ref=e413] [cursor=pointer]
+                      - cell [ref=e414]:
+                        - button "View details" [ref=e415] [cursor=pointer]
+                    - row [ref=e416]:
+                      - cell "Set exact cost · $18.00" [ref=e417]
+                      - cell "11/11/2026, 1:35:41 PM" [ref=e418]
+                      - cell "3" [ref=e419]
+                      - cell "Completed" [ref=e420]
+                      - cell "admin" [ref=e422]
+                      - cell "Version 1.3.0 video — three hoodie costs" [ref=e423]
+                      - cell [ref=e424]:
+                        - group [ref=e425]:
+                          - generic "6a3d0fd5…" [ref=e426] [cursor=pointer]
+                      - cell [ref=e427]:
+                        - button "View details" [ref=e428] [cursor=pointer]
+                    - row [ref=e429]:
+                      - cell "Percentage increase · 5.00%" [ref=e430]
+                      - cell "11/11/2026, 10:49:32 AM" [ref=e431]
+                      - cell "8" [ref=e432]
+                      - cell "Completed" [ref=e433]
+                      - cell "admin" [ref=e435]
+                      - cell "8 Hoodie 5 %" [ref=e436]
+                      - cell [ref=e437]:
+                        - group [ref=e438]:
+                          - generic "3c5ee077…" [ref=e439] [cursor=pointer]
+                      - cell [ref=e440]:
+                        - button "View details" [ref=e441] [cursor=pointer]
+                    - row [ref=e442]:
+                      - cell "Rollback" [ref=e443]
+                      - cell "11/11/2026, 10:23:21 AM" [ref=e444]
+                      - cell "3" [ref=e445]
+                      - cell "Completed" [ref=e446]
+                      - cell "admin" [ref=e448]
+                      - cell "Cost check video edit — exact eighteen dollar update" [ref=e449]
+                      - cell [ref=e450]:
+                        - group [ref=e451]:
+                          - generic "e3d957b1…" [ref=e452] [cursor=pointer]
+                      - cell [ref=e453]:
+                        - button "View details" [ref=e454] [cursor=pointer]
+                    - row [ref=e455]:
+                      - cell "Set exact cost · $18.00" [ref=e456]
+                      - cell "11/11/2026, 9:40:13 AM" [ref=e457]
+                      - cell "3" [ref=e458]
+                      - cell "Completed" [ref=e459]
+                      - cell "admin" [ref=e461]
+                      - cell "Cost check video edit — exact eighteen dollar update" [ref=e462]
+                      - cell [ref=e463]:
+                        - group [ref=e464]:
+                          - generic "f2d38fec…" [ref=e465] [cursor=pointer]
+                      - cell [ref=e466]:
+                        - button "View details" [ref=e467] [cursor=pointer]
+                    - row [ref=e468]:
+                      - cell "Rollback" [ref=e469]
+                      - cell "11/10/2026, 1:18:06 PM" [ref=e470]
+                      - cell "3" [ref=e471]
+                      - cell "Completed" [ref=e472]
+                      - cell "admin" [ref=e474]
+                      - cell "Version 1.3.0 video — Excel import" [ref=e475]
+                      - cell [ref=e476]:
+                        - group [ref=e477]:
+                          - generic "8ddd70cf…" [ref=e478] [cursor=pointer]
+                      - cell [ref=e479]:
+                        - button "View details" [ref=e480] [cursor=pointer]
+                - generic [ref=e481]:
+                  - generic [ref=e482]:
+                    - generic [ref=e483]: Show entries
+                    - combobox "Show entries" [ref=e484] [cursor=pointer]:
+                      - option "10" [selected]
+                      - option "20"
+                      - option "50"
+                      - option "100"
+                  - navigation "Product preview pages" [ref=e485]:
+                    - button "Page 1 of 4" [disabled] [ref=e486]: «
+                    - button "Page 1 of 4" [disabled] [ref=e487]: ‹
+                    - button "Page 1 of 4" [ref=e488] [cursor=pointer]: "1"
+                    - button "Page 2 of 4" [ref=e489] [cursor=pointer]: "2"
+                    - button "Page 3 of 4" [ref=e490] [cursor=pointer]: "3"
+                    - button "Page 4 of 4" [ref=e491] [cursor=pointer]: "4"
+                    - button "Page 2 of 4" [ref=e492] [cursor=pointer]: ›
+                    - button "Page 4 of 4" [ref=e493] [cursor=pointer]: »
+                  - generic [ref=e494]:
+                    - generic [ref=e495]: Go to page
+                    - spinbutton "Go to page" [ref=e496]: "1"
+                    - button "Go" [ref=e497] [cursor=pointer]
+                  - paragraph [ref=e498]: Page 1 of 4 · 31 entries
+            - generic [ref=e499]:
+              - generic [ref=e500]:
+                - generic [ref=e501]: "4"
+                - heading "Current operation" [level=2] [ref=e503]
+              - generic [ref=e504]:
+                - heading "Recent activity · Rollback" [level=3] [ref=e506]
+                - paragraph [ref=e507]: "3 products updated · 11/11/2026, 2:01:36 PM · Elapsed time: 00:00:22"
+                - group [ref=e508]:
+                  - generic "View details" [ref=e509] [cursor=pointer]
+                - generic [ref=e510]:
+                  - button "View changed products" [ref=e511] [cursor=pointer]
+                  - button "Start another update" [ref=e512] [cursor=pointer]
+          - text:      
+  - contentinfo [ref=e513]:
+    - paragraph [ref=e514]:
+      - generic [ref=e516]:
+        - text: Thank you for creating with
+        - link "WordPress" [ref=e517] [cursor=pointer]:
+          - /url: https://wordpress.org/
+        - text: .
+    - paragraph [ref=e518]:
+      - text: You are using a development version (7.2-beta5). Cool! Please
+      - link "stay updated" [ref=e519] [cursor=pointer]:
+        - /url: https://wsl.com/wpdev/wp-admin/update-core.php
+      - text: .

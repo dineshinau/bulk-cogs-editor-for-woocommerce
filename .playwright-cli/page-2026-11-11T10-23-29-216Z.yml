@@ -1,0 +1,776 @@
+- generic [ref=f4e2]:
+  - navigation "Main menu":
+    - link "Skip to main content" [ref=f4e3] [cursor=pointer]:
+      - /url: "#wpbody-content"
+    - link "Skip to toolbar" [ref=f4e4] [cursor=pointer]:
+      - /url: "#wp-toolbar"
+    - list [ref=f4e7]:
+      - listitem [ref=f4e8]:
+        - link "Dashboard" [ref=f4e9] [cursor=pointer]:
+          - /url: index.php
+        - list [ref=f4e14]:
+          - listitem [ref=f4e15]:
+            - link "Home" [ref=f4e16] [cursor=pointer]:
+              - /url: index.php
+          - listitem [ref=f4e17]:
+            - link "Updates" [ref=f4e18] [cursor=pointer]:
+              - /url: update-core.php
+      - listitem [aria-hidden] [ref=f4e19]
+      - listitem [ref=f4e21]:
+        - link "Posts" [ref=f4e22] [cursor=pointer]:
+          - /url: edit.php
+        - list [ref=f4e27]:
+          - listitem [ref=f4e28]:
+            - link "All Posts" [ref=f4e29] [cursor=pointer]:
+              - /url: edit.php
+          - listitem [ref=f4e30]:
+            - link "Add Post" [ref=f4e31] [cursor=pointer]:
+              - /url: post-new.php
+          - listitem [ref=f4e32]:
+            - link "Categories" [ref=f4e33] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=category
+          - listitem [ref=f4e34]:
+            - link "Tags" [ref=f4e35] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=post_tag
+      - listitem [ref=f4e36]:
+        - link "Media" [ref=f4e37] [cursor=pointer]:
+          - /url: upload.php
+        - list [ref=f4e46]:
+          - listitem [ref=f4e47]:
+            - link "Library" [ref=f4e48] [cursor=pointer]:
+              - /url: upload.php
+          - listitem [ref=f4e49]:
+            - link "Add Media File" [ref=f4e50] [cursor=pointer]:
+              - /url: media-new.php
+          - listitem [ref=f4e51]:
+            - link "Generate Image" [ref=f4e52] [cursor=pointer]:
+              - /url: upload.php?page=generate-image
+      - listitem [ref=f4e53]:
+        - link "Pages" [ref=f4e54] [cursor=pointer]:
+          - /url: edit.php?post_type=page
+        - list [ref=f4e59]:
+          - listitem [ref=f4e60]:
+            - link "All Pages" [ref=f4e61] [cursor=pointer]:
+              - /url: edit.php?post_type=page
+          - listitem [ref=f4e62]:
+            - link "Add Page" [ref=f4e63] [cursor=pointer]:
+              - /url: post-new.php?post_type=page
+      - listitem [ref=f4e64]:
+        - link "Comments" [ref=f4e65] [cursor=pointer]:
+          - /url: edit-comments.php
+      - listitem [ref=f4e70]:
+        - link "WP Mail Log" [ref=f4e71] [cursor=pointer]:
+          - /url: admin.php?page=wp-mail-log
+      - listitem [aria-hidden] [ref=f4e76]
+      - listitem [ref=f4e78]:
+        - link "WooCommerce" [ref=f4e79] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin
+        - list [ref=f4e82]:
+          - listitem [ref=f4e83]:
+            - link "Home 1" [ref=f4e84] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin
+              - text: Home
+              - generic [ref=f4e85]: "1"
+          - listitem [ref=f4e86]:
+            - link "Orders 8" [ref=f4e87] [cursor=pointer]:
+              - /url: admin.php?page=wc-orders
+              - text: Orders
+              - generic [ref=f4e88]: "8"
+          - listitem [ref=f4e89]:
+            - link "Live Branches" [ref=f4e90] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/live-branches
+          - listitem [ref=f4e91]:
+            - link "Customers" [ref=f4e92] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/customers
+          - listitem [ref=f4e93]:
+            - link "Coupons" [ref=f4e94] [cursor=pointer]:
+              - /url: admin.php?page=coupons-moved
+          - listitem [ref=f4e95]:
+            - link "Reports" [ref=f4e96] [cursor=pointer]:
+              - /url: admin.php?page=wc-reports
+          - listitem [ref=f4e97]:
+            - link "Settings" [ref=f4e98] [cursor=pointer]:
+              - /url: admin.php?page=wc-settings
+          - listitem [ref=f4e99]:
+            - link "Status" [ref=f4e100] [cursor=pointer]:
+              - /url: admin.php?page=wc-status
+          - listitem [ref=f4e101]:
+            - link "Extensions" [ref=f4e102] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/extensions
+      - listitem [ref=f4e103]:
+        - link "Products" [ref=f4e104] [cursor=pointer]:
+          - /url: edit.php?post_type=product
+          - generic [aria-hidden] [ref=f4e105]: 
+        - list [ref=f4e107]:
+          - listitem [ref=f4e108]:
+            - link "All Products" [ref=f4e109] [cursor=pointer]:
+              - /url: edit.php?post_type=product
+          - listitem [ref=f4e110]:
+            - link "Add new product" [ref=f4e111] [cursor=pointer]:
+              - /url: post-new.php?post_type=product
+          - listitem [ref=f4e112]:
+            - link "Bulk COGS Editor" [ref=f4e113] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=bulk-cogs-editor
+          - listitem [ref=f4e114]:
+            - link "Brands" [ref=f4e115] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_brand&post_type=product
+          - listitem [ref=f4e116]:
+            - link "Categories" [ref=f4e117] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_cat&post_type=product
+          - listitem [ref=f4e118]:
+            - link "Tags" [ref=f4e119] [cursor=pointer]:
+              - /url: edit-tags.php?taxonomy=product_tag&post_type=product
+          - listitem [ref=f4e120]:
+            - link "Attributes" [ref=f4e121] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product_attributes
+          - listitem [ref=f4e122]:
+            - link "Reviews" [ref=f4e123] [cursor=pointer]:
+              - /url: edit.php?post_type=product&page=product-reviews
+      - listitem [ref=f4e124]:
+        - link "Payments" [ref=f4e125] [cursor=pointer]:
+          - /url: admin.php?page=wc-settings&tab=checkout&from=PAYMENTS_MENU_ITEM
+      - listitem [ref=f4e128]:
+        - link "Analytics" [ref=f4e129] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/analytics/overview
+        - list [ref=f4e134]:
+          - listitem [ref=f4e135]:
+            - link "Overview" [ref=f4e136] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/overview
+          - listitem [ref=f4e137]:
+            - link "Products" [ref=f4e138] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/products
+          - listitem [ref=f4e139]:
+            - link "Revenue" [ref=f4e140] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/revenue
+          - listitem [ref=f4e141]:
+            - link "Orders" [ref=f4e142] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/orders
+          - listitem [ref=f4e143]:
+            - link "Variations" [ref=f4e144] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/variations
+          - listitem [ref=f4e145]:
+            - link "Categories" [ref=f4e146] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/categories
+          - listitem [ref=f4e147]:
+            - link "Coupons" [ref=f4e148] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/coupons
+          - listitem [ref=f4e149]:
+            - link "Taxes" [ref=f4e150] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/taxes
+          - listitem [ref=f4e151]:
+            - link "Downloads" [ref=f4e152] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/downloads
+          - listitem [ref=f4e153]:
+            - link "Stock" [ref=f4e154] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/stock
+          - listitem [ref=f4e155]:
+            - link "Settings" [ref=f4e156] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/analytics/settings
+      - listitem [ref=f4e157]:
+        - link "Marketing 1" [ref=f4e158] [cursor=pointer]:
+          - /url: admin.php?page=wc-admin&path=/marketing
+          - generic [aria-hidden] [ref=f4e159]: 
+          - generic [ref=f4e160]:
+            - text: Marketing
+            - generic [ref=f4e161]: "1"
+        - list [ref=f4e162]:
+          - listitem [ref=f4e163]:
+            - link "Overview" [ref=f4e164] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/marketing
+          - listitem [ref=f4e165]:
+            - link "Coupons" [ref=f4e166] [cursor=pointer]:
+              - /url: edit.php?post_type=shop_coupon
+          - listitem [ref=f4e167]:
+            - link "Google for WooCommerce" [ref=f4e168] [cursor=pointer]:
+              - /url: admin.php?page=wc-admin&path=/google/start
+      - listitem [aria-hidden] [ref=f4e169]
+      - listitem [ref=f4e171]:
+        - link "Appearance" [ref=f4e172] [cursor=pointer]:
+          - /url: themes.php
+        - list [ref=f4e177]:
+          - listitem [ref=f4e178]:
+            - link "Themes" [ref=f4e179] [cursor=pointer]:
+              - /url: themes.php
+          - listitem [ref=f4e180]:
+            - link "Add Theme" [ref=f4e181] [cursor=pointer]:
+              - /url: theme-install.php
+          - listitem [ref=f4e182]:
+            - link "Editor" [ref=f4e183] [cursor=pointer]:
+              - /url: site-editor.php
+          - listitem [ref=f4e184]:
+            - link "Fonts" [ref=f4e185] [cursor=pointer]:
+              - /url: font-library.php
+      - listitem [ref=f4e186]:
+        - link "Plugins" [ref=f4e187] [cursor=pointer]:
+          - /url: plugins.php
+        - list [ref=f4e192]:
+          - listitem [ref=f4e193]:
+            - link "Installed Plugins" [ref=f4e194] [cursor=pointer]:
+              - /url: plugins.php
+          - listitem [ref=f4e195]:
+            - link "Add Plugin" [ref=f4e196] [cursor=pointer]:
+              - /url: plugin-install.php
+      - listitem [ref=f4e197]:
+        - link "Users" [ref=f4e198] [cursor=pointer]:
+          - /url: users.php
+        - list [ref=f4e203]:
+          - listitem [ref=f4e204]:
+            - link "All Users" [ref=f4e205] [cursor=pointer]:
+              - /url: users.php
+          - listitem [ref=f4e206]:
+            - link "Add User" [ref=f4e207] [cursor=pointer]:
+              - /url: user-new.php
+          - listitem [ref=f4e208]:
+            - link "Profile" [ref=f4e209] [cursor=pointer]:
+              - /url: profile.php
+      - listitem [ref=f4e210]:
+        - link "Tools" [ref=f4e211] [cursor=pointer]:
+          - /url: tools.php
+        - list [ref=f4e216]:
+          - listitem [ref=f4e217]:
+            - link "Available Tools" [ref=f4e218] [cursor=pointer]:
+              - /url: tools.php
+          - listitem [ref=f4e219]:
+            - link "Import" [ref=f4e220] [cursor=pointer]:
+              - /url: import.php
+          - listitem [ref=f4e221]:
+            - link "Export" [ref=f4e222] [cursor=pointer]:
+              - /url: export.php
+          - listitem [ref=f4e223]:
+            - link "Site Health 2" [ref=f4e224] [cursor=pointer]:
+              - /url: site-health.php
+              - text: Site Health
+              - generic [ref=f4e225]: "2"
+          - listitem [ref=f4e226]:
+            - link "Export Personal Data" [ref=f4e227] [cursor=pointer]:
+              - /url: export-personal-data.php
+          - listitem [ref=f4e228]:
+            - link "Erase Personal Data" [ref=f4e229] [cursor=pointer]:
+              - /url: erase-personal-data.php
+          - listitem [ref=f4e230]:
+            - link "Plugin Check" [ref=f4e231] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check
+          - listitem [ref=f4e232]:
+            - link "Plugin Check Namer" [ref=f4e233] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-namer
+          - listitem [ref=f4e234]:
+            - link "Plugin Check SVN" [ref=f4e235] [cursor=pointer]:
+              - /url: tools.php?page=plugin-check-svn-checker
+          - listitem [ref=f4e236]:
+            - link "WCA Test Helper" [ref=f4e237] [cursor=pointer]:
+              - /url: tools.php?page=woocommerce-admin-test-helper
+          - listitem [ref=f4e238]:
+            - link "Beta Testing" [ref=f4e239] [cursor=pointer]:
+              - /url: tools.php?page=wp-beta-tester
+          - listitem [ref=f4e240]:
+            - link "Better Search Replace" [ref=f4e241] [cursor=pointer]:
+              - /url: tools.php?page=better-search-replace
+          - listitem [ref=f4e242]:
+            - link "Scheduled Actions" [ref=f4e243] [cursor=pointer]:
+              - /url: tools.php?page=action-scheduler
+          - listitem [ref=f4e244]:
+            - link "Rollback Core" [ref=f4e245] [cursor=pointer]:
+              - /url: tools.php?page=rollback
+          - listitem [ref=f4e246]:
+            - link "Abilities Explorer" [ref=f4e247] [cursor=pointer]:
+              - /url: tools.php?page=ai-abilities-explorer
+          - listitem [ref=f4e248]:
+            - link "AI Request Logs" [ref=f4e249] [cursor=pointer]:
+              - /url: tools.php?page=ai-request-logs
+          - listitem [ref=f4e250]:
+            - link "Connector Approvals" [ref=f4e251] [cursor=pointer]:
+              - /url: tools.php?page=ai-connector-approval
+          - listitem [ref=f4e252]:
+            - link "Theme File Editor" [ref=f4e253] [cursor=pointer]:
+              - /url: theme-editor.php
+          - listitem [ref=f4e254]:
+            - link "Plugin File Editor" [ref=f4e255] [cursor=pointer]:
+              - /url: plugin-editor.php
+      - listitem [ref=f4e256]:
+        - link "Settings" [ref=f4e257] [cursor=pointer]:
+          - /url: options-general.php
+        - list [ref=f4e262]:
+          - listitem [ref=f4e263]:
+            - link "General" [ref=f4e264] [cursor=pointer]:
+              - /url: options-general.php
+          - listitem [ref=f4e265]:
+            - link "Connectors" [ref=f4e266] [cursor=pointer]:
+              - /url: options-connectors.php
+          - listitem [ref=f4e267]:
+            - link "AI" [ref=f4e268] [cursor=pointer]:
+              - /url: options-general.php?page=ai-wp-admin
+          - listitem [ref=f4e269]:
+            - link "Writing" [ref=f4e270] [cursor=pointer]:
+              - /url: options-writing.php
+          - listitem [ref=f4e271]:
+            - link "Reading" [ref=f4e272] [cursor=pointer]:
+              - /url: options-reading.php
+          - listitem [ref=f4e273]:
+            - link "Discussion" [ref=f4e274] [cursor=pointer]:
+              - /url: options-discussion.php
+          - listitem [ref=f4e275]:
+            - link "Media" [ref=f4e276] [cursor=pointer]:
+              - /url: options-media.php
+          - listitem [ref=f4e277]:
+            - link "Permalinks" [ref=f4e278] [cursor=pointer]:
+              - /url: options-permalink.php
+          - listitem [ref=f4e279]:
+            - link "Privacy" [ref=f4e280] [cursor=pointer]:
+              - /url: options-privacy.php
+          - listitem [ref=f4e281]:
+            - link "Plugin Check" [ref=f4e282] [cursor=pointer]:
+              - /url: options-general.php?page=plugin-check-settings
+          - listitem [ref=f4e283]:
+            - link "DPM" [ref=f4e284] [cursor=pointer]:
+              - /url: options-general.php?page=dkdpm
+          - listitem [ref=f4e285]:
+            - link "WP PHP Console" [ref=f4e286] [cursor=pointer]:
+              - /url: options-general.php?page=wp_php_console
+      - listitem [ref=f4e287]:
+        - button "Collapse Main menu" [expanded] [ref=f4e288] [cursor=pointer]:
+          - generic [ref=f4e292]: Collapse Menu
+  - generic [ref=f4e293]:
+    - generic [ref=f4e294]:
+      - navigation "Toolbar":
+        - menu:
+          - group [ref=f4e295]:
+            - menuitem "About WordPress" [ref=f4e296] [cursor=pointer]
+          - group [ref=f4e301]:
+            - menuitem "WP Dev" [ref=f4e302] [cursor=pointer]
+          - group [ref=f4e303]:
+            - menuitem "Live" [ref=f4e304] [cursor=pointer]
+          - group [ref=f4e305]:
+            - menuitem "WC Beta Tester" [ref=f4e306]
+          - group [ref=f4e307]:
+            - menuitem "Ctrl+K Open command palette" [ref=f4e308] [cursor=pointer]:
+              - generic [ref=f4e312]:
+                - text: Ctrl+K
+                - generic [ref=f4e313]: Open command palette
+          - group [ref=f4e314]:
+            - menuitem "0 Comments in moderation" [ref=f4e315] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f4e319]: "0"
+          - group [ref=f4e321]:
+            - menuitem "New" [ref=f4e322] [cursor=pointer]
+          - group [ref=f4e327]:
+            - menuitem "View products" [ref=f4e328] [cursor=pointer]
+          - group [ref=f4e329]:
+            - menuitem "WC Log" [ref=f4e330] [cursor=pointer]
+          - group [ref=f4e331]:
+            - link "1.33s 19.2MB 0.49s 196Q" [ref=f4e332] [cursor=pointer]:
+              - /url: "#qm-overview"
+        - menu [ref=f4e334]:
+          - group [ref=f4e335]:
+            - menuitem "admin" [ref=f4e336] [cursor=pointer]
+    - generic [ref=f4e340]:
+      - generic [ref=f4e341]:
+        - heading "Store Activity" [level=2] [ref=f4e342]
+        - complementary "Store Activity" [ref=f4e343]:
+          - tablist [ref=f4e344]:
+            - tab "Finish setup" [ref=f4e345] [cursor=pointer]
+      - button "Screen options" [ref=f4e349] [cursor=pointer]
+      - button "Help" [ref=f4e352] [cursor=pointer]
+    - main [ref=f4e356]:
+      - generic [ref=f4e357]:
+        - generic:
+          - button "Screen Options" [ref=f4e359] [cursor=pointer]
+          - button "Help" [ref=f4e361] [cursor=pointer]
+        - generic [ref=f4e363]:
+          - heading "Products" [level=1] [ref=f4e364]
+          - link "Add new product" [ref=f4e365] [cursor=pointer]:
+            - /url: https://wsl.com/wpdev/wp-admin/post-new.php?post_type=product
+          - link "Import" [ref=f4e366] [cursor=pointer]:
+            - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&page=product_importer
+          - link "Export" [ref=f4e367] [cursor=pointer]:
+            - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&page=product_exporter
+          - generic [ref=f4e368]:
+            - text: "Search results for:"
+            - strong [ref=f4e369]: hoodie
+          - heading "Filter products" [level=2] [ref=f4e370]
+          - list [ref=f4e371]:
+            - listitem [ref=f4e372]:
+              - link "All (6,635)" [ref=f4e373] [cursor=pointer]:
+                - /url: edit.php?post_type=product&all_posts=1
+              - text: "|"
+            - listitem [ref=f4e374]:
+              - link "Published (6,635)" [ref=f4e375] [cursor=pointer]:
+                - /url: edit.php?post_status=publish&post_type=product
+              - text: "|"
+            - listitem [ref=f4e376]:
+              - link "Sorting" [ref=f4e377] [cursor=pointer]:
+                - /url: /wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=menu_order+title&order=ASC
+          - generic [ref=f4e378]:
+            - paragraph [ref=f4e379]:
+              - generic [ref=f4e380]: "Search products:"
+              - searchbox "Search products:" [ref=f4e381]: hoodie
+              - button "Search products" [ref=f4e382] [cursor=pointer]
+            - generic [ref=f4e383]:
+              - generic [ref=f4e384]:
+                - generic [ref=f4e385]: Select bulk action
+                - combobox "Select bulk action" [ref=f4e386] [cursor=pointer]:
+                  - option "Bulk actions" [selected]
+                  - option "Bulk edit"
+                  - option "Move to Trash"
+                  - option "Generate Summary"
+                - button "Apply" [ref=f4e387] [cursor=pointer]
+              - generic [ref=f4e388]:
+                - combobox [ref=f4e389] [cursor=pointer]:
+                  - option "Select a category" [selected]
+                  - option "Clothing"
+                  - option "Accessories"
+                  - option "Hoodies"
+                  - option "Jackets"
+                  - option "Shirts"
+                  - option "Sweater"
+                  - option "Tshirts"
+                  - option "Computers"
+                  - option "Garden & Beauty"
+                  - option "Tools"
+                  - option "Music, Toys & Books"
+                  - option "Decor"
+                  - option "DKBCE E2E 9b51850ee3d431a9"
+                  - option "Music"
+                  - option "Outdoors"
+                  - option "Outdoors"
+                  - option "Home, Sports & Beauty"
+                  - option "Jewelry, Toys & Baby"
+                  - option "Toys, Sports & Electronics"
+                  - option "Clothing, Movies & Industrial"
+                  - option "Movies & Jewelry"
+                  - option "Uncategorized"
+                - combobox [ref=f4e390] [cursor=pointer]:
+                  - option "Filter by product type" [selected]
+                  - option "Simple product"
+                  - option "→ Downloadable"
+                  - option "→ Virtual"
+                  - option "Grouped product"
+                  - option "External/Affiliate product"
+                  - option "Variable product"
+                - combobox [ref=f4e391] [cursor=pointer]:
+                  - option "Filter by stock status" [selected]
+                  - option "In stock"
+                  - option "Out of stock"
+                  - option "On backorder"
+                - combobox [ref=f4e392] [cursor=pointer]:
+                  - option "Filter by brand" [selected]
+                  - option "Abbott and Sons"
+                  - option "Altenwerth, Little and Murray"
+                  - option "Denesik, Okuneva and Metz"
+                  - option "DKBCE E2E Brand 9b51850ee3d431a9"
+                  - option "Gleichner Ltd"
+                  - option "Hermiston-Fisher"
+                  - option "Kilback Inc"
+                  - option "Kling Inc"
+                  - option "Price PLC"
+                  - option "Sporer LLC"
+                  - option "Wolf-Reinger"
+                - button "Filter" [ref=f4e393] [cursor=pointer]
+              - generic [ref=f4e394]: 4 items
+            - heading "Products list" [level=2] [ref=f4e396]
+            - table [ref=f4e397]:
+              - rowgroup [ref=f4e398]:
+                - row [ref=f4e399]:
+                  - cell "Select All" [ref=f4e400]:
+                    - checkbox "Select All" [ref=f4e401] [cursor=pointer]
+                  - columnheader " Image" [ref=f4e404]
+                  - columnheader "Name Sort ascending." [ref=f4e406]:
+                    - link "Name Sort ascending." [ref=f4e407] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=title&order=asc
+                      - generic [ref=f4e408]: Name
+                      - generic [ref=f4e412]: Sort ascending.
+                  - columnheader "SKU Sort ascending." [ref=f4e413]:
+                    - link "SKU Sort ascending." [ref=f4e414] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=sku&order=asc
+                      - generic [ref=f4e415]: SKU
+                      - generic [ref=f4e419]: Sort ascending.
+                  - columnheader "Stock" [ref=f4e420]
+                  - columnheader "Price Sort ascending." [ref=f4e421]:
+                    - link "Price Sort ascending." [ref=f4e422] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=price&order=asc
+                      - generic [ref=f4e423]: Price
+                      - generic [ref=f4e427]: Sort ascending.
+                  - columnheader "Cost Sort ascending." [ref=f4e428]:
+                    - link "Cost Sort ascending." [ref=f4e429] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=cogs_value&order=asc
+                      - generic [ref=f4e430]: Cost
+                      - generic [ref=f4e434]: Sort ascending.
+                  - columnheader "Categories" [ref=f4e435]
+                  - columnheader "Tags" [ref=f4e436]
+                  - columnheader "Product brands" [ref=f4e437]
+                  - columnheader " Featured" [ref=f4e438]
+                  - columnheader "Date" [ref=f4e440]:
+                    - link "Date" [ref=f4e441] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=date&order=asc
+                  - columnheader "ID Sort ascending." [ref=f4e446]:
+                    - link "ID Sort ascending." [ref=f4e447] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=ID&order=asc
+                      - generic [ref=f4e448]: ID
+                      - generic [ref=f4e452]: Sort ascending.
+              - rowgroup [ref=f4e453]:
+                - row [ref=f4e454]:
+                  - cell "Select Hoodie with Zipper" [ref=f4e455]:
+                    - checkbox "Select Hoodie with Zipper" [ref=f4e456] [cursor=pointer]
+                  - cell [ref=f4e459]:
+                    - link [ref=f4e460] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/post.php?post=72&action=edit
+                      - img "Hoodie with Zipper" [ref=f4e461]
+                  - rowheader "Hoodie with Zipper" [ref=f4e462]:
+                    - strong [ref=f4e463]:
+                      - link "Hoodie with Zipper" [ref=f4e464] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/post.php?post=72&action=edit
+                    - generic [ref=f4e465]:
+                      - text: "ID: 72 |"
+                      - generic [ref=f4e466]:
+                        - link "Edit “Hoodie with Zipper”" [ref=f4e467] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=72&action=edit
+                          - text: Edit
+                        - text: "|"
+                      - generic [ref=f4e468]:
+                        - button "Quick edit “Hoodie with Zipper” inline" [ref=f4e469] [cursor=pointer]: Quick Edit
+                        - text: "|"
+                      - generic [ref=f4e470]:
+                        - link "Move “Hoodie with Zipper” to the Trash" [ref=f4e471] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=72&action=trash&_wpnonce=b4f81fea1e
+                          - text: Trash
+                        - text: "|"
+                      - generic [ref=f4e472]:
+                        - link "View “Hoodie with Zipper”" [ref=f4e473] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/product/hoodie-with-zipper/
+                          - text: View
+                        - text: "|"
+                      - link "Make a duplicate from this product" [ref=f4e475] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&action=duplicate_product&post=72&_wpnonce=1514662ab3
+                        - text: Duplicate
+                  - cell "woo-hoodie-with-zipper" [ref=f4e476]
+                  - cell [ref=f4e477]:
+                    - mark [ref=f4e478]: In stock
+                  - cell "$45.00" [ref=f4e479]
+                  - cell "$7.19" [ref=f4e481]
+                  - cell [ref=f4e483]:
+                    - link "Hoodies" [ref=f4e484] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?product_cat=hoodies&post_type=product
+                  - cell "–" [ref=f4e485]
+                  - cell "No brands" [ref=f4e486]: —
+                  - cell [ref=f4e488]:
+                    - link "Toggle featured" [ref=f4e489] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/admin-ajax.php?action=woocommerce_feature_product&product_id=72&_wpnonce=e612159b16
+                      - generic [ref=f4e490]:  Yes
+                  - cell "Published 2026/02/01 at 7:00 pm" [ref=f4e491]: Published2026/02/01 at 7:00 pm
+                  - cell "72" [ref=f4e492]
+                - row [ref=f4e493]:
+                  - cell "Select Hoodie with Pocket" [ref=f4e494]:
+                    - checkbox "Select Hoodie with Pocket" [ref=f4e495] [cursor=pointer]
+                  - cell [ref=f4e498]:
+                    - link [ref=f4e499] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/post.php?post=71&action=edit
+                      - img "Hoodie with Pocket" [ref=f4e500]
+                  - rowheader "Hoodie with Pocket" [ref=f4e501]:
+                    - strong [ref=f4e502]:
+                      - link "Hoodie with Pocket" [ref=f4e503] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/post.php?post=71&action=edit
+                    - generic [ref=f4e504]:
+                      - text: "ID: 71 |"
+                      - generic [ref=f4e505]:
+                        - link "Edit “Hoodie with Pocket”" [ref=f4e506] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=71&action=edit
+                          - text: Edit
+                        - text: "|"
+                      - generic [ref=f4e507]:
+                        - button "Quick edit “Hoodie with Pocket” inline" [ref=f4e508] [cursor=pointer]: Quick Edit
+                        - text: "|"
+                      - generic [ref=f4e509]:
+                        - link "Move “Hoodie with Pocket” to the Trash" [ref=f4e510] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=71&action=trash&_wpnonce=662e9654eb
+                          - text: Trash
+                        - text: "|"
+                      - generic [ref=f4e511]:
+                        - link "View “Hoodie with Pocket”" [ref=f4e512] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/product/hoodie-with-pocket/
+                          - text: View
+                        - text: "|"
+                      - link "Make a duplicate from this product" [ref=f4e514] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&action=duplicate_product&post=71&_wpnonce=09a97dacb0
+                        - text: Duplicate
+                  - cell "woo-hoodie-with-pocket" [ref=f4e515]
+                  - cell [ref=f4e516]:
+                    - mark [ref=f4e517]: In stock
+                  - 'cell "Original price was: $45.00. Current price is: $35.00." [ref=f4e518]':
+                    - deletion [aria-hidden] [ref=f4e519]:
+                      - generic [ref=f4e520]: $45.00
+                    - generic [ref=f4e521]: "Original price was: $45.00."
+                    - insertion [aria-hidden] [ref=f4e522]:
+                      - generic [ref=f4e523]: $35.00
+                    - generic [ref=f4e524]: "Current price is: $35.00."
+                  - cell "$7.19" [ref=f4e525]
+                  - cell [ref=f4e527]:
+                    - link "Hoodies" [ref=f4e528] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?product_cat=hoodies&post_type=product
+                  - cell "–" [ref=f4e529]
+                  - cell "No brands" [ref=f4e530]: —
+                  - cell [ref=f4e532]:
+                    - link "Toggle featured" [ref=f4e533] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/admin-ajax.php?action=woocommerce_feature_product&product_id=71&_wpnonce=e612159b16
+                      - generic [ref=f4e534]:  Yes
+                  - cell "Published 2026/02/01 at 7:00 pm" [ref=f4e535]: Published2026/02/01 at 7:00 pm
+                  - cell "71" [ref=f4e536]
+                - row [ref=f4e537]:
+                  - cell "Select Hoodie with Logo" [ref=f4e538]:
+                    - checkbox "Select Hoodie with Logo" [ref=f4e539] [cursor=pointer]
+                  - cell [ref=f4e542]:
+                    - link [ref=f4e543] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/post.php?post=65&action=edit
+                      - img "Hoodie with Logo" [ref=f4e544]
+                  - rowheader "Hoodie with Logo" [ref=f4e545]:
+                    - strong [ref=f4e546]:
+                      - link "Hoodie with Logo" [ref=f4e547] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/post.php?post=65&action=edit
+                    - generic [ref=f4e548]:
+                      - text: "ID: 65 |"
+                      - generic [ref=f4e549]:
+                        - link "Edit “Hoodie with Logo”" [ref=f4e550] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=65&action=edit
+                          - text: Edit
+                        - text: "|"
+                      - generic [ref=f4e551]:
+                        - button "Quick edit “Hoodie with Logo” inline" [ref=f4e552] [cursor=pointer]: Quick Edit
+                        - text: "|"
+                      - generic [ref=f4e553]:
+                        - link "Move “Hoodie with Logo” to the Trash" [ref=f4e554] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=65&action=trash&_wpnonce=0cde21e17b
+                          - text: Trash
+                        - text: "|"
+                      - generic [ref=f4e555]:
+                        - link "View “Hoodie with Logo”" [ref=f4e556] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/product/hoodie-with-logo/
+                          - text: View
+                        - text: "|"
+                      - link "Make a duplicate from this product" [ref=f4e558] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&action=duplicate_product&post=65&_wpnonce=18111a9ce6
+                        - text: Duplicate
+                  - cell "woo-hoodie-with-logo" [ref=f4e559]
+                  - cell [ref=f4e560]:
+                    - mark [ref=f4e561]: In stock
+                  - cell "$45.00" [ref=f4e562]
+                  - cell "$7.19" [ref=f4e564]
+                  - cell [ref=f4e566]:
+                    - link "Hoodies" [ref=f4e567] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?product_cat=hoodies&post_type=product
+                  - cell "–" [ref=f4e568]
+                  - cell "No brands" [ref=f4e569]: —
+                  - cell [ref=f4e571]:
+                    - link "Toggle featured" [ref=f4e572] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/admin-ajax.php?action=woocommerce_feature_product&product_id=65&_wpnonce=e612159b16
+                      - generic [ref=f4e573]:  No
+                  - cell "Published 2026/02/01 at 6:59 pm" [ref=f4e574]: Published2026/02/01 at 6:59 pm
+                  - cell "65" [ref=f4e575]
+                - row [ref=f4e576]:
+                  - cell "Select Hoodie" [ref=f4e577]:
+                    - checkbox "Select Hoodie" [ref=f4e578] [cursor=pointer]
+                  - cell [ref=f4e581]:
+                    - link [ref=f4e582] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/post.php?post=64&action=edit
+                      - img "Hoodie" [ref=f4e583]
+                  - rowheader "Hoodie" [ref=f4e584]:
+                    - strong [ref=f4e585]:
+                      - link "Hoodie" [ref=f4e586] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/post.php?post=64&action=edit
+                    - generic [ref=f4e587]:
+                      - text: "ID: 64 |"
+                      - generic [ref=f4e588]:
+                        - link "Edit “Hoodie”" [ref=f4e589] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=64&action=edit
+                          - text: Edit
+                        - text: "|"
+                      - generic [ref=f4e590]:
+                        - button "Quick edit “Hoodie” inline" [ref=f4e591] [cursor=pointer]: Quick Edit
+                        - text: "|"
+                      - generic [ref=f4e592]:
+                        - link "Move “Hoodie” to the Trash" [ref=f4e593] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/wp-admin/post.php?post=64&action=trash&_wpnonce=5c7c28389e
+                          - text: Trash
+                        - text: "|"
+                      - generic [ref=f4e594]:
+                        - link "View “Hoodie”" [ref=f4e595] [cursor=pointer]:
+                          - /url: https://wsl.com/wpdev/product/hoodie/
+                          - text: View
+                        - text: "|"
+                      - link "Make a duplicate from this product" [ref=f4e597] [cursor=pointer]:
+                        - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&action=duplicate_product&post=64&_wpnonce=429112a8b0
+                        - text: Duplicate
+                  - cell "woo-hoodie" [ref=f4e598]
+                  - cell [ref=f4e599]:
+                    - mark [ref=f4e600]: In stock
+                  - 'cell "Price range: $42.00 through $45.00" [ref=f4e601]':
+                    - generic [aria-hidden] [ref=f4e602]: $42.00
+                    - text: –
+                    - generic [aria-hidden] [ref=f4e603]: $45.00
+                  - cell "$7.19" [ref=f4e605]
+                  - cell [ref=f4e607]:
+                    - link "Hoodies" [ref=f4e608] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?product_cat=hoodies&post_type=product
+                  - cell "–" [ref=f4e609]
+                  - cell "No brands" [ref=f4e610]: —
+                  - cell [ref=f4e612]:
+                    - link "Toggle featured" [ref=f4e613] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/admin-ajax.php?action=woocommerce_feature_product&product_id=64&_wpnonce=e612159b16
+                      - generic [ref=f4e614]:  No
+                  - cell "Published 2026/02/01 at 6:59 pm" [ref=f4e615]: Published2026/02/01 at 6:59 pm
+                  - cell "64" [ref=f4e616]
+              - rowgroup [ref=f4e617]:
+                - row [ref=f4e618]:
+                  - cell "Select All" [ref=f4e619]:
+                    - checkbox "Select All" [ref=f4e620] [cursor=pointer]
+                  - columnheader " Image" [ref=f4e623]
+                  - columnheader "Name Sort ascending." [ref=f4e625]:
+                    - link "Name Sort ascending." [ref=f4e626] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=title&order=asc
+                      - generic [ref=f4e627]: Name
+                      - generic [ref=f4e631]: Sort ascending.
+                  - columnheader "SKU Sort ascending." [ref=f4e632]:
+                    - link "SKU Sort ascending." [ref=f4e633] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=sku&order=asc
+                      - generic [ref=f4e634]: SKU
+                      - generic [ref=f4e638]: Sort ascending.
+                  - columnheader "Stock" [ref=f4e639]
+                  - columnheader "Price Sort ascending." [ref=f4e640]:
+                    - link "Price Sort ascending." [ref=f4e641] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=price&order=asc
+                      - generic [ref=f4e642]: Price
+                      - generic [ref=f4e646]: Sort ascending.
+                  - columnheader "Cost Sort ascending." [ref=f4e647]:
+                    - link "Cost Sort ascending." [ref=f4e648] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=cogs_value&order=asc
+                      - generic [ref=f4e649]: Cost
+                      - generic [ref=f4e653]: Sort ascending.
+                  - columnheader "Categories" [ref=f4e654]
+                  - columnheader "Tags" [ref=f4e655]
+                  - columnheader "Product brands" [ref=f4e656]
+                  - columnheader " Featured" [ref=f4e657]
+                  - columnheader "Date" [ref=f4e659]:
+                    - link "Date" [ref=f4e660] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=date&order=asc
+                  - columnheader "ID Sort ascending." [ref=f4e665]:
+                    - link "ID Sort ascending." [ref=f4e666] [cursor=pointer]:
+                      - /url: https://wsl.com/wpdev/wp-admin/edit.php?post_type=product&s=hoodie&orderby=ID&order=asc
+                      - generic [ref=f4e667]: ID
+                      - generic [ref=f4e671]: Sort ascending.
+            - generic [ref=f4e672]:
+              - generic [ref=f4e673]:
+                - generic [ref=f4e674]: Select bulk action
+                - combobox "Select bulk action" [ref=f4e675] [cursor=pointer]:
+                  - option "Bulk actions" [selected]
+                  - option "Bulk edit"
+                  - option "Move to Trash"
+                  - option "Generate Summary"
+                - button "Apply" [ref=f4e676] [cursor=pointer]
+              - generic [ref=f4e677]: 4 items
+  - contentinfo [ref=f4e679]:
+    - paragraph [ref=f4e680]:
+      - generic [ref=f4e681]:
+        - text: If you like
+        - strong [ref=f4e682]: WooCommerce
+        - text: please leave us a
+        - link "five star" [ref=f4e683] [cursor=pointer]:
+          - /url: https://wordpress.org/support/plugin/woocommerce/reviews?rate=5#new-post
+          - text: ★★★★★
+        - text: rating. A huge thanks in advance!
+    - paragraph [ref=f4e684]: Version 11.3.0-beta.1
