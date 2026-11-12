@@ -137,22 +137,30 @@ class DKBCE_Admin_Functions {
 			'dkbce-admin',
 			'DKBCE',
 			array(
-				'userId'         => get_current_user_id(),
-				'rollbackMode'   => DKBCE_History_Store::rollback_mode(),
-				'history'        => DKBCE_History_Controller::labels(),
-				'importId'       => $import_id,
-				'maxUploadSize'  => wp_max_upload_size(),
-				'maxUploadLabel' => size_format( wp_max_upload_size() ),
-				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
-				'nonce'          => wp_create_nonce( self::NONCE ),
-				'cogsAvailable'  => $this->service->is_cogs_available(),
-				'operationId'    => $operation ? $operation_id : '',
-				'operationMode'  => $operation ? $operation['action'] : '',
-				'preferences'    => $this->get_preferences(),
-				'previewLimit'   => DKBCE_COGS_Service::PREVIEW_LIMIT,
-				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
-				'decimals'       => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
-				'ux'             => array(
+				'userId'          => get_current_user_id(),
+				'rollbackMode'    => DKBCE_History_Store::rollback_mode(),
+				'history'         => DKBCE_History_Controller::labels(),
+				'importId'        => $import_id,
+				'maxUploadSize'   => wp_max_upload_size(),
+				'maxUploadLabel'  => size_format( wp_max_upload_size() ),
+				'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+				'nonce'           => wp_create_nonce( self::NONCE ),
+				'cogsAvailable'   => $this->service->is_cogs_available(),
+				'operationId'     => $operation ? $operation_id : '',
+				'operationMode'   => $operation ? $operation['action'] : '',
+				'preferences'     => $this->get_preferences(),
+				'reviewDismissed' => (bool) get_user_meta( get_current_user_id(), 'dkbce_review_dismissed', true ),
+				'review'          => array(
+					/* translators: 1: successfully updated product count, 2: elapsed time. */
+					'summary' => __( 'Updated %1$s products in %2$s.', 'bulk-cogs-editor-for-woocommerce' ),
+					'message' => __( 'Finding Bulk COGS Editor helpful? Please consider leaving a 5-star review on WordPress.org.', 'bulk-cogs-editor-for-woocommerce' ),
+					'link'    => __( 'Leave a 5-star review', 'bulk-cogs-editor-for-woocommerce' ),
+					'dismiss' => __( 'Dismiss review notice', 'bulk-cogs-editor-for-woocommerce' ),
+				),
+				'previewLimit'    => DKBCE_COGS_Service::PREVIEW_LIMIT,
+				'currencySymbol'  => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '',
+				'decimals'        => function_exists( 'wc_get_price_decimals' ) ? wc_get_price_decimals() : 2,
+				'ux'              => array(
 					'resetHelp'           => __( 'Reset filters keeps your draft cost update. Start over clears filters, selections, cost update, and operation note.', 'bulk-cogs-editor-for-woocommerce' ),
 					'noMatchesHelp'       => __( 'Try a different search or reset your filters. Your cost update is kept as a draft.', 'bulk-cogs-editor-for-woocommerce' ),
 					'adjustFilters'       => __( 'Adjust filters', 'bulk-cogs-editor-for-woocommerce' ),
@@ -199,7 +207,7 @@ class DKBCE_Admin_Functions {
 					'outcomesHelp'        => __( 'Review the outcome counts and reported errors below. Import operations may also provide a downloadable results report.', 'bulk-cogs-editor-for-woocommerce' ),
 					'unnamedUser'         => __( 'Unavailable user name · ID', 'bulk-cogs-editor-for-woocommerce' ),
 				),
-				'ui'             => array(
+				'ui'              => array(
 					'bulkTitle'       => __( 'Review & confirm', 'bulk-cogs-editor-for-woocommerce' ),
 					'exportTitle'     => __( 'Preview export', 'bulk-cogs-editor-for-woocommerce' ),
 					'importTitle'     => __( 'Review import', 'bulk-cogs-editor-for-woocommerce' ),
@@ -260,7 +268,7 @@ class DKBCE_Admin_Functions {
 					'page'            => __( 'Page', 'bulk-cogs-editor-for-woocommerce' ),
 					'downloadReady'   => __( 'Your CSV is ready. Download it below.', 'bulk-cogs-editor-for-woocommerce' ),
 				),
-				'csv'            => array(
+				'csv'             => array(
 					'requestFailed'   => __( 'Request failed. Check the server upload limit or reload the page and try again.', 'bulk-cogs-editor-for-woocommerce' ),
 					'preparing'       => __( 'Preparing import preview in the background. You can return to this page later.', 'bulk-cogs-editor-for-woocommerce' ),
 					'readingStrings'  => __( 'Reading spreadsheet text…', 'bulk-cogs-editor-for-woocommerce' ),
@@ -293,7 +301,7 @@ class DKBCE_Admin_Functions {
 					'downloadFailed'  => __( 'The download failed. Please try again.', 'bulk-cogs-editor-for-woocommerce' ),
 					'cancel'          => __( 'Cancel export', 'bulk-cogs-editor-for-woocommerce' ),
 				),
-				'i18n'           => array(
+				'i18n'            => array(
 					'confirmTitle'        => __( 'Confirm COGS changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'confirmButton'       => __( 'Apply changes', 'bulk-cogs-editor-for-woocommerce' ),
 					'confirmTextOne'      => __( 'You are about to modify COGS for 1 product. This will change product cost data.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -773,6 +781,23 @@ class DKBCE_Admin_Functions {
 		} catch ( Throwable $exception ) {
 			wp_send_json_error( array( 'message' => __( 'Could not manage presets. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 		}
+	}
+
+	/**
+	 * Remember that the current user dismissed the optional review notice.
+	 *
+	 * @return void
+	 */
+	public function ajax_dismiss_review() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		$this->authorize_ajax();
+		$user_id = get_current_user_id();
+		if ( ! update_user_meta( $user_id, 'dkbce_review_dismissed', 1 ) && ! get_user_meta( $user_id, 'dkbce_review_dismissed', true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Could not dismiss the review notice. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
+		}
+		wp_send_json_success();
 	}
 
 	/**

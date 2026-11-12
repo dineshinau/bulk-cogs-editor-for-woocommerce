@@ -2454,6 +2454,39 @@
 		return sectionHeading;
 	}
 
+	function appendReviewNotice( operation, panel ) {
+		const costActions = [ 'set', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'clear', 'csv_import' ];
+		if ( DKBCE.reviewDismissed || operation.status !== 'completed' || Number( operation.succeeded ) <= 0 || ! costActions.includes( operation.action ) ) {
+			return;
+		}
+		const reviewNotice = historyElement( 'div', '', 'notice notice-info inline is-dismissible' );
+		reviewNotice.setAttribute( 'role', 'status' );
+		const message = historyElement( 'p', DKBCE.review.summary
+			.replace( '%1$s', Number( operation.succeeded ).toLocaleString() )
+			.replace( '%2$s', formatDuration( operation.elapsed_seconds ) ) + ' ' + DKBCE.review.message + ' ' );
+		const link = historyElement( 'a', DKBCE.review.link );
+		link.href = 'https://wordpress.org/support/plugin/bulk-cogs-editor-for-woocommerce/reviews/?filter=5#new-post';
+		link.target = '_blank';
+		link.rel = 'noopener noreferrer';
+		message.appendChild( link );
+		const dismiss = historyElement( 'button', '', 'notice-dismiss' );
+		dismiss.type = 'button';
+		dismiss.setAttribute( 'aria-label', DKBCE.review.dismiss );
+		dismiss.addEventListener( 'click', async () => {
+			dismiss.disabled = true;
+			try {
+				await request( 'dismiss_review' );
+				DKBCE.reviewDismissed = true;
+				reviewNotice.remove();
+			} catch ( error ) {
+				dismiss.disabled = false;
+				setNotice( error.message, 'error' );
+			}
+		} );
+		reviewNotice.append( message, dismiss );
+		panel.appendChild( reviewNotice );
+	}
+
 	function renderOperation( operation, operationPanel = $( '#dkbce-operation' ), historyView = false ) {
 		const completionMessage = {
 			completed: DKBCE.i18n.completedStatus,
@@ -2788,6 +2821,7 @@
 			startAnother.disabled = isOperationRunning() || state.busy || state.loadingPage;
 			nextActions.appendChild( startAnother );
 			operationPanel.appendChild( nextActions );
+			if ( ! historyView ) { appendReviewNotice( operation, operationPanel ); }
 
 		}
 		if ( focusedControl ) { operationPanel.querySelector( '[data-operation-control="' + focusedControl + '"]' )?.focus(); }
