@@ -1,6 +1,6 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
-Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
+Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit cogs, product cost manager
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
