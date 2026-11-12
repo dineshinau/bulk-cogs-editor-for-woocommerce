@@ -58,13 +58,7 @@ Bulk processing reduces repeated product searches and counts. It loads reusable 
 
 The plugin saves progress checkpoints and each product's result to support recovery after interruptions. Costs are saved through WooCommerce's product APIs, preserving its hooks and cache handling.
 
-In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
-
-The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
-
-The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
-
-Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
+All updates can be started and monitored from the WordPress dashboard, including on shared hosting. WP-CLI is not required. For larger catalogs, such as more than 5,000 or 10,000 SKUs, an optional WP-CLI runner may help updates finish sooner. See Installation for details; any speed improvement depends on your hosting and workload.
 
 = Import and export product costs with CSV or Excel =
 
@@ -111,38 +105,6 @@ Operation history and original cost records follow the retention period set in S
 
 The plugin also keeps records that prevent the same preview from being applied more than once, including simultaneous Apply requests. These records follow the configured retention period and are removed only when they are no longer needed.
 
-= Run background updates with WP-CLI =
-
-Use Action Scheduler's CLI runner for import preview preparation and confirmed updates while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
-
-Import preview workers must run on the upload server under the same operating-system account as PHP. This lets them read the private temporary uploads.
-
-If your shell uses a different account, ask your host to run the command under PHP's account. Ordinary product updates do not need the uploaded file.
-
-During preparation, worker logs show the stage, checked row count, and batch size. Total and remaining row counts become available after reading finishes.
-
-After uploading an import for preview or confirming an update in the editor, run this command from your WordPress directory:
-
-`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
-
-Check the queue with:
-
-`wp action-scheduler status --group=bulk-cogs-editor`
-
-The status report covers the site's full Action Scheduler queue.
-
-The run command processes due plugin actions for all users and exits when none remain. It does not wait for scheduled retries. `--batch-size` counts scheduled actions, not products.
-
-If another worker owns the available batch, wait for it to finish or run:
-
-`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0 --force`
-
-The plugin prevents two workers from changing the same operation simultaneously. Using `--force` can still increase server load.
-
-Keep the normal background runner enabled for retries. If your host runs the command on a schedule, use a process lock to prevent overlapping command runs.
-
-For performance checks, prefix the command with `time`. WooCommerce > Status > Logs under source `dkbce` records worker timing and runner details.
-
 = Requirements =
 
 * WordPress 6.7 or later
@@ -175,6 +137,50 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 3. Make sure the Cost of Goods Sold feature is enabled in WooCommerce settings.
 4. Go to Products > Bulk COGS Editor in the WordPress admin menu.
 5. Filter your products, choose an action, preview the changes, then confirm to apply them.
+
+= Optional: run large updates with WP-CLI =
+
+The plugin works from the WordPress dashboard on shared hosting without enabling or installing WP-CLI. WooCommerce's normal background runner handles the work.
+
+For larger catalogs, such as more than 5,000 or 10,000 SKUs, you can optionally use Action Scheduler's CLI runner for import preview preparation and confirmed updates while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
+
+If you choose to use WP-CLI, import preview workers must run on the upload server under the same operating-system account as PHP. This lets them read the private temporary uploads.
+
+If your shell uses a different account, ask your host to run the command under PHP's account. Ordinary product updates do not need the uploaded file.
+
+During preparation, worker logs show the stage, checked row count, and batch size. Total and remaining row counts become available after reading finishes.
+
+After uploading an import for preview or confirming an update in the editor, run this command from your WordPress directory:
+
+`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0`
+
+Check the queue with:
+
+`wp action-scheduler status --group=bulk-cogs-editor`
+
+The status report covers the site's full Action Scheduler queue.
+
+The run command processes due plugin actions for all users and exits when none remain. It does not wait for scheduled retries. `--batch-size` counts scheduled actions, not products.
+
+If another worker owns the available batch, wait for it to finish or run:
+
+`wp action-scheduler run --group=bulk-cogs-editor --batch-size=1 --batches=0 --force`
+
+The plugin prevents two workers from changing the same operation simultaneously. Using `--force` can still increase server load.
+
+Keep the normal background runner enabled for retries. If your host runs the command on a schedule, use a process lock to prevent overlapping command runs.
+
+For performance checks, prefix the command with `time`. WooCommerce > Status > Logs under source `dkbce` records worker timing and runner details.
+
+= Reported performance for large catalogs =
+
+In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
+
+The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
+
+The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
+
+Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
 == Frequently Asked Questions ==
 
