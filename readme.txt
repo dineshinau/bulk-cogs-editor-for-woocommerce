@@ -4,7 +4,7 @@ Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,9 @@ https://youtu.be/K-zo4dw7og4
 2. Choose your filters and find the matching products.
 3. Choose a cost action, review the preview, and select the products to update.
 4. Review and confirm the update, then follow its results in the editor.
+
+= Quick 60-Second Demo - YouTube Short Video =
+https://www.youtube.com/shorts/Pxtvi0YbDRw
 
 = Features =
 
