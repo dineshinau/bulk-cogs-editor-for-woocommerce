@@ -45,6 +45,10 @@ class DKBCE_History_Controller {
 			'policyHelp'          => __( 'Applies to new rollbacks. The chosen behavior is shown during review and remains fixed while the rollback runs.', 'bulk-cogs-editor-for-woocommerce' ),
 			'skipWarning'         => __( 'Rollback restores original costs only when current costs still match the values saved by this operation. Products changed afterward or deleted will be skipped. Costs are checked again during processing.', 'bulk-cogs-editor-for-woocommerce' ),
 			'skipConfirm'         => __( 'I understand that rollback restores original costs and skips products whose costs changed afterward.', 'bulk-cogs-editor-for-woocommerce' ),
+			'healthNotice'        => __( 'COGS health notice', 'bulk-cogs-editor-for-woocommerce' ),
+			'healthPlugin'        => __( 'Only on Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ),
+			'healthSite'          => __( 'Site wide (all admin screens)', 'bulk-cogs-editor-for-woocommerce' ),
+			'healthHelp'          => __( 'Checks published products and variations in the background. Counts are cached for one hour. Missing costs take priority over costs above the current selling price. Dismissal lasts one hour.', 'bulk-cogs-editor-for-woocommerce' ),
 			'settings'            => __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ),
 			'retention'           => __( 'History retention', 'bulk-cogs-editor-for-woocommerce' ),
 			'retentionHelp'       => __( 'Keep operation history and original costs for this many days after completion. Expired history is deleted automatically and cannot be rolled back. Reducing this period also applies to existing history.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -596,10 +600,15 @@ class DKBCE_History_Controller {
 			if ( ! in_array( $mode, array( 'keep', 'none' ), true ) ) {
 				wp_send_json_error( array( 'message' => __( 'Choose a valid rollback mode.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 			}
+			$scope = $this->input( 'health_notice_scope', DKBCE_Health_Notice::scope() );
+			if ( ! in_array( $scope, array( 'plugin', 'site' ), true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Choose a valid COGS notice location.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+			}
+			update_option( 'dkbce_health_notice_scope', $scope, false );
 			update_option( 'dkbce_rollback_mode', $mode, false );
 			update_option( 'dkbce_retention_days', (int) $days, false );
 			update_option( 'dkbce_rollback_policy', $policy, false );
-			if ( (int) get_option( 'dkbce_retention_days', 30 ) !== (int) $days || DKBCE_History_Store::rollback_policy() !== $policy || DKBCE_History_Store::rollback_mode() !== $mode ) {
+			if ( DKBCE_Health_Notice::scope() !== $scope || (int) get_option( 'dkbce_retention_days', 30 ) !== (int) $days || DKBCE_History_Store::rollback_policy() !== $policy || DKBCE_History_Store::rollback_mode() !== $mode ) {
 				wp_send_json_error( array( 'message' => __( 'Settings could not be saved. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 			}
 		}
@@ -607,6 +616,7 @@ class DKBCE_History_Controller {
 			array(
 				'dkbce_latest_operation' => get_user_meta( get_current_user_id(), 'dkbce_latest_operation', true ),
 				'dkbce_latest_import'    => get_user_meta( get_current_user_id(), 'dkbce_latest_import', true ),
+				'health_notice_scope'    => DKBCE_Health_Notice::scope(),
 				'days'                   => DKBCE_Retention_Processor::retention_seconds() / DAY_IN_SECONDS,
 				'rollback_policy'        => DKBCE_History_Store::rollback_policy(),
 				'rollback_mode'          => DKBCE_History_Store::rollback_mode(),

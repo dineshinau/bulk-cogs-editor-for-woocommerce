@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-12T20:36:23+00:00\n"
+"POT-Creation-Date: 2026-11-12T20:53:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:83
 #: admin/class-dkbce-admin-functions.php:547
-#: admin/class-dkbce-history-controller.php:48
+#: admin/class-dkbce-history-controller.php:52
 msgid "Settings"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:254
 #: admin/class-dkbce-admin-functions.php:645
-#: admin/class-dkbce-history-controller.php:114
+#: admin/class-dkbce-history-controller.php:118
 msgid "Clear cost"
 msgstr ""
 
@@ -438,7 +438,7 @@ msgid "Recent activity"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:258
-#: admin/class-dkbce-history-controller.php:75
+#: admin/class-dkbce-history-controller.php:79
 msgid "View details"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgid "Row"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:296
-#: admin/class-dkbce-history-controller.php:72
+#: admin/class-dkbce-history-controller.php:76
 msgid "Status"
 msgstr ""
 
@@ -723,13 +723,13 @@ msgid "ID"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:336
-#: admin/class-dkbce-history-controller.php:81
+#: admin/class-dkbce-history-controller.php:85
 msgid "Product"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:336
 #: admin/class-dkbce-admin-functions.php:453
-#: admin/class-dkbce-history-controller.php:82
+#: admin/class-dkbce-history-controller.php:86
 msgid "SKU"
 msgstr ""
 
@@ -746,7 +746,7 @@ msgid "New COGS"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:336
-#: admin/class-dkbce-history-controller.php:80
+#: admin/class-dkbce-history-controller.php:84
 msgid "Change"
 msgstr ""
 
@@ -799,7 +799,7 @@ msgid "Skipped"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:350
-#: admin/class-dkbce-history-controller.php:98
+#: admin/class-dkbce-history-controller.php:102
 msgid "Products updated"
 msgstr ""
 
@@ -1364,7 +1364,7 @@ msgid "Product filters"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:602
-#: admin/class-dkbce-history-controller.php:206
+#: admin/class-dkbce-history-controller.php:210
 msgid "Search"
 msgstr ""
 
@@ -1393,7 +1393,7 @@ msgid "More filters"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:620
-#: admin/class-dkbce-history-controller.php:210
+#: admin/class-dkbce-history-controller.php:214
 msgid "Stock status"
 msgstr ""
 
@@ -1422,7 +1422,7 @@ msgid "Price range (current price)"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:635
-#: admin/class-dkbce-history-controller.php:211
+#: admin/class-dkbce-history-controller.php:215
 msgid "Minimum price"
 msgstr ""
 
@@ -1431,7 +1431,7 @@ msgid "Min price"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:635
-#: admin/class-dkbce-history-controller.php:212
+#: admin/class-dkbce-history-controller.php:216
 msgid "Maximum price"
 msgstr ""
 
@@ -1444,7 +1444,7 @@ msgid "Current COGS range"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:636
-#: admin/class-dkbce-history-controller.php:213
+#: admin/class-dkbce-history-controller.php:217
 msgid "Minimum COGS"
 msgstr ""
 
@@ -1453,7 +1453,7 @@ msgid "Min COGS"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:636
-#: admin/class-dkbce-history-controller.php:214
+#: admin/class-dkbce-history-controller.php:218
 msgid "Maximum COGS"
 msgstr ""
 
@@ -1474,7 +1474,7 @@ msgid "Update action"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:645
-#: admin/class-dkbce-history-controller.php:113
+#: admin/class-dkbce-history-controller.php:117
 msgid "Set exact cost"
 msgstr ""
 
@@ -1578,7 +1578,7 @@ msgstr ""
 #: admin/class-dkbce-admin-functions.php:849
 #: admin/class-dkbce-admin-functions.php:1133
 #: admin/class-dkbce-admin-functions.php:1176
-#: admin/class-dkbce-history-controller.php:143
+#: admin/class-dkbce-history-controller.php:147
 msgid "You do not have permission to manage product COGS."
 msgstr ""
 
@@ -1679,7 +1679,7 @@ msgstr ""
 #: admin/class-dkbce-admin-functions.php:2130
 #: admin/class-dkbce-admin-functions.php:2134
 #: admin/class-dkbce-admin-functions.php:2156
-#: admin/class-dkbce-history-controller.php:169
+#: admin/class-dkbce-history-controller.php:173
 msgid "This operation is unavailable."
 msgstr ""
 
@@ -1736,7 +1736,7 @@ msgid "A reviewed product changed after this preview. Refresh the preview, revie
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:1865
-#: admin/class-dkbce-history-controller.php:597
+#: admin/class-dkbce-history-controller.php:601
 msgid "Choose a valid rollback mode."
 msgstr ""
 
@@ -1792,7 +1792,7 @@ msgid "The selected product list is invalid."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:2083
-#: admin/class-dkbce-history-controller.php:522
+#: admin/class-dkbce-history-controller.php:526
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
@@ -1839,7 +1839,7 @@ msgid "Not processed before the operation stopped."
 msgstr ""
 
 #: admin/class-dkbce-bulk-processor.php:821
-#: admin/class-dkbce-history-controller.php:344
+#: admin/class-dkbce-history-controller.php:348
 msgid "Product no longer exists."
 msgstr ""
 
@@ -1985,6 +1985,30 @@ msgstr ""
 msgid "The download queue stopped."
 msgstr ""
 
+#. translators: %s: number of products and variations without a cost.
+#: admin/class-dkbce-health-notice.php:66
+#, php-format
+msgid "%s product or variation is missing a COGS value."
+msgid_plural "%s products and variations are missing COGS values."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: number of products and variations with costs above their selling price.
+#: admin/class-dkbce-health-notice.php:69
+#, php-format
+msgid "%s product or variation has a COGS value above its current selling price."
+msgid_plural "%s products and variations have COGS values above their current selling prices."
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/class-dkbce-health-notice.php:71
+msgid "Review in Bulk COGS Editor"
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:72
+msgid "Counts refresh hourly. Dismiss to hide this notice for one hour."
+msgstr ""
+
 #: admin/class-dkbce-history-controller.php:30
 msgid "Default rollback mode"
 msgstr ""
@@ -2057,394 +2081,414 @@ msgstr ""
 msgid "I understand that rollback restores original costs and skips products whose costs changed afterward."
 msgstr ""
 
+#: admin/class-dkbce-history-controller.php:48
+msgid "COGS health notice"
+msgstr ""
+
 #: admin/class-dkbce-history-controller.php:49
-msgid "History retention"
+msgid "Only on Bulk COGS Editor"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:50
-msgid "Keep operation history and original costs for this many days after completion. Expired history is deleted automatically and cannot be rolled back. Reducing this period also applies to existing history."
+msgid "Site wide (all admin screens)"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:51
-msgid "30 days"
-msgstr ""
-
-#: admin/class-dkbce-history-controller.php:52
-msgid "90 days"
+msgid "Checks published products and variations in the background. Counts are cached for one hour. Missing costs take priority over costs above the current selling price. Dismissal lasts one hour."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:53
-msgid "Custom days"
+msgid "History retention"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:54
-msgid "Days"
+msgid "Keep operation history and original costs for this many days after completion. Expired history is deleted automatically and cannot be rolled back. Reducing this period also applies to existing history."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:55
-msgid "Save settings"
+msgid "30 days"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:56
-msgid "Force clear current operation"
+msgid "90 days"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:57
-msgid "Warning: Use this only when your operation is stuck and normal cancellation does not work. This deletes your saved current operation and import references and requests cancellation. An active worker may continue briefly. Costs already changed are not restored. History and rollback data are kept. Check operation history before starting another update."
+msgid "Custom days"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:58
-msgid "Force clear your current operation and import references? This cannot undo cost changes or immediately stop an active worker."
+msgid "Days"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:59
-msgid "Settings saved."
+msgid "Save settings"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:60
-msgid "Filter"
+msgid "Force clear current operation"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:61
-msgid "All statuses"
+msgid "Warning: Use this only when your operation is stuck and normal cancellation does not work. This deletes your saved current operation and import references and requests cancellation. An active worker may continue briefly. Costs already changed are not restored. History and rollback data are kept. Check operation history before starting another update."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:62
-msgid "All operation types"
+msgid "Force clear your current operation and import references? This cannot undo cost changes or immediately stop an active worker."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:63
-msgid "All users"
+msgid "Settings saved."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:64
-msgid "User ID"
+msgid "Filter"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:65
-msgid "From date"
+msgid "All statuses"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:66
-msgid "To date"
+msgid "All operation types"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:67
-msgid "Search by operation ID, note, or product ID"
+msgid "All users"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:68
-msgid "Operation ID"
+msgid "User ID"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:69
-msgid "Date & time"
+msgid "From date"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:70
-msgid "Operation type"
+msgid "To date"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:71
-msgid "Products"
+msgid "Search by operation ID, note, or product ID"
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:72
+msgid "Operation ID"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:73
-msgid "User"
+msgid "Date & time"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:74
-msgid "Note / description"
+msgid "Operation type"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:76
-msgid "Old COGS (original)"
+#: admin/class-dkbce-history-controller.php:75
+msgid "Products"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:77
-msgid "New COGS (after operation)"
+msgid "User"
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:78
+msgid "Note / description"
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:80
+msgid "Old COGS (original)"
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:81
+msgid "New COGS (after operation)"
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:82
 msgid "Current COGS (now)"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:79
+#: admin/class-dkbce-history-controller.php:83
 msgid "Rollback to (original)"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:83
+#: admin/class-dkbce-history-controller.php:87
 msgid "Back to history"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:84
+#: admin/class-dkbce-history-controller.php:88
 msgid "Back to product changes"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:85
+#: admin/class-dkbce-history-controller.php:89
 msgid "Confirm rollback"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:86
+#: admin/class-dkbce-history-controller.php:90
 msgid "Rollback restores the original costs shown in this review. Later changes will be overwritten. Deleted products cannot be restored."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:87
+#: admin/class-dkbce-history-controller.php:91
 msgid "Rollback is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:88
+#: admin/class-dkbce-history-controller.php:92
 msgid "No operations found."
 msgstr ""
 
 #. translators: %1$d: products with retained original costs, %2$d: successful products in the operation.
-#: admin/class-dkbce-history-controller.php:90
+#: admin/class-dkbce-history-controller.php:94
 #, php-format
 msgid "Original values are available for %1$d of %2$d successful products. Only products with recorded original values can be rolled back."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:91
+#: admin/class-dkbce-history-controller.php:95
 msgid "No recorded product changes. Older operations have summary history only."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:92
+#: admin/class-dkbce-history-controller.php:96
 msgid "Indexing older operation history…"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:93
+#: admin/class-dkbce-history-controller.php:97
 msgid "Show entries"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:94
+#: admin/class-dkbce-history-controller.php:98
 msgid "Previous page"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:95
+#: admin/class-dkbce-history-controller.php:99
 msgid "Next page"
 msgstr ""
 
 #. translators: %1$d: current page, %2$d: total pages, %3$d: total entries.
-#: admin/class-dkbce-history-controller.php:97
+#: admin/class-dkbce-history-controller.php:101
 #, php-format
 msgid "Page %1$d of %2$d · %3$d entries"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:99
+#: admin/class-dkbce-history-controller.php:103
 msgid "Started at"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:100
+#: admin/class-dkbce-history-controller.php:104
 msgid "Completed at"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:101
+#: admin/class-dkbce-history-controller.php:105
 msgid "Duration"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:102
+#: admin/class-dkbce-history-controller.php:106
 msgid "Filters used"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:103
+#: admin/class-dkbce-history-controller.php:107
 msgid "None"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:104
+#: admin/class-dkbce-history-controller.php:108
 msgid "Rounding"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:105
+#: admin/class-dkbce-history-controller.php:109
 msgid "WooCommerce cost precision"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:106
-#: admin/class-dkbce-history-controller.php:120
+#: admin/class-dkbce-history-controller.php:110
+#: admin/class-dkbce-history-controller.php:124
 msgid "Rollback"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:107
+#: admin/class-dkbce-history-controller.php:111
 msgid "Optional note for this operation"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:108
+#: admin/class-dkbce-history-controller.php:112
 msgid "I understand that rollback restores original costs and may overwrite later changes."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:109
+#: admin/class-dkbce-history-controller.php:113
 msgid "View rollback operation"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:110
+#: admin/class-dkbce-history-controller.php:114
 msgid "Loading…"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:111
+#: admin/class-dkbce-history-controller.php:115
 msgid "Cancel rollback"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:115
+#: admin/class-dkbce-history-controller.php:119
 msgid "Percentage increase"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:116
+#: admin/class-dkbce-history-controller.php:120
 msgid "Percentage decrease"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:117
+#: admin/class-dkbce-history-controller.php:121
 msgid "Fixed increase"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:118
+#: admin/class-dkbce-history-controller.php:122
 msgid "Fixed decrease"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:119
+#: admin/class-dkbce-history-controller.php:123
 msgid "CSV import"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:123
+#: admin/class-dkbce-history-controller.php:127
 msgid "Queued"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:124
+#: admin/class-dkbce-history-controller.php:128
 msgid "Processing"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:125
+#: admin/class-dkbce-history-controller.php:129
 msgid "Completed"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:126
+#: admin/class-dkbce-history-controller.php:130
 msgid "Partially completed"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:127
+#: admin/class-dkbce-history-controller.php:131
 msgid "Failed"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:128
+#: admin/class-dkbce-history-controller.php:132
 msgid "Cancelled"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:140
+#: admin/class-dkbce-history-controller.php:144
 msgid "Your session expired. Reload this page."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:188
+#: admin/class-dkbce-history-controller.php:192
 msgid "Deleted user"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:207
+#: admin/class-dkbce-history-controller.php:211
 msgid "Categories"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:208
+#: admin/class-dkbce-history-controller.php:212
 msgid "Brands"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:209
+#: admin/class-dkbce-history-controller.php:213
 msgid "Product types"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:264
+#: admin/class-dkbce-history-controller.php:268
 msgid "Enter a valid date range."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:270
+#: admin/class-dkbce-history-controller.php:274
 msgid "The start date must come before the end date."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:327
+#: admin/class-dkbce-history-controller.php:331
 msgid "Deleted product"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:340
+#: admin/class-dkbce-history-controller.php:344
 msgid "COGS changed after the original operation. The product will be skipped."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:353
+#: admin/class-dkbce-history-controller.php:357
 msgid "Rollback history was disabled for this operation. Original costs and detailed product changes are unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:356
+#: admin/class-dkbce-history-controller.php:360
 msgid "This operation is still running. Review rollback after it finishes."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:359
+#: admin/class-dkbce-history-controller.php:363
 msgid "A rollback operation cannot itself be rolled back."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:364
+#: admin/class-dkbce-history-controller.php:368
 msgid "The history retention period has expired. Rollback is no longer available."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:366
+#: admin/class-dkbce-history-controller.php:370
 msgid "History cleanup has been scheduled or started. Original costs are no longer available for rollback."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:369
+#: admin/class-dkbce-history-controller.php:373
 msgid "No recorded product changes remain available for rollback. View the existing rollback operation for its results."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:370
+#: admin/class-dkbce-history-controller.php:374
 msgid "This operation has no retained original costs available for rollback."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:373
+#: admin/class-dkbce-history-controller.php:377
 msgid "A rollback is already in progress. View the rollback operation to check its status."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:421
-#: admin/class-dkbce-history-controller.php:459
+#: admin/class-dkbce-history-controller.php:425
+#: admin/class-dkbce-history-controller.php:463
 msgid "Review this rollback again before confirming."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:450
+#: admin/class-dkbce-history-controller.php:454
 msgid "COGS or background processing is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:454
+#: admin/class-dkbce-history-controller.php:458
 msgid "This operation is busy. Please try again shortly."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:469
+#: admin/class-dkbce-history-controller.php:473
 msgid "The remaining rollback scope changed. Review it again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:511
+#: admin/class-dkbce-history-controller.php:515
 msgid "The rollback claim could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:541
-#: admin/class-dkbce-history-controller.php:584
+#: admin/class-dkbce-history-controller.php:545
+#: admin/class-dkbce-history-controller.php:588
 msgid "You do not have permission to manage these settings."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:544
+#: admin/class-dkbce-history-controller.php:548
 msgid "Confirm the warning before clearing the current operation."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:552
+#: admin/class-dkbce-history-controller.php:556
 msgid "Your current operation changed. Reload this page before clearing it."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:564
+#: admin/class-dkbce-history-controller.php:568
 msgid "Cancellation could not be saved. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:570
+#: admin/class-dkbce-history-controller.php:574
 msgid "The operation could not be cleared. Please reload this page and try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:589
+#: admin/class-dkbce-history-controller.php:593
 msgid "Enter a retention period between 1 and 36,500 days."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:593
+#: admin/class-dkbce-history-controller.php:597
 msgid "Choose a valid rollback behavior."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:603
+#: admin/class-dkbce-history-controller.php:605
+msgid "Choose a valid COGS notice location."
+msgstr ""
+
+#: admin/class-dkbce-history-controller.php:612
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 

@@ -569,7 +569,10 @@
 	const policyHelp = historyElement( 'p', historyText.policyHelp, 'description' );
 	policyHelp.id = 'dkbce-policy-help';
 	policyGroup.append( rollbackPolicy, policyHelp );
-	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, saveSettings );
+	const healthNoticeScope = historySelect( [ [ 'plugin', historyText.healthPlugin ], [ 'site', historyText.healthSite ] ], 'plugin' );
+	const healthNoticeField = historyField( historyText.healthNotice, healthNoticeScope );
+	healthNoticeField.appendChild( historyElement( 'p', historyText.healthHelp, 'description' ) );
+	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, healthNoticeField, saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
@@ -617,6 +620,7 @@
 			clearReferences = { dkbce_latest_operation: data.dkbce_latest_operation, dkbce_latest_import: data.dkbce_latest_import };
 			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			savedRetentionDays = Number( data.days );
+			healthNoticeScope.value = data.health_notice_scope;
 			rollbackPolicy.value = data.rollback_policy;
 			defaultRollbackMode = data.rollback_mode;
 			Object.entries( rollbackModes ).forEach( ( [ mode, input ] ) => { input.checked = mode === defaultRollbackMode; } );
@@ -629,7 +633,7 @@
 		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
 		if ( savedRetentionDays !== null && Number( retentionDays.value ) < savedRetentionDays && ! window.confirm( ux.retentionConfirm ) ) { return; }
 		saveSettings.disabled = true;
-		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
+		try { await request( 'settings', { save: '1', health_notice_scope: healthNoticeScope.value, days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
 		catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
 		finally { saveSettings.disabled = false; }
 	} );

@@ -1,0 +1,1 @@
+document.addEventListener("click",e=>{if(!e.target.closest("#dkbce-health-notice .notice-dismiss"))return;const t=new FormData;t.append("action","dkbce_dismiss_health"),t.append("nonce",DKBCEHealth.nonce),fetch(DKBCEHealth.url,{method:"POST",credentials:"same-origin",body:t,keepalive:!0}).catch(()=>{})},!0);
