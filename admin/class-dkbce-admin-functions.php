@@ -80,7 +80,7 @@ class DKBCE_Admin_Functions {
 	 * @return array
 	 */
 	public function plugin_action_links( array $links ): array {
-		$settings_link = '<a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor' ) ) . '">' . __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor&tab=settings' ) ) . '">' . __( 'Settings', 'bulk-cogs-editor-for-woocommerce' ) . '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
 	}

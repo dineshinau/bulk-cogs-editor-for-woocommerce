@@ -24,6 +24,7 @@
 	const progressPollInterval = ( total ) => Number( total ) > 0 && Number( total ) < 1000 ? 10000 : 25000;
 	let operationPollInterval = progressPollInterval();
 	const ux = DKBCE.ux;
+	let tabNavigationReady = false;
 	const state = {
 		mode: 'bulk',
 		editorMode: 'bulk',
@@ -733,6 +734,7 @@
 		$( '.dkbce-apply-section' ).hidden = extra;
 		if ( [ 'presets', 'settings' ].includes( state.mode ) ) { historyProgress.appendChild( operationPanel ); }
 		updateOperationControls();
+		if ( tabNavigationReady ) { syncTabURL( state.mode ); }
 	}
 
 	async function previewCSV() {
@@ -1030,28 +1032,43 @@
 		}
 	}
 
+	function tabFromURL() {
+		const tab = new URL( window.location.href ).searchParams.get( 'tab' );
+		return [ ...document.querySelectorAll( '[data-dkbce-mode]' ) ].some( ( button ) => button.dataset.dkbceMode === tab ) ? tab : 'bulk';
+	}
+
+	function syncTabURL( mode, method = 'replaceState' ) {
+		const url = new URL( window.location.href );
+		url.searchParams.set( 'tab', mode );
+		if ( mode !== 'history' && new URLSearchParams( url.hash.slice( 1 ) ).has( 'dkbce-operation' ) ) { url.hash = ''; }
+		if ( url.href !== window.location.href ) { window.history[ method ]( window.history.state, '', url ); }
+	}
+
+	function switchTab( nextMode, method = 'pushState' ) {
+		if ( state.busy || state.loadingPage || presetBusy ) {
+			syncTabURL( state.mode );
+			return;
+		}
+		if ( editedPreset ) { closePresetEditor(); }
+		window.clearTimeout( historyState.pollTimer );
+		window.clearTimeout( state.previewTimer );
+		syncTabURL( nextMode, method );
+		state.mode = nextMode;
+		if ( [ 'bulk', 'csv' ].includes( nextMode ) && nextMode !== state.editorMode ) {
+			state.editorMode = nextMode;
+			resetSelection();
+			invalidatePreview( true, true );
+		}
+		updateCSVMode();
+		if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
+		if ( state.mode === 'settings' ) { loadSettings(); }
+		if ( state.mode === 'presets' ) { loadPresetTable(); }
+	}
+
 	document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
-		button.addEventListener( 'click', () => {
-			if ( state.busy || state.loadingPage ) {
-				return;
-			}
-			if ( presetBusy ) { return; }
-			if ( editedPreset ) { closePresetEditor(); }
-			const nextMode = button.dataset.dkbceMode;
-			window.clearTimeout( historyState.pollTimer );
-			window.clearTimeout( state.previewTimer );
-			state.mode = nextMode;
-			if ( [ 'bulk', 'csv' ].includes( nextMode ) && nextMode !== state.editorMode ) {
-				state.editorMode = nextMode;
-				resetSelection();
-				invalidatePreview( true, true );
-			}
-			updateCSVMode();
-			if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
-			if ( state.mode === 'settings' ) { loadSettings(); }
-			if ( state.mode === 'presets' ) { loadPresetTable(); }
-		} );
+		button.addEventListener( 'click', () => switchTab( button.dataset.dkbceMode ) );
 	} );
+	window.addEventListener( 'popstate', () => switchTab( tabFromURL(), 'replaceState' ) );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
 		input.addEventListener( 'change', () => {
 			invalidatePreview( true, true );
@@ -3282,5 +3299,11 @@
 	editActions.append( updatePreset, historyButton( ux.cancelPreset, () => { if ( ! presetBusy ) { closePresetEditor(); } } ) );
 
 	const linkedOperation = new URLSearchParams( window.location.hash.slice( 1 ) ).get( 'dkbce-operation' );
-	if ( linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation ) ) { openHistoryOperation( linkedOperation ); }
+	const hasLinkedOperation = linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation );
+	const hasTab = new URL( window.location.href ).searchParams.has( 'tab' );
+	tabNavigationReady = true;
+	if ( hasTab ) { switchTab( tabFromURL(), 'replaceState' ); }
+	else if ( hasLinkedOperation ) { switchTab( 'history', 'replaceState' ); }
+	else { syncTabURL( state.mode ); }
+	if ( hasLinkedOperation && state.mode === 'history' ) { openHistoryOperation( linkedOperation ); }
 } )();
