@@ -1248,6 +1248,25 @@
 			} );
 	}
 
+	const enableCogsButton = $( '#dkbce-enable-cogs' );
+	if ( enableCogsButton ) {
+		enableCogsButton.addEventListener( 'click', async () => {
+			const status = $( '#dkbce-enable-cogs-status' );
+			enableCogsButton.disabled = true;
+			enableCogsButton.setAttribute( 'aria-busy', 'true' );
+			status.hidden = true;
+			try {
+				await request( 'enable_cogs' );
+				window.location.reload();
+			} catch ( error ) {
+				status.textContent = error.message;
+				status.hidden = false;
+				enableCogsButton.disabled = false;
+				enableCogsButton.removeAttribute( 'aria-busy' );
+			}
+		} );
+	}
+
 	function selectedFilterValues( selector ) {
 		const select = $( selector );
 		return select ? Array.from( select.selectedOptions, ( option ) => option.value )

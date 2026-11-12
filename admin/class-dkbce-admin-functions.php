@@ -505,23 +505,27 @@ class DKBCE_Admin_Functions {
 				</div></details>
 			</header>
 			<hr class="wp-header-end">
-			<?php if ( ! $available ) : ?>
+			<?php if ( ! $available || ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '10.3', '<' ) ) ) : ?>
 				<div class="notice notice-error"><p>
-				<?php
-					printf(
-						wp_kses(
-							/* translators: %1$s: URL to the WooCommerce Features settings page. */
-							__( 'WooCommerce Cost of Goods Sold is unavailable or disabled. Update WooCommerce to a version with the supported COGS product API and enable Cost of Goods Sold in <a href="%1$s">WooCommerce Features settings</a> before using this editor.', 'bulk-cogs-editor-for-woocommerce' ),
-							array(
-								'a' => array(
-									'href' => array(),
-								),
-							)
-						),
-						esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=features' ) )
-					);
-				?>
-				</p></div>
+					<?php if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '10.3', '<' ) ) : ?>
+						<?php esc_html_e( 'Bulk COGS Editor requires WooCommerce 10.3 or later. Update WooCommerce to use this editor.', 'bulk-cogs-editor-for-woocommerce' ); ?>
+						<?php if ( current_user_can( 'update_plugins' ) ) : ?>
+							<a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=woocommerce%2Fwoocommerce.php' ), 'upgrade-plugin_woocommerce/woocommerce.php' ) ); ?>"><?php esc_html_e( 'Update Now', 'bulk-cogs-editor-for-woocommerce' ); ?></a>
+						<?php else : ?>
+							<?php esc_html_e( 'Ask an administrator to update WooCommerce.', 'bulk-cogs-editor-for-woocommerce' ); ?>
+						<?php endif; ?>
+					<?php elseif ( $this->can_enable_cogs() ) : ?>
+						<?php esc_html_e( 'WooCommerce Cost of Goods Sold is disabled. Enable the feature to use this editor.', 'bulk-cogs-editor-for-woocommerce' ); ?>
+						<?php if ( current_user_can( 'manage_woocommerce' ) ) : ?>
+							<button type="button" class="button button-primary" id="dkbce-enable-cogs"><?php esc_html_e( 'Enable Cost of Goods Sold', 'bulk-cogs-editor-for-woocommerce' ); ?></button>
+						<?php else : ?>
+							<?php esc_html_e( 'Ask an administrator to enable Cost of Goods Sold.', 'bulk-cogs-editor-for-woocommerce' ); ?>
+						<?php endif; ?>
+					<?php else : ?>
+						<?php esc_html_e( 'The supported WooCommerce Cost of Goods Sold API is unavailable. Check your WooCommerce installation and Features settings.', 'bulk-cogs-editor-for-woocommerce' ); ?>
+					<?php endif; ?>
+					<a href="<?php echo esc_url( 'https://woocommerce.com/document/woocommerce-cost-of-goods-sold-cogs/' ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Cost of Goods Sold documentation', 'bulk-cogs-editor-for-woocommerce' ); ?></a>
+				</p><p id="dkbce-enable-cogs-status" role="status" hidden></p></div>
 			<?php endif; ?>
 			<div id="dkbce-alert" class="notice" hidden role="status"><p></p></div>
 
@@ -769,6 +773,45 @@ class DKBCE_Admin_Functions {
 		} catch ( Throwable $exception ) {
 			wp_send_json_error( array( 'message' => __( 'Could not manage presets. Please try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
 		}
+	}
+
+	/**
+	 * Whether this installation supports enabling the COGS feature.
+	 *
+	 * @return bool
+	 */
+	private function can_enable_cogs() {
+		return defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '10.3', '>=' )
+			&& method_exists( 'WC_Product', 'get_cogs_value' )
+			&& method_exists( 'WC_Product', 'set_cogs_value' )
+			&& function_exists( 'wc_get_container' )
+			&& class_exists( '\\Automattic\\WooCommerce\\Internal\\Features\\FeaturesController' )
+			&& isset( wc_get_container()->get( \Automattic\WooCommerce\Internal\Features\FeaturesController::class )->get_features( true )['cost_of_goods_sold'] );
+	}
+
+	/**
+	 * Enable WooCommerce COGS after an authorized, explicit request.
+	 *
+	 * @return void
+	 */
+	public function ajax_enable_cogs() {
+		if ( false === check_ajax_referer( self::NONCE, 'nonce', false ) ) {
+			$this->send_nonce_error();
+		}
+		if ( ! current_user_can( 'manage_woocommerce' ) || ! current_user_can( 'edit_others_products' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to enable WooCommerce features.', 'bulk-cogs-editor-for-woocommerce' ) ), 403 );
+		}
+		if ( ! $this->can_enable_cogs() ) {
+			wp_send_json_error( array( 'message' => __( 'Update WooCommerce to a supported version before enabling Cost of Goods Sold.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
+		}
+		$features = wc_get_container()->get( \Automattic\WooCommerce\Internal\Features\FeaturesController::class );
+		if ( ! $features->feature_is_enabled( 'cost_of_goods_sold' ) ) {
+			$features->change_feature_enable( 'cost_of_goods_sold', true );
+		}
+		if ( ! $features->feature_is_enabled( 'cost_of_goods_sold' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Cost of Goods Sold could not be enabled. Try again in WooCommerce Features settings.', 'bulk-cogs-editor-for-woocommerce' ) ), 500 );
+		}
+		wp_send_json_success();
 	}
 
 	/**
