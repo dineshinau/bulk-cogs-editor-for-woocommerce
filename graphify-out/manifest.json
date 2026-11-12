@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
-    "mtime": 1794515492.974959,
-    "seen": 1794515524.7927468,
-    "ast_hash": "2d44ff1b684f3e137b61c9b093b3ffc7",
+    "mtime": 1794516419.7577243,
+    "seen": 1794516493.8806427,
+    "ast_hash": "a6c98a93c94e56ebfcac8c97bdfcfacf",
     "semantic_hash": ""
   },
   "admin/class-dkbce-autoloader.php": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-history-controller.php": {
-    "mtime": 1794436779.1129396,
-    "seen": 1794514395.9820824,
-    "ast_hash": "174a386ea836e65a452ba25f684eff20",
+    "mtime": 1794516419.7593448,
+    "seen": 1794516493.8806727,
+    "ast_hash": "586fe71223fc955309c92ee92151debb",
     "semantic_hash": ""
   },
   "admin/class-dkbce-history-store.php": {
@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794515492.9763196,
-    "seen": 1794515524.792813,
-    "ast_hash": "e3831406687ef200d1f1a5c8922253e6",
+    "mtime": 1794516419.7607164,
+    "seen": 1794516493.8807182,
+    "ast_hash": "b0f34fad20d8a35090e83f4e3ccbc5c2",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -192,9 +192,9 @@
     "semantic_hash": ""
   },
   "webpack.config.js": {
-    "mtime": 1792795931.2913215,
-    "seen": 1793111199.7868385,
-    "ast_hash": "34a05699174a551e9563daa75cd848ed",
+    "mtime": 1794516419.7586164,
+    "seen": 1794516493.8807495,
+    "ast_hash": "97498c248f8b49d4b65575c0847fffa4",
     "semantic_hash": ""
   },
   "README.md": {
@@ -381,6 +381,18 @@
     "mtime": 1794436779.108975,
     "seen": 1794514395.9822276,
     "ast_hash": "a8aed14757926b715a26406e31889d6e",
+    "semantic_hash": ""
+  },
+  "admin/class-dkbce-health-notice.php": {
+    "mtime": 1794516479.0677843,
+    "seen": 1794516493.8806694,
+    "ast_hash": "bf5ba096fa4ea34471eef54d77c56487",
+    "semantic_hash": ""
+  },
+  "src/cogs-health-notice.js": {
+    "mtime": 1794516419.7270732,
+    "seen": 1794516493.8807209,
+    "ast_hash": "8e1576108c65bc19278be81b2f1f75c2",
     "semantic_hash": ""
   }
 }

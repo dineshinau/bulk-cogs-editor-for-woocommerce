@@ -10,7 +10,7 @@
   "8": "DKBCE_Autoloader",
   "9": "ref_anthropic_ai_sdk",
   "10": "scripts",
-  "11": "DKBCE_History_Controller",
+  "11": "DKBCE_COGS_Service",
   "12": "DKBCE_Admin_Functions",
   "13": "Frequently asked questions",
   "14": "global-setup.cjs",
@@ -30,7 +30,8 @@
   "28": "Features",
   "29": "Saved filter presets",
   "30": "Settings",
-  "117": "DKBCE_COGS_Service",
+  "31": "cogs-health-notice.js",
+  "117": "DKBCE_Range_Query_Profiler",
   "135": "DKBCE_Bulk_Processor",
   "188": "DKBCE_Operation_Store"
 }
