@@ -9,7 +9,7 @@ Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient WooCommerce cost of goods management.
+Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, live previews, history, and rollback for efficient product cost updates.
 
 == Description ==
 
