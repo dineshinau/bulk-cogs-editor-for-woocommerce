@@ -178,7 +178,7 @@ For performance checks, prefix the command with `time`. WooCommerce > Status > L
 
 In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
 
-The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
+The [latest reported WP-CLI run](https://wpbydinesh.wordpress.com/bulk-cogs-editor-for-woocommerce-10000-product-costs-updated-in-15-minutes-24-seconds/) updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
 
 The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
 
