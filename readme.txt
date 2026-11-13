@@ -1,5 +1,6 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
+Donate link: https://wpbydinesh.wordpress.com/contact/
 Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit cogs, product cost manager
 Requires at least: 6.7
 Tested up to: 7.1
@@ -8,15 +9,15 @@ Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient product cost management.
+Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient WooCommerce cost of goods management.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
+**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing WooCommerce COGS with WooCommerce's native Cost of Goods Sold feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
 
 Save reusable presets for recurring supplier cost adjustments, import product costs from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
@@ -24,7 +25,7 @@ https://youtu.be/K-zo4dw7og4
 
 = Why use Bulk COGS Editor? =
 
-* **Save time on supplier price changes.** Update a category, brand, or selected group instead of editing products one by one.
+* **Save time on supplier price changes.** Keep WooCommerce cost of goods current for a category, brand, or selected group instead of editing products one by one.
 * **Work from your spreadsheet.** Bring supplier costs into your catalog or prepare updates from exported product data.
 * **Make informed changes.** Check the effect on product costs before committing an update.
 * **Keep a record of your work.** Identify past operations and decide whether eligible changes need to be reversed.
@@ -33,7 +34,7 @@ https://youtu.be/K-zo4dw7og4
 
 1. Open **Products > Bulk COGS Editor** and choose Bulk edit.
 2. Choose your filters and find the matching products.
-3. Choose a cost action, review the preview, and select the products to update.
+3. Choose a WooCommerce COGS action, review the preview, and select the products to update.
 4. Review and confirm the update, then follow its results in the editor.
 
 = Quick 60-Second Demo - YouTube Short Video =
@@ -43,7 +44,7 @@ https://www.youtube.com/shorts/Pxtvi0YbDRw
 
 * **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
 * Filter products and variations by category, brand, product type, stock status, current price, or current COGS.
-* Set an exact cost, increase or decrease it by a fixed amount or percentage, or clear it.
+* Set an exact WooCommerce cost of goods value, increase or decrease it by a fixed amount or percentage, or clear it.
 * Preview product images alongside current COGS, proposed COGS, and the exact difference, with pagination and product selection.
 * Process updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
 * Import CSV or XLSX costs using product IDs or SKUs, export matching costs to CSV, and download validation and update reports.
@@ -60,7 +61,7 @@ The plugin saves progress checkpoints and each product's result to support recov
 
 All updates can be started and monitored from the WordPress dashboard, including on shared hosting. WP-CLI is not required. For larger catalogs, such as more than 5,000 or 10,000 SKUs, an optional WP-CLI runner may help updates finish sooner. See Installation for details; any speed improvement depends on your hosting and workload.
 
-= Import and export product costs with CSV or Excel =
+= Import and export WooCommerce cost of goods with CSV or Excel =
 
 ### CSV and XLSX import
 
@@ -198,10 +199,10 @@ Update progress refreshes every 10 seconds for fewer than 1,000 selected items, 
 Errors and operation completion summaries remain logged. Detailed worker timings and routine per-product diagnostics are disabled by default. To enable them temporarily for troubleshooting or benchmarking, add `define( 'DKBCE_DIAGNOSTICS', true );` to wp-config.php. This does not change Query Monitor or other site-wide profiling settings.
 
 
-= How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
+= How do I bulk update WooCommerce COGS? =
 Use Bulk edit for one cost action across a selected group. Use CSV import when individual products need different values. The steps for both workflows appear above.
 
-= Can I import WooCommerce product costs from CSV or Excel? =
+= Can I import WooCommerce cost of goods from CSV or Excel? =
 Yes. Both formats support product IDs or SKUs. See the import section above for required columns, file requirements, and validation steps.
 
 = Can I export product costs and import updated values? =
