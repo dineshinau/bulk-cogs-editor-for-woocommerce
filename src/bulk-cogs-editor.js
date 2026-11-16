@@ -52,6 +52,8 @@
 		selectionFiltersChanged: false,
 		selectionRange: null,
 		busy: false,
+		inlineEditing: false,
+		overrideIds: new Set(),
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
 		operationStatus: '',
@@ -1429,6 +1431,8 @@
 			state.selectionPreviewId = state.previewId;
 		}
 		state.previewId = '';
+		state.inlineEditing = false;
+		state.overrideIds.clear();
 		state.reviewedIds.clear();
 		state.rows = [];
 		state.pageData = null;
@@ -1460,6 +1464,8 @@
 		state.selectionPreviewId = '';
 		state.selectionOperationId = '';
 		state.reusedSelection = false;
+		state.inlineEditing = false;
+		state.overrideIds.clear();
 		state.reviewedIds.clear();
 		state.excludedIds.clear();
 		state.selectedIds.clear();
@@ -1494,7 +1500,7 @@
 			: state.previewNeedsRefresh ? ( state.busy ? DKBCE.i18n.previewLoading : DKBCE.ui.stale + '. ' + DKBCE.ui.staleHelp ) : '';
 		refreshPreviewButton.hidden = state.loadingPage || ( state.busy && ! state.previewNeedsRefresh );
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
-		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
+		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input:not(#dkbce-csv-new-cogs), #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
 			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
@@ -1503,7 +1509,7 @@
 			input.disabled = running || state.busy || ! state.hasQuery || state.count === 0;
 		} );
 		[ rangeDirection, rangeCount, rangeButton ].forEach( ( input ) => {
-			input.disabled = running || state.busy || state.loadingPage || ! state.previewId;
+			input.disabled = running || state.busy || state.inlineEditing || state.loadingPage || ! state.previewId;
 		} );
 		rangeCount.disabled = rangeCount.disabled || rangeDirection.value === 'all';
 		rangeCount.max = String( Math.max( 1, state.count ) );
@@ -1542,12 +1548,14 @@
 		actionSection.classList.toggle( 'is-locked', ! hasProducts );
 		$( '.dkbce-workspace' ).classList.toggle( 'has-preview-rows', state.rows.length > 0 );
 		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
+		pageSizeSelect.disabled = state.busy || state.inlineEditing || state.loadingPage;
 		getButton.disabled = state.busy || running;
-		applyButton.disabled = running || state.busy || state.loadingPage ||
+		previewContent.querySelectorAll( '.dkbce-edit-cost' ).forEach( ( button ) => { button.disabled = running || state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ! state.previewId; } );
+		applyButton.disabled = running || state.busy || state.inlineEditing || state.loadingPage ||
 			! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
 			( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' && ! hasCSVIdentifierColumn() );
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
-			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
+			.forEach( ( input ) => { input.disabled = running || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
@@ -1722,6 +1730,90 @@
 		return cell;
 	}
 
+	function appendNewCostCell( row, item, value ) {
+		const cell = appendCell( row, value );
+		if ( csvMode() || item.status === 'browse' || isOperationRunning() || ! state.previewId ) { return; }
+		const edit = historyButton( '', () => openCostEditor( cell, item ) );
+		edit.classList.add( 'dkbce-edit-cost' );
+		edit.dataset.productId = String( item.id );
+		edit.setAttribute( 'aria-label', DKBCE.i18n.editCost + ': ' + item.name );
+		edit.title = DKBCE.i18n.editCost;
+		const icon = historyElement( 'span', '', 'dashicons dashicons-edit' );
+		icon.setAttribute( 'aria-hidden', 'true' );
+		edit.appendChild( icon );
+		cell.appendChild( edit );
+		if ( item.overridden ) { cell.appendChild( historyElement( 'small', DKBCE.i18n.customCost, 'dkbce-custom-cost' ) ); }
+	}
+
+	function openCostEditor( cell, item ) {
+		if ( state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || isOperationRunning() || ! state.previewId ) { return; }
+		state.inlineEditing = true;
+		const token = state.previewId;
+		const form = historyElement( 'form', '', 'dkbce-cost-editor' );
+		const label = historyElement( 'label', DKBCE.i18n.editCost );
+		const input = document.createElement( 'input' );
+		input.type = 'number';
+		input.min = '0';
+		input.step = String( Math.pow( 10, -DKBCE.decimals ) );
+		input.required = true;
+		input.value = item.status === 'success' ? ( item.new === null ? '0' : String( item.new ) ) : ( item.current === null ? '' : String( item.current ) );
+		label.appendChild( input );
+		const help = historyElement( 'small', DKBCE.i18n.costEditHelp );
+		help.id = 'dkbce-inline-cost-help';
+		input.setAttribute( 'aria-describedby', help.id );
+		const error = historyElement( 'span', '', 'dkbce-cost-error' );
+		error.setAttribute( 'role', 'alert' );
+		const actions = historyElement( 'div', '', 'dkbce-cost-editor-actions' );
+		const save = historyButton( DKBCE.i18n.saveCost, () => {} );
+		save.type = 'submit';
+		const restoreFocus = () => {
+			const button = previewContent.querySelector( '.dkbce-edit-cost[data-product-id="' + item.id + '"]' );
+			if ( button ) { button.focus(); }
+		};
+		const cancel = historyButton( DKBCE.i18n.cancelCost, () => {
+			renderPreview( state.pageData );
+			updateOperationControls();
+			restoreFocus();
+		} );
+		const persist = async ( reset = false ) => {
+			if ( state.busy || state.previewId !== token ) { return; }
+			if ( ! reset && ! input.reportValidity() ) { return; }
+			error.textContent = '';
+			setBusy( true, save, DKBCE.i18n.savingCost );
+			form.querySelectorAll( 'input, button' ).forEach( ( control ) => { control.disabled = true; } );
+			try {
+				const data = await request( 'preview_edit', { preview_id: token, product_id: item.id, value: input.value, reset: reset ? '1' : '0' } );
+				if ( state.previewId !== token ) { return; }
+				if ( data.row.overridden ) { state.overrideIds.add( String( item.id ) ); } else { state.overrideIds.delete( String( item.id ) ); }
+				state.pageData.override_ids = Array.from( state.overrideIds );
+				state.pageData.preview_id = data.preview_id;
+				state.selectionPreviewId = data.preview_id;
+				state.pageData.rows = state.pageData.rows.map( ( existing ) => existing.id === data.row.id ? data.row : existing );
+				renderPreview( state.pageData );
+				setNotice( DKBCE.i18n.costSaved, 'success' );
+			} catch ( failure ) {
+				if ( state.previewId !== token ) { return; }
+				error.textContent = failure.message;
+				if ( failure.refreshPreview ) { invalidatePreview( false ); setNotice( failure.message, 'error' ); }
+			} finally {
+				setBusy( false, save );
+				form.querySelectorAll( 'input, button' ).forEach( ( control ) => { control.disabled = false; } );
+				if ( ! state.inlineEditing ) { restoreFocus(); } else if ( input.isConnected ) { input.focus(); }
+			}
+		};
+		form.addEventListener( 'submit', ( event ) => { event.preventDefault(); persist(); } );
+		form.addEventListener( 'keydown', ( event ) => {
+			if ( event.key === 'Escape' && ! state.busy ) { event.preventDefault(); event.stopPropagation(); cancel.click(); }
+		} );
+		actions.append( save, cancel );
+		if ( item.overridden ) { actions.appendChild( historyButton( DKBCE.i18n.resetCost, () => persist( true ) ) ); }
+		form.append( label, help, actions, error );
+		cell.replaceChildren( form );
+		updateOperationControls();
+		input.focus();
+		input.select();
+	}
+
 	function appendProductLinkCell( row, value, url ) {
 		const cell = document.createElement( 'td' );
 		if ( url ) {
@@ -1891,6 +1983,7 @@
 	} );
 
 	function renderPreview( data, restoreSelection = false ) {
+		state.inlineEditing = false;
 		if ( data.reused_selection !== undefined ) { state.reusedSelection = data.reused_selection; }
 		if ( data !== state.pageData ) {
 			state.previewNeedsRefresh = false;
@@ -1911,10 +2004,12 @@
 		if ( state.reusedSelection ) {
 			$( '#dkbce-product-count' ).textContent = data.count + ' ' + ( data.count === 1 ? DKBCE.i18n.productOne : DKBCE.i18n.productMany );
 		}
+		if ( data.override_ids !== undefined ) { state.overrideIds = new Set( data.override_ids.map( String ) ); }
 		state.rows = data.rows;
 		state.browsing = data.rows.some( ( item ) => item.status === 'browse' );
 		state.pageData = data;
 		state.page = data.page;
+		data.rows.filter( ( item ) => item.overridden ).forEach( ( item ) => state.overrideIds.add( String( item.id ) ) );
 		data.rows.filter( ( item ) => item.status !== 'browse' ).forEach( ( item ) => state.reviewedIds.add( String( item.id ) ) );
 		$( '.dkbce-preview-controls' ).hidden = ! data.rows.length;
 		previewContent.replaceChildren();
@@ -1933,6 +2028,7 @@
 			freshness.className = 'dkbce-preview-checks';
 			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
 			previewContent.appendChild( freshness );
+			previewContent.appendChild( historyElement( 'p', DKBCE.i18n.inlineCostHelp, 'description' ) );
 		}
 		if ( data.rows.some( ( item ) => item.status === 'success' && item.new === null ) ) {
 			const clearing = document.createElement( 'p' );
@@ -2011,9 +2107,10 @@
 			if ( [ 'browse', 'skipped', 'failed' ].includes( item.status ) ) {
 				newValue = '—';
 			}
-			appendCell( row, newValue );
+			appendNewCostCell( row, item, newValue );
 			appendChangeCell( row, item );
 			appendCell( row, item.selling_price === null || item.selling_price === undefined || item.selling_price === '' ? DKBCE.i18n.priceNotSet : money( item.selling_price ) );
+			appendCell( row, item.regular_price === null || item.regular_price === undefined || item.regular_price === '' ? DKBCE.i18n.priceNotSet : money( item.regular_price ) );
 			if ( csvMode() ) { appendCell( row, item.reason || DKBCE.csv.valid ); }
 			tbody.appendChild( row );
 		} );
@@ -2025,7 +2122,7 @@
 					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
 				}
 			} );
-			[ 0, 1, 2, 8, 5, 6, 7, 3, 4, 9 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
+			[ 0, 1, 2, 8, 9, 5, 6, 7, 3, 4, 10 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
@@ -2063,7 +2160,7 @@
 	}
 
 	function fetchPreviewPage( page ) {
-		if ( state.busy || state.loadingPage || state.previewNeedsRefresh || ! state.previewId ) {
+		if ( state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ! state.previewId ) {
 			return;
 		}
 		const previousPage = state.pageData;
@@ -2253,7 +2350,7 @@
 
 	function openConfirm() {
 		const exporting = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export';
-		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.inlineEditing || state.loadingPage || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! state.count ) {
 			return;
 		}
 		if ( exporting && ! hasCSVIdentifierColumn() ) {
@@ -2287,6 +2384,10 @@
 			entries.push( [ DKBCE.ui.fileColumns, Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.parentElement.textContent.trim() ).join( ', ' ) + ', new_cogs' ] );
 		} else {
 			entries.push( [ DKBCE.ui.coverage, reviewed >= count ? DKBCE.ui.allReviewed : DKBCE.ui.reviewed.replace( '%d', reviewed.toLocaleString() ) ] );
+		}
+		if ( ! csvMode() ) {
+			const edited = Array.from( state.overrideIds ).filter( productSelected ).length;
+			if ( edited ) { entries.push( [ DKBCE.i18n.customCost, DKBCE.i18n.editedCosts.replace( '%d', edited.toLocaleString() ) ] ); }
 		}
 		entries.forEach( ( [ label, value ] ) => {
 			const term = document.createElement( 'dt' );
@@ -2379,7 +2480,7 @@
 	} );
 
 	async function applyChanges() {
-		if ( isOperationRunning() || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || state.busy || state.inlineEditing || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;

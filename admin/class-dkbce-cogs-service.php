@@ -288,6 +288,15 @@ class DKBCE_COGS_Service {
 	 * @return array|WP_Error
 	 */
 	public function calculate( $product, $operation ) {
+		if ( isset( $operation['overrides'][ $product->get_id() ] ) ) {
+			return $this->calculate(
+				$product,
+				array(
+					'action' => 'set',
+					'value'  => $operation['overrides'][ $product->get_id() ],
+				)
+			);
+		}
 		if ( 'csv_import' === $operation['action'] ) {
 			$id = $product->get_id();
 			if ( ! empty( $operation['source_id'] ) ) {
@@ -427,10 +436,12 @@ class DKBCE_COGS_Service {
 			'name'             => $product->get_name(),
 			'sku'              => $product->get_sku(),
 			'selling_price'    => '' === $product->get_price() ? null : $product->get_price(),
+			'regular_price'    => '' === $product->get_regular_price() ? null : $product->get_regular_price(),
 			'type'             => $product->get_type(),
 			'type_label'       => isset( $types[ $product->get_type() ] ) ? $types[ $product->get_type() ] : $product->get_type(),
 			'current'          => $result['current'],
 			'new'              => $result['new'],
+			'overridden'       => isset( $operation['overrides'][ $product->get_id() ] ),
 			'change'           => $change,
 			'change_percent'   => $change_percent,
 			'change_direction' => $change_direction,
