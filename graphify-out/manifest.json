@@ -384,15 +384,15 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-health-notice.php": {
-    "mtime": 1794863319.2731838,
-    "seen": 1794863420.4261398,
-    "ast_hash": "4298197d88e7c0db1c50147c375b9c1c",
+    "mtime": 1794870064.8464773,
+    "seen": 1794870088.5134337,
+    "ast_hash": "78d53d9fb716f30447072c2e2b3a6817",
     "semantic_hash": ""
   },
   "src/cogs-health-notice.js": {
-    "mtime": 1794866792.7624834,
-    "seen": 1794866838.3310401,
-    "ast_hash": "a021c4470983ec1ec9bd51a775f4edec",
+    "mtime": 1794869937.2944794,
+    "seen": 1794870016.8488145,
+    "ast_hash": "eabe2c042993cbc19a895666c788bf52",
     "semantic_hash": ""
   },
   "tests/e2e/v1.3.1.spec.cjs": {
