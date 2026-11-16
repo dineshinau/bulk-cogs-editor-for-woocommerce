@@ -14,8 +14,17 @@ document.addEventListener( 'click', async ( event ) => {
 	const notice = button.closest( '#dkbce-health-notice' );
 	const status = notice.querySelector( '.dkbce-health-status' );
 	const started = Date.now();
+	const buttonLabel = button.textContent;
+	const spinner = document.createElement( 'span' );
+	spinner.className = 'spinner is-active dkbce-health-spinner';
+	spinner.setAttribute( 'aria-hidden', 'true' );
+	spinner.style.float = 'none';
+	spinner.style.margin = '0 4px';
+	spinner.style.verticalAlign = 'middle';
 	button.disabled = true;
 	button.setAttribute( 'aria-busy', 'true' );
+	button.textContent = DKBCEHealth.refreshing;
+	button.after( spinner );
 	status.textContent = DKBCEHealth.refreshing;
 	const request = async ( mode, scanId = '' ) => {
 		const form = new FormData();
@@ -44,6 +53,8 @@ document.addEventListener( 'click', async ( event ) => {
 	} catch ( error ) {
 		if ( notice.isConnected ) {
 			status.textContent = error.message || DKBCEHealth.failed;
+			spinner.remove();
+			button.textContent = buttonLabel;
 			button.disabled = false;
 			button.removeAttribute( 'aria-busy' );
 		}
