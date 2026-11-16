@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "src/cogs-health-notice.js": {
-    "mtime": 1794863237.5072896,
-    "seen": 1794863420.4261703,
-    "ast_hash": "628ba8330c26415236bdb4fab7e7223e",
+    "mtime": 1794866792.7624834,
+    "seen": 1794866838.3310401,
+    "ast_hash": "a021c4470983ec1ec9bd51a775f4edec",
     "semantic_hash": ""
   },
   "tests/e2e/v1.3.1.spec.cjs": {
