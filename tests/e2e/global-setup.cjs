@@ -45,6 +45,7 @@ module.exports = async function globalSetup() {
 		fs.chmodSync( stateFile, 0o600 );
 		const browser = await chromium.launch( {
 			channel: 'chrome',
+			args: process.env.DKBCE_E2E_HOST_RESOLVER_RULES ? [ '--host-resolver-rules=' + process.env.DKBCE_E2E_HOST_RESOLVER_RULES ] : [],
 			headless: ! process.argv.includes( '--headed' ),
 		} );
 		try {

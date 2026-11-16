@@ -1549,7 +1549,7 @@
 		$( '.dkbce-workspace' ).classList.toggle( 'has-preview-rows', state.rows.length > 0 );
 		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
 		pageSizeSelect.disabled = state.busy || state.inlineEditing || state.loadingPage;
-		getButton.disabled = state.busy || running;
+		getButton.disabled = ! DKBCE.cogsAvailable || state.busy || running;
 		previewContent.querySelectorAll( '.dkbce-edit-cost' ).forEach( ( button ) => { button.disabled = running || state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ! state.previewId; } );
 		applyButton.disabled = running || state.busy || state.inlineEditing || state.loadingPage ||
 			! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
@@ -2208,7 +2208,7 @@
 	}
 
 	function getProducts() {
-		if ( isOperationRunning() || state.busy || state.loadingPage ) {
+		if ( ! DKBCE.cogsAvailable || isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
 		if ( ! csvMode() && state.reusedSelection ) {
