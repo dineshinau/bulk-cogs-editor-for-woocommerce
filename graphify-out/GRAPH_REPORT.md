@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-12)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-16)
 
 ## Corpus Check
-- 38 files · ~96,686 words
+- 38 files · ~97,277 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 18 file(s) not represented in the graph (top: .csv 13, (none) 3, .xml 1)
 
 ## Summary
-- 540 nodes · 1127 edges · 35 communities (21 shown, 14 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 116 edges (avg confidence: 0.85)
+- 543 nodes · 1136 edges · 35 communities (23 shown, 12 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 117 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d3d3bb75`
+- Built from commit: `36a7a05b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -50,7 +50,7 @@
 ## God Nodes (most connected - your core abstractions)
 1. `DKBCE_Admin_Functions` - 44 edges
 2. `DKBCE_Operation_Store` - 38 edges
-3. `DKBCE_COGS_Service` - 29 edges
+3. `DKBCE_COGS_Service` - 31 edges
 4. `DKBCE_Bulk_Processor` - 28 edges
 5. `DKBCE_History_Store` - 28 edges
 6. `renderOperation()` - 28 edges
@@ -74,11 +74,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (35 total, 14 thin omitted)
+## Communities (35 total, 12 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.09
 Nodes (21): argparse, json, os, pathlib, re, changed_files(), main(), php_files() (+13 more)
+
+### Community 1 - "DKBCE_CSV_Service"
+Cohesion: 0.11
+Nodes (3): DKBCE_CSV_Service, DKBCE_Download_Processor, DKBCE_Import_Reader
 
 ### Community 2 - "bulk-cogs-editor.spec.cjs"
 Cohesion: 0.18
@@ -97,8 +101,8 @@ Cohesion: 0.06
 Nodes (34): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+26 more)
 
 ### Community 11 - "DKBCE_COGS_Service"
-Cohesion: 0.07
-Nodes (6): DKBCE_Admin_Hooks, DKBCE_COGS_Service, DKBCE_Health_Notice, DKBCE_History_Controller, DKBCE_Retention_Processor, dkbce_load_plugin_files()
+Cohesion: 0.09
+Nodes (4): DKBCE_Admin_Hooks, DKBCE_COGS_Service, DKBCE_Health_Notice, dkbce_load_plugin_files()
 
 ### Community 13 - "Frequently asked questions"
 Cohesion: 0.18
@@ -109,7 +113,7 @@ Cohesion: 0.18
 Nodes (10): ref_node_crypto, { chromium }, crypto, { execFileSync }, fixtureScript, fs, os, path (+2 more)
 
 ### Community 15 - "DKBCE_History_Store"
-Cohesion: 0.13
+Cohesion: 0.14
 Nodes (3): DKBCE_Database_Installer, DKBCE_History_Store, DKBCE_Preset_Store
 
 ### Community 16 - "global-teardown.cjs"
@@ -118,7 +122,7 @@ Nodes (6): ref_node_child_process, ref_node_fs, { execFileSync }, fs, os, path
 
 ### Community 17 - "bulk-cogs-editor.js"
 Cohesion: 0.08
-Nodes (91): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), appendReviewNotice(), applyChanges() (+83 more)
+Nodes (92): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), appendReviewNotice(), applyChanges() (+84 more)
 
 ### Community 18 - "playwright.config.cjs"
 Cohesion: 0.29
@@ -157,22 +161,26 @@ Cohesion: 0.67
 Nodes (3): 29. Configure history and rollback settings, 30. Confirm force clearing a stuck operation, Settings
 
 ### Community 135 - "DKBCE_Bulk_Processor"
-Cohesion: 0.15
+Cohesion: 0.16
 Nodes (3): DKBCE_Bulk_Processor, dkbce_maybe_upgrade_database(), dkbce_wc_log()
+
+### Community 188 - "DKBCE_Operation_Store"
+Cohesion: 0.09
+Nodes (3): DKBCE_History_Controller, DKBCE_Operation_Store, DKBCE_Retention_Processor
 
 ## Knowledge Gaps
 - **106 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+101 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 209 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_Bulk_Processor`, `DKBCE_CSV_Service`, `DKBCE_COGS_Service`, `DKBCE_History_Store`?**
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_COGS_Service`, `DKBCE_Operation_Store`, `DKBCE_Bulk_Processor`?**
   _High betweenness centrality (0.063) - this node is a cross-community bridge._
-- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_Admin_Functions`, `DKBCE_Range_Query_Profiler`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_CSV_Service`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`, `DKBCE_COGS_Service`, `DKBCE_Admin_Functions`, `DKBCE_History_Store`?**
+- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_CSV_Service`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`, `DKBCE_Range_Query_Profiler`, `DKBCE_Operation_Store`?**
+  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_CSV_Service`, `DKBCE_History_Store`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`?**
   _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
   _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
