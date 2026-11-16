@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T20:49:19+00:00\n"
+"POT-Creation-Date: 2026-11-16T21:09:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1149,6 +1149,7 @@ msgid "Operation completed."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:443
+#: admin/class-dkbce-health-notice.php:108
 msgid "Refresh now"
 msgstr ""
 
@@ -1665,11 +1666,13 @@ msgstr ""
 #: admin/class-dkbce-admin-functions.php:877
 #: admin/class-dkbce-admin-functions.php:1166
 #: admin/class-dkbce-admin-functions.php:1209
+#: admin/class-dkbce-health-notice.php:144
 #: admin/class-dkbce-history-controller.php:147
 msgid "You do not have permission to manage product COGS."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:880
+#: admin/class-dkbce-health-notice.php:147
 msgid "WooCommerce Cost of Goods Sold is unavailable or disabled."
 msgstr ""
 
@@ -2128,8 +2131,16 @@ msgstr ""
 msgid "The download queue stopped."
 msgstr ""
 
+#: admin/class-dkbce-health-notice.php:84
+msgid "Refreshing counts…"
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:85
+msgid "Could not refresh counts. Try again."
+msgstr ""
+
 #. translators: %s: number of products and variations without a cost.
-#: admin/class-dkbce-health-notice.php:66
+#: admin/class-dkbce-health-notice.php:101
 #, php-format
 msgid "%s product or variation is missing a COGS value."
 msgid_plural "%s products and variations are missing COGS values."
@@ -2137,19 +2148,36 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: number of products and variations with costs above their selling price.
-#: admin/class-dkbce-health-notice.php:69
+#: admin/class-dkbce-health-notice.php:104
 #, php-format
 msgid "%s product or variation has a COGS value above its current selling price."
 msgid_plural "%s products and variations have COGS values above their current selling prices."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-dkbce-health-notice.php:71
+#: admin/class-dkbce-health-notice.php:106
 msgid "Review in Bulk COGS Editor"
 msgstr ""
 
-#: admin/class-dkbce-health-notice.php:72
+#: admin/class-dkbce-health-notice.php:107
 msgid "Counts refresh hourly. Dismiss to hide this notice for one hour."
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:119
+msgid "Background processing is unavailable. Try again later."
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:123
+#: admin/class-dkbce-health-notice.php:131
+msgid "The refresh could not be started. Try again."
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:164
+msgid "The refresh expired or another refresh was started. Try again."
+msgstr ""
+
+#: admin/class-dkbce-health-notice.php:178
+msgid "The count refresh did not complete. Try again."
 msgstr ""
 
 #: admin/class-dkbce-history-controller.php:30

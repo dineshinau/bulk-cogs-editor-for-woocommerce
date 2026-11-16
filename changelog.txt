@@ -1,18 +1,16 @@
 = 1.3.1 (2026-11-17) =
 
-* Fixed: Use indexed cost-state membership queries to avoid expensive metadata joins when finding empty or zero COGS in large catalogs.
 * Fixed: Show a readable server-timeout message instead of a JSON parsing error when a request returns an HTML error page.
 * Fixed: Keep Find products disabled when native WooCommerce COGS is unavailable or disabled.
-* Fixed: Preserve inline New COGS edits when refreshing the review table after a completed update, including zero costs that WooCommerce stores as Empty.
 * Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
-* Improved: Stack the three bulk editing steps at full width, align price and COGS filter fields, show help for only the selected COGS filter, and place saved-filter loading and naming controls side by side.
+* Improved: Stack the three bulk editing steps at full width, align price and COGS filter fields, and place saved-filter loading and naming controls side by side.
 * Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
-* Added: Show cached notices for published products with missing COGS or COGS above the current selling price.
+* Added: Show cached notices for published products with missing COGS or COGS above the current selling price. Refresh now recalculates counts in background batches and updates or clears the notice when finished.
 * Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
 * Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
-* Added: Filter products by empty, explicit zero, positive, or empty-or-zero COGS, or find COGS greater than the current selling price or regular price.
+* Added: Filter products by empty, explicit zero, positive, or empty-or-zero COGS, or find COGS greater than the current selling price or regular price. Show help for the selected option and use indexed cost-state queries for large catalogs.
 * Added: Browse matching products before choosing a cost update, with Selling price and Regular price columns available in Manage columns and visible by default.
-* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages, and review their count before confirming the update.
+* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages and the completion refresh (including zero costs stored as Empty), and review their count before confirming the update.
 
 = 1.3.0 (2026-11-09) =
 
