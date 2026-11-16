@@ -33,8 +33,8 @@ https://youtu.be/K-zo4dw7og4
 = How it works =
 
 1. Open **Products > Bulk COGS Editor** and choose Bulk edit.
-2. Choose your filters and find the matching products. Browse their selling prices and current COGS before choosing a cost update.
-3. Choose a WooCommerce COGS action, review the preview, and select the products to update.
+2. Choose your filters and find the matching products. Browse their selling prices, regular prices, and current COGS before choosing a cost update.
+3. Choose a WooCommerce COGS action, review the preview, optionally edit individual New COGS values with the pencil controls, and select the products to update.
 4. Review and confirm the update, then follow its results in the editor.
 
 = Quick 60-Second Demo - YouTube Short Video =
@@ -47,8 +47,9 @@ https://www.youtube.com/watch?v=Pxtvi0YbDRw
 * Filter products and variations by category, brand, product type, stock status, current price, or current WooCommerce COGS.
 * Find products with empty COGS, explicit zero COGS, positive COGS, or empty or zero COGS using the COGS value filter. Choose Greater than selling price to find products whose COGS exceeds their current selling price, including sales; products without a selling price are excluded. Choose Greater than regular price to compare COGS with the regular price before discounts; products without a regular price are excluded. Numeric COGS ranges remain available for Any value, Greater than zero, Greater than selling price, and Greater than regular price.
 * Set an exact WooCommerce cost of goods value, increase or decrease it by a fixed amount or percentage, or clear it.
-* Browse matching products with images, current selling prices, and WooCommerce COGS before entering a new cost. Then preview proposed COGS and the exact difference, with pagination and product selection. The three bulk editing steps use full-width sections.
+* Browse matching products with images, selling prices, regular prices, and WooCommerce COGS before entering a new cost. Then preview proposed COGS and the exact difference, with pagination and product selection. The three bulk editing steps use full-width sections.
 * Process WooCommerce cost of goods updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
+* Edit individual New COGS values with a pencil in bulk previews. Save, cancel, or reset each edit to Step 2; saved overrides stay across pages and are included in the confirmation summary.
 * Import CSV or XLSX costs using product IDs or SKUs, export matching WooCommerce COGS to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original WooCommerce cost of goods in History, with rollback review and confirmation.
 * Save reusable filter presets to your account and manage their names, rules, and deletion in the Presets tab.
@@ -201,7 +202,15 @@ Errors and operation completion summaries remain logged. Detailed worker timings
 
 = How do I bulk update WooCommerce COGS? =
 
-Use Bulk edit for one WooCommerce cost of goods action across a selected group. Use CSV import when individual products need different WooCommerce COGS values. The steps for both workflows appear above.
+Use Bulk edit for one WooCommerce cost of goods action across a selected group, with optional inline edits for individual products. Use CSV import for costs prepared in a spreadsheet. The steps for both workflows appear above.
+
+= Can I edit New COGS for one product before applying a bulk update? =
+
+Yes. Choose a cost action in Step 2, then use the pencil beside a product's New COGS in the bulk review table. Enter a non-negative cost using your store's decimal precision, then choose Save. Cancel leaves the saved preview unchanged; Reset to Step 2 removes that product's override. Enter 0 to clear COGS; WooCommerce stores this as Empty.
+
+You can edit up to 500 individual costs per preview. Saved edits are marked Edited, stay across pages, override Step 2 only for those products, and are counted for selected products in the confirmation summary. Saving an edit does not update the product; you must still select it and confirm the update. Save or cancel an open edit before continuing. CSV previews and results browsed without a Step 2 action do not offer inline editing.
+
+Changing filters or the bulk action clears inline edits. The automatic refresh after completion preserves them when the action and filters are unchanged, so New COGS continues to show the edited value.
 
 = Can I import WooCommerce cost of goods from CSV or Excel? =
 
@@ -345,11 +354,16 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 = 1.3.1 (2026-11-17) =
 
+* Fixed: Preserve inline New COGS edits when refreshing the review table after a completed update, including zero costs that WooCommerce stores as Empty.
 * Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
+* Improved: Stack the three bulk editing steps at full width, align price and COGS filter fields, show help for only the selected COGS filter, and place saved-filter loading and naming controls side by side.
 * Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
 * Added: Show cached notices for published products with missing COGS or COGS above the current selling price.
 * Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
 * Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
+* Added: Filter products by empty, explicit zero, positive, or empty-or-zero COGS, or find COGS greater than the current selling price or regular price.
+* Added: Browse matching products before choosing a cost update, with Selling price and Regular price columns available in Manage columns and visible by default.
+* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages, and review their count before confirming the update.
 
 = 1.3.0 (2026-11-12) =
 
