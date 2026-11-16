@@ -32,6 +32,7 @@
   "30": "Background processing and recovery",
   "31": "cogs-health-notice.js",
   "32": "v1.3.1.spec.cjs",
+  "33": "DKBCE_History_Controller",
   "117": "DKBCE_Range_Query_Profiler",
   "135": "DKBCE_Bulk_Processor",
   "188": "DKBCE_Operation_Store"
