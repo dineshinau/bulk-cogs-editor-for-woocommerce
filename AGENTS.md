@@ -29,8 +29,13 @@ PHPCS currently checks PHP 7.4+ and WordPress 6.5; use the stricter applicable c
 - When a commit is explicitly requested, inspect and include all changed tracked `languages/*.pot` files in the related product commit. Regenerate the POT before committing when translatable PHP strings changed.
 - Update version declarations and release notes together only when preparing a release.
 
-## Changelog order
+## Changelog classification and order
 
+- Classify changes against earlier **published releases**. Local commits and the current version header do not establish that a feature has been published.
+- **Added:** A feature first introduced in the version being prepared gets an Added entry describing its final behavior. Fold fixes, refinements, and performance work on that unpublished feature into the same entry; do not create separate Fixed, Improved, or Updated entries for those development iterations.
+- **Fixed:** Use only for correcting a feature that was already published in an earlier version.
+- Example: A COGS value dropdown first introduced in unpublished 1.3.1 stays under Added, including fixes made before that release. A correction in 1.3.2 to the dropdown shipped in 1.3.1 belongs under Fixed.
+- Keep the corresponding release entries in `readme.txt` and `changelog.txt` consistent. Consolidate existing development-fix entries into the feature's Added entry when revising an unpublished release.
 - Always order entries within each release as **Fixed → Improved → Updated → Added**. Put fixes first and additions last; omit categories with no entries.
 - Apply this order to current and earlier releases whenever editing their changelog entries. Preserve the existing WordPress readme format and release dates.
 
