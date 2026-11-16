@@ -2334,7 +2334,7 @@
 				return;
 			}
 			preview();
-		}, 350 );
+		}, 800 );
 	}
 
 	refreshPreviewButton.addEventListener( 'click', async () => {

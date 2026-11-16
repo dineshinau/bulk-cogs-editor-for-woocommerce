@@ -342,9 +342,12 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.1 (2026-11-14) =
+= 1.3.1 (2026-11-16) =
 
-* Updated: Refresh readme metadata, short description, and documentation video links.
+* Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
+* Added: Show cached notices for published products with missing COGS or COGS above the current selling price.
+* Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
+* Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
 
 = 1.3.0 (2026-11-12) =
 
