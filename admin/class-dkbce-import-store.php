@@ -172,6 +172,39 @@ class DKBCE_Import_Store {
 	}
 
 	/**
+	 * Update one validated product value in an editable import preview.
+	 *
+	 * @param string $job Import job.
+	 * @param int    $product_id Product ID.
+	 * @param string $value Validated COGS value.
+	 * @return void
+	 * @throws RuntimeException When the staged row is unavailable or cannot be saved.
+	 */
+	public function update_value( $job, $product_id, $value ) {
+		global $wpdb;
+		if ( null === $this->value( $job, $product_id ) ) {
+			throw new RuntimeException( esc_html__( 'Invalid import selection. Prepare the preview again.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		$updated = $wpdb->update(
+			$wpdb->prefix . 'dkbce_import_rows',
+			array( 'value' => $value ),
+			array(
+				'job_id'     => $job,
+				'row_type'   => 0,
+				'product_id' => $product_id,
+				'error'      => '',
+				'selected'   => 1,
+			),
+			array( '%s' ),
+			array( '%s', '%d', '%d', '%s', '%d' )
+		);
+		$this->check_error();
+		if ( false === $updated || ( 0 === $updated && $this->value( $job, $product_id ) !== $value ) ) {
+			throw new RuntimeException( esc_html__( 'An import row could not be saved.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+	}
+
+	/**
 	 * Fetch trusted staged values for a bounded product batch.
 	 *
 	 * @param string $job Import job.

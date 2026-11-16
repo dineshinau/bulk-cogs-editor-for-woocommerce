@@ -646,6 +646,10 @@
 		return state.editorMode === 'csv';
 	}
 
+	function csvImportMode() {
+		return csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
+	}
+
 	function downloadCSV( contents, filename ) {
 		const url = URL.createObjectURL( new Blob( [ '\uFEFF', ...contents ], { type: 'text/csv;charset=utf-8' } ) );
 		const link = document.createElement( 'a' );
@@ -1739,7 +1743,7 @@
 
 	function appendNewCostCell( row, item, value ) {
 		const cell = appendCell( row, value );
-		if ( csvMode() || item.status === 'browse' || isOperationRunning() || ! state.previewId ) { return; }
+		if ( ( csvMode() && ( ! csvImportMode() || item.status !== 'success' ) ) || ( ! csvMode() && item.status === 'browse' ) || isOperationRunning() || ! state.previewId ) { return; }
 		const edit = historyButton( '', () => openCostEditor( cell, item ) );
 		edit.classList.add( 'dkbce-edit-cost' );
 		edit.dataset.productId = String( item.id );
@@ -1754,6 +1758,7 @@
 
 	function openCostEditor( cell, item ) {
 		if ( state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || isOperationRunning() || ! state.previewId ) { return; }
+		const importing = csvImportMode();
 		state.inlineEditing = true;
 		const token = state.previewId;
 		const form = historyElement( 'form', '', 'dkbce-cost-editor' );
@@ -1765,7 +1770,7 @@
 		input.required = true;
 		input.value = item.status === 'success' ? ( item.new === null ? '0' : String( item.new ) ) : ( item.current === null ? '' : String( item.current ) );
 		label.appendChild( input );
-		const help = historyElement( 'small', DKBCE.i18n.costEditHelp );
+		const help = historyElement( 'small', importing ? DKBCE.csv.inlineCostHelp : DKBCE.i18n.costEditHelp );
 		help.id = 'dkbce-inline-cost-help';
 		input.setAttribute( 'aria-describedby', help.id );
 		const error = historyElement( 'span', '', 'dkbce-cost-error' );
@@ -1791,8 +1796,10 @@
 			try {
 				const data = await request( 'preview_edit', { preview_id: token, product_id: item.id, value: input.value, reset: reset ? '1' : '0' } );
 				if ( state.previewId !== token ) { return; }
-				if ( data.row.overridden ) { state.overrideIds.add( String( item.id ) ); } else { state.overrideIds.delete( String( item.id ) ); }
-				state.pageData.override_ids = Array.from( state.overrideIds );
+				if ( ! importing ) {
+					if ( data.row.overridden ) { state.overrideIds.add( String( item.id ) ); } else { state.overrideIds.delete( String( item.id ) ); }
+					state.pageData.override_ids = Array.from( state.overrideIds );
+				}
 				state.pageData.preview_id = data.preview_id;
 				state.selectionPreviewId = data.preview_id;
 				state.pageData.rows = state.pageData.rows.map( ( existing ) => existing.id === data.row.id ? data.row : existing );
@@ -1813,7 +1820,7 @@
 			if ( event.key === 'Escape' && ! state.busy ) { event.preventDefault(); event.stopPropagation(); cancel.click(); }
 		} );
 		actions.append( save, cancel );
-		if ( item.overridden ) { actions.appendChild( historyButton( DKBCE.i18n.resetCost, () => persist( true ) ) ); }
+		if ( item.overridden && ! importing ) { actions.appendChild( historyButton( DKBCE.i18n.resetCost, () => persist( true ) ) ); }
 		form.append( label, help, actions, error );
 		cell.replaceChildren( form );
 		updateOperationControls();
@@ -2036,6 +2043,8 @@
 			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
 			previewContent.appendChild( freshness );
 			previewContent.appendChild( historyElement( 'p', DKBCE.i18n.inlineCostHelp, 'description' ) );
+		} else if ( csvImportMode() ) {
+			previewContent.appendChild( historyElement( 'p', DKBCE.csv.inlineCostHelp, 'description' ) );
 		}
 		if ( data.rows.some( ( item ) => item.status === 'success' && item.new === null ) ) {
 			const clearing = document.createElement( 'p' );

@@ -291,6 +291,7 @@ class DKBCE_Admin_Functions {
 					'file'            => __( 'Choose a CSV or XLSX file within the WordPress upload limit.', 'bulk-cogs-editor-for-woocommerce' ),
 					'columns'         => __( 'Select Product ID or SKU to create a CSV.', 'bulk-cogs-editor-for-woocommerce' ),
 					'errors'          => __( 'Invalid rows are excluded from this preview and cannot be applied.', 'bulk-cogs-editor-for-woocommerce' ),
+					'inlineCostHelp'  => __( 'Use the pencil to change New COGS for a product. Enter 0 to clear its saved COGS. Saved edits are used when you apply the import.', 'bulk-cogs-editor-for-woocommerce' ),
 					'report'          => __( 'Download error report', 'bulk-cogs-editor-for-woocommerce' ),
 					'row'             => __( 'Row', 'bulk-cogs-editor-for-woocommerce' ),
 					'status'          => __( 'Status', 'bulk-cogs-editor-for-woocommerce' ),
@@ -1755,7 +1756,15 @@ class DKBCE_Admin_Functions {
 		if ( ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] || get_option( 'dkbce_preview_claim_' . $token ) ) {
 			wp_send_json_error( array( 'message' => __( 'This preview has expired or has already been used. Refresh the preview.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
-		if ( ! in_array( $preview['operation']['action'], array( 'set', 'clear', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed' ), true ) || ! isset( $preview['reviewed_rows'][ $id ] ) || ! current_user_can( 'edit_post', $id ) ) {
+		$is_import = 'csv_import' === $preview['operation']['action'];
+		if ( $is_import ) {
+			$source_id  = isset( $preview['operation']['source_id'] ) && is_string( $preview['operation']['source_id'] ) ? $preview['operation']['source_id'] : '';
+			$import_job = preg_match( '/\A[0-9a-f-]{36}\z/i', $source_id ) ? $this->store->get( $source_id ) : false;
+			if ( ! $import_job || 'import_preview' !== $import_job['action'] || 'ready' !== $import_job['status'] || get_current_user_id() !== (int) $import_job['user_id'] || ! empty( $import_job['applied_operation'] ) || get_option( 'dkbce_preview_claim_' . $source_id ) ) {
+				wp_send_json_error( array( 'message' => __( 'The import preview has expired. Upload the file again.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+			}
+		}
+		if ( ( ! $is_import && ! in_array( $preview['operation']['action'], array( 'set', 'clear', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed' ), true ) ) || ! isset( $preview['reviewed_rows'][ $id ] ) || ! current_user_can( 'edit_post', $id ) ) {
 			wp_send_json_error( array( 'message' => __( 'Choose a cost update and a product from its preview before editing New COGS.', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
 		}
 		$product = wc_get_product( $id );
@@ -1763,7 +1772,19 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'This product is unavailable. Refresh the preview.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
 		}
 		$this->revalidate_reviewed_batch( array( $id => $preview['reviewed_rows'][ $id ] ), $preview['operation'] );
-		if ( $reset ) {
+		if ( $is_import ) {
+			$value  = isset( $_POST['value'] ) && is_string( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
+			$action = $this->service->validate_action( 'set', $value );
+			if ( is_wp_error( $action ) ) {
+				wp_send_json_error( array( 'message' => $action->get_error_message() ), 400 );
+			}
+			try {
+				$imports = new DKBCE_Import_Store();
+				$imports->update_value( $source_id, $id, $action['value'] );
+			} catch ( Throwable $exception ) {
+				wp_send_json_error( array( 'message' => $exception->getMessage() ), 503 );
+			}
+		} elseif ( $reset ) {
 			unset( $preview['operation']['overrides'][ $id ] );
 		} else {
 			$value  = isset( $_POST['value'] ) && is_string( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
@@ -1778,11 +1799,24 @@ class DKBCE_Admin_Functions {
 		}
 		$row                      = $this->service->preview_row( $product, $preview['operation'] );
 		$preview['reviewed_rows'] = $this->reviewed_rows( array( $row ), $preview['reviewed_rows'] );
-		$new_token                = wp_generate_uuid4();
+		// Keep the import's source ID as its preview token so Apply claims the same
+		// key checked by import status and the staging lifecycle.
+		$new_token = $is_import ? $source_id : wp_generate_uuid4();
 		if ( ! set_transient( 'dkbce_preview_' . $new_token, $preview, 10 * MINUTE_IN_SECONDS ) ) {
-			wp_send_json_error( array( 'message' => __( 'The edited preview could not be saved. Try again.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
+			if ( $is_import ) {
+				delete_transient( 'dkbce_preview_' . $token );
+			}
+			wp_send_json_error(
+				array(
+					'message'         => __( 'The edited preview could not be saved. Try again.', 'bulk-cogs-editor-for-woocommerce' ),
+					'refresh_preview' => $is_import,
+				),
+				503
+			);
 		}
-		delete_transient( 'dkbce_preview_' . $token );
+		if ( $token !== $new_token ) {
+			delete_transient( 'dkbce_preview_' . $token );
+		}
 		wp_send_json_success(
 			array(
 				'preview_id' => $new_token,

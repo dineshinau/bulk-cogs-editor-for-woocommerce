@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T21:12:00+00:00\n"
+"POT-Creation-Date: 2026-11-16T22:54:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,18 +46,18 @@ msgid "Bulk COGS Editor"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:83
-#: admin/class-dkbce-admin-functions.php:570
+#: admin/class-dkbce-admin-functions.php:571
 #: admin/class-dkbce-history-controller.php:52
 msgid "Settings"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:100
-#: admin/class-dkbce-admin-functions.php:535
+#: admin/class-dkbce-admin-functions.php:536
 msgid "Doc"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:101
-#: admin/class-dkbce-admin-functions.php:535
+#: admin/class-dkbce-admin-functions.php:536
 msgid "Video"
 msgstr ""
 
@@ -168,7 +168,7 @@ msgid "Saved filters"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:187
-#: admin/class-dkbce-admin-functions.php:568
+#: admin/class-dkbce-admin-functions.php:569
 msgid "Presets"
 msgstr ""
 
@@ -181,8 +181,8 @@ msgid "Update preset"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:190
-#: admin/class-dkbce-admin-functions.php:358
-#: admin/class-dkbce-admin-functions.php:700
+#: admin/class-dkbce-admin-functions.php:359
+#: admin/class-dkbce-admin-functions.php:701
 msgid "Cancel"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgid "Could not load saved filters. Close and reopen Saved filters to try again
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:200
-#: admin/class-dkbce-admin-functions.php:770
+#: admin/class-dkbce-admin-functions.php:771
 msgid "Enter a unique preset name (up to 60 characters)."
 msgstr ""
 
@@ -260,8 +260,8 @@ msgid "Unavailable user name · ID"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:211
-#: admin/class-dkbce-admin-functions.php:577
-#: admin/class-dkbce-admin-functions.php:680
+#: admin/class-dkbce-admin-functions.php:578
+#: admin/class-dkbce-admin-functions.php:681
 msgid "Products & review"
 msgstr ""
 
@@ -324,7 +324,7 @@ msgid "A clear view of every cost change"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:228
-#: admin/class-dkbce-admin-functions.php:691
+#: admin/class-dkbce-admin-functions.php:692
 msgid "Confirm update"
 msgstr ""
 
@@ -402,7 +402,7 @@ msgid "File export"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:250
-#: admin/class-dkbce-admin-functions.php:686
+#: admin/class-dkbce-admin-functions.php:687
 msgid "Deselect all products"
 msgstr ""
 
@@ -419,18 +419,18 @@ msgid "Set cost"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:254
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 #: admin/class-dkbce-history-controller.php:118
 msgid "Clear cost"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:255
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Increase"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:256
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Decrease"
 msgstr ""
 
@@ -466,12 +466,12 @@ msgid "These are previous results. Refresh the preview before selecting products
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:265
-#: admin/class-dkbce-admin-functions.php:1313
+#: admin/class-dkbce-admin-functions.php:1314
 msgid "Select up to 500 individual products, or use all matching products or a range."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:266
-#: admin/class-dkbce-admin-functions.php:594
+#: admin/class-dkbce-admin-functions.php:595
 msgid "CSV columns"
 msgstr ""
 
@@ -512,7 +512,7 @@ msgid "Rows checked: %s. Total is being calculated."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:279
-#: admin/class-dkbce-admin-functions.php:615
+#: admin/class-dkbce-admin-functions.php:616
 msgid "Import preview progress"
 msgstr ""
 
@@ -547,25 +547,25 @@ msgid "Review the products, then download the selected CSV columns. Export does 
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:289
-#: admin/class-dkbce-admin-functions.php:618
+#: admin/class-dkbce-admin-functions.php:619
 msgid "Validate file"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:290
-#: admin/class-dkbce-admin-functions.php:306
-#: admin/class-dkbce-admin-functions.php:693
-#: admin/class-dkbce-admin-functions.php:700
+#: admin/class-dkbce-admin-functions.php:307
+#: admin/class-dkbce-admin-functions.php:694
+#: admin/class-dkbce-admin-functions.php:701
 msgid "Apply changes"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:291
-#: admin/class-dkbce-admin-functions.php:1002
+#: admin/class-dkbce-admin-functions.php:1003
 msgid "Choose a CSV or XLSX file within the WordPress upload limit."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:292
-#: admin/class-dkbce-admin-functions.php:604
-#: admin/class-dkbce-admin-functions.php:1344
+#: admin/class-dkbce-admin-functions.php:605
+#: admin/class-dkbce-admin-functions.php:1345
 msgid "Select Product ID or SKU to create a CSV."
 msgstr ""
 
@@ -574,1351 +574,1356 @@ msgid "Invalid rows are excluded from this preview and cannot be applied."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:294
-msgid "Download error report"
+msgid "Use the pencil to change New COGS for a product. Enter 0 to clear its saved COGS. Saved edits are used when you apply the import."
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:295
-msgid "Row"
+msgid "Download error report"
 msgstr ""
 
 #: admin/class-dkbce-admin-functions.php:296
+msgid "Row"
+msgstr ""
+
+#: admin/class-dkbce-admin-functions.php:297
 #: admin/class-dkbce-history-controller.php:76
 msgid "Status"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:297
+#: admin/class-dkbce-admin-functions.php:298
 msgid "Ready"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:298
+#: admin/class-dkbce-admin-functions.php:299
 msgid "Preparing CSV… Keep this page open."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:299
+#: admin/class-dkbce-admin-functions.php:300
 msgid "CSV download ready."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:300
+#: admin/class-dkbce-admin-functions.php:301
 msgid "Export cancelled. No file was downloaded."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:301
+#: admin/class-dkbce-admin-functions.php:302
 msgid "The download failed. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:302
+#: admin/class-dkbce-admin-functions.php:303
 msgid "Cancel export"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:305
-#: admin/class-dkbce-admin-functions.php:700
+#: admin/class-dkbce-admin-functions.php:306
+#: admin/class-dkbce-admin-functions.php:701
 msgid "Confirm COGS changes"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:307
+#: admin/class-dkbce-admin-functions.php:308
 msgid "You are about to modify COGS for 1 product. This will change product cost data."
 msgstr ""
 
 #. translators: %d: number of products that will be changed.
-#: admin/class-dkbce-admin-functions.php:309
+#: admin/class-dkbce-admin-functions.php:310
 #, php-format
 msgid "You are about to modify COGS for %d products. This will change product cost data."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:310
+#: admin/class-dkbce-admin-functions.php:311
 msgid "The CSV will contain 1 selected product. Generating this file will not change product costs."
 msgstr ""
 
 #. translators: %d: number of products selected for export.
-#: admin/class-dkbce-admin-functions.php:312
+#: admin/class-dkbce-admin-functions.php:313
 #, php-format
 msgid "The CSV will contain %d selected products. Generating this file will not change product costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:313
+#: admin/class-dkbce-admin-functions.php:314
 msgid "Confirm CSV export"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:314
-#: admin/class-dkbce-admin-functions.php:316
+#: admin/class-dkbce-admin-functions.php:315
+#: admin/class-dkbce-admin-functions.php:317
 msgid "Loading products…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:315
+#: admin/class-dkbce-admin-functions.php:316
 msgid "Calculating preview…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:317
+#: admin/class-dkbce-admin-functions.php:318
 msgid "Previous"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:318
+#: admin/class-dkbce-admin-functions.php:319
 msgid "Next"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:319
+#: admin/class-dkbce-admin-functions.php:320
 msgid "Product preview pages"
 msgstr ""
 
 #. translators: 1: first product number, 2: last product number, 3: total products.
-#: admin/class-dkbce-admin-functions.php:321
+#: admin/class-dkbce-admin-functions.php:322
 #, php-format
 msgid "Showing %1$d–%2$d of %3$d products."
 msgstr ""
 
 #. translators: 1: current page, 2: total pages.
-#: admin/class-dkbce-admin-functions.php:323
+#: admin/class-dkbce-admin-functions.php:324
 #, php-format
 msgid "Page %1$d of %2$d"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:324
+#: admin/class-dkbce-admin-functions.php:325
 msgid "No products match the selected filters."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:325
+#: admin/class-dkbce-admin-functions.php:326
 msgid "Get products to calculate the changes before applying them."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:326
+#: admin/class-dkbce-admin-functions.php:327
 msgid "Fetch matching products in Step 1 before choosing a COGS action."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:327
+#: admin/class-dkbce-admin-functions.php:328
 msgid "Select from all results"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:328
+#: admin/class-dkbce-admin-functions.php:329
 msgid "All"
 msgstr ""
 
 #. translators: %d: number of selected matching products.
-#: admin/class-dkbce-admin-functions.php:330
+#: admin/class-dkbce-admin-functions.php:331
 #, php-format
 msgid "%d products selected across all pages."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:331
+#: admin/class-dkbce-admin-functions.php:332
 msgid "First"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:332
+#: admin/class-dkbce-admin-functions.php:333
 msgid "Last"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:333
+#: admin/class-dkbce-admin-functions.php:334
 msgid "Number of products to select"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:334
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:335
+#: admin/class-dkbce-admin-functions.php:337
 msgid "Select"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:335
+#: admin/class-dkbce-admin-functions.php:336
 msgid "Operation cancelled. Products already processed remain changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 msgid "ID"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 #: admin/class-dkbce-history-controller.php:85
 msgid "Product"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
-#: admin/class-dkbce-admin-functions.php:476
+#: admin/class-dkbce-admin-functions.php:337
+#: admin/class-dkbce-admin-functions.php:477
 #: admin/class-dkbce-history-controller.php:86
 msgid "SKU"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 msgid "Type"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 msgid "Current COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 msgid "New COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 #: admin/class-dkbce-history-controller.php:84
 msgid "Change"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
+#: admin/class-dkbce-admin-functions.php:337
 msgid "Selling price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:336
-#: admin/class-dkbce-admin-functions.php:479
+#: admin/class-dkbce-admin-functions.php:337
+#: admin/class-dkbce-admin-functions.php:480
 msgid "Regular price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:337
+#: admin/class-dkbce-admin-functions.php:338
 msgid "Preview the products that will be included in the CSV export."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:338
+#: admin/class-dkbce-admin-functions.php:339
 msgid "Review the products and selected CSV columns before generating the export."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:339
+#: admin/class-dkbce-admin-functions.php:340
 msgid "product matches."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:340
+#: admin/class-dkbce-admin-functions.php:341
 msgid "products match."
 msgstr ""
 
 #. translators: 1: total matches, 2: product count excluding variations, 3: variation count.
-#: admin/class-dkbce-admin-functions.php:342
+#: admin/class-dkbce-admin-functions.php:343
 #, php-format
 msgid "%1$d matches: %2$d products and %3$d variations."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:343
+#: admin/class-dkbce-admin-functions.php:344
 msgid "Browse selling prices and current COGS. Choose a cost update in Step 2 to preview changes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:345
-#: admin/class-dkbce-admin-functions.php:663
+#: admin/class-dkbce-admin-functions.php:346
+#: admin/class-dkbce-admin-functions.php:664
 msgid "Include products with any COGS value."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:346
+#: admin/class-dkbce-admin-functions.php:347
 msgid "Match products with no saved COGS; the range is disabled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:347
+#: admin/class-dkbce-admin-functions.php:348
 msgid "Match saved COGS equal to 0; the range is disabled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:348
+#: admin/class-dkbce-admin-functions.php:349
 msgid "Match COGS greater than 0, optionally within a range."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:349
+#: admin/class-dkbce-admin-functions.php:350
 msgid "Match empty or zero COGS; the range is disabled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:350
+#: admin/class-dkbce-admin-functions.php:351
 msgid "Match COGS above the current selling price, including sales."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:351
+#: admin/class-dkbce-admin-functions.php:352
 msgid "Match COGS above the regular price, before discounts."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:353
+#: admin/class-dkbce-admin-functions.php:354
 msgid "Use a pencil to edit New COGS for one product. Saved edits override Step 2 and remain across pages. Changing filters or the bulk action clears these edits."
 msgstr ""
 
 #. translators: %d: Number of selected products with individually edited costs.
-#: admin/class-dkbce-admin-functions.php:355
+#: admin/class-dkbce-admin-functions.php:356
 #, php-format
 msgid "%d selected products use individual costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:356
+#: admin/class-dkbce-admin-functions.php:357
 msgid "Edit New COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:357
+#: admin/class-dkbce-admin-functions.php:358
 msgid "Save"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:359
+#: admin/class-dkbce-admin-functions.php:360
 msgid "Reset to Step 2"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:360
+#: admin/class-dkbce-admin-functions.php:361
 msgid "Edited"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:361
+#: admin/class-dkbce-admin-functions.php:362
 msgid "Overrides Step 2 for this product. Enter 0 to clear COGS."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:362
+#: admin/class-dkbce-admin-functions.php:363
 msgid "Saving…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:363
+#: admin/class-dkbce-admin-functions.php:364
 msgid "New COGS saved in the preview. Products have not been updated."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:364
+#: admin/class-dkbce-admin-functions.php:365
 msgid "The server took too long to respond. Try again or narrow your product filters."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:365
+#: admin/class-dkbce-admin-functions.php:366
 msgid "Not set"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:366
+#: admin/class-dkbce-admin-functions.php:367
 msgid "Choose an action and value in Step 2 to preview changes below."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:367
+#: admin/class-dkbce-admin-functions.php:368
 msgid "Review changes in the table below before applying."
 msgstr ""
 
 #. translators: 1: number of preview rows, 2: total matching products.
-#: admin/class-dkbce-admin-functions.php:369
+#: admin/class-dkbce-admin-functions.php:370
 #, php-format
 msgid "Showing first %1$d of %2$d matching products."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:370
+#: admin/class-dkbce-admin-functions.php:371
 msgid "All matching products are shown."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:371
+#: admin/class-dkbce-admin-functions.php:372
 msgid "(no name)"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:372
+#: admin/class-dkbce-admin-functions.php:373
 msgid "Skipped"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:373
+#: admin/class-dkbce-admin-functions.php:374
 #: admin/class-dkbce-history-controller.php:102
 msgid "Products updated"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:374
+#: admin/class-dkbce-admin-functions.php:375
 msgid "Products skipped"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:375
+#: admin/class-dkbce-admin-functions.php:376
 msgid "Products failed"
 msgstr ""
 
 #. translators: 1: formatted processed product count, 2: formatted total product count.
-#: admin/class-dkbce-admin-functions.php:377
+#: admin/class-dkbce-admin-functions.php:378
 #, php-format
 msgid "%1$s of %2$s products processed"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:378
+#: admin/class-dkbce-admin-functions.php:379
 msgid "Waiting for a background worker…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:379
+#: admin/class-dkbce-admin-functions.php:380
 msgid "No progress has been reported for at least two minutes. Refresh status or cancel this operation. If it remains delayed, ask an administrator to check WooCommerce → Status → Scheduled Actions and the site cron runner."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:380
+#: admin/class-dkbce-admin-functions.php:381
 msgid "Background processing is unavailable. Ask an administrator to restore Action Scheduler, then refresh status or cancel the operation."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:381
+#: admin/class-dkbce-admin-functions.php:382
 msgid "Status could not be refreshed. Background changes may still continue. Retry status or reload this page to reconnect."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:382
+#: admin/class-dkbce-admin-functions.php:383
 msgid "Refresh status"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:383
+#: admin/class-dkbce-admin-functions.php:384
 msgid "Another operation is in progress. This action is unavailable until it finishes. View progress to check its status or stop the remaining work. Changes already saved will be kept."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:384
+#: admin/class-dkbce-admin-functions.php:385
 msgid "View progress"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:385
-#: admin/class-dkbce-admin-functions.php:685
+#: admin/class-dkbce-admin-functions.php:386
+#: admin/class-dkbce-admin-functions.php:686
 msgid "Refresh preview"
 msgstr ""
 
 #. translators: 1: local date and time of latest progress checkpoint, 2: automatic status refresh interval.
-#: admin/class-dkbce-admin-functions.php:387
+#: admin/class-dkbce-admin-functions.php:388
 #, php-format
 msgid "Last progress reported: %1$s. Status refreshes every %2$s. You can refresh any time using the Refresh status button."
 msgstr ""
 
 #. translators: %d: number of product IDs collected for the snapshot.
-#: admin/class-dkbce-admin-functions.php:389
+#: admin/class-dkbce-admin-functions.php:390
 #, php-format
 msgid "%d matching products collected. Product costs have not been changed yet."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:390
+#: admin/class-dkbce-admin-functions.php:391
 msgid "Processing COGS updates…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:391
+#: admin/class-dkbce-admin-functions.php:392
 msgid "You can close this window or your browser. Updates will continue in the background. Return to this page later to view the results."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:392
-#: admin/class-dkbce-admin-functions.php:442
+#: admin/class-dkbce-admin-functions.php:393
+#: admin/class-dkbce-admin-functions.php:443
 msgid "COGS update completed."
 msgstr ""
 
 #. translators: %s: current operation status.
-#: admin/class-dkbce-admin-functions.php:394
+#: admin/class-dkbce-admin-functions.php:395
 #, php-format
 msgid "COGS update %s"
 msgstr ""
 
 #. translators: 1: products processed, 2: total products, 3: percent complete, 4: successful updates, 5: skipped products, 6: failed products.
-#: admin/class-dkbce-admin-functions.php:396
+#: admin/class-dkbce-admin-functions.php:397
 #, php-format
 msgid "Processed %1$d of %2$d (%3$d%) · Success: %4$d · Skipped: %5$d · Failed: %6$d"
 msgstr ""
 
 #. translators: %s: elapsed duration in hours, minutes, and seconds.
-#: admin/class-dkbce-admin-functions.php:398
+#: admin/class-dkbce-admin-functions.php:399
 #, php-format
 msgid "Elapsed time: %s"
 msgstr ""
 
 #. translators: %s: approximate remaining duration or an estimating message.
-#: admin/class-dkbce-admin-functions.php:400
+#: admin/class-dkbce-admin-functions.php:401
 #, php-format
 msgid "Approx. time remaining: %s"
 msgstr ""
 
 #. translators: 1: number of days, 2: hours, minutes, and seconds.
-#: admin/class-dkbce-admin-functions.php:402
+#: admin/class-dkbce-admin-functions.php:403
 #, php-format
 msgid "%1$s d %2$s"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:403
+#: admin/class-dkbce-admin-functions.php:404
 msgid "Calcaulating"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:404
+#: admin/class-dkbce-admin-functions.php:405
 msgid "Calculating…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:405
+#: admin/class-dkbce-admin-functions.php:406
 msgid "Stop remaining updates"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:406
+#: admin/class-dkbce-admin-functions.php:407
 msgid "Any changes already made will remain."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:407
+#: admin/class-dkbce-admin-functions.php:408
 msgid "Cancellation requested. Waiting for a background worker to stop."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:408
+#: admin/class-dkbce-admin-functions.php:409
 msgid "Starting…"
 msgstr ""
 
 #. translators: %d: selected products remaining after a filter refresh.
-#: admin/class-dkbce-admin-functions.php:410
+#: admin/class-dkbce-admin-functions.php:411
 #, php-format
 msgid "Previous selection narrowed to the current filters: %d products selected. Exclusions are preserved. Use Reset filters to start a new selection."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:411
-#: admin/class-dkbce-admin-functions.php:2151
+#: admin/class-dkbce-admin-functions.php:412
+#: admin/class-dkbce-admin-functions.php:2185
 msgid "Select at least one product in the preview table."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:412
+#: admin/class-dkbce-admin-functions.php:413
 msgid "Select all products on this page"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:413
+#: admin/class-dkbce-admin-functions.php:414
 msgid "Enter a valid non-negative value for this action."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:414
-#: admin/class-dkbce-admin-functions.php:692
+#: admin/class-dkbce-admin-functions.php:415
+#: admin/class-dkbce-admin-functions.php:693
 msgid "Only apply to products checked in the preview table"
 msgstr ""
 
 #. translators: %d: product ID.
-#: admin/class-dkbce-admin-functions.php:416
+#: admin/class-dkbce-admin-functions.php:417
 #, php-format
 msgid "Select product %d"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:417
+#: admin/class-dkbce-admin-functions.php:418
 msgid "COGS update progress"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:418
+#: admin/class-dkbce-admin-functions.php:419
 msgid "Collecting matching products…"
 msgstr ""
 
 #. translators: %1$d: product ID, %2$s: safe error summary.
-#: admin/class-dkbce-admin-functions.php:420
+#: admin/class-dkbce-admin-functions.php:421
 #, php-format
 msgid "Product %1$d: %2$s"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:421
+#: admin/class-dkbce-admin-functions.php:422
 msgid "Values shown on reviewed pages are checked again before starting and before each update. Unvisited products are calculated when processed. Changed reviewed products require a fresh preview and confirmation."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:422
+#: admin/class-dkbce-admin-functions.php:423
 msgid "WooCommerce stores zero as Empty. Any selected cost calculated as zero will be cleared."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:423
+#: admin/class-dkbce-admin-functions.php:424
 msgid "Empty"
 msgstr ""
 
 #. translators: %s: percentage change.
-#: admin/class-dkbce-admin-functions.php:425
+#: admin/class-dkbce-admin-functions.php:426
 #, php-format
 msgid "(%s%)"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:426
+#: admin/class-dkbce-admin-functions.php:427
 msgid "COGS cleared"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:427
+#: admin/class-dkbce-admin-functions.php:428
 msgid "Amount"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:428
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:429
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Percentage"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:429
-#: admin/class-dkbce-admin-functions.php:659
-#: admin/class-dkbce-admin-functions.php:673
-#: admin/class-dkbce-history-controller.php:217
+#: admin/class-dkbce-admin-functions.php:430
+#: admin/class-dkbce-admin-functions.php:660
+#: admin/class-dkbce-admin-functions.php:674
+#: admin/class-dkbce-history-controller.php:219
 msgid "COGS value"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:430
+#: admin/class-dkbce-admin-functions.php:431
 msgid "—"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:431
+#: admin/class-dkbce-admin-functions.php:432
 msgid "Filters changed. Get products again to refresh the matching set."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:432
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:433
+#: admin/class-dkbce-admin-functions.php:624
 msgid "Find products"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:433
+#: admin/class-dkbce-admin-functions.php:434
 msgid "All filters reset."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:434
-#: admin/class-dkbce-admin-functions.php:596
+#: admin/class-dkbce-admin-functions.php:435
+#: admin/class-dkbce-admin-functions.php:597
 msgid "Select all"
 msgstr ""
 
 #. translators: %s: positive formatted currency amount.
-#: admin/class-dkbce-admin-functions.php:436
+#: admin/class-dkbce-admin-functions.php:437
 #, php-format
 msgid "+%s"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:437
+#: admin/class-dkbce-admin-functions.php:438
 msgid "Operation cancelled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:438
+#: admin/class-dkbce-admin-functions.php:439
 msgid "Clear cancellation state"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:439
+#: admin/class-dkbce-admin-functions.php:440
 msgid "Operation failed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:440
+#: admin/class-dkbce-admin-functions.php:441
 msgid "Operation completed with errors."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:441
+#: admin/class-dkbce-admin-functions.php:442
 msgid "Operation completed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:443
+#: admin/class-dkbce-admin-functions.php:444
 #: admin/class-dkbce-health-notice.php:108
 msgid "Refresh now"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:456
+#: admin/class-dkbce-admin-functions.php:457
 msgid "You are not allowed to manage product costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:475
+#: admin/class-dkbce-admin-functions.php:476
 msgid "Product ID"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:477
+#: admin/class-dkbce-admin-functions.php:478
 msgid "Product name"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:478
+#: admin/class-dkbce-admin-functions.php:479
 msgid "Current cost"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:480
+#: admin/class-dkbce-admin-functions.php:481
 msgid "Sale price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:481
-#: admin/class-dkbce-admin-functions.php:637
+#: admin/class-dkbce-admin-functions.php:482
+#: admin/class-dkbce-admin-functions.php:638
 msgid "Product type"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:487
+#: admin/class-dkbce-admin-functions.php:488
 msgid "Bulk COGS (Cost of Goods Sold) Editor"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:487
+#: admin/class-dkbce-admin-functions.php:488
 msgid "Review and update product costs, or transfer costs with CSV and Excel files."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:488
+#: admin/class-dkbce-admin-functions.php:489
 msgid "Help"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:488
-#: admin/class-dkbce-admin-functions.php:565
+#: admin/class-dkbce-admin-functions.php:489
+#: admin/class-dkbce-admin-functions.php:566
 msgid "Bulk edit"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:490
+#: admin/class-dkbce-admin-functions.php:491
 msgid "Update product costs in four steps"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:492
+#: admin/class-dkbce-admin-functions.php:493
 msgid "Use the filters to choose products, then click Find products. Leave a filter empty to include all its values."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:493
+#: admin/class-dkbce-admin-functions.php:494
 msgid "Choose Set exact cost, Adjust existing cost, or Clear cost. For adjustments, choose a direction and a percentage or fixed amount. Enter a value unless you are clearing costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:494
+#: admin/class-dkbce-admin-functions.php:495
 msgid "Compare current and new costs in the preview. All matching products across all pages are selected initially. Use the checkboxes or selection controls to choose which products to include."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:495
+#: admin/class-dkbce-admin-functions.php:496
 msgid "Use the Review button to check the selected count and update details, then confirm the update. No costs are saved before confirmation."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:499
+#: admin/class-dkbce-admin-functions.php:500
 msgid "Export product costs in four steps"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:501
+#: admin/class-dkbce-admin-functions.php:502
 msgid "Choose Export CSV and select the columns to include. A blank new_cogs column is always added for entering updated costs later."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:502
+#: admin/class-dkbce-admin-functions.php:503
 msgid "Use the filters to choose products, then click Find products. Use Product type to include variable products, variations, or both."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:503
+#: admin/class-dkbce-admin-functions.php:504
 msgid "Review the export preview. All matching products across all pages are selected initially. Use the checkboxes or selection controls to adjust the export selection."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:504
+#: admin/class-dkbce-admin-functions.php:505
 msgid "Click Create CSV, confirm the export, and keep this page open until the download is ready. Exporting does not change product costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:508
+#: admin/class-dkbce-admin-functions.php:509
 msgid "Import product costs in four steps"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:510
+#: admin/class-dkbce-admin-functions.php:511
 msgid "Choose Import CSV. Download the template or use an exported file. Enter updated costs in new_cogs and identify each product with id or sku."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:511
+#: admin/class-dkbce-admin-functions.php:512
 msgid "Choose a CSV or XLSX file, then click Validate file. Use decimal points without currency symbols. Blank costs are skipped; zero clears the stored cost. Open File requirements for more details."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:512
+#: admin/class-dkbce-admin-functions.php:513
 msgid "Wait for validation, then review the current and new costs and any reported issues. Use the preview checkboxes to choose which products to update."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:513
+#: admin/class-dkbce-admin-functions.php:514
 msgid "Use the Review button to check the selected count and import details, then confirm the update. Validation alone does not save costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:517
+#: admin/class-dkbce-admin-functions.php:518
 msgid "Review history and roll back costs in four steps"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:519
+#: admin/class-dkbce-admin-functions.php:520
 msgid "Use status, operation type, user, date, or search filters to find an operation, then click Filter. Search accepts an operation ID, note, or product ID."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:520
+#: admin/class-dkbce-admin-functions.php:521
 msgid "Click View details to inspect the operation summary, filters, timing, and recorded product cost changes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:521
+#: admin/class-dkbce-admin-functions.php:522
 msgid "For an eligible operation, click Review rollback and compare Current COGS (now) with Rollback to (original). The rollback policy in Settings determines whether later cost changes are overwritten or skipped."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:522
+#: admin/class-dkbce-admin-functions.php:523
 msgid "Read the warning, select the confirmation checkbox, and click Confirm rollback. Follow the background progress in History; the completed rollback is recorded as a separate operation."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:526
+#: admin/class-dkbce-admin-functions.php:527
 msgid "Configure history and rollback settings in four steps"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:528
+#: admin/class-dkbce-admin-functions.php:529
 msgid "Choose how long to retain completed operation history and original product costs. Select 30 days, 90 days, or Custom days."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:529
+#: admin/class-dkbce-admin-functions.php:530
 msgid "Remember that expired history is deleted automatically and cannot be rolled back. Reducing retention also affects existing history."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:530
+#: admin/class-dkbce-admin-functions.php:531
 msgid "Choose whether new rollbacks overwrite current costs with recorded original costs or skip products whose costs changed after the original operation."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:531
+#: admin/class-dkbce-admin-functions.php:532
 msgid "Click Save settings. The selected rollback behavior appears during review and remains fixed after a rollback starts."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:534
+#: admin/class-dkbce-admin-functions.php:535
 msgid "Need more guidance? Read the documentation or watch the video walkthrough."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:542
+#: admin/class-dkbce-admin-functions.php:543
 msgid "Bulk COGS Editor requires WooCommerce 10.3 or later. Update WooCommerce to use this editor."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:544
+#: admin/class-dkbce-admin-functions.php:545
 msgid "Update Now"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:546
+#: admin/class-dkbce-admin-functions.php:547
 msgid "Ask an administrator to update WooCommerce."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:549
+#: admin/class-dkbce-admin-functions.php:550
 msgid "WooCommerce Cost of Goods Sold is disabled. Enable the feature to use this editor."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:551
+#: admin/class-dkbce-admin-functions.php:552
 msgid "Enable Cost of Goods Sold"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:553
+#: admin/class-dkbce-admin-functions.php:554
 msgid "Ask an administrator to enable Cost of Goods Sold."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:556
+#: admin/class-dkbce-admin-functions.php:557
 msgid "The supported WooCommerce Cost of Goods Sold API is unavailable. Check your WooCommerce installation and Features settings."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:558
+#: admin/class-dkbce-admin-functions.php:559
 msgid "Cost of Goods Sold documentation"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:564
+#: admin/class-dkbce-admin-functions.php:565
 msgid "Editor mode"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:566
+#: admin/class-dkbce-admin-functions.php:567
 msgid "Import / export"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:567
+#: admin/class-dkbce-admin-functions.php:568
 msgid "History"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:574
+#: admin/class-dkbce-admin-functions.php:575
 msgid "Bulk edit progress"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:575
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:576
+#: admin/class-dkbce-admin-functions.php:624
 msgid "Select products"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:575
+#: admin/class-dkbce-admin-functions.php:576
 msgid "Find your selection"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:576
-#: admin/class-dkbce-admin-functions.php:670
+#: admin/class-dkbce-admin-functions.php:577
+#: admin/class-dkbce-admin-functions.php:671
 msgid "Set cost update"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:576
+#: admin/class-dkbce-admin-functions.php:577
 msgid "Choose an action and value"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:577
+#: admin/class-dkbce-admin-functions.php:578
 msgid "Preview before applying"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:583
+#: admin/class-dkbce-admin-functions.php:584
 msgid "File transfer"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:583
+#: admin/class-dkbce-admin-functions.php:584
 msgid "Choose whether to export matching products or import updated costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:586
+#: admin/class-dkbce-admin-functions.php:587
 msgid "CSV action"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:587
+#: admin/class-dkbce-admin-functions.php:588
 msgid "Export CSV"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:588
+#: admin/class-dkbce-admin-functions.php:589
 msgid "Import CSV / XLSX"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:593
+#: admin/class-dkbce-admin-functions.php:594
 msgid "Choose products with the filters, choose columns, preview the selection, then download a CSV. Product type controls parents and variations. The new_cogs column is included for entering new costs before a later import."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:602
+#: admin/class-dkbce-admin-functions.php:603
 msgid "New cost (new_cogs)"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:607
+#: admin/class-dkbce-admin-functions.php:608
 msgid "Download template"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:608
+#: admin/class-dkbce-admin-functions.php:609
 msgid "CSV or XLSX. Include new_cogs and either id or sku. Validate your file before changing costs."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:608
+#: admin/class-dkbce-admin-functions.php:609
 msgid "File requirements"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:608
+#: admin/class-dkbce-admin-functions.php:609
 msgid "UTF-8 CSV or XLSX (first worksheet, formulas replaced with values). No plugin row limit. Preview preparation runs in the background; review the paged results before applying. Required headers: new_cogs and id or sku. The cogs column shows current costs; only new_cogs is imported when present. ID takes priority; if both are supplied they must agree. Use decimal points without currency symbols. Blank new_cogs cells are skipped. Enter 12.50 to set a cost; enter 0 to clear the stored cost."
 msgstr ""
 
 #. translators: %s: site maximum upload size.
-#: admin/class-dkbce-admin-functions.php:612
+#: admin/class-dkbce-admin-functions.php:613
 #, php-format
 msgid "Maximum upload size: %s (WordPress setting)."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:615
+#: admin/class-dkbce-admin-functions.php:616
 msgid "Cancel preparation"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:616
+#: admin/class-dkbce-admin-functions.php:617
 msgid "Drop a CSV or XLSX file here or choose a file"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:616
+#: admin/class-dkbce-admin-functions.php:617
 msgid "Replace file"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:616
+#: admin/class-dkbce-admin-functions.php:617
 msgid "Remove file"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:624
 msgid "Select one or more values per filter. Leave a filter empty to include all values."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:624
 msgid "Reset filters"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:623
+#: admin/class-dkbce-admin-functions.php:624
 msgid "Start over"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:624
+#: admin/class-dkbce-admin-functions.php:625
 msgid "Product filters"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:625
-#: admin/class-dkbce-history-controller.php:210
+#: admin/class-dkbce-admin-functions.php:626
+#: admin/class-dkbce-history-controller.php:212
 msgid "Search"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:625
+#: admin/class-dkbce-admin-functions.php:626
 msgid "Name, SKU or product identifier"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:625
+#: admin/class-dkbce-admin-functions.php:626
 msgid "Search by name, SKU, GTIN, ISBN, EAN or UPC."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:626
+#: admin/class-dkbce-admin-functions.php:627
 msgid "Product category"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:626
+#: admin/class-dkbce-admin-functions.php:627
 msgid "All categories"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:637
+#: admin/class-dkbce-admin-functions.php:638
 msgid "All product types"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:642
+#: admin/class-dkbce-admin-functions.php:643
 msgid "More filters"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:643
-#: admin/class-dkbce-history-controller.php:214
+#: admin/class-dkbce-admin-functions.php:644
+#: admin/class-dkbce-history-controller.php:216
 msgid "Stock status"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:643
+#: admin/class-dkbce-admin-functions.php:644
 msgid "Any stock status"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:643
+#: admin/class-dkbce-admin-functions.php:644
 msgid "In stock"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:643
+#: admin/class-dkbce-admin-functions.php:644
 msgid "Out of stock"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:643
+#: admin/class-dkbce-admin-functions.php:644
 msgid "On backorder"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:647
+#: admin/class-dkbce-admin-functions.php:648
 msgid "All brands"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:658
+#: admin/class-dkbce-admin-functions.php:659
 msgid "Price range (current price)"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:658
-#: admin/class-dkbce-history-controller.php:215
+#: admin/class-dkbce-admin-functions.php:659
+#: admin/class-dkbce-history-controller.php:217
 msgid "Minimum price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:658
+#: admin/class-dkbce-admin-functions.php:659
 msgid "Min price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:658
-#: admin/class-dkbce-history-controller.php:216
+#: admin/class-dkbce-admin-functions.php:659
+#: admin/class-dkbce-history-controller.php:218
 msgid "Maximum price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:658
+#: admin/class-dkbce-admin-functions.php:659
 msgid "Max price"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:664
+#: admin/class-dkbce-admin-functions.php:665
 msgid "Current COGS range"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:664
-#: admin/class-dkbce-history-controller.php:218
+#: admin/class-dkbce-admin-functions.php:665
+#: admin/class-dkbce-history-controller.php:220
 msgid "Minimum COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:664
+#: admin/class-dkbce-admin-functions.php:665
 msgid "Min COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:664
-#: admin/class-dkbce-history-controller.php:219
+#: admin/class-dkbce-admin-functions.php:665
+#: admin/class-dkbce-history-controller.php:221
 msgid "Maximum COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:664
+#: admin/class-dkbce-admin-functions.php:665
 msgid "Max COGS"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:670
+#: admin/class-dkbce-admin-functions.php:671
 msgid "Select how you want to update COGS for matching products."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:672
+#: admin/class-dkbce-admin-functions.php:673
 msgid "Start with your products. Cost update options unlock when products are found."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Update action"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 #: admin/class-dkbce-history-controller.php:117
 msgid "Set exact cost"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Adjust existing cost"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Direction"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Change by"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:673
+#: admin/class-dkbce-admin-functions.php:674
 msgid "Fixed amount"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:675
+#: admin/class-dkbce-admin-functions.php:676
 msgid "Variations are treated as separate products and their own COGS values are changed. WooCommerce stores a COGS value of zero as empty, so relative actions skip it."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:680
+#: admin/class-dkbce-admin-functions.php:681
 msgid "Browse matching products and selling prices. Choose a cost update to review proposed changes before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:680
+#: admin/class-dkbce-admin-functions.php:681
 msgid "Products per page"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:684
+#: admin/class-dkbce-admin-functions.php:685
 msgid "Manage columns"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:684
+#: admin/class-dkbce-admin-functions.php:685
 msgid "Close column controls"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:686
+#: admin/class-dkbce-admin-functions.php:687
 msgid "Select all matching products"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:686
+#: admin/class-dkbce-admin-functions.php:687
 msgid "Select a range…"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:687
+#: admin/class-dkbce-admin-functions.php:688
 msgid "Your changes start here"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:687
+#: admin/class-dkbce-admin-functions.php:688
 msgid "Get your products, then choose an action and enter a value to see the new costs before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:687
+#: admin/class-dkbce-admin-functions.php:688
 msgid "Preview first. Apply when you are ready."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:691
+#: admin/class-dkbce-admin-functions.php:692
 msgid "Review your preview, choose which products to include, then confirm your update."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:734
-#: admin/class-dkbce-admin-functions.php:738
+#: admin/class-dkbce-admin-functions.php:735
+#: admin/class-dkbce-admin-functions.php:739
 msgid "The display preferences are invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:747
+#: admin/class-dkbce-admin-functions.php:748
 msgid "Could not save display preferences. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:784
+#: admin/class-dkbce-admin-functions.php:785
 msgid "Select valid presets to delete."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:788
+#: admin/class-dkbce-admin-functions.php:789
 msgid "Invalid preset action."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:810
+#: admin/class-dkbce-admin-functions.php:811
 msgid "Could not manage presets. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:826
+#: admin/class-dkbce-admin-functions.php:827
 msgid "Could not dismiss the review notice. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:855
+#: admin/class-dkbce-admin-functions.php:856
 msgid "You do not have permission to enable WooCommerce features."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:858
+#: admin/class-dkbce-admin-functions.php:859
 msgid "Update WooCommerce to a supported version before enabling Cost of Goods Sold."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:865
+#: admin/class-dkbce-admin-functions.php:866
 msgid "Cost of Goods Sold could not be enabled. Try again in WooCommerce Features settings."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:877
-#: admin/class-dkbce-admin-functions.php:1166
-#: admin/class-dkbce-admin-functions.php:1209
+#: admin/class-dkbce-admin-functions.php:878
+#: admin/class-dkbce-admin-functions.php:1167
+#: admin/class-dkbce-admin-functions.php:1210
 #: admin/class-dkbce-health-notice.php:144
 #: admin/class-dkbce-history-controller.php:147
 msgid "You do not have permission to manage product COGS."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:880
+#: admin/class-dkbce-admin-functions.php:881
 #: admin/class-dkbce-health-notice.php:147
 msgid "WooCommerce Cost of Goods Sold is unavailable or disabled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:890
+#: admin/class-dkbce-admin-functions.php:891
 msgid "Your session expired. Reload the page and try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:977
+#: admin/class-dkbce-admin-functions.php:978
 msgid "Choose import or export."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1053
+#: admin/class-dkbce-admin-functions.php:1054
 msgid "This import preview is unavailable. Upload the file again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1123
+#: admin/class-dkbce-admin-functions.php:1124
 msgid "This import report has expired or is not ready."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1131
+#: admin/class-dkbce-admin-functions.php:1132
 msgid "Wait for the import to finish before downloading its results."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1171
+#: admin/class-dkbce-admin-functions.php:1172
 msgid "This download has expired or is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1175
+#: admin/class-dkbce-admin-functions.php:1176
 msgid "This download has expired."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1192
+#: admin/class-dkbce-admin-functions.php:1193
 msgid "The download failed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1194
+#: admin/class-dkbce-admin-functions.php:1195
 msgid "The download was cancelled."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1214
-#: admin/class-dkbce-admin-functions.php:1230
+#: admin/class-dkbce-admin-functions.php:1215
+#: admin/class-dkbce-admin-functions.php:1231
 msgid "This download is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1256
+#: admin/class-dkbce-admin-functions.php:1257
+#: admin/class-dkbce-admin-functions.php:1764
 msgid "The import preview has expired. Upload the file again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1317
-#: admin/class-dkbce-admin-functions.php:2154
+#: admin/class-dkbce-admin-functions.php:1318
+#: admin/class-dkbce-admin-functions.php:2188
 msgid "The selected products do not match the preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1337
+#: admin/class-dkbce-admin-functions.php:1338
 msgid "Export preview expired. Preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1341
+#: admin/class-dkbce-admin-functions.php:1342
 msgid "Choose valid CSV columns."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1350
+#: admin/class-dkbce-admin-functions.php:1351
 msgid "Select the product range again before exporting."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1357
-#: admin/class-dkbce-admin-functions.php:1361
+#: admin/class-dkbce-admin-functions.php:1358
+#: admin/class-dkbce-admin-functions.php:1362
 msgid "Invalid export selection."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1368
+#: admin/class-dkbce-admin-functions.php:1369
 msgid "Select at least one product."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1408
-#: admin/class-dkbce-admin-functions.php:1632
-#: admin/class-dkbce-admin-functions.php:1677
+#: admin/class-dkbce-admin-functions.php:1409
+#: admin/class-dkbce-admin-functions.php:1633
+#: admin/class-dkbce-admin-functions.php:1678
 msgid "Choose a valid number of products per page."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1485
+#: admin/class-dkbce-admin-functions.php:1486
 msgid "The previous preview expired. Results have been refreshed using your current filters. Select products again before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1518
-#: admin/class-dkbce-admin-functions.php:1567
+#: admin/class-dkbce-admin-functions.php:1519
+#: admin/class-dkbce-admin-functions.php:1568
 msgid "The previous selection expired. Use Reset filters to start a new selection."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1549
-#: admin/class-dkbce-admin-functions.php:1629
-#: admin/class-dkbce-admin-functions.php:2210
-#: admin/class-dkbce-admin-functions.php:2214
-#: admin/class-dkbce-admin-functions.php:2232
-#: admin/class-dkbce-admin-functions.php:2236
-#: admin/class-dkbce-admin-functions.php:2258
+#: admin/class-dkbce-admin-functions.php:1550
+#: admin/class-dkbce-admin-functions.php:1630
+#: admin/class-dkbce-admin-functions.php:2244
+#: admin/class-dkbce-admin-functions.php:2248
+#: admin/class-dkbce-admin-functions.php:2266
+#: admin/class-dkbce-admin-functions.php:2270
+#: admin/class-dkbce-admin-functions.php:2292
 #: admin/class-dkbce-history-controller.php:173
 msgid "This operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1572
-#: admin/class-dkbce-admin-functions.php:1576
-#: admin/class-dkbce-admin-functions.php:2036
-#: admin/class-dkbce-admin-functions.php:2040
+#: admin/class-dkbce-admin-functions.php:1573
+#: admin/class-dkbce-admin-functions.php:1577
+#: admin/class-dkbce-admin-functions.php:2070
+#: admin/class-dkbce-admin-functions.php:2074
 msgid "The excluded product list is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1589
-#: admin/class-dkbce-admin-functions.php:2027
+#: admin/class-dkbce-admin-functions.php:1590
+#: admin/class-dkbce-admin-functions.php:2061
 msgid "Select the product range again before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1605
+#: admin/class-dkbce-admin-functions.php:1606
 msgid "Use Reset filters to start a new selection before changing filters again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1671
-#: admin/class-dkbce-admin-functions.php:1974
-#: admin/class-dkbce-admin-functions.php:2294
+#: admin/class-dkbce-admin-functions.php:1672
+#: admin/class-dkbce-admin-functions.php:2008
+#: admin/class-dkbce-admin-functions.php:2328
 msgid "Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes"
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1682
+#: admin/class-dkbce-admin-functions.php:1683
 msgid "That CSV page is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1695
+#: admin/class-dkbce-admin-functions.php:1696
 msgid "That preview page is unavailable. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1708
-#: admin/class-dkbce-admin-functions.php:2309
-#: admin/class-dkbce-admin-functions.php:2320
+#: admin/class-dkbce-admin-functions.php:1709
+#: admin/class-dkbce-admin-functions.php:2343
+#: admin/class-dkbce-admin-functions.php:2354
 msgid "Products changed after this preview. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1756
+#: admin/class-dkbce-admin-functions.php:1757
 msgid "This preview has expired or has already been used. Refresh the preview."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1759
+#: admin/class-dkbce-admin-functions.php:1768
 msgid "Choose a cost update and a product from its preview before editing New COGS."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1763
+#: admin/class-dkbce-admin-functions.php:1772
 msgid "This product is unavailable. Refresh the preview."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1775
+#: admin/class-dkbce-admin-functions.php:1796
 msgid "Edit up to 500 individual costs per preview."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1783
+#: admin/class-dkbce-admin-functions.php:1811
 msgid "The edited preview could not be saved. Try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1839
+#: admin/class-dkbce-admin-functions.php:1873
 msgid "The selection check expired or the preview changed. Refresh the preview and apply again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1858
+#: admin/class-dkbce-admin-functions.php:1892
 msgid "The selection check could not be saved. Try applying again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1888
+#: admin/class-dkbce-admin-functions.php:1922
 msgid "The selected product scope changed. Refresh the preview, review the selection, and confirm again. No update was started."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1936
+#: admin/class-dkbce-admin-functions.php:1970
 msgid "A reviewed product changed after this preview. Refresh the preview, review the new values, and confirm again. No update was started."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1963
-#: admin/class-dkbce-history-controller.php:604
+#: admin/class-dkbce-admin-functions.php:1997
+#: admin/class-dkbce-history-controller.php:608
 msgid "Choose a valid rollback mode."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1967
+#: admin/class-dkbce-admin-functions.php:2001
 msgid "Background processing is unavailable. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1978
+#: admin/class-dkbce-admin-functions.php:2012
 msgid "Choose a cost update in Step 2 and review its preview before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1982
+#: admin/class-dkbce-admin-functions.php:2016
 msgid "Export cannot update products."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:1989
+#: admin/class-dkbce-admin-functions.php:2023
 msgid "The import preview is not ready or has expired."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2004
+#: admin/class-dkbce-admin-functions.php:2038
 msgid "This preview has already been used. Run a new preview before applying."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2012
-#: admin/class-dkbce-admin-functions.php:2018
+#: admin/class-dkbce-admin-functions.php:2046
+#: admin/class-dkbce-admin-functions.php:2052
 msgid "The selected product scope is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2046
+#: admin/class-dkbce-admin-functions.php:2080
 msgid "The selection is empty or no longer matches the preview."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2060
-#: admin/class-dkbce-admin-functions.php:2297
+#: admin/class-dkbce-admin-functions.php:2094
+#: admin/class-dkbce-admin-functions.php:2331
 msgid "Choose import products using the preview checkboxes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2067
-#: admin/class-dkbce-import-store.php:297
+#: admin/class-dkbce-admin-functions.php:2101
+#: admin/class-dkbce-import-store.php:330
 msgid "Select at least one valid product to import."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2081
+#: admin/class-dkbce-admin-functions.php:2115
 msgid "Choose CSV products using the preview checkboxes."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2086
+#: admin/class-dkbce-admin-functions.php:2120
 msgid "There are no valid CSV products to import."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2140
+#: admin/class-dkbce-admin-functions.php:2174
 msgid "The selected product list is too large. Run the preview again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2145
+#: admin/class-dkbce-admin-functions.php:2179
 msgid "The selected product list is invalid."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2185
-#: admin/class-dkbce-history-controller.php:529
+#: admin/class-dkbce-admin-functions.php:2219
+#: admin/class-dkbce-history-controller.php:533
 msgid "Background processing could not be started. No products were changed."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2262
+#: admin/class-dkbce-admin-functions.php:2296
 msgid "This finished operation is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2266
+#: admin/class-dkbce-admin-functions.php:2300
 msgid "The operation could not be cleared. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-admin-functions.php:2302
+#: admin/class-dkbce-admin-functions.php:2336
 msgid "Choose a valid number of matching products."
 msgstr ""
 
@@ -1953,7 +1958,7 @@ msgid "Not processed before the operation stopped."
 msgstr ""
 
 #: admin/class-dkbce-bulk-processor.php:821
-#: admin/class-dkbce-history-controller.php:351
+#: admin/class-dkbce-history-controller.php:353
 msgid "Product no longer exists."
 msgstr ""
 
@@ -2541,125 +2546,125 @@ msgstr ""
 msgid "Your session expired. Reload this page."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:192
+#: admin/class-dkbce-history-controller.php:194
 msgid "Deleted user"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:211
+#: admin/class-dkbce-history-controller.php:213
 msgid "Categories"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:212
+#: admin/class-dkbce-history-controller.php:214
 msgid "Brands"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:213
+#: admin/class-dkbce-history-controller.php:215
 msgid "Product types"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:271
+#: admin/class-dkbce-history-controller.php:273
 msgid "Enter a valid date range."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:277
+#: admin/class-dkbce-history-controller.php:279
 msgid "The start date must come before the end date."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:334
+#: admin/class-dkbce-history-controller.php:336
 msgid "Deleted product"
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:347
+#: admin/class-dkbce-history-controller.php:349
 msgid "COGS changed after the original operation. The product will be skipped."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:360
+#: admin/class-dkbce-history-controller.php:362
 msgid "Rollback history was disabled for this operation. Original costs and detailed product changes are unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:363
+#: admin/class-dkbce-history-controller.php:365
 msgid "This operation is still running. Review rollback after it finishes."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:366
+#: admin/class-dkbce-history-controller.php:368
 msgid "A rollback operation cannot itself be rolled back."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:371
+#: admin/class-dkbce-history-controller.php:373
 msgid "The history retention period has expired. Rollback is no longer available."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:373
+#: admin/class-dkbce-history-controller.php:375
 msgid "History cleanup has been scheduled or started. Original costs are no longer available for rollback."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:376
+#: admin/class-dkbce-history-controller.php:378
 msgid "No recorded product changes remain available for rollback. View the existing rollback operation for its results."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:377
+#: admin/class-dkbce-history-controller.php:379
 msgid "This operation has no retained original costs available for rollback."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:380
+#: admin/class-dkbce-history-controller.php:382
 msgid "A rollback is already in progress. View the rollback operation to check its status."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:428
-#: admin/class-dkbce-history-controller.php:466
+#: admin/class-dkbce-history-controller.php:432
+#: admin/class-dkbce-history-controller.php:470
 msgid "Review this rollback again before confirming."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:457
+#: admin/class-dkbce-history-controller.php:461
 msgid "COGS or background processing is unavailable."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:461
+#: admin/class-dkbce-history-controller.php:465
 msgid "This operation is busy. Please try again shortly."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:476
+#: admin/class-dkbce-history-controller.php:480
 msgid "The remaining rollback scope changed. Review it again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:518
+#: admin/class-dkbce-history-controller.php:522
 msgid "The rollback claim could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:548
-#: admin/class-dkbce-history-controller.php:591
+#: admin/class-dkbce-history-controller.php:552
+#: admin/class-dkbce-history-controller.php:595
 msgid "You do not have permission to manage these settings."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:551
+#: admin/class-dkbce-history-controller.php:555
 msgid "Confirm the warning before clearing the current operation."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:559
+#: admin/class-dkbce-history-controller.php:563
 msgid "Your current operation changed. Reload this page before clearing it."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:571
+#: admin/class-dkbce-history-controller.php:575
 msgid "Cancellation could not be saved. Please try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:577
+#: admin/class-dkbce-history-controller.php:581
 msgid "The operation could not be cleared. Please reload this page and try again."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:596
+#: admin/class-dkbce-history-controller.php:600
 msgid "Enter a retention period between 1 and 36,500 days."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:600
+#: admin/class-dkbce-history-controller.php:604
 msgid "Choose a valid rollback behavior."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:608
+#: admin/class-dkbce-history-controller.php:612
 msgid "Choose a valid COGS notice location."
 msgstr ""
 
-#: admin/class-dkbce-history-controller.php:615
+#: admin/class-dkbce-history-controller.php:619
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 
@@ -2807,6 +2812,7 @@ msgstr ""
 
 #: admin/class-dkbce-import-store.php:54
 #: admin/class-dkbce-import-store.php:127
+#: admin/class-dkbce-import-store.php:203
 msgid "An import row could not be saved."
 msgstr ""
 
@@ -2820,16 +2826,17 @@ msgstr ""
 msgid "Duplicate import rows could not be marked."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:261
-#: admin/class-dkbce-import-store.php:269
+#: admin/class-dkbce-import-store.php:186
+#: admin/class-dkbce-import-store.php:294
+#: admin/class-dkbce-import-store.php:302
 msgid "Invalid import selection. Prepare the preview again."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:281
+#: admin/class-dkbce-import-store.php:314
 msgid "The import selection could not be saved."
 msgstr ""
 
-#: admin/class-dkbce-import-store.php:366
+#: admin/class-dkbce-import-store.php:399
 msgid "Import storage is unavailable. Try again when the database is available."
 msgstr ""
 
