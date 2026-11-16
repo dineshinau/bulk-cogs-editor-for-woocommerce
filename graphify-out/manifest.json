@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794859724.598498,
-    "seen": 1794859751.141811,
-    "ast_hash": "acfa350ab641c27e8785c7a94190da36",
+    "mtime": 1794861422.0504758,
+    "seen": 1794861501.4883575,
+    "ast_hash": "1a56e8fd8a22abfe48cb54637b63983b",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -162,9 +162,9 @@
     "semantic_hash": ""
   },
   "tests/e2e/global-setup.cjs": {
-    "mtime": 1794436779.2635243,
-    "seen": 1794514395.982114,
-    "ast_hash": "8a8710de9a1368c4d554ffd218c4bef7",
+    "mtime": 1794860423.2464561,
+    "seen": 1794861243.7128034,
+    "ast_hash": "474432fbe55e3fb661ea928f3529b070",
     "semantic_hash": ""
   },
   "tests/e2e/global-teardown.cjs": {
@@ -174,9 +174,9 @@
     "semantic_hash": ""
   },
   "tests/e2e/playwright.config.cjs": {
-    "mtime": 1792795931.2909555,
-    "seen": 1793111199.786832,
-    "ast_hash": "f2b823a8e391b007cbf33060a3156544",
+    "mtime": 1794860423.2467928,
+    "seen": 1794861243.7128103,
+    "ast_hash": "277048959af34033e847b63d11bb90da",
     "semantic_hash": ""
   },
   "tests/e2e/release-fixtures.php": {
@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1794859878.1166573,
-    "seen": 1794859882.9996,
-    "ast_hash": "5b78bd25cc2ee55c9cf6924ac1b5a0a9",
+    "mtime": 1794861422.055156,
+    "seen": 1794861501.4884756,
+    "ast_hash": "554c44478ef0274c799f794175c4c69a",
     "semantic_hash": ""
   },
   "admin/class-dkbce-preset-list-table.php": {
@@ -393,6 +393,12 @@
     "mtime": 1794516419.7270732,
     "seen": 1794516493.8807209,
     "ast_hash": "8e1576108c65bc19278be81b2f1f75c2",
+    "semantic_hash": ""
+  },
+  "tests/e2e/v1.3.1.spec.cjs": {
+    "mtime": 1794861104.333314,
+    "seen": 1794861243.7128205,
+    "ast_hash": "4fdcbbb6b8937bc904d074c3dbfe7a4f",
     "semantic_hash": ""
   }
 }
