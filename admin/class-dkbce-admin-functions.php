@@ -2331,39 +2331,59 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Format a Unix timestamp using the site's General date and time settings.
+	 *
+	 * @param int $timestamp Unix timestamp.
+	 * @return string
+	 */
+	public static function format_site_datetime( $timestamp ) {
+		$timestamp = absint( $timestamp );
+		if ( ! $timestamp ) {
+			return '';
+		}
+
+		$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+		return wp_date( $format, $timestamp );
+	}
+
+	/**
 	 * Limit operation data returned to the browser.
 	 *
 	 * @param array $state Operation state.
 	 * @return array
 	 */
 	public function public_operation( $state ) {
+		$completed_at     = (int) ( $state['completed_at'] ?? 0 );
+		$last_progress_at = (int) ( $state['updated_at'] ?? $state['created_at'] );
 		return array(
-			'action'             => $state['action'],
-			'completed_at'       => (int) ( $state['completed_at'] ?? 0 ),
-			'last_progress_at'   => (int) ( $state['updated_at'] ?? $state['created_at'] ),
-			'progress_age'       => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
-			'queue_available'    => function_exists( 'as_enqueue_async_action' ),
-			'csv_report'         => $state['csv_report'] ?? '',
-			'import_source'      => $state['operation']['source_id'] ?? '',
-			'operation_id'       => $state['operation_id'],
-			'reusable_selection' => ! empty( $state['reusable_selection'] ),
-			'status'             => $state['status'],
-			'stage'              => $state['stage'],
-			'total'              => (int) $state['total'],
-			'rollback_mode'      => $state['rollback_mode'] ?? 'keep',
-			'polling_total'      => isset( $state['expected_total'] ) ? (int) $state['expected_total'] : ( 'snapshot' === $state['stage'] ? null : (int) $state['total'] ),
-			'processed'          => (int) $state['processed'],
-			'succeeded'          => (int) $state['succeeded'],
-			'skipped'            => (int) $state['skipped'],
-			'failed'             => (int) $state['failed'],
-			'elapsed_seconds'    => max(
+			'action'                     => $state['action'],
+			'completed_at'               => $completed_at,
+			'completed_at_formatted'     => self::format_site_datetime( $completed_at ),
+			'last_progress_at'           => $last_progress_at,
+			'last_progress_at_formatted' => self::format_site_datetime( $last_progress_at ),
+			'progress_age'               => max( 0, time() - (int) ( $state['updated_at'] ?? $state['created_at'] ) ),
+			'queue_available'            => function_exists( 'as_enqueue_async_action' ),
+			'csv_report'                 => $state['csv_report'] ?? '',
+			'import_source'              => $state['operation']['source_id'] ?? '',
+			'operation_id'               => $state['operation_id'],
+			'reusable_selection'         => ! empty( $state['reusable_selection'] ),
+			'status'                     => $state['status'],
+			'stage'                      => $state['stage'],
+			'total'                      => (int) $state['total'],
+			'rollback_mode'              => $state['rollback_mode'] ?? 'keep',
+			'polling_total'              => isset( $state['expected_total'] ) ? (int) $state['expected_total'] : ( 'snapshot' === $state['stage'] ? null : (int) $state['total'] ),
+			'processed'                  => (int) $state['processed'],
+			'succeeded'                  => (int) $state['succeeded'],
+			'skipped'                    => (int) $state['skipped'],
+			'failed'                     => (int) $state['failed'],
+			'elapsed_seconds'            => max(
 				0,
 				(int) ( ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : time() ) - $state['created_at'] )
 			),
-			'errors'             => $state['errors'],
-			'error_summary'      => $state['error_summary'],
-			'cancel_requested'   => (bool) $state['cancel_requested'],
-			'cancelled_note'     => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
+			'errors'                     => $state['errors'],
+			'error_summary'              => $state['error_summary'],
+			'cancel_requested'           => (bool) $state['cancel_requested'],
+			'cancelled_note'             => isset( $state['cancelled_note'] ) ? $state['cancelled_note'] : '',
 		);
 	}
 

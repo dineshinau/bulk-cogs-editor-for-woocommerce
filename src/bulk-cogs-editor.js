@@ -374,7 +374,7 @@
 			data.rows.forEach( ( operation ) => {
 				const row = document.createElement( 'tr' );
 				appendCell( row, historyAction( operation ) );
-				appendCell( row, new Date( operation.created_at * 1000 ).toLocaleString() );
+				appendCell( row, operation.created_at_formatted || '—' );
 				appendCell( row, Number( operation.total ).toLocaleString() );
 				const status = document.createElement( 'td' ); status.appendChild( historyStatus( operation.status ) ); row.appendChild( status );
 				appendCell( row, operation.user ); appendCell( row, operation.note || '—' );
@@ -442,8 +442,8 @@
 			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
 			details.appendChild( historyButton( historyText.back, backToHistory ) );
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
-			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
-			if ( data.rollback_expires_at ) { metadata.append( historyElement( 'dt', ux.expiry ), historyElement( 'dd', new Date( data.rollback_expires_at * 1000 ).toLocaleString() ) ); }
+			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at_formatted || '—' ], [ historyText.completed, data.state.completed_at_formatted || '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
+			if ( data.rollback_expires_at ) { metadata.append( historyElement( 'dt', ux.expiry ), historyElement( 'dd', data.rollback_expires_at_formatted || '—' ) ); }
 			details.appendChild( metadata );
 			const products = historySection( historyState.review ? historyText.review : historyText.changes, 3 );
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
@@ -2702,7 +2702,7 @@
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace(
 			/%1\$s|%2\$s/g,
 			( placeholder ) => placeholder === '%1$s'
-				? new Date( operation.last_progress_at * 1000 ).toLocaleString()
+				? operation.last_progress_at_formatted || '—'
 				: refreshInterval
 		);
 		const statusRow = document.createElement( 'div' );
@@ -2941,7 +2941,7 @@
 			const title = document.createElement( 'h3' );
 			title.textContent = DKBCE.ui.recent + ' · ' + operationPanel.dataset.task;
 			const result = document.createElement( 'p' );
-			result.textContent = DKBCE.ui.completed.replace( '%d', Number( operation.succeeded ).toLocaleString() ) + ' · ' + new Date( ( operation.completed_at || operation.last_progress_at ) * 1000 ).toLocaleString()
+			result.textContent = DKBCE.ui.completed.replace( '%d', Number( operation.succeeded ).toLocaleString() ) + ' · ' + ( operation.completed_at_formatted || operation.last_progress_at_formatted || '—' )
 				+ ' · ' + DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) );
 			const outcome = document.createElement( 'p' );
 			outcome.className = 'dkbce-operation-outcome';

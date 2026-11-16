@@ -187,14 +187,16 @@ class DKBCE_History_Controller {
 		return array_merge(
 			$admin->public_operation( $state ),
 			array(
-				'created_at'      => (int) $state['created_at'],
-				'started_at'      => (int) $state['started_at'],
-				'user'            => $user ? $user->display_name : __( 'Deleted user', 'bulk-cogs-editor-for-woocommerce' ),
-				'note'            => $state['note'] ?? '',
-				'value'           => $state['value'],
-				'filters'         => $this->filter_summary( $state['filters'] ?? array() ),
-				'rollback_source' => $state['rollback_source'] ?? '',
-				'rollback_policy' => $state['rollback_policy'] ?? DKBCE_History_Store::rollback_policy(),
+				'created_at'           => (int) $state['created_at'],
+				'created_at_formatted' => DKBCE_Admin_Functions::format_site_datetime( $state['created_at'] ),
+				'started_at'           => (int) $state['started_at'],
+				'started_at_formatted' => DKBCE_Admin_Functions::format_site_datetime( $state['started_at'] ),
+				'user'                 => $user ? $user->display_name : __( 'Deleted user', 'bulk-cogs-editor-for-woocommerce' ),
+				'note'                 => $state['note'] ?? '',
+				'value'                => $state['value'],
+				'filters'              => $this->filter_summary( $state['filters'] ?? array() ),
+				'rollback_source'      => $state['rollback_source'] ?? '',
+				'rollback_policy'      => $state['rollback_policy'] ?? DKBCE_History_Store::rollback_policy(),
 			)
 		);
 	}
@@ -394,17 +396,19 @@ class DKBCE_History_Controller {
 					15 * MINUTE_IN_SECONDS
 				);
 			}
+			$rollback_expires_at = $eligible ? (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) + DKBCE_Retention_Processor::retention_seconds() : null;
 			wp_send_json_success(
 				array(
-					'state'                        => $this->summary( $state ),
-					'rows'                         => $rows,
-					'total'                        => $data['total'],
-					'can_rollback'                 => $eligible,
-					'rollback_unavailable_reasons' => $reasons,
-					'rollback_expires_at'          => $eligible ? (int) ( ! empty( $state['completed_at'] ) ? $state['completed_at'] : $state['created_at'] ) + DKBCE_Retention_Processor::retention_seconds() : null,
-					'rollback_id'                  => $claim,
-					'review_token'                 => $token,
-					'rollback_policy'              => $policy,
+					'state'                         => $this->summary( $state ),
+					'rows'                          => $rows,
+					'total'                         => $data['total'],
+					'can_rollback'                  => $eligible,
+					'rollback_unavailable_reasons'  => $reasons,
+					'rollback_expires_at'           => $rollback_expires_at,
+					'rollback_expires_at_formatted' => DKBCE_Admin_Functions::format_site_datetime( $rollback_expires_at ),
+					'rollback_id'                   => $claim,
+					'review_token'                  => $token,
+					'rollback_policy'               => $policy,
 				)
 			);
 		} catch ( Throwable $exception ) {
