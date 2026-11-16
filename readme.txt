@@ -342,7 +342,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.1 (2026-11-16) =
+= 1.3.1 (2026-11-17) =
 
 * Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
 * Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
