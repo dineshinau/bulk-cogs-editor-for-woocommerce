@@ -23,6 +23,6 @@
       },
       "devDependencies": {
             "@playwright/cli": "^0.1.24",
-            "@playwright/test": "^1.65.0"
+            "@playwright/test": "^1.65.1"
       }
 }
