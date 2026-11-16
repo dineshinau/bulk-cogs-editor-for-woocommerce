@@ -344,6 +344,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 = 1.3.1 (2026-11-16) =
 
+* Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
 * Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
 * Added: Show cached notices for published products with missing COGS or COGS above the current selling price.
 * Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.

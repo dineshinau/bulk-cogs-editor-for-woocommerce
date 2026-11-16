@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794847124.9205277,
-    "seen": 1794847134.4997096,
-    "ast_hash": "3ba775ebce9362654d36cc8cc71e5b7f",
+    "mtime": 1794847181.3326654,
+    "seen": 1794847350.2834594,
+    "ast_hash": "0b23ee5e2eaa40aa0b4fc562e07d555e",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1794840503.2134168,
-    "seen": 1794840516.5677755,
-    "ast_hash": "8b405b1434f13970643c8cc2b0b6c3d7",
+    "mtime": 1794847406.6965408,
+    "seen": 1794847411.8216934,
+    "ast_hash": "e9e9023bbcb2834679424c4f2ef6520f",
     "semantic_hash": ""
   },
   "admin/class-dkbce-preset-list-table.php": {

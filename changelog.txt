@@ -1,8 +1,8 @@
-/= 1.3.1 (2026-11-14) =
+= 1.3.1 (2026-11-16) =
 
-* Updated: Refresh readme metadata, plugin tags, short description, documentation and social links, performance benchmark details, WP-CLI instructions, and the translation template.
-* Added: Provide setup actions for updating WooCommerce when needed and enabling supported COGS features from the availability notice.
-* Added: Show cached notices for published products with missing COGS or COGS above the current selling price. Scan products and variations in background batches, respect inherited variation costs, and allow notice placement across admin screens.
+* Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
+* Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
+* Added: Show cached notices for published products with missing COGS or COGS above the current selling price.
 * Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
 * Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
 
