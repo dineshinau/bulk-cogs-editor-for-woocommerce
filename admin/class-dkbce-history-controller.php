@@ -214,6 +214,7 @@ class DKBCE_History_Controller {
 			'stock_status' => __( 'Stock status', 'bulk-cogs-editor-for-woocommerce' ),
 			'price_min'    => __( 'Minimum price', 'bulk-cogs-editor-for-woocommerce' ),
 			'price_max'    => __( 'Maximum price', 'bulk-cogs-editor-for-woocommerce' ),
+			'cogs_value'   => __( 'COGS value', 'bulk-cogs-editor-for-woocommerce' ),
 			'cogs_min'     => __( 'Minimum COGS', 'bulk-cogs-editor-for-woocommerce' ),
 			'cogs_max'     => __( 'Maximum COGS', 'bulk-cogs-editor-for-woocommerce' ),
 		);
@@ -233,6 +234,8 @@ class DKBCE_History_Controller {
 					$display[] = $term && ! is_wp_error( $term ) ? $term->name : (string) $value;
 				} elseif ( 'type' === $key ) {
 					$display[] = $types[ $value ] ?? $value;
+				} elseif ( 'cogs_value' === $key ) {
+					$display[] = $service->get_cogs_value_options()[ $value ] ?? $value;
 				} elseif ( 'stock_status' === $key ) {
 					$display[] = $stocks[ $value ] ?? $value;
 				} else {

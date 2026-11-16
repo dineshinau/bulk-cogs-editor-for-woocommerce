@@ -53,6 +53,21 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
+	 * Get the supported stored COGS value filters.
+	 *
+	 * @return array
+	 */
+	public function get_cogs_value_options() {
+		return array(
+			''              => __( 'Any value', 'bulk-cogs-editor-for-woocommerce' ),
+			'empty'         => __( 'Empty (not set)', 'bulk-cogs-editor-for-woocommerce' ),
+			'zero'          => __( 'Zero (0)', 'bulk-cogs-editor-for-woocommerce' ),
+			'positive'      => __( 'Greater than zero', 'bulk-cogs-editor-for-woocommerce' ),
+			'empty_or_zero' => __( 'Empty or zero', 'bulk-cogs-editor-for-woocommerce' ),
+		);
+	}
+
+	/**
 	 * Detect a public brand taxonomy attached to products.
 	 *
 	 * @return WP_Taxonomy|false
@@ -80,7 +95,7 @@ class DKBCE_COGS_Service {
 		if ( ! is_array( $raw ) ) {
 			return new WP_Error( 'invalid_filters', __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
-		foreach ( array( 'search', 'price_min', 'price_max', 'cogs_min', 'cogs_max' ) as $key ) {
+		foreach ( array( 'search', 'price_min', 'price_max', 'cogs_min', 'cogs_max', 'cogs_value' ) as $key ) {
 			if ( isset( $raw[ $key ] ) && ! is_scalar( $raw[ $key ] ) ) {
 				return new WP_Error( 'invalid_filters', __( 'The product filters are invalid.', 'bulk-cogs-editor-for-woocommerce' ) );
 			}
@@ -104,9 +119,18 @@ class DKBCE_COGS_Service {
 			'brand'        => array_values( array_unique( array_filter( array_map( 'absint', wp_unslash( $raw['brand'] ) ) ) ) ),
 			'price_min'    => isset( $raw['price_min'] ) ? $this->validate_optional_amount( $raw['price_min'] ) : '',
 			'price_max'    => isset( $raw['price_max'] ) ? $this->validate_optional_amount( $raw['price_max'] ) : '',
+			'cogs_value'   => isset( $raw['cogs_value'] ) ? sanitize_key( wp_unslash( $raw['cogs_value'] ) ) : '',
 			'cogs_min'     => isset( $raw['cogs_min'] ) ? $this->validate_optional_amount( $raw['cogs_min'] ) : '',
 			'cogs_max'     => isset( $raw['cogs_max'] ) ? $this->validate_optional_amount( $raw['cogs_max'] ) : '',
 		);
+
+		if ( ! array_key_exists( $filters['cogs_value'], $this->get_cogs_value_options() ) ) {
+			return new WP_Error( 'invalid_cogs_value', __( 'Choose a supported COGS value filter.', 'bulk-cogs-editor-for-woocommerce' ) );
+		}
+		if ( in_array( $filters['cogs_value'], array( 'empty', 'zero', 'empty_or_zero' ), true ) ) {
+			$filters['cogs_min'] = '';
+			$filters['cogs_max'] = '';
+		}
 
 		if ( strlen( $filters['search'] ) > 100 ) {
 			return new WP_Error( 'invalid_search', __( 'Search must be 100 characters or fewer.', 'bulk-cogs-editor-for-woocommerce' ) );
@@ -597,6 +621,11 @@ class DKBCE_COGS_Service {
 			}
 		}
 
+		$cogs_clause = $this->cogs_value_clause( $filters['cogs_value'] ?? '' );
+		if ( $cogs_clause ) {
+			$meta_query[] = $cogs_clause;
+		}
+
 		if ( $meta_query ) {
 			$args['dkbce_meta_query'] = $meta_query;
 		}
@@ -695,6 +724,56 @@ class DKBCE_COGS_Service {
 		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
 			wp_cache_flush_runtime(); // WP 6.0+, clears the non-persistent cache only.
 		}
+	}
+
+	/**
+	 * Match stored empty, zero, or positive costs without treating blanks as zero.
+	 *
+	 * @param string $value Validated COGS value filter.
+	 * @return array|null
+	 */
+	private function cogs_value_clause( $value ) {
+		if ( '' === $value ) {
+			return null;
+		}
+		$key     = '_cogs_total_value';
+		$empty   = array(
+			'relation' => 'OR',
+			array(
+				'key'     => $key,
+				'compare' => 'NOT EXISTS',
+			),
+			array(
+				'key'     => $key,
+				'value'   => '',
+				'compare' => '=',
+			),
+		);
+		$numeric = array(
+			'relation' => 'AND',
+			array(
+				'key'     => $key,
+				'value'   => '',
+				'compare' => '!=',
+			),
+			array(
+				'key'     => $key,
+				'value'   => 0,
+				'compare' => 'positive' === $value ? '>' : '=',
+				'type'    => 'DECIMAL(20,6)',
+			),
+		);
+		if ( 'empty' === $value ) {
+			return $empty;
+		}
+		if ( 'empty_or_zero' === $value ) {
+			return array(
+				'relation' => 'OR',
+				$empty,
+				$numeric,
+			);
+		}
+		return $numeric;
 	}
 
 	/**

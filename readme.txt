@@ -45,6 +45,7 @@ https://www.youtube.com/watch?v=Pxtvi0YbDRw
 
 * **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
 * Filter products and variations by category, brand, product type, stock status, current price, or current WooCommerce COGS.
+* Find products with empty COGS, explicit zero COGS, positive COGS, or empty or zero COGS using the COGS value filter. Numeric COGS ranges remain available for Any value and Greater than zero.
 * Set an exact WooCommerce cost of goods value, increase or decrease it by a fixed amount or percentage, or clear it.
 * Preview product images alongside current WooCommerce COGS, proposed COGS, and the exact difference, with pagination and product selection.
 * Process WooCommerce cost of goods updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
