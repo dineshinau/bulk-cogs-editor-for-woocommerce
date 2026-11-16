@@ -69,6 +69,32 @@
       "source_location": "L13"
     },
     {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller",
+      "label": "DKBCE_History_Controller",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_history_controller",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "label": "DKBCE_Retention_Processor",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "dkbce_retention_processor",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L13"
+    },
+    {
       "id": "scripts_class_dkbce_range_query_profiler_dkbce_range_query_profiler",
       "label": "DKBCE_Range_Query_Profiler",
       "_callable": true,
@@ -108,19 +134,6 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store",
-      "label": "DKBCE_Preset_Store",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "dkbce_preset_store",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
       "label": "DKBCE_Bulk_Processor",
       "_callable": true,
@@ -131,19 +144,6 @@
       "file_type": "code",
       "norm_label": "dkbce_bulk_processor",
       "source_file": "admin/class-dkbce-bulk-processor.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
-      "label": "DKBCE_Retention_Processor",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "dkbce_retention_processor",
-      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L13"
     },
     {
@@ -160,19 +160,6 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller",
-      "label": "DKBCE_History_Controller",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": "dkbce_history_controller",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_history_store_dkbce_history_store",
       "label": "DKBCE_History_Store",
       "_callable": true,
@@ -183,6 +170,19 @@
       "file_type": "code",
       "norm_label": "dkbce_history_store",
       "source_file": "admin/class-dkbce-history-store.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store",
+      "label": "DKBCE_Preset_Store",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": "dkbce_preset_store",
+      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L13"
     },
     {
@@ -356,7 +356,7 @@
       "file_type": "code",
       "norm_label": ".ajax_download_file()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1224"
+      "source_location": "L1225"
     },
     {
       "id": "admin_class_dkbce_csv_service_closure_1",
@@ -596,7 +596,7 @@
       "file_type": "code",
       "norm_label": ".get_instance()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2418"
+      "source_location": "L2422"
     },
     {
       "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
@@ -635,16 +635,16 @@
       "source_location": "L290"
     },
     {
-      "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_clause",
-      "label": ".cogs_value_clause()",
+      "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_condition",
+      "label": ".cogs_value_condition()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "DKBCE_COGS_Service",
       "file_type": "code",
-      "norm_label": ".cogs_value_clause()",
+      "norm_label": ".cogs_value_condition()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L787"
+      "source_location": "L791"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
@@ -668,7 +668,7 @@
       "file_type": "code",
       "norm_label": ".free_memory()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L773"
+      "source_location": "L777"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_get_brand_taxonomy",
@@ -776,7 +776,7 @@
       "file_type": "code",
       "norm_label": ".range_clause()",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L839"
+      "source_location": "L825"
     },
     {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_scan_matches",
@@ -911,6 +911,258 @@
       "source_location": "L32"
     },
     {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_force_clear",
+      "label": ".ajax_force_clear()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_force_clear()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L545"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history",
+      "label": ".ajax_history()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_history()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L256"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history_detail",
+      "label": ".ajax_history_detail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_history_detail()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L304"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_rollback",
+      "label": ".ajax_rollback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_rollback()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L421"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_settings",
+      "label": ".ajax_settings()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".ajax_settings()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L588"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_authorize",
+      "label": ".authorize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".authorize()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L142"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L17"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_filter_summary",
+      "label": ".filter_summary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".filter_summary()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L208"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_input",
+      "label": ".input()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".input()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L158"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_labels",
+      "label": ".labels()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".labels()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L28"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_operation",
+      "label": ".operation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".operation()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L168"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_start_rollback",
+      "label": ".start_rollback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".start_rollback()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L452"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_summary",
+      "label": ".summary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".summary()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L184"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "label": ".cleanup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L57"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "label": ".cleanup_claim_option()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".cleanup_claim_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L169"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "label": ".cleanup_operation_option()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".cleanup_operation_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L111"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L32"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
+      "label": ".enqueue_operation_cleanup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".enqueue_operation_cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L226"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "label": ".is_expired_operation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".is_expired_operation()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L191"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_retention_seconds",
+      "label": ".retention_seconds()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".retention_seconds()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L25"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
+      "label": ".schedule()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".schedule()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L42"
+    },
+    {
       "id": "scripts_class_dkbce_range_query_profiler_dkbce_range_query_profiler_capture",
       "label": ".capture()",
       "_callable": true,
@@ -1004,7 +1256,7 @@
       "file_type": "code",
       "norm_label": "{closure#1}()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2397"
+      "source_location": "L2401"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_apply",
@@ -1016,7 +1268,7 @@
       "file_type": "code",
       "norm_label": ".ajax_apply()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1953"
+      "source_location": "L1954"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_cancel",
@@ -1028,7 +1280,7 @@
       "file_type": "code",
       "norm_label": ".ajax_cancel()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2224"
+      "source_location": "L2225"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_clear_cancelled",
@@ -1040,7 +1292,7 @@
       "file_type": "code",
       "norm_label": ".ajax_clear_cancelled()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2250"
+      "source_location": "L2251"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_csv_export",
@@ -1052,7 +1304,7 @@
       "file_type": "code",
       "norm_label": ".ajax_csv_export()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1328"
+      "source_location": "L1329"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_csv_preview",
@@ -1064,7 +1316,7 @@
       "file_type": "code",
       "norm_label": ".ajax_csv_preview()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L969"
+      "source_location": "L970"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_dismiss_review",
@@ -1076,7 +1328,7 @@
       "file_type": "code",
       "norm_label": ".ajax_dismiss_review()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L818"
+      "source_location": "L819"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_cancel",
@@ -1088,7 +1340,7 @@
       "file_type": "code",
       "norm_label": ".ajax_download_cancel()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1203"
+      "source_location": "L1204"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_download_status",
@@ -1100,7 +1352,7 @@
       "file_type": "code",
       "norm_label": ".ajax_download_status()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1160"
+      "source_location": "L1161"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_enable_cogs",
@@ -1112,19 +1364,7 @@
       "file_type": "code",
       "norm_label": ".ajax_enable_cogs()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L849"
-    },
-    {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_filter_presets",
-      "label": ".ajax_filter_presets()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".ajax_filter_presets()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L756"
+      "source_location": "L850"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_get_products",
@@ -1136,7 +1376,7 @@
       "file_type": "code",
       "norm_label": ".ajax_get_products()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L927"
+      "source_location": "L928"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_import_report",
@@ -1148,7 +1388,7 @@
       "file_type": "code",
       "norm_label": ".ajax_import_report()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1114"
+      "source_location": "L1115"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_import_status",
@@ -1160,7 +1400,7 @@
       "file_type": "code",
       "norm_label": ".ajax_import_status()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1044"
+      "source_location": "L1045"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preferences",
@@ -1172,7 +1412,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preferences()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L725"
+      "source_location": "L726"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview",
@@ -1184,7 +1424,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1396"
+      "source_location": "L1397"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview_edit",
@@ -1196,7 +1436,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview_edit()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1745"
+      "source_location": "L1746"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_preview_page",
@@ -1208,7 +1448,7 @@
       "file_type": "code",
       "norm_label": ".ajax_preview_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1615"
+      "source_location": "L1616"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_progress",
@@ -1220,7 +1460,7 @@
       "file_type": "code",
       "norm_label": ".ajax_progress()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2202"
+      "source_location": "L2203"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_select_range",
@@ -1232,7 +1472,7 @@
       "file_type": "code",
       "norm_label": ".ajax_select_range()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2285"
+      "source_location": "L2286"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_authorize_ajax",
@@ -1244,7 +1484,7 @@
       "file_type": "code",
       "norm_label": ".authorize_ajax()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L874"
+      "source_location": "L875"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_enable_cogs",
@@ -1256,7 +1496,7 @@
       "file_type": "code",
       "norm_label": ".can_enable_cogs()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L835"
+      "source_location": "L836"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_can_view_operation",
@@ -1268,7 +1508,7 @@
       "file_type": "code",
       "norm_label": ".can_view_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2276"
+      "source_location": "L2277"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_construct",
@@ -1292,7 +1532,19 @@
       "file_type": "code",
       "norm_label": ".csv_preview_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1248"
+      "source_location": "L1249"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
+      "label": ".enqueue_assets()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".enqueue_assets()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L111"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_explicit_preview_ids",
@@ -1304,7 +1556,7 @@
       "file_type": "code",
       "norm_label": ".explicit_preview_ids()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1304"
+      "source_location": "L1305"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_extend_product_query",
@@ -1316,7 +1568,19 @@
       "file_type": "code",
       "norm_label": ".extend_product_query()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2376"
+      "source_location": "L2377"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
+      "label": ".get_preferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".get_preferences()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L710"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_validated_request",
@@ -1328,7 +1592,7 @@
       "file_type": "code",
       "norm_label": ".get_validated_request()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L900"
+      "source_location": "L901"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_plugin_action_links",
@@ -1364,7 +1628,7 @@
       "file_type": "code",
       "norm_label": ".public_operation()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2338"
+      "source_location": "L2339"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_refresh_preview_selection",
@@ -1376,7 +1640,7 @@
       "file_type": "code",
       "norm_label": ".refresh_preview_selection()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1534"
+      "source_location": "L1535"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_register_submenu_page",
@@ -1400,7 +1664,7 @@
       "file_type": "code",
       "norm_label": ".render_bulk_cogs_editor_page()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L453"
+      "source_location": "L454"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_revalidate_reviewed_batch",
@@ -1412,7 +1676,7 @@
       "file_type": "code",
       "norm_label": ".revalidate_reviewed_batch()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1903"
+      "source_location": "L1904"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_revalidate_reviewed_rows",
@@ -1424,7 +1688,7 @@
       "file_type": "code",
       "norm_label": ".revalidate_reviewed_rows()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1801"
+      "source_location": "L1802"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_reviewed_rows",
@@ -1436,7 +1700,7 @@
       "file_type": "code",
       "norm_label": ".reviewed_rows()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1733"
+      "source_location": "L1734"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_send_nonce_error",
@@ -1448,7 +1712,7 @@
       "file_type": "code",
       "norm_label": ".send_nonce_error()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L888"
+      "source_location": "L889"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_validate_reused_selection",
@@ -1460,7 +1724,7 @@
       "file_type": "code",
       "norm_label": ".validate_reused_selection()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1508"
+      "source_location": "L1509"
     },
     {
       "id": "admin_class_dkbce_download_processor_dkbce_download_processor_batch",
@@ -1521,42 +1785,6 @@
       "norm_label": ".write_all()",
       "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L159"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_all",
-      "label": ".all()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".all()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L20"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_delete",
-      "label": ".delete()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".delete()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L86"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_save",
-      "label": ".save()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".save()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L44"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_operation_lock",
@@ -1823,102 +2051,6 @@
       "source_location": "L475"
     },
     {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
-      "label": ".cleanup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".cleanup()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L57"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
-      "label": ".cleanup_claim_option()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".cleanup_claim_option()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L169"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
-      "label": ".cleanup_operation_option()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".cleanup_operation_option()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L111"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L32"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
-      "label": ".enqueue_operation_cleanup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".enqueue_operation_cleanup()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L226"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
-      "label": ".is_expired_operation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".is_expired_operation()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L191"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_retention_seconds",
-      "label": ".retention_seconds()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".retention_seconds()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L25"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
-      "label": ".schedule()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": ".schedule()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L42"
-    },
-    {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
       "label": "dkbce_declare_hpos_compatibility()",
       "_callable": true,
@@ -1967,28 +2099,16 @@
       "source_location": "L124"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
-      "label": ".enqueue_assets()",
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_filter_presets",
+      "label": ".ajax_filter_presets()",
       "_callable": true,
       "_origin": "ast",
       "community": 15,
       "community_name": "DKBCE_History_Store",
       "file_type": "code",
-      "norm_label": ".enqueue_assets()",
+      "norm_label": ".ajax_filter_presets()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L111"
-    },
-    {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
-      "label": ".get_preferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".get_preferences()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L709"
+      "source_location": "L757"
     },
     {
       "id": "admin_class_dkbce_database_installer_dkbce_database_installer_maybe_upgrade",
@@ -2001,162 +2121,6 @@
       "norm_label": ".maybe_upgrade()",
       "source_file": "admin/class-dkbce-database-installer.php",
       "source_location": "L20"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_force_clear",
-      "label": ".ajax_force_clear()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".ajax_force_clear()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L545"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history",
-      "label": ".ajax_history()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".ajax_history()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L256"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history_detail",
-      "label": ".ajax_history_detail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".ajax_history_detail()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L304"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_rollback",
-      "label": ".ajax_rollback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".ajax_rollback()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L421"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_settings",
-      "label": ".ajax_settings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".ajax_settings()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L588"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_authorize",
-      "label": ".authorize()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".authorize()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L142"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L17"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_filter_summary",
-      "label": ".filter_summary()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".filter_summary()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L208"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_input",
-      "label": ".input()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".input()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L158"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_labels",
-      "label": ".labels()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".labels()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L28"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_operation",
-      "label": ".operation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".operation()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L168"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_start_rollback",
-      "label": ".start_rollback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".start_rollback()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L452"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_summary",
-      "label": ".summary()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".summary()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L184"
     },
     {
       "id": "admin_class_dkbce_history_store_dkbce_history_store_backfill",
@@ -2339,6 +2303,42 @@
       "source_location": "L61"
     },
     {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_all",
+      "label": ".all()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".all()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L20"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_delete",
+      "label": ".delete()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".delete()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L86"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_save",
+      "label": ".save()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".save()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L44"
+    },
+    {
       "id": "src_bulk_cogs_editor_actionlabel",
       "label": "actionLabel()",
       "_callable": true,
@@ -2348,7 +2348,7 @@
       "file_type": "code",
       "norm_label": "actionlabel()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1680"
+      "source_location": "L1687"
     },
     {
       "id": "src_bulk_cogs_editor_addoperationhint",
@@ -2360,7 +2360,7 @@
       "file_type": "code",
       "norm_label": "addoperationhint()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1597"
+      "source_location": "L1604"
     },
     {
       "id": "src_bulk_cogs_editor_appendcell",
@@ -2372,7 +2372,7 @@
       "file_type": "code",
       "norm_label": "appendcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1723"
+      "source_location": "L1730"
     },
     {
       "id": "src_bulk_cogs_editor_appendchangecell",
@@ -2384,7 +2384,7 @@
       "file_type": "code",
       "norm_label": "appendchangecell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1864"
+      "source_location": "L1871"
     },
     {
       "id": "src_bulk_cogs_editor_appendnewcostcell",
@@ -2396,7 +2396,7 @@
       "file_type": "code",
       "norm_label": "appendnewcostcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1733"
+      "source_location": "L1740"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductcell",
@@ -2408,7 +2408,7 @@
       "file_type": "code",
       "norm_label": "appendproductcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1830"
+      "source_location": "L1837"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductlinkcell",
@@ -2420,7 +2420,7 @@
       "file_type": "code",
       "norm_label": "appendproductlinkcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1817"
+      "source_location": "L1824"
     },
     {
       "id": "src_bulk_cogs_editor_appendreviewnotice",
@@ -2432,7 +2432,7 @@
       "file_type": "code",
       "norm_label": "appendreviewnotice()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2598"
+      "source_location": "L2605"
     },
     {
       "id": "src_bulk_cogs_editor_applychanges",
@@ -2444,7 +2444,7 @@
       "file_type": "code",
       "norm_label": "applychanges()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2482"
+      "source_location": "L2489"
     },
     {
       "id": "src_bulk_cogs_editor_applypresetrules",
@@ -2456,7 +2456,7 @@
       "file_type": "code",
       "norm_label": "applypresetrules()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3299"
+      "source_location": "L3306"
     },
     {
       "id": "src_bulk_cogs_editor_backtohistory",
@@ -2480,7 +2480,7 @@
       "file_type": "code",
       "norm_label": "canceloperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3052"
+      "source_location": "L3059"
     },
     {
       "id": "src_bulk_cogs_editor_clearfilters",
@@ -2492,7 +2492,7 @@
       "file_type": "code",
       "norm_label": "clearfilters()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3177"
+      "source_location": "L3184"
     },
     {
       "id": "src_bulk_cogs_editor_closeconfirm",
@@ -2504,7 +2504,7 @@
       "file_type": "code",
       "norm_label": "closeconfirm()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3119"
+      "source_location": "L3126"
     },
     {
       "id": "src_bulk_cogs_editor_closepreseteditor",
@@ -2516,7 +2516,7 @@
       "file_type": "code",
       "norm_label": "closepreseteditor()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3348"
+      "source_location": "L3355"
     },
     {
       "id": "src_bulk_cogs_editor_confirmaction",
@@ -2528,7 +2528,7 @@
       "file_type": "code",
       "norm_label": "confirmaction()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2407"
+      "source_location": "L2414"
     },
     {
       "id": "src_bulk_cogs_editor_confirmpresetdeletion",
@@ -2540,7 +2540,7 @@
       "file_type": "code",
       "norm_label": "confirmpresetdeletion()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3361"
+      "source_location": "L3368"
     },
     {
       "id": "src_bulk_cogs_editor_createpagination",
@@ -2576,7 +2576,7 @@
       "file_type": "code",
       "norm_label": "deletepresets()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3377"
+      "source_location": "L3384"
     },
     {
       "id": "src_bulk_cogs_editor_downloadcsv",
@@ -2624,7 +2624,7 @@
       "file_type": "code",
       "norm_label": "fetchpreviewpage()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2162"
+      "source_location": "L2169"
     },
     {
       "id": "src_bulk_cogs_editor_filters",
@@ -2636,7 +2636,7 @@
       "file_type": "code",
       "norm_label": "filters()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1408"
+      "source_location": "L1415"
     },
     {
       "id": "src_bulk_cogs_editor_forceclearoperation",
@@ -2660,7 +2660,7 @@
       "file_type": "code",
       "norm_label": "formatduration()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2536"
+      "source_location": "L2543"
     },
     {
       "id": "src_bulk_cogs_editor_getproducts",
@@ -2672,7 +2672,7 @@
       "file_type": "code",
       "norm_label": "getproducts()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2210"
+      "source_location": "L2217"
     },
     {
       "id": "src_bulk_cogs_editor_hascsvidentifiercolumn",
@@ -2696,7 +2696,7 @@
       "file_type": "code",
       "norm_label": "hasvalidactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1671"
+      "source_location": "L1678"
     },
     {
       "id": "src_bulk_cogs_editor_historyaction",
@@ -2816,7 +2816,7 @@
       "file_type": "code",
       "norm_label": "invalidatepreview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1428"
+      "source_location": "L1435"
     },
     {
       "id": "src_bulk_cogs_editor_isoperationrunning",
@@ -2828,7 +2828,7 @@
       "file_type": "code",
       "norm_label": "isoperationrunning()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1481"
+      "source_location": "L1488"
     },
     {
       "id": "src_bulk_cogs_editor_loadhistory",
@@ -2864,7 +2864,7 @@
       "file_type": "code",
       "norm_label": "loadpresets()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3290"
+      "source_location": "L3297"
     },
     {
       "id": "src_bulk_cogs_editor_loadpresettable",
@@ -2876,7 +2876,7 @@
       "file_type": "code",
       "norm_label": "loadpresettable()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3352"
+      "source_location": "L3359"
     },
     {
       "id": "src_bulk_cogs_editor_loadsettings",
@@ -2900,7 +2900,7 @@
       "file_type": "code",
       "norm_label": "money()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1706"
+      "source_location": "L1713"
     },
     {
       "id": "src_bulk_cogs_editor_numericactionvalue",
@@ -2912,7 +2912,7 @@
       "file_type": "code",
       "norm_label": "numericactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1663"
+      "source_location": "L1670"
     },
     {
       "id": "src_bulk_cogs_editor_opencancelconfirmation",
@@ -2924,7 +2924,7 @@
       "file_type": "code",
       "norm_label": "opencancelconfirmation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3027"
+      "source_location": "L3034"
     },
     {
       "id": "src_bulk_cogs_editor_openconfirm",
@@ -2936,7 +2936,7 @@
       "file_type": "code",
       "norm_label": "openconfirm()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2351"
+      "source_location": "L2358"
     },
     {
       "id": "src_bulk_cogs_editor_opencosteditor",
@@ -2948,7 +2948,7 @@
       "file_type": "code",
       "norm_label": "opencosteditor()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1748"
+      "source_location": "L1755"
     },
     {
       "id": "src_bulk_cogs_editor_openhistoryoperation",
@@ -2972,7 +2972,7 @@
       "file_type": "code",
       "norm_label": "operationdescription()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2342"
+      "source_location": "L2349"
     },
     {
       "id": "src_bulk_cogs_editor_operationheading",
@@ -2984,7 +2984,7 @@
       "file_type": "code",
       "norm_label": "operationheading()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2592"
+      "source_location": "L2599"
     },
     {
       "id": "src_bulk_cogs_editor_pollimport",
@@ -3008,7 +3008,7 @@
       "file_type": "code",
       "norm_label": "pollprogress()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2972"
+      "source_location": "L2979"
     },
     {
       "id": "src_bulk_cogs_editor_preview",
@@ -3020,7 +3020,7 @@
       "file_type": "code",
       "norm_label": "preview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2263"
+      "source_location": "L2270"
     },
     {
       "id": "src_bulk_cogs_editor_previewcsv",
@@ -3044,7 +3044,7 @@
       "file_type": "code",
       "norm_label": "productselected()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1931"
+      "source_location": "L1938"
     },
     {
       "id": "src_bulk_cogs_editor_renderfilterchips",
@@ -3056,7 +3056,7 @@
       "file_type": "code",
       "norm_label": "renderfilterchips()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1371"
+      "source_location": "L1378"
     },
     {
       "id": "src_bulk_cogs_editor_renderoperation",
@@ -3068,7 +3068,7 @@
       "file_type": "code",
       "norm_label": "renderoperation()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2631"
+      "source_location": "L2638"
     },
     {
       "id": "src_bulk_cogs_editor_renderpresets",
@@ -3080,7 +3080,7 @@
       "file_type": "code",
       "norm_label": "renderpresets()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3275"
+      "source_location": "L3282"
     },
     {
       "id": "src_bulk_cogs_editor_renderpreview",
@@ -3092,7 +3092,7 @@
       "file_type": "code",
       "norm_label": "renderpreview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1985"
+      "source_location": "L1992"
     },
     {
       "id": "src_bulk_cogs_editor_request",
@@ -3116,7 +3116,7 @@
       "file_type": "code",
       "norm_label": "resetselection()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1461"
+      "source_location": "L1468"
     },
     {
       "id": "src_bulk_cogs_editor_savepreferences",
@@ -3140,7 +3140,7 @@
       "file_type": "code",
       "norm_label": "schedulepreviewrefresh()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2435"
+      "source_location": "L2442"
     },
     {
       "id": "src_bulk_cogs_editor_selectedaction",
@@ -3152,7 +3152,7 @@
       "file_type": "code",
       "norm_label": "selectedaction()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1423"
+      "source_location": "L1430"
     },
     {
       "id": "src_bulk_cogs_editor_selectedfiltervalues",
@@ -3164,7 +3164,7 @@
       "file_type": "code",
       "norm_label": "selectedfiltervalues()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1294"
+      "source_location": "L1301"
     },
     {
       "id": "src_bulk_cogs_editor_selectioncount",
@@ -3176,7 +3176,7 @@
       "file_type": "code",
       "norm_label": "selectioncount()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1927"
+      "source_location": "L1934"
     },
     {
       "id": "src_bulk_cogs_editor_setapplyspinner",
@@ -3200,7 +3200,7 @@
       "file_type": "code",
       "norm_label": "setbusy()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1640"
+      "source_location": "L1647"
     },
     {
       "id": "src_bulk_cogs_editor_setfileerror",
@@ -3236,7 +3236,7 @@
       "file_type": "code",
       "norm_label": "setpageselection()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1962"
+      "source_location": "L1969"
     },
     {
       "id": "src_bulk_cogs_editor_setproductselected",
@@ -3248,7 +3248,7 @@
       "file_type": "code",
       "norm_label": "setproductselected()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1936"
+      "source_location": "L1943"
     },
     {
       "id": "src_bulk_cogs_editor_showimportpreview",
@@ -3272,7 +3272,7 @@
       "file_type": "code",
       "norm_label": "startover()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3159"
+      "source_location": "L3166"
     },
     {
       "id": "src_bulk_cogs_editor_startrollback",
@@ -3308,7 +3308,7 @@
       "file_type": "code",
       "norm_label": "synccogsrange()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1395"
+      "source_location": "L1402"
     },
     {
       "id": "src_bulk_cogs_editor_synctaburl",
@@ -3416,7 +3416,7 @@
       "file_type": "code",
       "norm_label": "updateoperationcontrols()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1487"
+      "source_location": "L1494"
     },
     {
       "id": "src_bulk_cogs_editor_updateoperationtime",
@@ -3428,7 +3428,7 @@
       "file_type": "code",
       "norm_label": "updateoperationtime()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2550"
+      "source_location": "L2557"
     },
     {
       "id": "src_bulk_cogs_editor_updateoperationtooltips",
@@ -3440,7 +3440,7 @@
       "file_type": "code",
       "norm_label": "updateoperationtooltips()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1570"
+      "source_location": "L1577"
     },
     {
       "id": "src_bulk_cogs_editor_updatepageselectioncontrols",
@@ -3452,7 +3452,7 @@
       "file_type": "code",
       "norm_label": "updatepageselectioncontrols()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1916"
+      "source_location": "L1923"
     },
     {
       "id": "src_bulk_cogs_editor_updatepresetcontrols",
@@ -3464,7 +3464,7 @@
       "file_type": "code",
       "norm_label": "updatepresetcontrols()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3280"
+      "source_location": "L3287"
     },
     {
       "id": "src_bulk_cogs_editor_updateselectionsummary",
@@ -3476,7 +3476,7 @@
       "file_type": "code",
       "norm_label": "updateselectionsummary()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1947"
+      "source_location": "L1954"
     },
     {
       "id": "src_bulk_cogs_editor_waitfordownload",
@@ -4957,6 +4957,28 @@
       "source_location": "L1"
     },
     {
+      "id": "admin_class_dkbce_history_controller",
+      "label": "class-dkbce-history-controller.php",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-history-controller.php",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor",
+      "label": "class-dkbce-retention-processor.php",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": "class-dkbce-retention-processor.php",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L1"
+    },
+    {
       "id": "scripts_class_dkbce_range_query_profiler",
       "label": "class-dkbce-range-query-profiler.php",
       "_origin": "ast",
@@ -4987,17 +5009,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-download-processor.php",
       "source_file": "admin/class-dkbce-download-processor.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store",
-      "label": "class-dkbce-preset-store.php",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": "class-dkbce-preset-store.php",
-      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L1"
     },
     {
@@ -5144,17 +5155,6 @@
       "source_location": "L1"
     },
     {
-      "id": "admin_class_dkbce_retention_processor",
-      "label": "class-dkbce-retention-processor.php",
-      "_origin": "ast",
-      "community": 135,
-      "community_name": "DKBCE_Bulk_Processor",
-      "file_type": "code",
-      "norm_label": "class-dkbce-retention-processor.php",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L1"
-    },
-    {
       "id": "bulk_cogs_editor_for_woocommerce",
       "label": "bulk-cogs-editor-for-woocommerce.php",
       "_origin": "ast",
@@ -5287,17 +5287,6 @@
       "source_location": "L1"
     },
     {
-      "id": "admin_class_dkbce_history_controller",
-      "label": "class-dkbce-history-controller.php",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": "class-dkbce-history-controller.php",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L1"
-    },
-    {
       "id": "admin_class_dkbce_history_store",
       "label": "class-dkbce-history-store.php",
       "_origin": "ast",
@@ -5306,6 +5295,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-history-store.php",
       "source_file": "admin/class-dkbce-history-store.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store",
+      "label": "class-dkbce-preset-store.php",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": "class-dkbce-preset-store.php",
+      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L1"
     },
     {
@@ -6703,7 +6703,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1955",
+      "source_location": "L1956",
       "weight": 1.0
     },
     {
@@ -6715,7 +6715,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1958",
+      "source_location": "L1959",
       "weight": 1.0
     },
     {
@@ -6727,7 +6727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1992",
+      "source_location": "L1993",
       "weight": 1.0
     },
     {
@@ -6739,7 +6739,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2056",
+      "source_location": "L2057",
       "weight": 1.0
     },
     {
@@ -6751,7 +6751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2192",
+      "source_location": "L2193",
       "weight": 1.0
     },
     {
@@ -6763,7 +6763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2226",
+      "source_location": "L2227",
       "weight": 1.0
     },
     {
@@ -6775,7 +6775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2228",
+      "source_location": "L2229",
       "weight": 1.0
     },
     {
@@ -6787,7 +6787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2234",
+      "source_location": "L2235",
       "weight": 1.0
     },
     {
@@ -6799,7 +6799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2242",
+      "source_location": "L2243",
       "weight": 1.0
     },
     {
@@ -6811,7 +6811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2252",
+      "source_location": "L2253",
       "weight": 1.0
     },
     {
@@ -6823,7 +6823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2254",
+      "source_location": "L2255",
       "weight": 1.0
     },
     {
@@ -6835,7 +6835,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1330",
+      "source_location": "L1331",
       "weight": 1.0
     },
     {
@@ -6847,7 +6847,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1332",
+      "source_location": "L1333",
       "weight": 1.0
     },
     {
@@ -6859,7 +6859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1365",
+      "source_location": "L1366",
       "weight": 1.0
     },
     {
@@ -6871,7 +6871,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1024",
+      "source_location": "L1025",
       "weight": 1.0
     },
     {
@@ -6883,7 +6883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1028",
+      "source_location": "L1029",
       "weight": 1.0
     },
     {
@@ -6895,7 +6895,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L971",
+      "source_location": "L972",
       "weight": 1.0
     },
     {
@@ -6907,7 +6907,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L973",
+      "source_location": "L974",
       "weight": 1.0
     },
     {
@@ -6919,7 +6919,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L820",
+      "source_location": "L821",
       "weight": 1.0
     },
     {
@@ -6931,7 +6931,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L822",
+      "source_location": "L823",
       "weight": 1.0
     },
     {
@@ -6943,7 +6943,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1205",
+      "source_location": "L1206",
       "weight": 1.0
     },
     {
@@ -6955,7 +6955,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1162",
+      "source_location": "L1163",
       "weight": 1.0
     },
     {
@@ -6967,7 +6967,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L851",
+      "source_location": "L852",
       "weight": 1.0
     },
     {
@@ -6979,7 +6979,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L856",
+      "source_location": "L857",
       "weight": 1.0
     },
     {
@@ -6991,7 +6991,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L758",
+      "source_location": "L759",
       "weight": 1.0
     },
     {
@@ -7003,7 +7003,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L760",
+      "source_location": "L761",
       "weight": 1.0
     },
     {
@@ -7015,7 +7015,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L929",
+      "source_location": "L930",
       "weight": 1.0
     },
     {
@@ -7027,7 +7027,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L931",
+      "source_location": "L932",
       "weight": 1.0
     },
     {
@@ -7039,7 +7039,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1116",
+      "source_location": "L1117",
       "weight": 1.0
     },
     {
@@ -7051,7 +7051,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1118",
+      "source_location": "L1119",
       "weight": 1.0
     },
     {
@@ -7063,7 +7063,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1046",
+      "source_location": "L1047",
       "weight": 1.0
     },
     {
@@ -7075,7 +7075,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1048",
+      "source_location": "L1049",
       "weight": 1.0
     },
     {
@@ -7087,7 +7087,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1097",
+      "source_location": "L1098",
       "weight": 1.0
     },
     {
@@ -7099,7 +7099,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1098",
+      "source_location": "L1099",
       "weight": 1.0
     },
     {
@@ -7111,7 +7111,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L727",
+      "source_location": "L728",
       "weight": 1.0
     },
     {
@@ -7123,7 +7123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L729",
+      "source_location": "L730",
       "weight": 1.0
     },
     {
@@ -7135,7 +7135,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1398",
+      "source_location": "L1399",
       "weight": 1.0
     },
     {
@@ -7147,7 +7147,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1400",
+      "source_location": "L1401",
       "weight": 1.0
     },
     {
@@ -7159,7 +7159,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1410",
+      "source_location": "L1411",
       "weight": 1.0
     },
     {
@@ -7171,7 +7171,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1422",
+      "source_location": "L1423",
       "weight": 1.0
     },
     {
@@ -7183,7 +7183,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1436",
+      "source_location": "L1437",
       "weight": 1.0
     },
     {
@@ -7195,7 +7195,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1446",
+      "source_location": "L1447",
       "weight": 1.0
     },
     {
@@ -7207,7 +7207,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1474",
+      "source_location": "L1475",
       "weight": 1.0
     },
     {
@@ -7219,7 +7219,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1747",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -7231,7 +7231,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1749",
+      "source_location": "L1750",
       "weight": 1.0
     },
     {
@@ -7243,7 +7243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1764",
+      "source_location": "L1765",
       "weight": 1.0
     },
     {
@@ -7255,7 +7255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1779",
+      "source_location": "L1780",
       "weight": 1.0
     },
     {
@@ -7267,7 +7267,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1617",
+      "source_location": "L1618",
       "weight": 1.0
     },
     {
@@ -7279,7 +7279,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1619",
+      "source_location": "L1620",
       "weight": 1.0
     },
     {
@@ -7291,7 +7291,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1627",
+      "source_location": "L1628",
       "weight": 1.0
     },
     {
@@ -7303,7 +7303,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1636",
+      "source_location": "L1637",
       "weight": 1.0
     },
     {
@@ -7315,7 +7315,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1654",
+      "source_location": "L1655",
       "weight": 1.0
     },
     {
@@ -7327,7 +7327,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1687",
+      "source_location": "L1688",
       "weight": 1.0
     },
     {
@@ -7339,7 +7339,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2204",
+      "source_location": "L2205",
       "weight": 1.0
     },
     {
@@ -7351,7 +7351,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2206",
+      "source_location": "L2207",
       "weight": 1.0
     },
     {
@@ -7363,7 +7363,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2212",
+      "source_location": "L2213",
       "weight": 1.0
     },
     {
@@ -7375,7 +7375,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2216",
+      "source_location": "L2217",
       "weight": 1.0
     },
     {
@@ -7387,7 +7387,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2287",
+      "source_location": "L2288",
       "weight": 1.0
     },
     {
@@ -7399,7 +7399,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2289",
+      "source_location": "L2290",
       "weight": 1.0
     },
     {
@@ -7411,7 +7411,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2306",
+      "source_location": "L2307",
       "weight": 1.0
     },
     {
@@ -7435,7 +7435,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1306",
+      "source_location": "L1307",
       "weight": 1.0
     },
     {
@@ -7447,7 +7447,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1536",
+      "source_location": "L1537",
       "weight": 1.0
     },
     {
@@ -7459,7 +7459,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1550",
+      "source_location": "L1551",
       "weight": 1.0
     },
     {
@@ -7471,7 +7471,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L547",
+      "source_location": "L548",
       "weight": 1.0
     },
     {
@@ -7483,7 +7483,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1803",
+      "source_location": "L1804",
       "weight": 1.0
     },
     {
@@ -7495,7 +7495,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1805",
+      "source_location": "L1806",
       "weight": 1.0
     },
     {
@@ -7507,7 +7507,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1847",
+      "source_location": "L1848",
       "weight": 1.0
     },
     {
@@ -7883,6 +7883,18 @@
       "weight": 1.0
     },
     {
+      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service_filter_category_where",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_condition",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-cogs-service.php",
+      "source_location": "L742",
+      "weight": 1.0
+    },
+    {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service_matching_args",
       "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_validate_filters",
       "relation": "calls",
@@ -7932,18 +7944,6 @@
     },
     {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service_matching_args",
-      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_clause",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L650",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service_matching_args",
       "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_matching_args",
       "relation": "calls",
       "_origin": "ast",
@@ -7951,7 +7951,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L662",
+      "source_location": "L661",
       "weight": 1.0
     },
     {
@@ -9355,7 +9355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1689",
+      "source_location": "L1696",
       "weight": 1.0
     },
     {
@@ -9367,7 +9367,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1696",
+      "source_location": "L1703",
       "weight": 1.0
     },
     {
@@ -9379,7 +9379,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1702",
+      "source_location": "L1709",
       "weight": 1.0
     },
     {
@@ -9391,7 +9391,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1703",
+      "source_location": "L1710",
       "weight": 1.0
     },
     {
@@ -9403,7 +9403,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1613",
+      "source_location": "L1620",
       "weight": 1.0
     },
     {
@@ -9415,7 +9415,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1891",
+      "source_location": "L1898",
       "weight": 1.0
     },
     {
@@ -9427,7 +9427,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1734",
+      "source_location": "L1741",
       "weight": 1.0
     },
     {
@@ -9439,7 +9439,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1735",
+      "source_location": "L1742",
       "weight": 1.0
     },
     {
@@ -9451,7 +9451,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1735",
+      "source_location": "L1742",
       "weight": 1.0
     },
     {
@@ -9463,7 +9463,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1736",
+      "source_location": "L1743",
       "weight": 1.0
     },
     {
@@ -9475,7 +9475,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1736",
+      "source_location": "L1743",
       "weight": 1.0
     },
     {
@@ -9487,7 +9487,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1741",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -9499,7 +9499,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2603",
+      "source_location": "L2610",
       "weight": 1.0
     },
     {
@@ -9511,7 +9511,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2607",
+      "source_location": "L2614",
       "weight": 1.0
     },
     {
@@ -9523,7 +9523,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2619",
+      "source_location": "L2626",
       "weight": 1.0
     },
     {
@@ -9535,7 +9535,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2624",
+      "source_location": "L2631",
       "weight": 1.0
     },
     {
@@ -9547,7 +9547,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2483",
+      "source_location": "L2490",
       "weight": 1.0
     },
     {
@@ -9559,7 +9559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2483",
+      "source_location": "L2490",
       "weight": 1.0
     },
     {
@@ -9571,7 +9571,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2483",
+      "source_location": "L2490",
       "weight": 1.0
     },
     {
@@ -9583,7 +9583,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2490",
+      "source_location": "L2497",
       "weight": 1.0
     },
     {
@@ -9595,7 +9595,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2498",
+      "source_location": "L2505",
       "weight": 1.0
     },
     {
@@ -9607,7 +9607,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2502",
+      "source_location": "L2509",
       "weight": 1.0
     },
     {
@@ -9619,7 +9619,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2514",
+      "source_location": "L2521",
       "weight": 1.0
     },
     {
@@ -9631,7 +9631,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2519",
+      "source_location": "L2526",
       "weight": 1.0
     },
     {
@@ -9643,7 +9643,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2524",
+      "source_location": "L2531",
       "weight": 1.0
     },
     {
@@ -9655,7 +9655,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3300",
+      "source_location": "L3307",
       "weight": 1.0
     },
     {
@@ -9667,7 +9667,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3300",
+      "source_location": "L3307",
       "weight": 1.0
     },
     {
@@ -9679,7 +9679,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3318",
+      "source_location": "L3325",
       "weight": 1.0
     },
     {
@@ -9691,7 +9691,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3319",
+      "source_location": "L3326",
       "weight": 1.0
     },
     {
@@ -9727,7 +9727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3064",
+      "source_location": "L3071",
       "weight": 1.0
     },
     {
@@ -9739,7 +9739,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3070",
+      "source_location": "L3077",
       "weight": 1.0
     },
     {
@@ -9751,7 +9751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3078",
+      "source_location": "L3085",
       "weight": 1.0
     },
     {
@@ -9763,7 +9763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3089",
+      "source_location": "L3096",
       "weight": 1.0
     },
     {
@@ -9775,7 +9775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3191",
+      "source_location": "L3198",
       "weight": 1.0
     },
     {
@@ -9787,7 +9787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3350",
+      "source_location": "L3357",
       "weight": 1.0
     },
     {
@@ -9799,7 +9799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2411",
+      "source_location": "L2418",
       "weight": 1.0
     },
     {
@@ -9811,7 +9811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2412",
+      "source_location": "L2419",
       "weight": 1.0
     },
     {
@@ -9823,7 +9823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2416",
+      "source_location": "L2423",
       "weight": 1.0
     },
     {
@@ -9835,7 +9835,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2423",
+      "source_location": "L2430",
       "weight": 1.0
     },
     {
@@ -9847,7 +9847,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2427",
+      "source_location": "L2434",
       "weight": 1.0
     },
     {
@@ -9859,7 +9859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2429",
+      "source_location": "L2436",
       "weight": 1.0
     },
     {
@@ -9871,7 +9871,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2432",
+      "source_location": "L2439",
       "weight": 1.0
     },
     {
@@ -9883,7 +9883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3381",
+      "source_location": "L3388",
       "weight": 1.0
     },
     {
@@ -9895,7 +9895,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3383",
+      "source_location": "L3390",
       "weight": 1.0
     },
     {
@@ -9907,7 +9907,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3385",
+      "source_location": "L3392",
       "weight": 1.0
     },
     {
@@ -10063,7 +10063,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2169",
+      "source_location": "L2176",
       "weight": 1.0
     },
     {
@@ -10075,7 +10075,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2170",
+      "source_location": "L2177",
       "weight": 1.0
     },
     {
@@ -10087,7 +10087,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2174",
+      "source_location": "L2181",
       "weight": 1.0
     },
     {
@@ -10099,7 +10099,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2176",
+      "source_location": "L2183",
       "weight": 1.0
     },
     {
@@ -10111,7 +10111,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2192",
+      "source_location": "L2199",
       "weight": 1.0
     },
     {
@@ -10123,7 +10123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1411",
+      "source_location": "L1418",
       "weight": 1.0
     },
     {
@@ -10171,7 +10171,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2211",
+      "source_location": "L2218",
       "weight": 1.0
     },
     {
@@ -10183,7 +10183,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2214",
+      "source_location": "L2221",
       "weight": 1.0
     },
     {
@@ -10195,7 +10195,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2215",
+      "source_location": "L2222",
       "weight": 1.0
     },
     {
@@ -10207,7 +10207,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2217",
+      "source_location": "L2224",
       "weight": 1.0
     },
     {
@@ -10219,7 +10219,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2220",
+      "source_location": "L2227",
       "weight": 1.0
     },
     {
@@ -10231,7 +10231,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2221",
+      "source_location": "L2228",
       "weight": 1.0
     },
     {
@@ -10243,7 +10243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2223",
+      "source_location": "L2230",
       "weight": 1.0
     },
     {
@@ -10255,7 +10255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2224",
+      "source_location": "L2231",
       "weight": 1.0
     },
     {
@@ -10267,7 +10267,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2255",
+      "source_location": "L2262",
       "weight": 1.0
     },
     {
@@ -10279,7 +10279,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1672",
+      "source_location": "L1679",
       "weight": 1.0
     },
     {
@@ -10291,7 +10291,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1673",
+      "source_location": "L1680",
       "weight": 1.0
     },
     {
@@ -10423,7 +10423,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1430",
+      "source_location": "L1437",
       "weight": 1.0
     },
     {
@@ -10435,7 +10435,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1443",
+      "source_location": "L1450",
       "weight": 1.0
     },
     {
@@ -10447,7 +10447,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1446",
+      "source_location": "L1453",
       "weight": 1.0
     },
     {
@@ -10459,7 +10459,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1458",
+      "source_location": "L1465",
       "weight": 1.0
     },
     {
@@ -10819,7 +10819,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3292",
+      "source_location": "L3299",
       "weight": 1.0
     },
     {
@@ -10831,7 +10831,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3294",
+      "source_location": "L3301",
       "weight": 1.0
     },
     {
@@ -10843,7 +10843,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3295",
+      "source_location": "L3302",
       "weight": 1.0
     },
     {
@@ -10855,7 +10855,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3296",
+      "source_location": "L3303",
       "weight": 1.0
     },
     {
@@ -10867,7 +10867,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3354",
+      "source_location": "L3361",
       "weight": 1.0
     },
     {
@@ -10879,7 +10879,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3356",
+      "source_location": "L3363",
       "weight": 1.0
     },
     {
@@ -10891,7 +10891,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3357",
+      "source_location": "L3364",
       "weight": 1.0
     },
     {
@@ -10903,7 +10903,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3358",
+      "source_location": "L3365",
       "weight": 1.0
     },
     {
@@ -10939,7 +10939,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1664",
+      "source_location": "L1671",
       "weight": 1.0
     },
     {
@@ -10951,7 +10951,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2352",
+      "source_location": "L2359",
       "weight": 1.0
     },
     {
@@ -10963,7 +10963,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2353",
+      "source_location": "L2360",
       "weight": 1.0
     },
     {
@@ -10975,7 +10975,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2353",
+      "source_location": "L2360",
       "weight": 1.0
     },
     {
@@ -10987,7 +10987,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2356",
+      "source_location": "L2363",
       "weight": 1.0
     },
     {
@@ -10999,7 +10999,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2357",
+      "source_location": "L2364",
       "weight": 1.0
     },
     {
@@ -11011,7 +11011,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2361",
+      "source_location": "L2368",
       "weight": 1.0
     },
     {
@@ -11023,7 +11023,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2378",
+      "source_location": "L2385",
       "weight": 1.0
     },
     {
@@ -11035,7 +11035,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2399",
+      "source_location": "L2406",
       "weight": 1.0
     },
     {
@@ -11047,7 +11047,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2399",
+      "source_location": "L2406",
       "weight": 1.0
     },
     {
@@ -11059,7 +11059,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1749",
+      "source_location": "L1756",
       "weight": 1.0
     },
     {
@@ -11071,7 +11071,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1752",
+      "source_location": "L1759",
       "weight": 1.0
     },
     {
@@ -11083,7 +11083,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1767",
+      "source_location": "L1774",
       "weight": 1.0
     },
     {
@@ -11095,7 +11095,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1774",
+      "source_location": "L1781",
       "weight": 1.0
     },
     {
@@ -11107,7 +11107,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1775",
+      "source_location": "L1782",
       "weight": 1.0
     },
     {
@@ -11119,7 +11119,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1782",
+      "source_location": "L1789",
       "weight": 1.0
     },
     {
@@ -11131,7 +11131,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1785",
+      "source_location": "L1792",
       "weight": 1.0
     },
     {
@@ -11143,7 +11143,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1793",
+      "source_location": "L1800",
       "weight": 1.0
     },
     {
@@ -11155,7 +11155,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1797",
+      "source_location": "L1804",
       "weight": 1.0
     },
     {
@@ -11179,7 +11179,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2343",
+      "source_location": "L2350",
       "weight": 1.0
     },
     {
@@ -11191,7 +11191,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2344",
+      "source_location": "L2351",
       "weight": 1.0
     },
     {
@@ -11203,7 +11203,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2347",
+      "source_location": "L2354",
       "weight": 1.0
     },
     {
@@ -11215,7 +11215,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2347",
+      "source_location": "L2354",
       "weight": 1.0
     },
     {
@@ -11227,7 +11227,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2593",
+      "source_location": "L2600",
       "weight": 1.0
     },
     {
@@ -11299,7 +11299,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2980",
+      "source_location": "L2987",
       "weight": 1.0
     },
     {
@@ -11311,7 +11311,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2983",
+      "source_location": "L2990",
       "weight": 1.0
     },
     {
@@ -11323,7 +11323,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2985",
+      "source_location": "L2992",
       "weight": 1.0
     },
     {
@@ -11335,7 +11335,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3000",
+      "source_location": "L3007",
       "weight": 1.0
     },
     {
@@ -11347,7 +11347,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2264",
+      "source_location": "L2271",
       "weight": 1.0
     },
     {
@@ -11359,7 +11359,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2265",
+      "source_location": "L2272",
       "weight": 1.0
     },
     {
@@ -11371,7 +11371,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2268",
+      "source_location": "L2275",
       "weight": 1.0
     },
     {
@@ -11383,7 +11383,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2269",
+      "source_location": "L2276",
       "weight": 1.0
     },
     {
@@ -11395,7 +11395,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2278",
+      "source_location": "L2285",
       "weight": 1.0
     },
     {
@@ -11407,7 +11407,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2284",
+      "source_location": "L2291",
       "weight": 1.0
     },
     {
@@ -11419,7 +11419,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2285",
+      "source_location": "L2292",
       "weight": 1.0
     },
     {
@@ -11431,7 +11431,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2287",
+      "source_location": "L2294",
       "weight": 1.0
     },
     {
@@ -11443,7 +11443,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2290",
+      "source_location": "L2297",
       "weight": 1.0
     },
     {
@@ -11455,7 +11455,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2318",
+      "source_location": "L2325",
       "weight": 1.0
     },
     {
@@ -11467,7 +11467,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2320",
+      "source_location": "L2327",
       "weight": 1.0
     },
     {
@@ -11479,7 +11479,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2331",
+      "source_location": "L2338",
       "weight": 1.0
     },
     {
@@ -11491,7 +11491,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2338",
+      "source_location": "L2345",
       "weight": 1.0
     },
     {
@@ -11623,7 +11623,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1384",
+      "source_location": "L1391",
       "weight": 1.0
     },
     {
@@ -11635,7 +11635,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2640",
+      "source_location": "L2647",
       "weight": 1.0
     },
     {
@@ -11647,7 +11647,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2641",
+      "source_location": "L2648",
       "weight": 1.0
     },
     {
@@ -11659,7 +11659,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2653",
+      "source_location": "L2660",
       "weight": 1.0
     },
     {
@@ -11671,7 +11671,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2657",
+      "source_location": "L2664",
       "weight": 1.0
     },
     {
@@ -11683,7 +11683,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2658",
+      "source_location": "L2665",
       "weight": 1.0
     },
     {
@@ -11695,7 +11695,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2663",
+      "source_location": "L2670",
       "weight": 1.0
     },
     {
@@ -11707,7 +11707,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2690",
+      "source_location": "L2697",
       "weight": 1.0
     },
     {
@@ -11719,7 +11719,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2726",
+      "source_location": "L2733",
       "weight": 1.0
     },
     {
@@ -11731,7 +11731,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2800",
+      "source_location": "L2807",
       "weight": 1.0
     },
     {
@@ -11743,7 +11743,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2824",
+      "source_location": "L2831",
       "weight": 1.0
     },
     {
@@ -11755,7 +11755,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2828",
+      "source_location": "L2835",
       "weight": 1.0
     },
     {
@@ -11767,7 +11767,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2839",
+      "source_location": "L2846",
       "weight": 1.0
     },
     {
@@ -11779,7 +11779,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2848",
+      "source_location": "L2855",
       "weight": 1.0
     },
     {
@@ -11791,7 +11791,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2878",
+      "source_location": "L2885",
       "weight": 1.0
     },
     {
@@ -11803,7 +11803,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2938",
+      "source_location": "L2945",
       "weight": 1.0
     },
     {
@@ -11815,7 +11815,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2949",
+      "source_location": "L2956",
       "weight": 1.0
     },
     {
@@ -11827,7 +11827,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2951",
+      "source_location": "L2958",
       "weight": 1.0
     },
     {
@@ -11839,7 +11839,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2951",
+      "source_location": "L2958",
       "weight": 1.0
     },
     {
@@ -11851,7 +11851,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2958",
+      "source_location": "L2965",
       "weight": 1.0
     },
     {
@@ -11863,7 +11863,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2959",
+      "source_location": "L2966",
       "weight": 1.0
     },
     {
@@ -11875,7 +11875,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2959",
+      "source_location": "L2966",
       "weight": 1.0
     },
     {
@@ -11887,7 +11887,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2965",
+      "source_location": "L2972",
       "weight": 1.0
     },
     {
@@ -11899,7 +11899,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2026",
+      "source_location": "L2033",
       "weight": 1.0
     },
     {
@@ -11911,7 +11911,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2029",
+      "source_location": "L2036",
       "weight": 1.0
     },
     {
@@ -11923,7 +11923,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2086",
+      "source_location": "L2093",
       "weight": 1.0
     },
     {
@@ -11935,7 +11935,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2093",
+      "source_location": "L2100",
       "weight": 1.0
     },
     {
@@ -11947,7 +11947,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2094",
+      "source_location": "L2101",
       "weight": 1.0
     },
     {
@@ -11959,7 +11959,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2095",
+      "source_location": "L2102",
       "weight": 1.0
     },
     {
@@ -11971,7 +11971,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2101",
+      "source_location": "L2108",
       "weight": 1.0
     },
     {
@@ -11983,7 +11983,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2110",
+      "source_location": "L2117",
       "weight": 1.0
     },
     {
@@ -11995,7 +11995,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2111",
+      "source_location": "L2118",
       "weight": 1.0
     },
     {
@@ -12007,7 +12007,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2150",
+      "source_location": "L2157",
       "weight": 1.0
     },
     {
@@ -12019,7 +12019,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2153",
+      "source_location": "L2160",
       "weight": 1.0
     },
     {
@@ -12031,7 +12031,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2157",
+      "source_location": "L2164",
       "weight": 1.0
     },
     {
@@ -12043,7 +12043,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2159",
+      "source_location": "L2166",
       "weight": 1.0
     },
     {
@@ -12079,7 +12079,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2436",
+      "source_location": "L2443",
       "weight": 1.0
     },
     {
@@ -12091,7 +12091,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2440",
+      "source_location": "L2447",
       "weight": 1.0
     },
     {
@@ -12103,7 +12103,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2443",
+      "source_location": "L2450",
       "weight": 1.0
     },
     {
@@ -12115,7 +12115,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2444",
+      "source_location": "L2451",
       "weight": 1.0
     },
     {
@@ -12127,7 +12127,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2453",
+      "source_location": "L2460",
       "weight": 1.0
     },
     {
@@ -12139,7 +12139,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2456",
+      "source_location": "L2463",
       "weight": 1.0
     },
     {
@@ -12151,7 +12151,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1645",
+      "source_location": "L1652",
       "weight": 1.0
     },
     {
@@ -12163,7 +12163,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1647",
+      "source_location": "L1654",
       "weight": 1.0
     },
     {
@@ -12175,7 +12175,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1651",
+      "source_location": "L1658",
       "weight": 1.0
     },
     {
@@ -12187,7 +12187,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1963",
+      "source_location": "L1970",
       "weight": 1.0
     },
     {
@@ -12199,7 +12199,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1964",
+      "source_location": "L1971",
       "weight": 1.0
     },
     {
@@ -12211,7 +12211,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1965",
+      "source_location": "L1972",
       "weight": 1.0
     },
     {
@@ -12223,7 +12223,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1966",
+      "source_location": "L1973",
       "weight": 1.0
     },
     {
@@ -12235,7 +12235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1939",
+      "source_location": "L1946",
       "weight": 1.0
     },
     {
@@ -12247,7 +12247,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1942",
+      "source_location": "L1949",
       "weight": 1.0
     },
     {
@@ -12295,7 +12295,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3160",
+      "source_location": "L3167",
       "weight": 1.0
     },
     {
@@ -12307,7 +12307,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3165",
+      "source_location": "L3172",
       "weight": 1.0
     },
     {
@@ -12319,7 +12319,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3166",
+      "source_location": "L3173",
       "weight": 1.0
     },
     {
@@ -12331,7 +12331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3166",
+      "source_location": "L3173",
       "weight": 1.0
     },
     {
@@ -12343,7 +12343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3172",
+      "source_location": "L3179",
       "weight": 1.0
     },
     {
@@ -12355,7 +12355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3172",
+      "source_location": "L3179",
       "weight": 1.0
     },
     {
@@ -12367,7 +12367,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3174",
+      "source_location": "L3181",
       "weight": 1.0
     },
     {
@@ -12595,7 +12595,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1404",
+      "source_location": "L1411",
       "weight": 1.0
     },
     {
@@ -12607,7 +12607,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1404",
+      "source_location": "L1411",
       "weight": 1.0
     },
     {
@@ -12727,7 +12727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1488",
+      "source_location": "L1495",
       "weight": 1.0
     },
     {
@@ -12739,7 +12739,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1490",
+      "source_location": "L1497",
       "weight": 1.0
     },
     {
@@ -12751,7 +12751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1491",
+      "source_location": "L1498",
       "weight": 1.0
     },
     {
@@ -12763,7 +12763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1493",
+      "source_location": "L1500",
       "weight": 1.0
     },
     {
@@ -12775,7 +12775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1495",
+      "source_location": "L1502",
       "weight": 1.0
     },
     {
@@ -12787,7 +12787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1528",
+      "source_location": "L1535",
       "weight": 1.0
     },
     {
@@ -12799,7 +12799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1550",
+      "source_location": "L1557",
       "weight": 1.0
     },
     {
@@ -12811,7 +12811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1556",
+      "source_location": "L1563",
       "weight": 1.0
     },
     {
@@ -12823,7 +12823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1567",
+      "source_location": "L1574",
       "weight": 1.0
     },
     {
@@ -12835,7 +12835,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2573",
+      "source_location": "L2580",
       "weight": 1.0
     },
     {
@@ -12847,7 +12847,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1574",
+      "source_location": "L1581",
       "weight": 1.0
     },
     {
@@ -12859,7 +12859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1948",
+      "source_location": "L1955",
       "weight": 1.0
     },
     {
@@ -12871,7 +12871,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1950",
+      "source_location": "L1957",
       "weight": 1.0
     },
     {
@@ -12883,7 +12883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1953",
+      "source_location": "L1960",
       "weight": 1.0
     },
     {
@@ -12895,7 +12895,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1954",
+      "source_location": "L1961",
       "weight": 1.0
     },
     {
@@ -13231,7 +13231,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1408",
+      "source_location": "L1415",
       "weight": 1.0
     },
     {
@@ -13243,7 +13243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1428",
+      "source_location": "L1435",
       "weight": 1.0
     },
     {
@@ -13255,7 +13255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1481",
+      "source_location": "L1488",
       "weight": 1.0
     },
     {
@@ -13267,7 +13267,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1640",
+      "source_location": "L1647",
       "weight": 1.0
     },
     {
@@ -13291,7 +13291,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1680",
+      "source_location": "L1687",
       "weight": 1.0
     },
     {
@@ -13339,7 +13339,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1916",
+      "source_location": "L1923",
       "weight": 1.0
     },
     {
@@ -13351,7 +13351,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1931",
+      "source_location": "L1938",
       "weight": 1.0
     },
     {
@@ -13363,7 +13363,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1936",
+      "source_location": "L1943",
       "weight": 1.0
     },
     {
@@ -13387,7 +13387,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1962",
+      "source_location": "L1969",
       "weight": 1.0
     },
     {
@@ -13399,7 +13399,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1985",
+      "source_location": "L1992",
       "weight": 1.0
     },
     {
@@ -13411,7 +13411,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2162",
+      "source_location": "L2169",
       "weight": 1.0
     },
     {
@@ -13423,7 +13423,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2263",
+      "source_location": "L2270",
       "weight": 1.0
     },
     {
@@ -13435,7 +13435,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2972",
+      "source_location": "L2979",
       "weight": 1.0
     },
     {
@@ -13447,7 +13447,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3027",
+      "source_location": "L3034",
       "weight": 1.0
     },
     {
@@ -13459,7 +13459,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3275",
+      "source_location": "L3282",
       "weight": 1.0
     },
     {
@@ -13471,7 +13471,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3280",
+      "source_location": "L3287",
       "weight": 1.0
     },
     {
@@ -13483,7 +13483,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3290",
+      "source_location": "L3297",
       "weight": 1.0
     },
     {
@@ -13495,7 +13495,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3299",
+      "source_location": "L3306",
       "weight": 1.0
     },
     {
@@ -13507,7 +13507,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3348",
+      "source_location": "L3355",
       "weight": 1.0
     },
     {
@@ -13519,7 +13519,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3352",
+      "source_location": "L3359",
       "weight": 1.0
     },
     {
@@ -13531,7 +13531,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3361",
+      "source_location": "L3368",
       "weight": 1.0
     },
     {
@@ -14525,7 +14525,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2397",
+      "source_location": "L2401",
       "weight": 1.0
     },
     {
@@ -15834,7 +15834,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1294",
+      "source_location": "L1301",
       "weight": 1.0
     },
     {
@@ -15845,7 +15845,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1371",
+      "source_location": "L1378",
       "weight": 1.0
     },
     {
@@ -15856,7 +15856,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1423",
+      "source_location": "L1430",
       "weight": 1.0
     },
     {
@@ -15867,7 +15867,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1461",
+      "source_location": "L1468",
       "weight": 1.0
     },
     {
@@ -15878,7 +15878,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1570",
+      "source_location": "L1577",
       "weight": 1.0
     },
     {
@@ -15889,7 +15889,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1597",
+      "source_location": "L1604",
       "weight": 1.0
     },
     {
@@ -15900,7 +15900,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1663",
+      "source_location": "L1670",
       "weight": 1.0
     },
     {
@@ -15911,7 +15911,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1671",
+      "source_location": "L1678",
       "weight": 1.0
     },
     {
@@ -15922,7 +15922,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1706",
+      "source_location": "L1713",
       "weight": 1.0
     },
     {
@@ -15933,7 +15933,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1723",
+      "source_location": "L1730",
       "weight": 1.0
     },
     {
@@ -15944,7 +15944,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1733",
+      "source_location": "L1740",
       "weight": 1.0
     },
     {
@@ -15955,7 +15955,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1748",
+      "source_location": "L1755",
       "weight": 1.0
     },
     {
@@ -15966,7 +15966,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1817",
+      "source_location": "L1824",
       "weight": 1.0
     },
     {
@@ -15977,7 +15977,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1830",
+      "source_location": "L1837",
       "weight": 1.0
     },
     {
@@ -15988,7 +15988,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1864",
+      "source_location": "L1871",
       "weight": 1.0
     },
     {
@@ -15999,7 +15999,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1927",
+      "source_location": "L1934",
       "weight": 1.0
     },
     {
@@ -16010,7 +16010,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1947",
+      "source_location": "L1954",
       "weight": 1.0
     },
     {
@@ -16043,7 +16043,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2342",
+      "source_location": "L2349",
       "weight": 1.0
     },
     {
@@ -16054,7 +16054,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2482",
+      "source_location": "L2489",
       "weight": 1.0
     },
     {
@@ -16065,7 +16065,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2536",
+      "source_location": "L2543",
       "weight": 1.0
     },
     {
@@ -16076,7 +16076,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2550",
+      "source_location": "L2557",
       "weight": 1.0
     },
     {
@@ -16087,7 +16087,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2592",
+      "source_location": "L2599",
       "weight": 1.0
     },
     {
@@ -16098,7 +16098,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2598",
+      "source_location": "L2605",
       "weight": 1.0
     },
     {
@@ -16109,7 +16109,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2631",
+      "source_location": "L2638",
       "weight": 1.0
     },
     {
@@ -16153,7 +16153,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3052",
+      "source_location": "L3059",
       "weight": 1.0
     },
     {
@@ -16164,7 +16164,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3377",
+      "source_location": "L3384",
       "weight": 1.0
     },
     {
@@ -16846,7 +16846,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1044",
+      "source_location": "L1045",
       "weight": 1.0
     },
     {
@@ -16868,7 +16868,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1114",
+      "source_location": "L1115",
       "weight": 1.0
     },
     {
@@ -16879,7 +16879,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1160",
+      "source_location": "L1161",
       "weight": 1.0
     },
     {
@@ -16890,7 +16890,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1203",
+      "source_location": "L1204",
       "weight": 1.0
     },
     {
@@ -16901,7 +16901,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1224",
+      "source_location": "L1225",
       "weight": 1.0
     },
     {
@@ -16912,7 +16912,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1248",
+      "source_location": "L1249",
       "weight": 1.0
     },
     {
@@ -16923,7 +16923,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1304",
+      "source_location": "L1305",
       "weight": 1.0
     },
     {
@@ -16934,7 +16934,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1328",
+      "source_location": "L1329",
       "weight": 1.0
     },
     {
@@ -16945,7 +16945,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1396",
+      "source_location": "L1397",
       "weight": 1.0
     },
     {
@@ -16956,7 +16956,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1508",
+      "source_location": "L1509",
       "weight": 1.0
     },
     {
@@ -16967,7 +16967,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1534",
+      "source_location": "L1535",
       "weight": 1.0
     },
     {
@@ -16978,7 +16978,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1615",
+      "source_location": "L1616",
       "weight": 1.0
     },
     {
@@ -16989,7 +16989,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1733",
+      "source_location": "L1734",
       "weight": 1.0
     },
     {
@@ -17000,7 +17000,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1745",
+      "source_location": "L1746",
       "weight": 1.0
     },
     {
@@ -17011,7 +17011,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1801",
+      "source_location": "L1802",
       "weight": 1.0
     },
     {
@@ -17022,7 +17022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1903",
+      "source_location": "L1904",
       "weight": 1.0
     },
     {
@@ -17033,7 +17033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1953",
+      "source_location": "L1954",
       "weight": 1.0
     },
     {
@@ -17044,7 +17044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2202",
+      "source_location": "L2203",
       "weight": 1.0
     },
     {
@@ -17055,7 +17055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2224",
+      "source_location": "L2225",
       "weight": 1.0
     },
     {
@@ -17066,7 +17066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2250",
+      "source_location": "L2251",
       "weight": 1.0
     },
     {
@@ -17077,7 +17077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2276",
+      "source_location": "L2277",
       "weight": 1.0
     },
     {
@@ -17088,7 +17088,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2285",
+      "source_location": "L2286",
       "weight": 1.0
     },
     {
@@ -17099,7 +17099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2338",
+      "source_location": "L2339",
       "weight": 1.0
     },
     {
@@ -17110,7 +17110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2376",
+      "source_location": "L2377",
       "weight": 1.0
     },
     {
@@ -17121,7 +17121,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2418",
+      "source_location": "L2422",
       "weight": 1.0
     },
     {
@@ -17132,7 +17132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L453",
+      "source_location": "L454",
       "weight": 1.0
     },
     {
@@ -17165,7 +17165,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L709",
+      "source_location": "L710",
       "weight": 1.0
     },
     {
@@ -17176,7 +17176,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L725",
+      "source_location": "L726",
       "weight": 1.0
     },
     {
@@ -17187,7 +17187,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L756",
+      "source_location": "L757",
       "weight": 1.0
     },
     {
@@ -17198,7 +17198,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L818",
+      "source_location": "L819",
       "weight": 1.0
     },
     {
@@ -17220,7 +17220,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L835",
+      "source_location": "L836",
       "weight": 1.0
     },
     {
@@ -17231,7 +17231,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L849",
+      "source_location": "L850",
       "weight": 1.0
     },
     {
@@ -17242,7 +17242,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L874",
+      "source_location": "L875",
       "weight": 1.0
     },
     {
@@ -17253,7 +17253,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L888",
+      "source_location": "L889",
       "weight": 1.0
     },
     {
@@ -17264,7 +17264,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L900",
+      "source_location": "L901",
       "weight": 1.0
     },
     {
@@ -17275,7 +17275,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L927",
+      "source_location": "L928",
       "weight": 1.0
     },
     {
@@ -17297,7 +17297,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L969",
+      "source_location": "L970",
       "weight": 1.0
     },
     {
@@ -17759,18 +17759,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L773",
+      "source_location": "L777",
       "weight": 1.0
     },
     {
       "source": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
-      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_clause",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service_cogs_value_condition",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L787",
+      "source_location": "L791",
       "weight": 1.0
     },
     {
@@ -17781,7 +17781,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-cogs-service.php",
-      "source_location": "L839",
+      "source_location": "L825",
       "weight": 1.0
     },
     {
@@ -19226,7 +19226,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3098",
+      "source_location": "L3105",
       "weight": 1.0
     },
     {
@@ -19238,7 +19238,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3099",
+      "source_location": "L3106",
       "weight": 1.0
     },
     {
@@ -19250,7 +19250,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3133",
+      "source_location": "L3140",
       "weight": 1.0
     },
     {
@@ -19262,7 +19262,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3134",
+      "source_location": "L3141",
       "weight": 1.0
     },
     {
@@ -19274,7 +19274,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3198",
+      "source_location": "L3205",
       "weight": 1.0
     },
     {
@@ -19286,7 +19286,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3200",
+      "source_location": "L3207",
       "weight": 1.0
     },
     {
@@ -19298,7 +19298,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3230",
+      "source_location": "L3237",
       "weight": 1.0
     },
     {
@@ -19310,7 +19310,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L3093",
+      "source_location": "L3100",
       "weight": 1.0
     },
     {
@@ -19346,7 +19346,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2381",
+      "source_location": "L2388",
       "weight": 1.0
     },
     {
@@ -19358,7 +19358,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2153",
+      "source_location": "L2160",
       "weight": 1.0
     },
     {
@@ -19370,7 +19370,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1960",
+      "source_location": "L1961",
       "weight": 1.0
     },
     {
@@ -19382,7 +19382,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2051",
+      "source_location": "L2052",
       "weight": 1.0
     },
     {
@@ -19394,7 +19394,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1372",
+      "source_location": "L1373",
       "weight": 1.0
     },
     {
@@ -19406,7 +19406,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1004",
+      "source_location": "L1005",
       "weight": 1.0
     },
     {
@@ -19418,7 +19418,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L998",
+      "source_location": "L999",
       "weight": 1.0
     },
     {
@@ -19430,7 +19430,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1232",
+      "source_location": "L1233",
       "weight": 1.0
     },
     {
@@ -19442,7 +19442,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1173",
+      "source_location": "L1174",
       "weight": 1.0
     },
     {
@@ -19454,7 +19454,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L762",
+      "source_location": "L763",
       "weight": 1.0
     },
     {
@@ -19466,7 +19466,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L796",
+      "source_location": "L797",
       "weight": 1.0
     },
     {
@@ -19478,7 +19478,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L945",
+      "source_location": "L946",
       "weight": 1.0
     },
     {
@@ -19490,7 +19490,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1135",
+      "source_location": "L1136",
       "weight": 1.0
     },
     {
@@ -19502,7 +19502,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1100",
+      "source_location": "L1101",
       "weight": 1.0
     },
     {
@@ -19514,7 +19514,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1257",
+      "source_location": "L1258",
       "weight": 1.0
     },
     {
@@ -19550,7 +19550,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2420",
+      "source_location": "L2424",
       "weight": 1.0
     },
     {
@@ -19562,7 +19562,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2421",
+      "source_location": "L2425",
       "weight": 1.0
     },
     {
@@ -19574,7 +19574,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L2422",
+      "source_location": "L2426",
       "weight": 1.0
     },
     {
@@ -19586,7 +19586,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L1914",
+      "source_location": "L1915",
       "weight": 1.0
     },
     {
@@ -20587,5 +20587,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4f3022e77bfd77813d4fc819680966cdac138ae3"
+  "built_at_commit": "20273b7e7fd00867b4e6e1bc7e2244942e9065fb"
 }
