@@ -1,5 +1,7 @@
 = 1.3.1 (2026-11-17) =
 
+* Fixed: Use indexed cost-state membership queries to avoid expensive metadata joins when finding empty or zero COGS in large catalogs.
+* Fixed: Show a readable server-timeout message instead of a JSON parsing error when a request returns an HTML error page.
 * Fixed: Keep Find products disabled when native WooCommerce COGS is unavailable or disabled.
 * Fixed: Preserve inline New COGS edits when refreshing the review table after a completed update, including zero costs that WooCommerce stores as Empty.
 * Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.

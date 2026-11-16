@@ -361,6 +361,7 @@ class DKBCE_Admin_Functions {
 					'costEditHelp'        => __( 'Overrides Step 2 for this product. Enter 0 to clear COGS.', 'bulk-cogs-editor-for-woocommerce' ),
 					'savingCost'          => __( 'Saving…', 'bulk-cogs-editor-for-woocommerce' ),
 					'costSaved'           => __( 'New COGS saved in the preview. Products have not been updated.', 'bulk-cogs-editor-for-woocommerce' ),
+					'requestTimeout'      => __( 'The server took too long to respond. Try again or narrow your product filters.', 'bulk-cogs-editor-for-woocommerce' ),
 					'priceNotSet'         => __( 'Not set', 'bulk-cogs-editor-for-woocommerce' ),
 					'matchActionHelp'     => __( 'Choose an action and value in Step 2 to preview changes below.', 'bulk-cogs-editor-for-woocommerce' ),
 					'matchPreviewHelp'    => __( 'Review changes in the table below before applying.', 'bulk-cogs-editor-for-woocommerce' ),
@@ -2376,6 +2377,9 @@ class DKBCE_Admin_Functions {
 	public function extend_product_query( $wp_query_args, $query_vars ) {
 		if ( ! empty( $query_vars['dkbce_selection_operation'] ) ) {
 			$wp_query_args['dkbce_selection_operation'] = sanitize_key( $query_vars['dkbce_selection_operation'] );
+		}
+		if ( ! empty( $query_vars['dkbce_cogs_value_filters'] ) ) {
+			$wp_query_args['dkbce_cogs_value_filters'] = array_map( 'sanitize_key', (array) $query_vars['dkbce_cogs_value_filters'] );
 		}
 		if ( ! empty( $query_vars['dkbce_cogs_above_price'] ) ) {
 			$wp_query_args['dkbce_cogs_above_price'] = true;

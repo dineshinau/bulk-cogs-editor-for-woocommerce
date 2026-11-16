@@ -1251,7 +1251,14 @@
 			body: data,
 		} )
 			.then( async ( response ) => {
-				const payload = await response.json();
+				let payload;
+				try {
+					payload = await response.json();
+				} catch {
+					const error = new Error( [ 408, 504 ].includes( response.status ) ? DKBCE.i18n.requestTimeout : DKBCE.csv.requestFailed );
+					error.status = response.status;
+					throw error;
+				}
 				if ( ! response.ok ) {
 					const error = new Error( payload.data && payload.data.message ? payload.data.message : DKBCE.csv.requestFailed );
 					error.status = response.status;

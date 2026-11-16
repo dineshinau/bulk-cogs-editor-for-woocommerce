@@ -647,9 +647,8 @@ class DKBCE_COGS_Service {
 		if ( 'above_regular_price' === ( $filters['cogs_value'] ?? '' ) ) {
 			$args['dkbce_cogs_above_regular_price'] = true;
 		}
-		$cogs_clause = $this->cogs_value_clause( $filters['cogs_value'] ?? '' );
-		if ( $cogs_clause ) {
-			$meta_query[] = $cogs_clause;
+		if ( in_array( $filters['cogs_value'] ?? '', array( 'empty', 'zero', 'positive', 'empty_or_zero' ), true ) ) {
+			$args['dkbce_cogs_value_filters'] = array( $filters['cogs_value'] );
 		}
 
 		if ( $meta_query ) {
@@ -684,7 +683,8 @@ class DKBCE_COGS_Service {
 			if ( ! empty( $prior['dkbce_cogs_above_regular_price'] ) ) {
 				$args['dkbce_cogs_above_regular_price'] = true;
 			}
-			$groups = array_merge( $groups, $prior['dkbce_category_groups'] );
+			$args['dkbce_cogs_value_filters'] = array_values( array_unique( array_merge( $args['dkbce_cogs_value_filters'] ?? array(), $prior['dkbce_cogs_value_filters'] ?? array() ) ) );
+			$groups                           = array_merge( $groups, $prior['dkbce_category_groups'] );
 			foreach ( array( 'tax_query', 'dkbce_meta_query' ) as $key ) {
 				$args[ $key ] = array_merge( $args[ $key ] ?? array(), $prior[ $key ] ?? array() );
 			}
@@ -738,6 +738,10 @@ class DKBCE_COGS_Service {
 			);
 		}
 
+		foreach ( (array) $query->get( 'dkbce_cogs_value_filters' ) as $value ) {
+			$where .= $this->cogs_value_condition( $value );
+		}
+
 		$groups = $query->get( 'dkbce_category_groups' );
 		if ( ! is_array( $groups ) ) {
 			$category_ids = $query->get( 'dkbce_category_ids' );
@@ -779,53 +783,35 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Match stored empty, zero, or positive costs without treating blanks as zero.
+	 * Match stored COGS states without multiplying unrelated metadata rows.
 	 *
 	 * @param string $value Validated COGS value filter.
-	 * @return array|null
+	 * @return string SQL condition, or an empty string for unsupported values.
 	 */
-	private function cogs_value_clause( $value ) {
-		if ( in_array( $value, array( '', 'above_price', 'above_regular_price' ), true ) ) {
-			return null;
+	private function cogs_value_condition( $value ) {
+		global $wpdb;
+
+		if ( ! in_array( $value, array( 'empty', 'zero', 'positive', 'empty_or_zero' ), true ) ) {
+			return '';
 		}
-		$key     = '_cogs_total_value';
-		$empty   = array(
-			'relation' => 'OR',
-			array(
-				'key'     => $key,
-				'compare' => 'NOT EXISTS',
-			),
-			array(
-				'key'     => $key,
-				'value'   => '',
-				'compare' => '=',
-			),
+		// Uncorrelated membership queries let the database read each cost set
+		// through the meta_key index instead of probing all metadata per product.
+		$cost_ids = $wpdb->prepare(
+			"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id > 0",
+			'_cogs_total_value'
 		);
-		$numeric = array(
-			'relation' => 'AND',
-			array(
-				'key'     => $key,
-				'value'   => '',
-				'compare' => '!=',
-			),
-			array(
-				'key'     => $key,
-				'value'   => 0,
-				'compare' => 'positive' === $value ? '>' : '=',
-				'type'    => 'DECIMAL(20,6)',
-			),
-		);
+		$missing  = "{$wpdb->posts}.ID NOT IN ({$cost_ids})";
 		if ( 'empty' === $value ) {
-			return $empty;
+			return " AND ({$missing} OR {$wpdb->posts}.ID IN ({$cost_ids} AND meta_value = ''))";
 		}
 		if ( 'empty_or_zero' === $value ) {
-			return array(
-				'relation' => 'OR',
-				$empty,
-				$numeric,
-			);
+			return " AND ({$missing} OR {$wpdb->posts}.ID IN ({$cost_ids} AND (meta_value = '' OR (meta_value <> '' AND CAST(meta_value AS DECIMAL(20,6)) = 0))))";
 		}
-		return $numeric;
+		if ( 'zero' === $value ) {
+			// Preserve separate existence checks if duplicate cost rows are stored.
+			return " AND ({$wpdb->posts}.ID IN ({$cost_ids} AND meta_value <> '') AND {$wpdb->posts}.ID IN ({$cost_ids} AND CAST(meta_value AS DECIMAL(20,6)) = 0))";
+		}
+		return " AND {$wpdb->posts}.ID IN ({$cost_ids} AND meta_value <> '' AND CAST(meta_value AS DECIMAL(20,6)) > 0)";
 	}
 
 	/**
