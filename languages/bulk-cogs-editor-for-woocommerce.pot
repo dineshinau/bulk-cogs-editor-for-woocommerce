@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T22:54:13+00:00\n"
+"POT-Creation-Date: 2026-11-16T23:01:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2137,7 +2137,7 @@ msgid "The download queue stopped."
 msgstr ""
 
 #: admin/class-dkbce-health-notice.php:84
-msgid "Refreshing counts…"
+msgid "Refreshing COGS counts for your products and variations. The time depends on your catalog size; large stores may take several minutes."
 msgstr ""
 
 #: admin/class-dkbce-health-notice.php:85
@@ -2165,7 +2165,7 @@ msgid "Review in Bulk COGS Editor"
 msgstr ""
 
 #: admin/class-dkbce-health-notice.php:107
-msgid "Counts refresh hourly. Dismiss to hide this notice for one hour."
+msgid "Counts refresh automatically every hour. Dismiss this notice to hide it for one hour."
 msgstr ""
 
 #: admin/class-dkbce-health-notice.php:119

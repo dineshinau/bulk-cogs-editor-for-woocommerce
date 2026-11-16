@@ -81,7 +81,7 @@ class DKBCE_Health_Notice {
 				'url'          => admin_url( 'admin-ajax.php' ),
 				'nonce'        => wp_create_nonce( 'dkbce_dismiss_health' ),
 				'refreshNonce' => wp_create_nonce( 'dkbce_refresh_health' ),
-				'refreshing'   => __( 'Refreshing counts…', 'bulk-cogs-editor-for-woocommerce' ),
+				'refreshing'   => __( 'Refreshing COGS counts for your products and variations. The time depends on your catalog size; large stores may take several minutes.', 'bulk-cogs-editor-for-woocommerce' ),
 				'failed'       => __( 'Could not refresh counts. Try again.', 'bulk-cogs-editor-for-woocommerce' ),
 			)
 		);
@@ -104,7 +104,7 @@ class DKBCE_Health_Notice {
 			$message = sprintf( _n( '%s product or variation has a COGS value above its current selling price.', '%s products and variations have COGS values above their current selling prices.', $above, 'bulk-cogs-editor-for-woocommerce' ), number_format_i18n( $above ) );
 		}
 		$message  = esc_html( $message ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=product&page=bulk-cogs-editor' ) ) . '">' . esc_html__( 'Review in Bulk COGS Editor', 'bulk-cogs-editor-for-woocommerce' ) . '</a> ';
-		$message .= esc_html__( 'Counts refresh hourly. Dismiss to hide this notice for one hour.', 'bulk-cogs-editor-for-woocommerce' );
+		$message .= esc_html__( 'Counts refresh automatically every hour. Dismiss this notice to hide it for one hour.', 'bulk-cogs-editor-for-woocommerce' );
 		$message .= ' <button type="button" class="button-link dkbce-refresh-health">' . esc_html__( 'Refresh now', 'bulk-cogs-editor-for-woocommerce' ) . '</button> <span class="dkbce-health-status" role="status" aria-live="polite"></span>';
 		return $message;
 	}
