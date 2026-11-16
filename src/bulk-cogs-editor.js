@@ -34,6 +34,7 @@
 		count: 0,
 		hasQuery: false,
 		previewId: '',
+		browsing: false,
 		previewNeedsRefresh: false,
 		rows: [],
 		pageData: null,
@@ -1390,7 +1391,11 @@
 	}
 
 	function syncCogsRange() {
-		const restricted = [ 'empty', 'zero', 'empty_or_zero' ].includes( $( '#dkbce-cogs-value' ).value );
+		const value = $( '#dkbce-cogs-value' ).value;
+		const restricted = [ 'empty', 'zero', 'empty_or_zero' ].includes( value );
+		const help = $( '#dkbce-cogs-value-help' );
+		const text = DKBCE.i18n.cogsValueHelp[ value ] || DKBCE.i18n.cogsValueHelp[ '' ];
+		if ( help.textContent !== text ) { help.textContent = text; }
 		[ '#dkbce-cogs-min', '#dkbce-cogs-max' ].forEach( ( selector ) => {
 			const input = $( selector );
 			if ( restricted ) { input.value = ''; }
@@ -1517,7 +1522,7 @@
 		syncCogsRange();
 		// Reflect the existing selection and preview state without changing its guards.
 		const hasProducts = state.hasQuery && state.count > 0;
-		const hasPreview = Boolean( state.previewId ) && ! state.previewNeedsRefresh && state.rows.length > 0;
+		const hasPreview = Boolean( state.previewId ) && ! state.browsing && ! state.previewNeedsRefresh && state.rows.length > 0;
 		const currentStep = hasPreview ? 2 : hasProducts ? 1 : 0;
 		if ( state.mode === 'bulk' ) {
 			const empty = $( '.dkbce-preview-empty' );
@@ -1539,7 +1544,7 @@
 		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
 		getButton.disabled = state.busy || running;
 		applyButton.disabled = running || state.busy || state.loadingPage ||
-			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
+			! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
 			( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' && ! hasCSVIdentifierColumn() );
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
@@ -1854,7 +1859,7 @@
 		$( '#dkbce-select-all' ).textContent = DKBCE.ui.all.replace( '%d', state.count.toLocaleString() );
 		$( '#dkbce-selection-count' ).textContent = DKBCE.ui.selected.replace( '%d', count.toLocaleString() );
 		$( '#dkbce-page-selection-count' ).textContent = DKBCE.ui.pageSelected.replace( '%d', state.rows.filter( ( item ) => productSelected( item.id ) ).length );
-		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.previewId ? ux.scopeSummary.replace( '%2$s', count.toLocaleString() ).replace( '%1$s', ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
+		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.browsing && ! csvMode() ? DKBCE.i18n.browseHelp : state.previewId ? ux.scopeSummary.replace( '%2$s', count.toLocaleString() ).replace( '%1$s', ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
 		if ( ! state.busy ) {
 			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : state.previewId && count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
@@ -1907,9 +1912,10 @@
 			$( '#dkbce-product-count' ).textContent = data.count + ' ' + ( data.count === 1 ? DKBCE.i18n.productOne : DKBCE.i18n.productMany );
 		}
 		state.rows = data.rows;
+		state.browsing = data.rows.some( ( item ) => item.status === 'browse' );
 		state.pageData = data;
 		state.page = data.page;
-		data.rows.forEach( ( item ) => state.reviewedIds.add( String( item.id ) ) );
+		data.rows.filter( ( item ) => item.status !== 'browse' ).forEach( ( item ) => state.reviewedIds.add( String( item.id ) ) );
 		$( '.dkbce-preview-controls' ).hidden = ! data.rows.length;
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
@@ -1922,7 +1928,7 @@
 				? DKBCE.i18n.productOne
 				: DKBCE.i18n.productMany );
 		previewContent.appendChild( summary );
-		if ( ! csvMode() ) {
+		if ( ! csvMode() && ! state.browsing ) {
 			const freshness = document.createElement( 'details' );
 			freshness.className = 'dkbce-preview-checks';
 			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
@@ -2002,11 +2008,12 @@
 			if ( null === item.new ) {
 				newValue = DKBCE.i18n.emptyValue;
 			}
-			if ( 'skipped' === item.status || 'failed' === item.status ) {
+			if ( [ 'browse', 'skipped', 'failed' ].includes( item.status ) ) {
 				newValue = '—';
 			}
 			appendCell( row, newValue );
 			appendChangeCell( row, item );
+			appendCell( row, item.selling_price === null || item.selling_price === undefined || item.selling_price === '' ? DKBCE.i18n.priceNotSet : money( item.selling_price ) );
 			if ( csvMode() ) { appendCell( row, item.reason || DKBCE.csv.valid ); }
 			tbody.appendChild( row );
 		} );
@@ -2018,7 +2025,7 @@
 					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
 				}
 			} );
-			[ 0, 1, 2, 5, 6, 7, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
+			[ 0, 1, 2, 8, 5, 6, 7, 3, 4, 9 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
@@ -2149,7 +2156,7 @@
 				if ( state.hasQuery && state.count > 0 ) {
 					if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
 						previewCSV();
-					} else if ( ! csvMode() && hasValidActionValue() ) {
+					} else if ( ! csvMode() ) {
 						preview();
 					}
 				}
@@ -2164,8 +2171,9 @@
 		const action = selectedAction();
 		const value = numericActionValue();
 		const requestedPageSize = Number( pageSizeSelect.value );
+		const browsing = action !== 'clear' && value === '';
 		if (
-			'clear' !== action &&
+			! browsing && 'clear' !== action &&
 			( '' === value ||
 				! Number.isFinite( Number( value ) ) ||
 				Number( value ) < 0 )
@@ -2190,7 +2198,7 @@
 			excluded_ids: JSON.stringify( Array.from( state.excludedIds ) ),
 			range_token: state.selectionRange ? state.selectionRange.token : '',
 			filters: requestedFilters,
-			action_type: action,
+			action_type: browsing ? 'browse' : action,
 			action_value: value,
 			page_size: requestedPageSize,
 		} )
@@ -2245,7 +2253,7 @@
 
 	function openConfirm() {
 		const exporting = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export';
-		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || state.previewNeedsRefresh || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! state.count ) {
 			return;
 		}
 		if ( exporting && ! hasCSVIdentifierColumn() ) {
@@ -2335,7 +2343,7 @@
 		const value = numericActionValue();
 		if (
 			'clear' !== action &&
-			( '' === value || ! Number.isFinite( Number( value ) ) || Number( value ) < 0 )
+			( ! Number.isFinite( Number( value ) ) || Number( value ) < 0 )
 		) {
 			return;
 		}
@@ -2371,7 +2379,7 @@
 	} );
 
 	async function applyChanges() {
-		if ( isOperationRunning() || ! state.previewId || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -3229,7 +3237,9 @@
 	} );
 	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
 	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset );
-	presetPanel.append( presetLoad, presetSave, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
+	const presetControls = historyElement( 'div', '', 'dkbce-preset-controls' );
+	presetControls.append( presetLoad, presetSave );
+	presetPanel.append( presetControls, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
 	filterPanel.after( presetPanel );
 	presetSelect.addEventListener( 'change', updatePresetControls );
 	presetPanel.addEventListener( 'toggle', () => { if ( presetPanel.open ) { loadPresets(); } } );

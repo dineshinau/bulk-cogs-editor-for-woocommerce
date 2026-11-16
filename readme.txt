@@ -33,7 +33,7 @@ https://youtu.be/K-zo4dw7og4
 = How it works =
 
 1. Open **Products > Bulk COGS Editor** and choose Bulk edit.
-2. Choose your filters and find the matching products.
+2. Choose your filters and find the matching products. Browse their selling prices and current COGS before choosing a cost update.
 3. Choose a WooCommerce COGS action, review the preview, and select the products to update.
 4. Review and confirm the update, then follow its results in the editor.
 
@@ -45,9 +45,9 @@ https://www.youtube.com/watch?v=Pxtvi0YbDRw
 
 * **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
 * Filter products and variations by category, brand, product type, stock status, current price, or current WooCommerce COGS.
-* Find products with empty COGS, explicit zero COGS, positive COGS, or empty or zero COGS using the COGS value filter. Numeric COGS ranges remain available for Any value and Greater than zero.
+* Find products with empty COGS, explicit zero COGS, positive COGS, or empty or zero COGS using the COGS value filter. Choose Greater than selling price to find products whose COGS exceeds their current selling price, including sales; products without a selling price are excluded. Choose Greater than regular price to compare COGS with the regular price before discounts; products without a regular price are excluded. Numeric COGS ranges remain available for Any value, Greater than zero, Greater than selling price, and Greater than regular price.
 * Set an exact WooCommerce cost of goods value, increase or decrease it by a fixed amount or percentage, or clear it.
-* Preview product images alongside current WooCommerce COGS, proposed COGS, and the exact difference, with pagination and product selection.
+* Browse matching products with images, current selling prices, and WooCommerce COGS before entering a new cost. Then preview proposed COGS and the exact difference, with pagination and product selection. The three bulk editing steps use full-width sections.
 * Process WooCommerce cost of goods updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
 * Import CSV or XLSX costs using product IDs or SKUs, export matching WooCommerce COGS to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original WooCommerce cost of goods in History, with rollback review and confirmation.

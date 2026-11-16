@@ -59,11 +59,13 @@ class DKBCE_COGS_Service {
 	 */
 	public function get_cogs_value_options() {
 		return array(
-			''              => __( 'Any value', 'bulk-cogs-editor-for-woocommerce' ),
-			'empty'         => __( 'Empty (not set)', 'bulk-cogs-editor-for-woocommerce' ),
-			'zero'          => __( 'Zero (0)', 'bulk-cogs-editor-for-woocommerce' ),
-			'positive'      => __( 'Greater than zero', 'bulk-cogs-editor-for-woocommerce' ),
-			'empty_or_zero' => __( 'Empty or zero', 'bulk-cogs-editor-for-woocommerce' ),
+			''                    => __( 'Any value', 'bulk-cogs-editor-for-woocommerce' ),
+			'empty'               => __( 'Empty (not set)', 'bulk-cogs-editor-for-woocommerce' ),
+			'zero'                => __( 'Zero (0)', 'bulk-cogs-editor-for-woocommerce' ),
+			'positive'            => __( 'Greater than zero', 'bulk-cogs-editor-for-woocommerce' ),
+			'empty_or_zero'       => __( 'Empty or zero', 'bulk-cogs-editor-for-woocommerce' ),
+			'above_price'         => __( 'Greater than selling price', 'bulk-cogs-editor-for-woocommerce' ),
+			'above_regular_price' => __( 'Greater than regular price', 'bulk-cogs-editor-for-woocommerce' ),
 		);
 	}
 
@@ -375,7 +377,13 @@ class DKBCE_COGS_Service {
 	 * @return array|WP_Error
 	 */
 	public function preview_row( $product, $operation ) {
-		$result = $this->calculate( $product, $operation );
+		$result = 'browse' === ( $operation['action'] ?? '' )
+			? array(
+				'current' => $product->get_cogs_value(),
+				'new'     => null,
+				'status'  => 'browse',
+			)
+			: $this->calculate( $product, $operation );
 		if ( is_wp_error( $result ) ) {
 			$result = array(
 				'current' => $product->get_cogs_value(),
@@ -418,6 +426,7 @@ class DKBCE_COGS_Service {
 			'image_url'        => $image_url ? esc_url_raw( $image_url ) : '',
 			'name'             => $product->get_name(),
 			'sku'              => $product->get_sku(),
+			'selling_price'    => '' === $product->get_price() ? null : $product->get_price(),
 			'type'             => $product->get_type(),
 			'type_label'       => isset( $types[ $product->get_type() ] ) ? $types[ $product->get_type() ] : $product->get_type(),
 			'current'          => $result['current'],
@@ -621,6 +630,12 @@ class DKBCE_COGS_Service {
 			}
 		}
 
+		if ( 'above_price' === ( $filters['cogs_value'] ?? '' ) ) {
+			$args['dkbce_cogs_above_price'] = true;
+		}
+		if ( 'above_regular_price' === ( $filters['cogs_value'] ?? '' ) ) {
+			$args['dkbce_cogs_above_regular_price'] = true;
+		}
 		$cogs_clause = $this->cogs_value_clause( $filters['cogs_value'] ?? '' );
 		if ( $cogs_clause ) {
 			$meta_query[] = $cogs_clause;
@@ -652,6 +667,12 @@ class DKBCE_COGS_Service {
 					$args['stock_status'] = array_values( (array) $stock );
 				}
 			}
+			if ( ! empty( $prior['dkbce_cogs_above_price'] ) ) {
+				$args['dkbce_cogs_above_price'] = true;
+			}
+			if ( ! empty( $prior['dkbce_cogs_above_regular_price'] ) ) {
+				$args['dkbce_cogs_above_regular_price'] = true;
+			}
 			$groups = array_merge( $groups, $prior['dkbce_category_groups'] );
 			foreach ( array( 'tax_query', 'dkbce_meta_query' ) as $key ) {
 				$args[ $key ] = array_merge( $args[ $key ] ?? array(), $prior[ $key ] ?? array() );
@@ -663,7 +684,7 @@ class DKBCE_COGS_Service {
 	}
 
 	/**
-	 * Apply the snapshot cursor and match product or parent categories.
+	 * Apply snapshot, cost comparison, and product or parent category conditions.
 	 *
 	 * @param string   $where Existing query conditions.
 	 * @param WP_Query $query Product query.
@@ -684,6 +705,26 @@ class DKBCE_COGS_Service {
 		}
 		if ( is_numeric( $after_id ) ) {
 			$where .= $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", absint( $after_id ) );
+		}
+
+		foreach ( array(
+			'dkbce_cogs_above_price'         => '_price',
+			'dkbce_cogs_above_regular_price' => '_regular_price',
+		) as $query_key => $price_key ) {
+			if ( ! $query->get( $query_key ) ) {
+				continue;
+			}
+			// Compare each record's own stored cost with its selected price field.
+			$where .= $wpdb->prepare(
+				" AND EXISTS (SELECT 1 FROM {$wpdb->postmeta} AS dkbce_cost
+				INNER JOIN {$wpdb->postmeta} AS dkbce_price ON dkbce_price.post_id = dkbce_cost.post_id
+				WHERE dkbce_cost.post_id = {$wpdb->posts}.ID
+				AND dkbce_cost.meta_key = %s AND dkbce_price.meta_key = %s
+				AND dkbce_cost.meta_value <> '' AND dkbce_price.meta_value <> ''
+				AND CAST(dkbce_cost.meta_value AS DECIMAL(20,6)) > CAST(dkbce_price.meta_value AS DECIMAL(20,6)))",
+				'_cogs_total_value',
+				$price_key
+			);
 		}
 
 		$groups = $query->get( 'dkbce_category_groups' );
@@ -733,7 +774,7 @@ class DKBCE_COGS_Service {
 	 * @return array|null
 	 */
 	private function cogs_value_clause( $value ) {
-		if ( '' === $value ) {
+		if ( in_array( $value, array( '', 'above_price', 'above_regular_price' ), true ) ) {
 			return null;
 		}
 		$key     = '_cogs_total_value';
