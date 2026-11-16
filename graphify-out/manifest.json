@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1794862082.4080918,
-    "seen": 1794862220.484513,
-    "ast_hash": "22721a952b4736c08a7e9a684167d7d0",
+    "mtime": 1794863375.7657292,
+    "seen": 1794863420.4262345,
+    "ast_hash": "e6c5d0dff0913fcb5ae9bd15035882f4",
     "semantic_hash": ""
   },
   "admin/class-dkbce-preset-list-table.php": {
@@ -384,15 +384,15 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-health-notice.php": {
-    "mtime": 1794516479.0677843,
-    "seen": 1794516493.8806694,
-    "ast_hash": "bf5ba096fa4ea34471eef54d77c56487",
+    "mtime": 1794863319.2731838,
+    "seen": 1794863420.4261398,
+    "ast_hash": "4298197d88e7c0db1c50147c375b9c1c",
     "semantic_hash": ""
   },
   "src/cogs-health-notice.js": {
-    "mtime": 1794516419.7270732,
-    "seen": 1794516493.8807209,
-    "ast_hash": "8e1576108c65bc19278be81b2f1f75c2",
+    "mtime": 1794863237.5072896,
+    "seen": 1794863420.4261703,
+    "ast_hash": "628ba8330c26415236bdb4fab7e7223e",
     "semantic_hash": ""
   },
   "tests/e2e/v1.3.1.spec.cjs": {

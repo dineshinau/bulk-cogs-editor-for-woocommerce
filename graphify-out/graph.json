@@ -30,19 +30,6 @@
       "source_location": "L13"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
-      "label": "DKBCE_Admin_Hooks",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "dkbce_admin_hooks",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L13"
-    },
-    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
       "label": "DKBCE_COGS_Service",
       "_callable": true,
@@ -66,32 +53,6 @@
       "file_type": "code",
       "norm_label": "dkbce_health_notice",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller",
-      "label": "DKBCE_History_Controller",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "dkbce_history_controller",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
-      "label": "DKBCE_Retention_Processor",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "dkbce_retention_processor",
-      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L13"
     },
     {
@@ -134,6 +95,32 @@
       "source_location": "L13"
     },
     {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store",
+      "label": "DKBCE_Preset_Store",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": "dkbce_preset_store",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks",
+      "label": "DKBCE_Admin_Hooks",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_admin_hooks",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor",
       "label": "DKBCE_Bulk_Processor",
       "_callable": true,
@@ -144,6 +131,19 @@
       "file_type": "code",
       "norm_label": "dkbce_bulk_processor",
       "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L13"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor",
+      "label": "DKBCE_Retention_Processor",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "dkbce_retention_processor",
+      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L13"
     },
     {
@@ -160,6 +160,19 @@
       "source_location": "L13"
     },
     {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller",
+      "label": "DKBCE_History_Controller",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": "dkbce_history_controller",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L13"
+    },
+    {
       "id": "admin_class_dkbce_history_store_dkbce_history_store",
       "label": "DKBCE_History_Store",
       "_callable": true,
@@ -170,19 +183,6 @@
       "file_type": "code",
       "norm_label": "dkbce_history_store",
       "source_file": "admin/class-dkbce-history-store.php",
-      "source_location": "L13"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store",
-      "label": "DKBCE_Preset_Store",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": "dkbce_preset_store",
-      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L13"
     },
     {
@@ -599,30 +599,6 @@
       "source_location": "L2422"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L24"
-    },
-    {
-      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
-      "label": ".get_instance()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".get_instance()",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L67"
-    },
-    {
       "id": "admin_class_dkbce_cogs_service_dkbce_cogs_service_calculate",
       "label": ".calculate()",
       "_callable": true,
@@ -860,7 +836,19 @@
       "file_type": "code",
       "norm_label": ".__construct()",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L21"
+      "source_location": "L22"
+    },
+    {
+      "id": "admin_class_dkbce_health_notice_dkbce_health_notice_current_scan_id",
+      "label": ".current_scan_id()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".current_scan_id()",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L188"
     },
     {
       "id": "admin_class_dkbce_health_notice_dkbce_health_notice_dismiss",
@@ -872,7 +860,7 @@
       "file_type": "code",
       "norm_label": ".dismiss()",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L153"
+      "source_location": "L268"
     },
     {
       "id": "admin_class_dkbce_health_notice_dkbce_health_notice_display",
@@ -884,7 +872,31 @@
       "file_type": "code",
       "norm_label": ".display()",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L41"
+      "source_location": "L43"
+    },
+    {
+      "id": "admin_class_dkbce_health_notice_dkbce_health_notice_notice_message",
+      "label": ".notice_message()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".notice_message()",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L96"
+    },
+    {
+      "id": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "label": ".refresh()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "DKBCE_COGS_Service",
+      "file_type": "code",
+      "norm_label": ".refresh()",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L141"
     },
     {
       "id": "admin_class_dkbce_health_notice_dkbce_health_notice_scan",
@@ -896,7 +908,7 @@
       "file_type": "code",
       "norm_label": ".scan()",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L102"
+      "source_location": "L208"
     },
     {
       "id": "admin_class_dkbce_health_notice_dkbce_health_notice_scope",
@@ -908,259 +920,19 @@
       "file_type": "code",
       "norm_label": ".scope()",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L32"
+      "source_location": "L34"
     },
     {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_force_clear",
-      "label": ".ajax_force_clear()",
+      "id": "admin_class_dkbce_health_notice_dkbce_health_notice_start_scan",
+      "label": ".start_scan()",
       "_callable": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "DKBCE_COGS_Service",
       "file_type": "code",
-      "norm_label": ".ajax_force_clear()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L545"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history",
-      "label": ".ajax_history()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".ajax_history()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L256"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history_detail",
-      "label": ".ajax_history_detail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".ajax_history_detail()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L304"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_rollback",
-      "label": ".ajax_rollback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".ajax_rollback()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L421"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_settings",
-      "label": ".ajax_settings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".ajax_settings()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L588"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_authorize",
-      "label": ".authorize()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".authorize()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L142"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L17"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_filter_summary",
-      "label": ".filter_summary()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".filter_summary()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L208"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_input",
-      "label": ".input()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".input()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L158"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_labels",
-      "label": ".labels()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".labels()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L28"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_operation",
-      "label": ".operation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".operation()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L168"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_start_rollback",
-      "label": ".start_rollback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".start_rollback()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L452"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_summary",
-      "label": ".summary()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".summary()",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L184"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
-      "label": ".cleanup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".cleanup()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L57"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
-      "label": ".cleanup_claim_option()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".cleanup_claim_option()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L169"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
-      "label": ".cleanup_operation_option()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".cleanup_operation_option()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L111"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
-      "label": ".__construct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".__construct()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L32"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
-      "label": ".enqueue_operation_cleanup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".enqueue_operation_cleanup()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L226"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
-      "label": ".is_expired_operation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".is_expired_operation()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L191"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_retention_seconds",
-      "label": ".retention_seconds()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".retention_seconds()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L25"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
-      "label": ".schedule()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": ".schedule()",
-      "source_file": "admin/class-dkbce-retention-processor.php",
-      "source_location": "L42"
+      "norm_label": ".start_scan()",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L117"
     },
     {
       "id": "scripts_class_dkbce_range_query_profiler_dkbce_range_query_profiler_capture",
@@ -1367,6 +1139,18 @@
       "source_location": "L850"
     },
     {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_filter_presets",
+      "label": ".ajax_filter_presets()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".ajax_filter_presets()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L757"
+    },
+    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_get_products",
       "label": ".ajax_get_products()",
       "_callable": true,
@@ -1535,18 +1319,6 @@
       "source_location": "L1249"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
-      "label": ".enqueue_assets()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".enqueue_assets()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L111"
-    },
-    {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_explicit_preview_ids",
       "label": ".explicit_preview_ids()",
       "_callable": true,
@@ -1569,18 +1341,6 @@
       "norm_label": ".extend_product_query()",
       "source_file": "admin/class-dkbce-admin-functions.php",
       "source_location": "L2377"
-    },
-    {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
-      "label": ".get_preferences()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "DKBCE_Admin_Functions",
-      "file_type": "code",
-      "norm_label": ".get_preferences()",
-      "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L710"
     },
     {
       "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_validated_request",
@@ -1785,6 +1545,66 @@
       "norm_label": ".write_all()",
       "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L159"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_all",
+      "label": ".all()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".all()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L20"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_delete",
+      "label": ".delete()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".delete()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L86"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_save",
+      "label": ".save()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": ".save()",
+      "source_file": "admin/class-dkbce-preset-store.php",
+      "source_location": "L44"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L24"
+    },
+    {
+      "id": "admin_class_dkbce_admin_hooks_dkbce_admin_hooks_get_instance",
+      "label": ".get_instance()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".get_instance()",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L67"
     },
     {
       "id": "admin_class_dkbce_bulk_processor_dkbce_bulk_processor_acquire_operation_lock",
@@ -2051,6 +1871,102 @@
       "source_location": "L475"
     },
     {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup",
+      "label": ".cleanup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L57"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_claim_option",
+      "label": ".cleanup_claim_option()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".cleanup_claim_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L169"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_cleanup_operation_option",
+      "label": ".cleanup_operation_option()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".cleanup_operation_option()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L111"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L32"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_enqueue_operation_cleanup",
+      "label": ".enqueue_operation_cleanup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".enqueue_operation_cleanup()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L226"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_is_expired_operation",
+      "label": ".is_expired_operation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".is_expired_operation()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L191"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_retention_seconds",
+      "label": ".retention_seconds()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".retention_seconds()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L25"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor_dkbce_retention_processor_schedule",
+      "label": ".schedule()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": ".schedule()",
+      "source_file": "admin/class-dkbce-retention-processor.php",
+      "source_location": "L42"
+    },
+    {
       "id": "bulk_cogs_editor_for_woocommerce_dkbce_declare_hpos_compatibility",
       "label": "dkbce_declare_hpos_compatibility()",
       "_callable": true,
@@ -2099,16 +2015,28 @@
       "source_location": "L124"
     },
     {
-      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_ajax_filter_presets",
-      "label": ".ajax_filter_presets()",
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_enqueue_assets",
+      "label": ".enqueue_assets()",
       "_callable": true,
       "_origin": "ast",
       "community": 15,
       "community_name": "DKBCE_History_Store",
       "file_type": "code",
-      "norm_label": ".ajax_filter_presets()",
+      "norm_label": ".enqueue_assets()",
       "source_file": "admin/class-dkbce-admin-functions.php",
-      "source_location": "L757"
+      "source_location": "L111"
+    },
+    {
+      "id": "admin_class_dkbce_admin_functions_dkbce_admin_functions_get_preferences",
+      "label": ".get_preferences()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".get_preferences()",
+      "source_file": "admin/class-dkbce-admin-functions.php",
+      "source_location": "L710"
     },
     {
       "id": "admin_class_dkbce_database_installer_dkbce_database_installer_maybe_upgrade",
@@ -2121,6 +2049,162 @@
       "norm_label": ".maybe_upgrade()",
       "source_file": "admin/class-dkbce-database-installer.php",
       "source_location": "L20"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_force_clear",
+      "label": ".ajax_force_clear()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".ajax_force_clear()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L545"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history",
+      "label": ".ajax_history()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".ajax_history()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L256"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_history_detail",
+      "label": ".ajax_history_detail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".ajax_history_detail()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L304"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_rollback",
+      "label": ".ajax_rollback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".ajax_rollback()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L421"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_ajax_settings",
+      "label": ".ajax_settings()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".ajax_settings()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L588"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_authorize",
+      "label": ".authorize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".authorize()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L142"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_construct",
+      "label": ".__construct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".__construct()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L17"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_filter_summary",
+      "label": ".filter_summary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".filter_summary()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L208"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_input",
+      "label": ".input()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".input()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L158"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_labels",
+      "label": ".labels()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".labels()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L28"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_operation",
+      "label": ".operation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".operation()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L168"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_start_rollback",
+      "label": ".start_rollback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".start_rollback()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L452"
+    },
+    {
+      "id": "admin_class_dkbce_history_controller_dkbce_history_controller_summary",
+      "label": ".summary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": ".summary()",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L184"
     },
     {
       "id": "admin_class_dkbce_history_store_dkbce_history_store_backfill",
@@ -2301,42 +2385,6 @@
       "norm_label": ".users()",
       "source_file": "admin/class-dkbce-history-store.php",
       "source_location": "L61"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_all",
-      "label": ".all()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".all()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L20"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_delete",
-      "label": ".delete()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".delete()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L86"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store_dkbce_preset_store_save",
-      "label": ".save()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": ".save()",
-      "source_file": "admin/class-dkbce-preset-store.php",
-      "source_location": "L44"
     },
     {
       "id": "src_bulk_cogs_editor_actionlabel",
@@ -4924,17 +4972,6 @@
       "source_location": "L22"
     },
     {
-      "id": "admin_class_dkbce_admin_hooks",
-      "label": "class-dkbce-admin-hooks.php",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "class-dkbce-admin-hooks.php",
-      "source_file": "admin/class-dkbce-admin-hooks.php",
-      "source_location": "L1"
-    },
-    {
       "id": "admin_class_dkbce_cogs_service",
       "label": "class-dkbce-cogs-service.php",
       "_origin": "ast",
@@ -4954,28 +4991,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-health-notice.php",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_history_controller",
-      "label": "class-dkbce-history-controller.php",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "class-dkbce-history-controller.php",
-      "source_file": "admin/class-dkbce-history-controller.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_retention_processor",
-      "label": "class-dkbce-retention-processor.php",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "DKBCE_COGS_Service",
-      "file_type": "code",
-      "norm_label": "class-dkbce-retention-processor.php",
-      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L1"
     },
     {
@@ -5009,6 +5024,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-download-processor.php",
       "source_file": "admin/class-dkbce-download-processor.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_preset_store",
+      "label": "class-dkbce-preset-store.php",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "DKBCE_Admin_Functions",
+      "file_type": "code",
+      "norm_label": "class-dkbce-preset-store.php",
+      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L1"
     },
     {
@@ -5144,6 +5170,17 @@
       "source_location": "L490"
     },
     {
+      "id": "admin_class_dkbce_admin_hooks",
+      "label": "class-dkbce-admin-hooks.php",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "class-dkbce-admin-hooks.php",
+      "source_file": "admin/class-dkbce-admin-hooks.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_bulk_processor",
       "label": "class-dkbce-bulk-processor.php",
       "_origin": "ast",
@@ -5152,6 +5189,17 @@
       "file_type": "code",
       "norm_label": "class-dkbce-bulk-processor.php",
       "source_file": "admin/class-dkbce-bulk-processor.php",
+      "source_location": "L1"
+    },
+    {
+      "id": "admin_class_dkbce_retention_processor",
+      "label": "class-dkbce-retention-processor.php",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "DKBCE_Bulk_Processor",
+      "file_type": "code",
+      "norm_label": "class-dkbce-retention-processor.php",
+      "source_file": "admin/class-dkbce-retention-processor.php",
       "source_location": "L1"
     },
     {
@@ -5287,6 +5335,17 @@
       "source_location": "L1"
     },
     {
+      "id": "admin_class_dkbce_history_controller",
+      "label": "class-dkbce-history-controller.php",
+      "_origin": "ast",
+      "community": 15,
+      "community_name": "DKBCE_History_Store",
+      "file_type": "code",
+      "norm_label": "class-dkbce-history-controller.php",
+      "source_file": "admin/class-dkbce-history-controller.php",
+      "source_location": "L1"
+    },
+    {
       "id": "admin_class_dkbce_history_store",
       "label": "class-dkbce-history-store.php",
       "_origin": "ast",
@@ -5295,17 +5354,6 @@
       "file_type": "code",
       "norm_label": "class-dkbce-history-store.php",
       "source_file": "admin/class-dkbce-history-store.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "admin_class_dkbce_preset_store",
-      "label": "class-dkbce-preset-store.php",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "DKBCE_History_Store",
-      "file_type": "code",
-      "norm_label": "class-dkbce-preset-store.php",
-      "source_file": "admin/class-dkbce-preset-store.php",
       "source_location": "L1"
     },
     {
@@ -8204,6 +8252,78 @@
       "context": "call",
       "source_file": "admin/class-dkbce-download-processor.php",
       "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_display",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_start_scan",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_display",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_notice_message",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_start_scan",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_current_scan_id",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_notice_message",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_scan",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_current_scan_id",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -17962,24 +18082,46 @@
     },
     {
       "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_start_scan",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_current_scan_id",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
       "target": "admin_class_dkbce_health_notice_dkbce_health_notice_scan",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L102",
-      "weight": 1.0
-    },
-    {
-      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
-      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_dismiss",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L153",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -17990,7 +18132,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L21",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_dismiss",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -18001,7 +18154,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L32",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -18012,7 +18165,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L41",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_notice_message",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -19182,6 +19346,17 @@
       "weight": 1.0
     },
     {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_start_scan",
+      "target": "admin_class_dkbce_health_notice_dkbce_health_notice_scan",
+      "relation": "references_constant",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
       "source": "src_bulk_cogs_editor",
       "target": "src_bulk_cogs_editor_updateoperationcontrols",
       "relation": "indirect_call",
@@ -19934,7 +20109,19 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L43",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_class_dkbce_health_notice_dkbce_health_notice_refresh",
+      "target": "admin_class_dkbce_cogs_service_dkbce_cogs_service",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "admin/class-dkbce-health-notice.php",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -19946,7 +20133,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "admin/class-dkbce-health-notice.php",
-      "source_location": "L103",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -20587,5 +20774,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "20273b7e7fd00867b4e6e1bc7e2244942e9065fb"
+  "built_at_commit": "2c67d37e38fb2eeed33d83efd22f581cd9049b05"
 }
