@@ -5,7 +5,7 @@ Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -367,6 +367,10 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 Version 1.3.0 redesigns the editor workflow, improves selection, progress, import/export and rollback guidance, and adds account-based presets with a dedicated management tab. New presets use a custom database table; existing browser and user-meta presets are not migrated.
 
 == Changelog ==
+
+= 1.3.2 (2026-11-18) =
+
+* Fixed: Keep the no-products message visible below Find products and highlight it in red when no products match the selected filters.
 
 = 1.3.1 (2026-11-18) =
 

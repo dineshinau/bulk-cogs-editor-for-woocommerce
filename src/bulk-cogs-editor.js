@@ -1497,6 +1497,7 @@
 
 	function updateOperationControls() {
 		renderFilterChips();
+		$( '#dkbce-product-count' ).classList.toggle( 'is-empty-result', state.hasQuery && state.count === 0 && ! state.busy );
 		const matchHelp = $( '#dkbce-match-help' );
 		if ( matchHelp && ! csvMode() ) {
 			matchHelp.textContent = hasValidActionValue() ? DKBCE.i18n.matchPreviewHelp : DKBCE.i18n.matchActionHelp;
@@ -2260,7 +2261,6 @@
 				}
 				if ( 0 === data.count ) {
 					invalidatePreview( false, true );
-					if ( ! csvMode() ) { $( '#dkbce-product-count' ).textContent = ''; }
 				}
 			} )
 			.catch( ( error ) => setNotice( error.message, 'error', $( '.dkbce-filters-section' ) ) )
