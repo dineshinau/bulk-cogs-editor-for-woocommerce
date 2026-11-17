@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1794869218.3282614,
-    "seen": 1794869256.109399,
-    "ast_hash": "e64a20d6b58801d64f1755299080c965",
+    "mtime": 1794894570.034149,
+    "seen": 1794894592.9471695,
+    "ast_hash": "5e4b59c3eae5205cf46b9849cfee12b2",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -384,9 +384,9 @@
     "semantic_hash": ""
   },
   "admin/class-dkbce-health-notice.php": {
-    "mtime": 1794870064.8464773,
-    "seen": 1794870088.5134337,
-    "ast_hash": "78d53d9fb716f30447072c2e2b3a6817",
+    "mtime": 1794894523.8501468,
+    "seen": 1794894592.947203,
+    "ast_hash": "9290d50d6e5418aad146b5d91a333d7d",
     "semantic_hash": ""
   },
   "src/cogs-health-notice.js": {
