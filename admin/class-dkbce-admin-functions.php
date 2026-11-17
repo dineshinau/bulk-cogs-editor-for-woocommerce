@@ -1079,6 +1079,7 @@ class DKBCE_Admin_Functions {
 			$result['progress_ratio'] = min( 1, (float) $result['processed'] / $result['total_rows'] );
 		}
 		if ( 'ready' === $job['status'] ) {
+			$this->lock_preview( $id );
 			$result['progress_ratio'] = 1;
 			$result['total_rows']     = (int) ( $job['counts']['total'] ?? $job['processed'] );
 			if ( get_option( 'dkbce_preview_claim_' . $id ) ) {
@@ -1667,6 +1668,7 @@ class DKBCE_Admin_Functions {
 				)
 			);
 		}
+		$this->lock_preview( $token );
 		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );
@@ -1740,6 +1742,33 @@ class DKBCE_Admin_Functions {
 	}
 
 	/**
+	 * Serialize preview edits and Apply until the current request ends.
+	 *
+	 * @param string $token Preview UUID.
+	 * @return void
+	 */
+	private function lock_preview( $token ) {
+		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) ) {
+			return;
+		}
+		global $wpdb;
+		// Connection-scoped locks are released even if the request terminates unexpectedly.
+		$key = 'dkbce_preview_' . md5( DB_NAME . $wpdb->prefix . $token );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Atomic, connection-scoped exclusion; no option cache is involved.
+		$locked = $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $key ) );
+		if ( '1' !== (string) $locked ) {
+			wp_send_json_error( array( 'message' => __( 'This preview is being edited or applied in another request. Try again when it finishes.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
+		}
+		// JSON responses terminate through wp_die(), so release at shutdown rather than in finally.
+		register_shutdown_function(
+			static function () use ( $wpdb, $key ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Release only this connection's advisory lock.
+				$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $key ) );
+			}
+		);
+	}
+
+	/**
 	 * Save a product-specific cost in an owned, unconsumed bulk preview.
 	 *
 	 * @return void
@@ -1749,9 +1778,10 @@ class DKBCE_Admin_Functions {
 			$this->send_nonce_error();
 		}
 		$this->authorize_ajax();
-		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
-		$id      = isset( $_POST['product_id'] ) && is_string( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
-		$reset   = isset( $_POST['reset'] ) && '1' === $_POST['reset'];
+		$token = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$id    = isset( $_POST['product_id'] ) && is_string( $_POST['product_id'] ) ? absint( wp_unslash( $_POST['product_id'] ) ) : 0;
+		$reset = isset( $_POST['reset'] ) && '1' === $_POST['reset'];
+		$this->lock_preview( $token );
 		$preview = preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) ? get_transient( 'dkbce_preview_' . $token ) : false;
 		if ( ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] || get_option( 'dkbce_preview_claim_' . $token ) ) {
 			wp_send_json_error( array( 'message' => __( 'This preview has expired or has already been used. Refresh the preview.', 'bulk-cogs-editor-for-woocommerce' ) ), 409 );
@@ -1802,7 +1832,7 @@ class DKBCE_Admin_Functions {
 		// Keep the import's source ID as its preview token so Apply claims the same
 		// key checked by import status and the staging lifecycle.
 		$new_token = $is_import ? $source_id : wp_generate_uuid4();
-		if ( ! set_transient( 'dkbce_preview_' . $new_token, $preview, 10 * MINUTE_IN_SECONDS ) ) {
+		if ( ! set_transient( 'dkbce_preview_' . $new_token, $preview, 10 * MINUTE_IN_SECONDS ) && get_transient( 'dkbce_preview_' . $new_token ) !== $preview ) {
 			if ( $is_import ) {
 				delete_transient( 'dkbce_preview_' . $token );
 			}
@@ -2001,7 +2031,8 @@ class DKBCE_Admin_Functions {
 			wp_send_json_error( array( 'message' => __( 'Background processing is unavailable. No products were changed.', 'bulk-cogs-editor-for-woocommerce' ) ), 503 );
 		}
 
-		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$token = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$this->lock_preview( $token );
 		$preview = get_transient( 'dkbce_preview_' . $token );
 
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
@@ -2322,7 +2353,8 @@ class DKBCE_Admin_Functions {
 			$this->send_nonce_error();
 		}
 		$this->authorize_ajax();
-		$token   = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$token = isset( $_POST['preview_id'] ) && is_string( $_POST['preview_id'] ) ? sanitize_text_field( wp_unslash( $_POST['preview_id'] ) ) : '';
+		$this->lock_preview( $token );
 		$preview = get_transient( 'dkbce_preview_' . $token );
 		if ( ! preg_match( '/\A[0-9a-f-]{36}\z/i', $token ) || ! is_array( $preview ) || get_current_user_id() !== (int) $preview['user_id'] ) {
 			wp_send_json_error( array( 'message' => __( 'Your preview has expired. Please update a filter or action in Step 1 or Step 2 to refresh the preview before applying your changes', 'bulk-cogs-editor-for-woocommerce' ) ), 400 );

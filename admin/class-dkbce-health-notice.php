@@ -119,7 +119,11 @@ class DKBCE_Health_Notice {
 			return new WP_Error( 'scan_unavailable', __( 'Background processing is unavailable. Try again later.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 		$scan_id = wp_generate_uuid4();
-		if ( ! set_transient( self::SCAN, $scan_id, HOUR_IN_SECONDS ) ) {
+		// Keep the identity until the next scan replaces it: queue delays and
+		// large catalogs can outlast the one-hour lifetime of completed counts.
+		// Remove any timeout left by an older version before storing the identity.
+		delete_transient( self::SCAN );
+		if ( ! set_transient( self::SCAN, $scan_id ) ) {
 			return new WP_Error( 'scan_unavailable', __( 'The refresh could not be started. Try again.', 'bulk-cogs-editor-for-woocommerce' ) );
 		}
 		try {

@@ -208,9 +208,11 @@ Use Bulk edit for one WooCommerce cost of goods action across a selected group, 
 
 Yes. Choose a cost action in Step 2, then use the pencil beside a product's New COGS in the bulk review table. Enter a non-negative cost using your store's decimal precision, then choose Save. Cancel leaves the saved preview unchanged; Reset to Step 2 removes that product's override. Enter 0 to clear COGS; WooCommerce stores this as Empty.
 
-You can edit up to 500 individual costs per preview. Saved edits are marked Edited, stay across pages, override Step 2 only for those products, and are counted for selected products in the confirmation summary. Saving an edit does not update the product; you must still select it and confirm the update. Save or cancel an open edit before continuing. CSV previews and results browsed without a Step 2 action do not offer inline editing.
+In bulk previews, you can edit up to 500 individual costs. Saved edits are marked Edited, stay across pages, override Step 2 only for those products, and are counted for selected products in the confirmation summary. Saving an edit does not update the product; you must still select it and confirm the update. Save or cancel an open edit before continuing. CSV export previews and results browsed without a Step 2 action do not offer inline editing.
 
 Changing filters or the bulk action clears inline edits. The automatic refresh after completion preserves them when the action and filters are unchanged, so New COGS continues to show the edited value.
+
+Import previews also offer a pencil beside New COGS for valid products. Save replaces that product's staged import value; Cancel leaves its saved staged value unchanged. Saved values remain across preview pages and are used when you select products and confirm Apply. Products are not updated when you save an edit. The 500-edit limit and Reset to Step 2 control apply only to bulk previews.
 
 = Can I import WooCommerce cost of goods from CSV or Excel? =
 
