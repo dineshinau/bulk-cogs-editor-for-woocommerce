@@ -132,7 +132,7 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 = Connect with the developer =
 
-* [Website](https://wpbydinesh.wordpress.com/)
+* [Website: WP By Dinesh](https://wpbydinesh.wordpress.com/)
 * [LinkedIn](https://www.linkedin.com/in/dineshinau/)
 * [GitHub](https://github.com/dineshinau/)
 * [X](https://x.com/wpbydinesh)
