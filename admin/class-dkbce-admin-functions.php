@@ -153,7 +153,7 @@ class DKBCE_Admin_Functions {
 				'review'          => array(
 					/* translators: 1: successfully updated product count, 2: elapsed time. */
 					'summary' => __( 'Updated %1$s products in %2$s.', 'bulk-cogs-editor-for-woocommerce' ),
-					'message' => __( 'Finding Bulk COGS Editor helpful? Please consider leaving a 5-star review on WordPress.org.', 'bulk-cogs-editor-for-woocommerce' ),
+					'message' => __( 'Finding Bulk COGS Editor helpful? Please consider leaving a review on WordPress.org.', 'bulk-cogs-editor-for-woocommerce' ),
 					'link'    => __( 'Leave a 5-star review', 'bulk-cogs-editor-for-woocommerce' ),
 					'dismiss' => __( 'Dismiss review notice', 'bulk-cogs-editor-for-woocommerce' ),
 				),

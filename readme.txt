@@ -368,7 +368,7 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.1 (2026-11-17) =
+= 1.3.1 (2026-11-18) =
 
 * Fixed: Show a readable server-timeout message instead of a JSON parsing error when a request returns an HTML error page.
 * Fixed: Keep Find products disabled when native WooCommerce COGS is unavailable or disabled.
