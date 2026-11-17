@@ -63,6 +63,8 @@ users with WooCommerce management access).
 ### Find the products you need
 
 - Combine searches by product name, SKU, GTIN, ISBN, EAN, or UPC with category, product type, stock status, brand, price, and current COGS filters.
+- Filter COGS by **Empty (not set)**, **Zero (0)**, **Greater than zero**, or **Empty or zero**. WooCommerce normalizes saved zero costs to Empty.
+- Find COGS **Greater than selling price**, including sales, or **Greater than regular price**, before discounts. Products without the comparison price are excluded.
 - Search inside multi-select filter menus, select individual options or all options, and see selected-option counts.
 - Include child categories when choosing a parent category. Variations match categories through their parent product.
 - Keep primary filters close at hand and expand **More filters** for additional criteria.
@@ -88,6 +90,7 @@ Relative adjustments skip products without a saved cost. Use **Set exact cost** 
 
 ### Preview and choose your update scope
 
+- Browse matching products before choosing a cost action. **Selling price** and **Regular price** are visible by default and can be hidden through **Manage columns**.
 - Compare current COGS, new COGS, and the amount and percentage of each change before applying. Increases are green and decreases red, with directional arrows.
 - Keep your preview and selection when visiting another tab and returning to the same editor.
 - Identify products through images, names, SKUs, and product edit links.
@@ -101,9 +104,17 @@ Individual selections support up to **500 products**. All-matching and range sel
 
 Previous rows can remain visible while results refresh or another page loads. Wait for the refresh to finish, or use **Refresh preview** when prompted. Review the fresh results before confirming.
 
+### Edit individual New COGS values
+
+After choosing a Step 2 action, use the pencil beside **New COGS** to enter a replacement cost for one product or variation. Choose **Save** to keep the edit, **Cancel** to discard unsaved input, or **Reset to Step 2** to remove an existing override. Use non-negative amounts with store decimal precision; entering `0` clears COGS and displays as **Empty**.
+
+Up to **500 individual costs** can be edited per bulk preview. Saved edits are marked **Edited**, remain across pages, and override Step 2 only for those products. The confirmation summary counts selected products with individual costs. Save or cancel an open edit before reviewing the update. Saving an edit changes only the preview; select the product and confirm the update to save its cost.
+
+Changing filters or the bulk action clears overrides. The automatic completion refresh retains them when the action and filters are unchanged, including zero costs. Inline editing is unavailable in CSV previews or while browsing without a Step 2 action.
+
 ### Guidance and responsive controls
 
-The **Bulk edit** workflow is arranged in three numbered stages: **Select products**, **Set cost update**, and **Review & confirm**. Contextual Help follows the selected **Bulk edit**, **Import**, or **Export** task. File requirements, cost examples, nearby validation messages, and recovery controls guide each workflow. Documentation and video links remain available.
+The **Bulk edit** workflow uses three stacked, full-width stages: **Select products**, **Set cost update**, and **Review & confirm**. Price and COGS filters align at the top of their fields, COGS help describes only the selected option, and saved-filter loading and naming controls share a row where space permits. Contextual Help follows the selected **Bulk edit**, **Import**, or **Export** task. File requirements, cost examples, nearby validation messages, and recovery controls guide each workflow. Documentation and video links remain available.
 
 The interface uses colored workflow icons, clear step numbers, larger mobile touch controls, sticky table headers, and fixed selection and product columns on small screens. The action summary accounts for device safe areas.
 
@@ -114,7 +125,7 @@ Costs are written through WooCommerce CRUD APIs for simple, variable, grouped, e
 ## Bulk editing workflow
 
 1. In **Select products**, set filters and choose **Find products**. Review the matching products and their current costs.
-2. In **Set cost update**, choose an exact cost, a percentage or fixed adjustment, or clear the cost. The preview shows proposed costs and changes; select the products to update.
+2. In **Set cost update**, choose an exact cost, a percentage or fixed adjustment, or clear the cost. The preview shows proposed costs and changes; optionally edit individual **New COGS** values with the pencil controls, then select the products to update.
 3. In **Review & confirm**, add an operation note if useful, review the selected scope and rollback choice, then confirm. Follow background progress and inspect the completed results.
 
 Previewing does not change product costs. Updating begins only after confirmation.

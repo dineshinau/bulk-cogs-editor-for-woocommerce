@@ -24,6 +24,7 @@
 	const progressPollInterval = ( total ) => Number( total ) > 0 && Number( total ) < 1000 ? 10000 : 25000;
 	let operationPollInterval = progressPollInterval();
 	const ux = DKBCE.ux;
+	let tabNavigationReady = false;
 	const state = {
 		mode: 'bulk',
 		editorMode: 'bulk',
@@ -33,6 +34,7 @@
 		count: 0,
 		hasQuery: false,
 		previewId: '',
+		browsing: false,
 		previewNeedsRefresh: false,
 		rows: [],
 		pageData: null,
@@ -50,6 +52,8 @@
 		selectionFiltersChanged: false,
 		selectionRange: null,
 		busy: false,
+		inlineEditing: false,
+		overrideIds: new Set(),
 		previewTimer: null,
 		operationId: DKBCE.operationId || '',
 		operationStatus: '',
@@ -370,7 +374,7 @@
 			data.rows.forEach( ( operation ) => {
 				const row = document.createElement( 'tr' );
 				appendCell( row, historyAction( operation ) );
-				appendCell( row, new Date( operation.created_at * 1000 ).toLocaleString() );
+				appendCell( row, operation.created_at_formatted || '—' );
 				appendCell( row, Number( operation.total ).toLocaleString() );
 				const status = document.createElement( 'td' ); status.appendChild( historyStatus( operation.status ) ); row.appendChild( status );
 				appendCell( row, operation.user ); appendCell( row, operation.note || '—' );
@@ -438,8 +442,8 @@
 			const details = historySection( historyText.details + ' · ' + data.state.operation_id, 2 );
 			details.appendChild( historyButton( historyText.back, backToHistory ) );
 			const metadata = historyElement( 'dl', '', 'dkbce-history-metadata' );
-			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at ? new Date( data.state.started_at * 1000 ).toLocaleString() : '—' ], [ historyText.completed, data.state.completed_at ? new Date( data.state.completed_at * 1000 ).toLocaleString() : '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
-			if ( data.rollback_expires_at ) { metadata.append( historyElement( 'dt', ux.expiry ), historyElement( 'dd', new Date( data.rollback_expires_at * 1000 ).toLocaleString() ) ); }
+			[ [ historyText.action, historyAction( data.state ) ], [ historyText.status, historyText.statuses[ data.state.status ] ], [ historyText.user, data.state.user ], [ historyText.updated, data.state.succeeded + ' / ' + data.state.total ], [ historyText.note, data.state.note || '—' ], [ historyText.started, data.state.started_at_formatted || '—' ], [ historyText.completed, data.state.completed_at_formatted || '—' ], [ historyText.duration, formatDuration( data.state.elapsed_seconds ) ], [ historyText.filters, Object.entries( data.state.filters ).filter( ( [ , value ] ) => value !== '' && value != null && ( ! Array.isArray( value ) || value.length ) ).map( ( [ key, value ] ) => key + ': ' + ( Array.isArray( value ) ? value.join( ', ' ) : typeof value === 'object' ? JSON.stringify( value ) : value ) ).join( ' · ' ) || historyText.none ] ].forEach( ( [ label, value ] ) => metadata.append( historyElement( 'dt', label ), historyElement( 'dd', value ) ) );
+			if ( data.rollback_expires_at ) { metadata.append( historyElement( 'dt', ux.expiry ), historyElement( 'dd', data.rollback_expires_at_formatted || '—' ) ); }
 			details.appendChild( metadata );
 			const products = historySection( historyState.review ? historyText.review : historyText.changes, 3 );
 			const { wrap, body } = historyTable( [ historyText.product, historyText.sku, historyState.review ? historyText.current : historyText.old, historyState.review ? historyText.restore : historyText.new, historyText.change ] );
@@ -569,7 +573,10 @@
 	const policyHelp = historyElement( 'p', historyText.policyHelp, 'description' );
 	policyHelp.id = 'dkbce-policy-help';
 	policyGroup.append( rollbackPolicy, policyHelp );
-	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, saveSettings );
+	const healthNoticeScope = historySelect( [ [ 'plugin', historyText.healthPlugin ], [ 'site', historyText.healthSite ] ], 'plugin' );
+	const healthNoticeField = historyField( historyText.healthNotice, healthNoticeScope );
+	healthNoticeField.appendChild( historyElement( 'p', historyText.healthHelp, 'description' ) );
+	settingsForm.append( rollbackModeGroup, retentionGroup, policyGroup, healthNoticeField, saveSettings );
 	settingsSection.appendChild( settingsForm ); settingsRoot.appendChild( settingsSection );
 	let clearReferences = null;
 	let forceClearReferences = null;
@@ -617,6 +624,7 @@
 			clearReferences = { dkbce_latest_operation: data.dkbce_latest_operation, dkbce_latest_import: data.dkbce_latest_import };
 			forceClearButton.disabled = ! ( data.dkbce_latest_operation || data.dkbce_latest_import );
 			savedRetentionDays = Number( data.days );
+			healthNoticeScope.value = data.health_notice_scope;
 			rollbackPolicy.value = data.rollback_policy;
 			defaultRollbackMode = data.rollback_mode;
 			Object.entries( rollbackModes ).forEach( ( [ mode, input ] ) => { input.checked = mode === defaultRollbackMode; } );
@@ -629,13 +637,17 @@
 		event.preventDefault(); if ( ! settingsForm.reportValidity() ) { return; }
 		if ( savedRetentionDays !== null && Number( retentionDays.value ) < savedRetentionDays && ! window.confirm( ux.retentionConfirm ) ) { return; }
 		saveSettings.disabled = true;
-		try { await request( 'settings', { save: '1', days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
+		try { await request( 'settings', { save: '1', health_notice_scope: healthNoticeScope.value, days: retentionDays.value, rollback_policy: rollbackPolicy.value, rollback_mode: rollbackModes.none.checked ? 'none' : 'keep' } ); defaultRollbackMode = rollbackModes.none.checked ? 'none' : 'keep'; savedRetentionDays = Number( retentionDays.value ); setNotice( historyText.saved, 'success', settingsSection ); }
 		catch ( error ) { setNotice( error.message, 'error', settingsSection ); }
 		finally { saveSettings.disabled = false; }
 	} );
 
 	function csvMode() {
 		return state.editorMode === 'csv';
+	}
+
+	function csvImportMode() {
+		return csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import';
 	}
 
 	function downloadCSV( contents, filename ) {
@@ -729,6 +741,7 @@
 		$( '.dkbce-apply-section' ).hidden = extra;
 		if ( [ 'presets', 'settings' ].includes( state.mode ) ) { historyProgress.appendChild( operationPanel ); }
 		updateOperationControls();
+		if ( tabNavigationReady ) { syncTabURL( state.mode ); }
 	}
 
 	async function previewCSV() {
@@ -1026,28 +1039,43 @@
 		}
 	}
 
+	function tabFromURL() {
+		const tab = new URL( window.location.href ).searchParams.get( 'tab' );
+		return [ ...document.querySelectorAll( '[data-dkbce-mode]' ) ].some( ( button ) => button.dataset.dkbceMode === tab ) ? tab : 'bulk';
+	}
+
+	function syncTabURL( mode, method = 'replaceState' ) {
+		const url = new URL( window.location.href );
+		url.searchParams.set( 'tab', mode );
+		if ( mode !== 'history' && new URLSearchParams( url.hash.slice( 1 ) ).has( 'dkbce-operation' ) ) { url.hash = ''; }
+		if ( url.href !== window.location.href ) { window.history[ method ]( window.history.state, '', url ); }
+	}
+
+	function switchTab( nextMode, method = 'pushState' ) {
+		if ( state.busy || state.loadingPage || presetBusy ) {
+			syncTabURL( state.mode );
+			return;
+		}
+		if ( editedPreset ) { closePresetEditor(); }
+		window.clearTimeout( historyState.pollTimer );
+		window.clearTimeout( state.previewTimer );
+		syncTabURL( nextMode, method );
+		state.mode = nextMode;
+		if ( [ 'bulk', 'csv' ].includes( nextMode ) && nextMode !== state.editorMode ) {
+			state.editorMode = nextMode;
+			resetSelection();
+			invalidatePreview( true, true );
+		}
+		updateCSVMode();
+		if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
+		if ( state.mode === 'settings' ) { loadSettings(); }
+		if ( state.mode === 'presets' ) { loadPresetTable(); }
+	}
+
 	document.querySelectorAll( '[data-dkbce-mode]' ).forEach( ( button ) => {
-		button.addEventListener( 'click', () => {
-			if ( state.busy || state.loadingPage ) {
-				return;
-			}
-			if ( presetBusy ) { return; }
-			if ( editedPreset ) { closePresetEditor(); }
-			const nextMode = button.dataset.dkbceMode;
-			window.clearTimeout( historyState.pollTimer );
-			window.clearTimeout( state.previewTimer );
-			state.mode = nextMode;
-			if ( [ 'bulk', 'csv' ].includes( nextMode ) && nextMode !== state.editorMode ) {
-				state.editorMode = nextMode;
-				resetSelection();
-				invalidatePreview( true, true );
-			}
-			updateCSVMode();
-			if ( state.mode === 'history' ) { loadHistory(); if ( historyState.operationId ) { loadHistoryDetails(); } }
-			if ( state.mode === 'settings' ) { loadSettings(); }
-			if ( state.mode === 'presets' ) { loadPresetTable(); }
-		} );
+		button.addEventListener( 'click', () => switchTab( button.dataset.dkbceMode ) );
 	} );
+	window.addEventListener( 'popstate', () => switchTab( tabFromURL(), 'replaceState' ) );
 	document.querySelectorAll( 'input[name="dkbce-csv-action"]' ).forEach( ( input ) => {
 		input.addEventListener( 'change', () => {
 			invalidatePreview( true, true );
@@ -1227,7 +1255,14 @@
 			body: data,
 		} )
 			.then( async ( response ) => {
-				const payload = await response.json();
+				let payload;
+				try {
+					payload = await response.json();
+				} catch {
+					const error = new Error( [ 408, 504 ].includes( response.status ) ? DKBCE.i18n.requestTimeout : DKBCE.csv.requestFailed );
+					error.status = response.status;
+					throw error;
+				}
 				if ( ! response.ok ) {
 					const error = new Error( payload.data && payload.data.message ? payload.data.message : DKBCE.csv.requestFailed );
 					error.status = response.status;
@@ -1246,6 +1281,25 @@
 				}
 				return response.data;
 			} );
+	}
+
+	const enableCogsButton = $( '#dkbce-enable-cogs' );
+	if ( enableCogsButton ) {
+		enableCogsButton.addEventListener( 'click', async () => {
+			const status = $( '#dkbce-enable-cogs-status' );
+			enableCogsButton.disabled = true;
+			enableCogsButton.setAttribute( 'aria-busy', 'true' );
+			status.hidden = true;
+			try {
+				await request( 'enable_cogs' );
+				window.location.reload();
+			} catch ( error ) {
+				status.textContent = error.message;
+				status.hidden = false;
+				enableCogsButton.disabled = false;
+				enableCogsButton.removeAttribute( 'aria-busy' );
+			}
+		} );
 	}
 
 	function selectedFilterValues( selector ) {
@@ -1329,7 +1383,7 @@
 		const chips = $( '#dkbce-filter-chips' );
 		chips.replaceChildren();
 		document.querySelectorAll( '.dkbce-filter-grid > p > input, .dkbce-filter-grid > p > select, .dkbce-range input' ).forEach( ( input ) => {
-			const values = input.tagName === 'SELECT' ? Array.from( input.selectedOptions ).filter( ( option ) => ! [ '0', 'any' ].includes( option.value ) ) : input.value ? [ null ] : [];
+			const values = input.tagName === 'SELECT' ? Array.from( input.selectedOptions ).filter( ( option ) => ! [ '', '0', 'any' ].includes( option.value ) ) : input.value ? [ null ] : [];
 			values.forEach( ( option ) => {
 				const label = document.querySelector( 'label[for="' + input.id + '"]' ).textContent;
 				const text = label + ': ' + ( option ? option.textContent : input.value );
@@ -1340,12 +1394,25 @@
 				chip.setAttribute( 'aria-label', DKBCE.ui.removeFilter.replace( '%s', text ) );
 				chip.disabled = state.busy || isOperationRunning();
 				chip.addEventListener( 'click', () => {
-					if ( option ) { option.selected = false; } else { input.value = ''; }
+					if ( option && input.multiple ) { option.selected = false; } else { input.value = ''; }
 					input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 					$( '#dkbce-clear-filters' ).focus();
 				} );
 				chips.appendChild( chip );
 			} );
+		} );
+	}
+
+	function syncCogsRange() {
+		const value = $( '#dkbce-cogs-value' ).value;
+		const restricted = [ 'empty', 'zero', 'empty_or_zero' ].includes( value );
+		const help = $( '#dkbce-cogs-value-help' );
+		const text = DKBCE.i18n.cogsValueHelp[ value ] || DKBCE.i18n.cogsValueHelp[ '' ];
+		if ( help.textContent !== text ) { help.textContent = text; }
+		[ '#dkbce-cogs-min', '#dkbce-cogs-max' ].forEach( ( selector ) => {
+			const input = $( selector );
+			if ( restricted ) { input.value = ''; }
+			input.disabled = restricted || isOperationRunning() || ( csvMode() && state.busy );
 		} );
 	}
 
@@ -1358,6 +1425,7 @@
 			brand: selectedFilterValues( '#dkbce-brand' ),
 			price_min: $( '#dkbce-price-min' ).value,
 			price_max: $( '#dkbce-price-max' ).value,
+			cogs_value: $( '#dkbce-cogs-value' ).value,
 			cogs_min: $( '#dkbce-cogs-min' ).value,
 			cogs_max: $( '#dkbce-cogs-max' ).value,
 		};
@@ -1374,6 +1442,8 @@
 			state.selectionPreviewId = state.previewId;
 		}
 		state.previewId = '';
+		state.inlineEditing = false;
+		state.overrideIds.clear();
 		state.reviewedIds.clear();
 		state.rows = [];
 		state.pageData = null;
@@ -1405,6 +1475,8 @@
 		state.selectionPreviewId = '';
 		state.selectionOperationId = '';
 		state.reusedSelection = false;
+		state.inlineEditing = false;
+		state.overrideIds.clear();
 		state.reviewedIds.clear();
 		state.excludedIds.clear();
 		state.selectedIds.clear();
@@ -1439,7 +1511,7 @@
 			: state.previewNeedsRefresh ? ( state.busy ? DKBCE.i18n.previewLoading : DKBCE.ui.stale + '. ' + DKBCE.ui.staleHelp ) : '';
 		refreshPreviewButton.hidden = state.loadingPage || ( state.busy && ! state.previewNeedsRefresh );
 		refreshPreviewButton.disabled = running || state.busy || state.loadingPage;
-		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.loadingPage || state.previewNeedsRefresh; } );
+		document.querySelectorAll( '#dkbce-selection-toolbar button' ).forEach( ( input ) => { input.disabled = running || state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh; } );
 		document.querySelectorAll( '[data-dkbce-mode], #dkbce-csv input:not(#dkbce-csv-new-cogs), #dkbce-csv select, #dkbce-csv-preview, #dkbce-file-details button' ).forEach( ( input ) => {
 			input.disabled = input.hasAttribute( 'data-dkbce-mode' ) ? state.busy || state.loadingPage : running || state.busy || state.loadingPage || ! DKBCE.cogsAvailable;
 		} );
@@ -1448,7 +1520,7 @@
 			input.disabled = running || state.busy || ! state.hasQuery || state.count === 0;
 		} );
 		[ rangeDirection, rangeCount, rangeButton ].forEach( ( input ) => {
-			input.disabled = running || state.busy || state.loadingPage || ! state.previewId;
+			input.disabled = running || state.busy || state.inlineEditing || state.loadingPage || ! state.previewId;
 		} );
 		rangeCount.disabled = rangeCount.disabled || rangeDirection.value === 'all';
 		rangeCount.max = String( Math.max( 1, state.count ) );
@@ -1464,9 +1536,10 @@
 					delete input.dataset.disabledBeforeOperation;
 				}
 			} );
+		syncCogsRange();
 		// Reflect the existing selection and preview state without changing its guards.
 		const hasProducts = state.hasQuery && state.count > 0;
-		const hasPreview = Boolean( state.previewId ) && ! state.previewNeedsRefresh && state.rows.length > 0;
+		const hasPreview = Boolean( state.previewId ) && ! state.browsing && ! state.previewNeedsRefresh && state.rows.length > 0;
 		const currentStep = hasPreview ? 2 : hasProducts ? 1 : 0;
 		if ( state.mode === 'bulk' ) {
 			const empty = $( '.dkbce-preview-empty' );
@@ -1486,12 +1559,14 @@
 		actionSection.classList.toggle( 'is-locked', ! hasProducts );
 		$( '.dkbce-workspace' ).classList.toggle( 'has-preview-rows', state.rows.length > 0 );
 		$( '.dkbce-apply-section' ).classList.toggle( 'is-ready', hasPreview && selectionCount() > 0 );
-		getButton.disabled = state.busy || running;
-		applyButton.disabled = running || state.busy || state.loadingPage ||
-			! state.previewId || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
+		pageSizeSelect.disabled = state.busy || state.inlineEditing || state.loadingPage;
+		getButton.disabled = ! DKBCE.cogsAvailable || state.busy || running;
+		previewContent.querySelectorAll( '.dkbce-edit-cost' ).forEach( ( button ) => { button.disabled = running || state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ! state.previewId; } );
+		applyButton.disabled = running || state.busy || state.inlineEditing || state.loadingPage ||
+			! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! selectionCount() || ! state.count || ! state.rows.length ||
 			( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' && ! hasCSVIdentifierColumn() );
 		document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
-			.forEach( ( input ) => { input.disabled = running || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
+			.forEach( ( input ) => { input.disabled = running || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ( csvMode() && state.busy ); } );
 		if ( state.selectionRange ) {
 			document.querySelectorAll( '#dkbce-selected-only, .dkbce-product-select, .dkbce-select-page' )
 				.forEach( ( input ) => { input.disabled = true; } );
@@ -1666,6 +1741,93 @@
 		return cell;
 	}
 
+	function appendNewCostCell( row, item, value ) {
+		const cell = appendCell( row, value );
+		if ( ( csvMode() && ( ! csvImportMode() || item.status !== 'success' ) ) || ( ! csvMode() && item.status === 'browse' ) || isOperationRunning() || ! state.previewId ) { return; }
+		const edit = historyButton( '', () => openCostEditor( cell, item ) );
+		edit.classList.add( 'dkbce-edit-cost' );
+		edit.dataset.productId = String( item.id );
+		edit.setAttribute( 'aria-label', DKBCE.i18n.editCost + ': ' + item.name );
+		edit.title = DKBCE.i18n.editCost;
+		const icon = historyElement( 'span', '', 'dashicons dashicons-edit' );
+		icon.setAttribute( 'aria-hidden', 'true' );
+		edit.appendChild( icon );
+		cell.appendChild( edit );
+		if ( item.overridden ) { cell.appendChild( historyElement( 'small', DKBCE.i18n.customCost, 'dkbce-custom-cost' ) ); }
+	}
+
+	function openCostEditor( cell, item ) {
+		if ( state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || isOperationRunning() || ! state.previewId ) { return; }
+		const importing = csvImportMode();
+		state.inlineEditing = true;
+		const token = state.previewId;
+		const form = historyElement( 'form', '', 'dkbce-cost-editor' );
+		const label = historyElement( 'label', DKBCE.i18n.editCost );
+		const input = document.createElement( 'input' );
+		input.type = 'number';
+		input.min = '0';
+		input.step = String( Math.pow( 10, -DKBCE.decimals ) );
+		input.required = true;
+		input.value = item.status === 'success' ? ( item.new === null ? '0' : String( item.new ) ) : ( item.current === null ? '' : String( item.current ) );
+		label.appendChild( input );
+		const help = historyElement( 'small', importing ? DKBCE.csv.inlineCostHelp : DKBCE.i18n.costEditHelp );
+		help.id = 'dkbce-inline-cost-help';
+		input.setAttribute( 'aria-describedby', help.id );
+		const error = historyElement( 'span', '', 'dkbce-cost-error' );
+		error.setAttribute( 'role', 'alert' );
+		const actions = historyElement( 'div', '', 'dkbce-cost-editor-actions' );
+		const save = historyButton( DKBCE.i18n.saveCost, () => {} );
+		save.type = 'submit';
+		const restoreFocus = () => {
+			const button = previewContent.querySelector( '.dkbce-edit-cost[data-product-id="' + item.id + '"]' );
+			if ( button ) { button.focus(); }
+		};
+		const cancel = historyButton( DKBCE.i18n.cancelCost, () => {
+			renderPreview( state.pageData );
+			updateOperationControls();
+			restoreFocus();
+		} );
+		const persist = async ( reset = false ) => {
+			if ( state.busy || state.previewId !== token ) { return; }
+			if ( ! reset && ! input.reportValidity() ) { return; }
+			error.textContent = '';
+			setBusy( true, save, DKBCE.i18n.savingCost );
+			form.querySelectorAll( 'input, button' ).forEach( ( control ) => { control.disabled = true; } );
+			try {
+				const data = await request( 'preview_edit', { preview_id: token, product_id: item.id, value: input.value, reset: reset ? '1' : '0' } );
+				if ( state.previewId !== token ) { return; }
+				if ( ! importing ) {
+					if ( data.row.overridden ) { state.overrideIds.add( String( item.id ) ); } else { state.overrideIds.delete( String( item.id ) ); }
+					state.pageData.override_ids = Array.from( state.overrideIds );
+				}
+				state.pageData.preview_id = data.preview_id;
+				state.selectionPreviewId = data.preview_id;
+				state.pageData.rows = state.pageData.rows.map( ( existing ) => existing.id === data.row.id ? data.row : existing );
+				renderPreview( state.pageData );
+				setNotice( DKBCE.i18n.costSaved, 'success' );
+			} catch ( failure ) {
+				if ( state.previewId !== token ) { return; }
+				error.textContent = failure.message;
+				if ( failure.refreshPreview ) { invalidatePreview( false ); setNotice( failure.message, 'error' ); }
+			} finally {
+				setBusy( false, save );
+				form.querySelectorAll( 'input, button' ).forEach( ( control ) => { control.disabled = false; } );
+				if ( ! state.inlineEditing ) { restoreFocus(); } else if ( input.isConnected ) { input.focus(); }
+			}
+		};
+		form.addEventListener( 'submit', ( event ) => { event.preventDefault(); persist(); } );
+		form.addEventListener( 'keydown', ( event ) => {
+			if ( event.key === 'Escape' && ! state.busy ) { event.preventDefault(); event.stopPropagation(); cancel.click(); }
+		} );
+		actions.append( save, cancel );
+		if ( item.overridden && ! importing ) { actions.appendChild( historyButton( DKBCE.i18n.resetCost, () => persist( true ) ) ); }
+		form.append( label, help, actions, error );
+		cell.replaceChildren( form );
+		updateOperationControls();
+		input.focus();
+		input.select();
+	}
+
 	function appendProductLinkCell( row, value, url ) {
 		const cell = document.createElement( 'td' );
 		if ( url ) {
@@ -1803,7 +1965,7 @@
 		$( '#dkbce-select-all' ).textContent = DKBCE.ui.all.replace( '%d', state.count.toLocaleString() );
 		$( '#dkbce-selection-count' ).textContent = DKBCE.ui.selected.replace( '%d', count.toLocaleString() );
 		$( '#dkbce-page-selection-count' ).textContent = DKBCE.ui.pageSelected.replace( '%d', state.rows.filter( ( item ) => productSelected( item.id ) ).length );
-		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.previewId ? ux.scopeSummary.replace( '%2$s', count.toLocaleString() ).replace( '%1$s', ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
+		$( '#dkbce-action-summary' ).textContent = state.previewNeedsRefresh ? DKBCE.ui.stale : state.browsing && ! csvMode() ? DKBCE.i18n.browseHelp : state.previewId ? ux.scopeSummary.replace( '%2$s', count.toLocaleString() ).replace( '%1$s', ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.format : operationDescription() ) ) : csvMode() ? ( $( 'input[name="dkbce-csv-action"]:checked' ).value === 'import' ? DKBCE.ui.importEmpty : DKBCE.ui.exportEmpty ) : DKBCE.ui.bulkEmpty;
 		if ( ! state.busy ) {
 			applyButton.textContent = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ? DKBCE.ui.createCSV : state.previewId && count ? DKBCE.ui.reviewCount.replace( '%d', count.toLocaleString() ) : DKBCE.ui.review;
 		}
@@ -1835,6 +1997,7 @@
 	} );
 
 	function renderPreview( data, restoreSelection = false ) {
+		state.inlineEditing = false;
 		if ( data.reused_selection !== undefined ) { state.reusedSelection = data.reused_selection; }
 		if ( data !== state.pageData ) {
 			state.previewNeedsRefresh = false;
@@ -1855,10 +2018,13 @@
 		if ( state.reusedSelection ) {
 			$( '#dkbce-product-count' ).textContent = data.count + ' ' + ( data.count === 1 ? DKBCE.i18n.productOne : DKBCE.i18n.productMany );
 		}
+		if ( data.override_ids !== undefined ) { state.overrideIds = new Set( data.override_ids.map( String ) ); }
 		state.rows = data.rows;
+		state.browsing = data.rows.some( ( item ) => item.status === 'browse' );
 		state.pageData = data;
 		state.page = data.page;
-		data.rows.forEach( ( item ) => state.reviewedIds.add( String( item.id ) ) );
+		data.rows.filter( ( item ) => item.overridden ).forEach( ( item ) => state.overrideIds.add( String( item.id ) ) );
+		data.rows.filter( ( item ) => item.status !== 'browse' ).forEach( ( item ) => state.reviewedIds.add( String( item.id ) ) );
 		$( '.dkbce-preview-controls' ).hidden = ! data.rows.length;
 		previewContent.replaceChildren();
 		previewContent.removeAttribute( 'aria-busy' );
@@ -1871,11 +2037,14 @@
 				? DKBCE.i18n.productOne
 				: DKBCE.i18n.productMany );
 		previewContent.appendChild( summary );
-		if ( ! csvMode() ) {
+		if ( ! csvMode() && ! state.browsing ) {
 			const freshness = document.createElement( 'details' );
 			freshness.className = 'dkbce-preview-checks';
 			freshness.append( historyElement( 'summary', ux.freshnessHelp ), historyElement( 'p', DKBCE.i18n.previewFreshness ) );
 			previewContent.appendChild( freshness );
+			previewContent.appendChild( historyElement( 'p', DKBCE.i18n.inlineCostHelp, 'description' ) );
+		} else if ( csvImportMode() ) {
+			previewContent.appendChild( historyElement( 'p', DKBCE.csv.inlineCostHelp, 'description' ) );
 		}
 		if ( data.rows.some( ( item ) => item.status === 'success' && item.new === null ) ) {
 			const clearing = document.createElement( 'p' );
@@ -1951,11 +2120,13 @@
 			if ( null === item.new ) {
 				newValue = DKBCE.i18n.emptyValue;
 			}
-			if ( 'skipped' === item.status || 'failed' === item.status ) {
+			if ( [ 'browse', 'skipped', 'failed' ].includes( item.status ) ) {
 				newValue = '—';
 			}
-			appendCell( row, newValue );
+			appendNewCostCell( row, item, newValue );
 			appendChangeCell( row, item );
+			appendCell( row, item.selling_price === null || item.selling_price === undefined || item.selling_price === '' ? DKBCE.i18n.priceNotSet : money( item.selling_price ) );
+			appendCell( row, item.regular_price === null || item.regular_price === undefined || item.regular_price === '' ? DKBCE.i18n.priceNotSet : money( item.regular_price ) );
 			if ( csvMode() ) { appendCell( row, item.reason || DKBCE.csv.valid ); }
 			tbody.appendChild( row );
 		} );
@@ -1967,7 +2138,7 @@
 					cell.dataset.label = DKBCE.i18n.columns[ index ] || DKBCE.csv.status;
 				}
 			} );
-			[ 0, 1, 2, 5, 6, 7, 3, 4, 8 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
+			[ 0, 1, 2, 8, 9, 5, 6, 7, 3, 4, 10 ].forEach( ( index ) => { if ( cells[ index ] ) { row.appendChild( cells[ index ] ); } } );
 		} );
 		table.appendChild( tbody );
 		wrapper.appendChild( table );
@@ -2005,7 +2176,7 @@
 	}
 
 	function fetchPreviewPage( page ) {
-		if ( state.busy || state.loadingPage || state.previewNeedsRefresh || ! state.previewId ) {
+		if ( state.busy || state.inlineEditing || state.loadingPage || state.previewNeedsRefresh || ! state.previewId ) {
 			return;
 		}
 		const previousPage = state.pageData;
@@ -2053,7 +2224,7 @@
 	}
 
 	function getProducts() {
-		if ( isOperationRunning() || state.busy || state.loadingPage ) {
+		if ( ! DKBCE.cogsAvailable || isOperationRunning() || state.busy || state.loadingPage ) {
 			return;
 		}
 		if ( ! csvMode() && state.reusedSelection ) {
@@ -2098,7 +2269,7 @@
 				if ( state.hasQuery && state.count > 0 ) {
 					if ( csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export' ) {
 						previewCSV();
-					} else if ( ! csvMode() && hasValidActionValue() ) {
+					} else if ( ! csvMode() ) {
 						preview();
 					}
 				}
@@ -2113,8 +2284,9 @@
 		const action = selectedAction();
 		const value = numericActionValue();
 		const requestedPageSize = Number( pageSizeSelect.value );
+		const browsing = action !== 'clear' && value === '';
 		if (
-			'clear' !== action &&
+			! browsing && 'clear' !== action &&
 			( '' === value ||
 				! Number.isFinite( Number( value ) ) ||
 				Number( value ) < 0 )
@@ -2139,7 +2311,7 @@
 			excluded_ids: JSON.stringify( Array.from( state.excludedIds ) ),
 			range_token: state.selectionRange ? state.selectionRange.token : '',
 			filters: requestedFilters,
-			action_type: action,
+			action_type: browsing ? 'browse' : action,
 			action_value: value,
 			page_size: requestedPageSize,
 		} )
@@ -2194,7 +2366,7 @@
 
 	function openConfirm() {
 		const exporting = csvMode() && $( 'input[name="dkbce-csv-action"]:checked' ).value === 'export';
-		if ( isOperationRunning() || state.busy || state.loadingPage || ! state.previewId || state.previewNeedsRefresh || ! state.count ) {
+		if ( isOperationRunning() || state.busy || state.inlineEditing || state.loadingPage || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || ! state.count ) {
 			return;
 		}
 		if ( exporting && ! hasCSVIdentifierColumn() ) {
@@ -2228,6 +2400,10 @@
 			entries.push( [ DKBCE.ui.fileColumns, Array.from( document.querySelectorAll( '[name="dkbce-csv-column"]:checked' ), ( input ) => input.parentElement.textContent.trim() ).join( ', ' ) + ', new_cogs' ] );
 		} else {
 			entries.push( [ DKBCE.ui.coverage, reviewed >= count ? DKBCE.ui.allReviewed : DKBCE.ui.reviewed.replace( '%d', reviewed.toLocaleString() ) ] );
+		}
+		if ( ! csvMode() ) {
+			const edited = Array.from( state.overrideIds ).filter( productSelected ).length;
+			if ( edited ) { entries.push( [ DKBCE.i18n.customCost, DKBCE.i18n.editedCosts.replace( '%d', edited.toLocaleString() ) ] ); }
 		}
 		entries.forEach( ( [ label, value ] ) => {
 			const term = document.createElement( 'dt' );
@@ -2284,7 +2460,7 @@
 		const value = numericActionValue();
 		if (
 			'clear' !== action &&
-			( '' === value || ! Number.isFinite( Number( value ) ) || Number( value ) < 0 )
+			( ! Number.isFinite( Number( value ) ) || Number( value ) < 0 )
 		) {
 			return;
 		}
@@ -2294,7 +2470,7 @@
 				return;
 			}
 			preview();
-		}, 350 );
+		}, 800 );
 	}
 
 	refreshPreviewButton.addEventListener( 'click', async () => {
@@ -2320,7 +2496,7 @@
 	} );
 
 	async function applyChanges() {
-		if ( isOperationRunning() || ! state.previewId || state.previewNeedsRefresh || state.busy || state.loadingPage ) {
+		if ( isOperationRunning() || ! state.previewId || ( ! csvMode() && ( state.browsing || ! hasValidActionValue() ) ) || state.previewNeedsRefresh || state.busy || state.inlineEditing || state.loadingPage ) {
 			return;
 		}
 		const selectedOnly = $( '#dkbce-selected-only' ).checked;
@@ -2435,6 +2611,39 @@
 		return sectionHeading;
 	}
 
+	function appendReviewNotice( operation, panel ) {
+		const costActions = [ 'set', 'increase_percent', 'decrease_percent', 'increase_fixed', 'decrease_fixed', 'clear', 'csv_import' ];
+		if ( DKBCE.reviewDismissed || operation.status !== 'completed' || Number( operation.succeeded ) <= 0 || ! costActions.includes( operation.action ) ) {
+			return;
+		}
+		const reviewNotice = historyElement( 'div', '', 'notice notice-info inline is-dismissible' );
+		reviewNotice.setAttribute( 'role', 'status' );
+		const message = historyElement( 'p', DKBCE.review.summary
+			.replace( '%1$s', Number( operation.succeeded ).toLocaleString() )
+			.replace( '%2$s', formatDuration( operation.elapsed_seconds ) ) + ' ' + DKBCE.review.message + ' ' );
+		const link = historyElement( 'a', DKBCE.review.link );
+		link.href = 'https://wordpress.org/support/plugin/bulk-cogs-editor-for-woocommerce/reviews/?filter=5#new-post';
+		link.target = '_blank';
+		link.rel = 'noopener noreferrer';
+		message.appendChild( link );
+		const dismiss = historyElement( 'button', '', 'notice-dismiss' );
+		dismiss.type = 'button';
+		dismiss.setAttribute( 'aria-label', DKBCE.review.dismiss );
+		dismiss.addEventListener( 'click', async () => {
+			dismiss.disabled = true;
+			try {
+				await request( 'dismiss_review' );
+				DKBCE.reviewDismissed = true;
+				reviewNotice.remove();
+			} catch ( error ) {
+				dismiss.disabled = false;
+				setNotice( error.message, 'error' );
+			}
+		} );
+		reviewNotice.append( message, dismiss );
+		panel.appendChild( reviewNotice );
+	}
+
 	function renderOperation( operation, operationPanel = $( '#dkbce-operation' ), historyView = false ) {
 		const completionMessage = {
 			completed: DKBCE.i18n.completedStatus,
@@ -2502,7 +2711,7 @@
 		checkpoint.textContent = DKBCE.i18n.lastProgress.replace(
 			/%1\$s|%2\$s/g,
 			( placeholder ) => placeholder === '%1$s'
-				? new Date( operation.last_progress_at * 1000 ).toLocaleString()
+				? operation.last_progress_at_formatted || '—'
 				: refreshInterval
 		);
 		const statusRow = document.createElement( 'div' );
@@ -2741,7 +2950,7 @@
 			const title = document.createElement( 'h3' );
 			title.textContent = DKBCE.ui.recent + ' · ' + operationPanel.dataset.task;
 			const result = document.createElement( 'p' );
-			result.textContent = DKBCE.ui.completed.replace( '%d', Number( operation.succeeded ).toLocaleString() ) + ' · ' + new Date( ( operation.completed_at || operation.last_progress_at ) * 1000 ).toLocaleString()
+			result.textContent = DKBCE.ui.completed.replace( '%d', Number( operation.succeeded ).toLocaleString() ) + ' · ' + ( operation.completed_at_formatted || operation.last_progress_at_formatted || '—' )
 				+ ' · ' + DKBCE.i18n.elapsedTime.replace( '%s', formatDuration( operation.elapsed_seconds ) );
 			const outcome = document.createElement( 'p' );
 			outcome.className = 'dkbce-operation-outcome';
@@ -2769,6 +2978,7 @@
 			startAnother.disabled = isOperationRunning() || state.busy || state.loadingPage;
 			nextActions.appendChild( startAnother );
 			operationPanel.appendChild( nextActions );
+			if ( ! historyView ) { appendReviewNotice( operation, operationPanel ); }
 
 		}
 		if ( focusedControl ) { operationPanel.querySelector( '[data-operation-control="' + focusedControl + '"]' )?.focus(); }
@@ -2983,7 +3193,7 @@
 	function clearFilters() {
 		document
 			.querySelectorAll(
-				'#dkbce-search, #dkbce-price-min, #dkbce-price-max, #dkbce-cogs-min, #dkbce-cogs-max'
+				'#dkbce-cogs-value, #dkbce-search, #dkbce-price-min, #dkbce-price-max, #dkbce-cogs-min, #dkbce-cogs-max'
 			)
 			.forEach( ( input ) => {
 				input.value = '';
@@ -3001,6 +3211,7 @@
 	$( '.dkbce-filter-actions' ).after( resetHelp );
 	$( '#dkbce-reset' ).setAttribute( 'aria-describedby', resetHelp.id );
 	$( '#dkbce-clear-filters' ).setAttribute( 'aria-describedby', resetHelp.id );
+	$( '#dkbce-cogs-value' ).addEventListener( 'change', syncCogsRange );
 	$( '#dkbce-clear-filters' ).addEventListener( 'click', clearFilters );
 	$( '#dkbce-reset' ).addEventListener( 'click', startOver );
 	document.querySelectorAll( '.dkbce-action-fields select' ).forEach( ( input ) => {
@@ -3013,7 +3224,7 @@
 	} );
 	document
 		.querySelectorAll(
-			'#dkbce-search, #dkbce-category, #dkbce-type, #dkbce-stock, #dkbce-brand, #dkbce-price-min, #dkbce-price-max, #dkbce-cogs-min, #dkbce-cogs-max'
+			'#dkbce-cogs-value, #dkbce-search, #dkbce-category, #dkbce-type, #dkbce-stock, #dkbce-brand, #dkbce-price-min, #dkbce-price-max, #dkbce-cogs-min, #dkbce-cogs-max'
 		)
 		.forEach( ( input ) => {
 			if ( input && input.addEventListener ) {
@@ -3104,11 +3315,15 @@
 	function applyPresetRules( preset ) {
 		resetSelection(); clearFilters();
 		let missing = false;
-		const mapping = { search: 'search', category: 'category', type: 'type', stock_status: 'stock', brand: 'brand', price_min: 'price-min', price_max: 'price-max', cogs_min: 'cogs-min', cogs_max: 'cogs-max' };
+		const mapping = { search: 'search', category: 'category', type: 'type', stock_status: 'stock', brand: 'brand', price_min: 'price-min', price_max: 'price-max', cogs_value: 'cogs-value', cogs_min: 'cogs-min', cogs_max: 'cogs-max' };
 		Object.entries( mapping ).forEach( ( [ key, id ] ) => {
 			const input = $( '#dkbce-' + id ); const value = preset.filters[ key ];
 			if ( ! input ) { if ( value && value.length ) { missing = true; } return; }
-			if ( input.tagName === 'SELECT' ) {
+			if ( input.tagName === 'SELECT' && ! input.multiple ) {
+				const available = Array.from( input.options, ( option ) => option.value );
+				if ( value && ! available.includes( value ) ) { missing = true; }
+				input.value = available.includes( value ) ? value : '';
+			} else if ( input.tagName === 'SELECT' ) {
 				const values = Array.isArray( value ) ? value.map( String ) : [];
 				const available = Array.from( input.options, ( option ) => option.value );
 				if ( values.some( ( item ) => ! available.includes( item ) ) ) { missing = true; }
@@ -3116,6 +3331,7 @@
 				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 			} else { input.value = typeof value === 'string' || typeof value === 'number' ? String( value ).slice( 0, 100 ) : ''; }
 		} );
+		syncCogsRange();
 		invalidatePreview( true, true ); filterPanel.open = true; $( '.dkbce-more-filters' ).open = true;
 		return missing;
 	}
@@ -3138,7 +3354,9 @@
 	} );
 	presetSave.append( historyField( ux.presetName, presetName ), savePreset );
 	presetLoad.append( historyField( ux.presets, presetSelect ), loadPreset );
-	presetPanel.append( presetLoad, presetSave, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
+	const presetControls = historyElement( 'div', '', 'dkbce-preset-controls' );
+	presetControls.append( presetLoad, presetSave );
+	presetPanel.append( presetControls, loadedHelp, historyElement( 'p', ux.presetHelp, 'description' ) );
 	filterPanel.after( presetPanel );
 	presetSelect.addEventListener( 'change', updatePresetControls );
 	presetPanel.addEventListener( 'toggle', () => { if ( presetPanel.open ) { loadPresets(); } } );
@@ -3225,5 +3443,11 @@
 	editActions.append( updatePreset, historyButton( ux.cancelPreset, () => { if ( ! presetBusy ) { closePresetEditor(); } } ) );
 
 	const linkedOperation = new URLSearchParams( window.location.hash.slice( 1 ) ).get( 'dkbce-operation' );
-	if ( linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation ) ) { openHistoryOperation( linkedOperation ); }
+	const hasLinkedOperation = linkedOperation && /^[0-9a-f-]{36}$/i.test( linkedOperation );
+	const hasTab = new URL( window.location.href ).searchParams.has( 'tab' );
+	tabNavigationReady = true;
+	if ( hasTab ) { switchTab( tabFromURL(), 'replaceState' ); }
+	else if ( hasLinkedOperation ) { switchTab( 'history', 'replaceState' ); }
+	else { syncTabURL( state.mode ); }
+	if ( hasLinkedOperation && state.mode === 'history' ) { openHistoryOperation( linkedOperation ); }
 } )();

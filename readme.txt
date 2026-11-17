@@ -1,22 +1,23 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
-Tags: woocommerce cogs, cost of goods sold, bulk edit, product costs, csv import
+Donate link: https://wpbydinesh.wordpress.com/contact/
+Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit cogs, product cost manager
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, safe previews, history, and rollback for efficient product cost management.
+Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, live previews, history, and rollback for efficient product cost updates.
 
 == Description ==
 
-**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing product costs with WooCommerce's native Cost of Goods Sold (COGS) feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
+**Bulk COGS Editor for WooCommerce** is a fast, powerful bulk editing solution for managing WooCommerce COGS with WooCommerce's native Cost of Goods Sold feature. Quickly filter large catalogs, save recurring filter setups as presets, preview proposed changes, and apply updates through background batch processing with live progress tracking.
 
-Save reusable presets for recurring supplier cost adjustments, import product costs from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
+Save reusable presets for recurring supplier cost adjustments, import WooCommerce cost of goods from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
@@ -24,46 +25,50 @@ https://youtu.be/K-zo4dw7og4
 
 = Why use Bulk COGS Editor? =
 
-* **Save time on supplier price changes.** Update a category, brand, or selected group instead of editing products one by one.
-* **Work from your spreadsheet.** Bring supplier costs into your catalog or prepare updates from exported product data.
+* **Save time on supplier price changes.** Keep WooCommerce cost of goods current for a category, brand, or selected group instead of editing products one by one.
+* **Work from your spreadsheet.** Bring WooCommerce COGS data into your catalog or prepare updates from exported product data.
 * **Make informed changes.** Check the effect on product costs before committing an update.
-* **Keep a record of your work.** Identify past operations and decide whether eligible changes need to be reversed.
+* **Keep a record of your work.** Identify past WooCommerce COGS operations and decide whether eligible changes need to be reversed.
 
 = How it works =
 
 1. Open **Products > Bulk COGS Editor** and choose Bulk edit.
-2. Choose your filters and find the matching products.
-3. Choose a cost action, review the preview, and select the products to update.
+2. Choose your filters and find the matching products. Browse their selling prices, regular prices, and current COGS before choosing a cost update.
+3. Choose a WooCommerce COGS action, review the preview, optionally edit individual New COGS values with the pencil controls, and select the products to update.
 4. Review and confirm the update, then follow its results in the editor.
+
+= Quick 60-Second Demo - YouTube Short Video =
+
+https://www.youtube.com/watch?v=Pxtvi0YbDRw
 
 = Features =
 
 * **Search by product name, SKU, GTIN, ISBN, EAN or UPC** to find products and variations.
-* Filter products and variations by category, brand, product type, stock status, current price, or current COGS.
-* Set an exact cost, increase or decrease it by a fixed amount or percentage, or clear it.
-* Preview product images alongside current COGS, proposed COGS, and the exact difference, with pagination and product selection.
-* Process updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
-* Import CSV or XLSX costs using product IDs or SKUs, export matching costs to CSV, and download validation and update reports.
-* Inspect recorded outcomes and retained original costs in History, with rollback review and confirmation.
+* Filter products and variations by category, brand, product type, stock status, current price, or current WooCommerce COGS.
+* Find products with empty COGS, explicit zero COGS, positive COGS, or empty or zero COGS using the COGS value filter. Choose Greater than selling price to find products whose COGS exceeds their current selling price, including sales; products without a selling price are excluded. Choose Greater than regular price to compare COGS with the regular price before discounts; products without a regular price are excluded. Numeric COGS ranges remain available for Any value, Greater than zero, Greater than selling price, and Greater than regular price.
+* Set an exact WooCommerce cost of goods value, increase or decrease it by a fixed amount or percentage, or clear it.
+* Browse matching products with images, selling prices, regular prices, and WooCommerce COGS before entering a new cost. Then preview proposed COGS and the exact difference, with pagination and product selection. The three bulk editing steps use full-width sections.
+* Process WooCommerce cost of goods updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
+* Edit individual New COGS values with a pencil in bulk previews. Save, cancel, or reset each edit to Step 2; saved overrides stay across pages and are included in the confirmation summary.
+* Import CSV or XLSX costs using product IDs or SKUs, edit valid products' New COGS inline before applying, export matching WooCommerce COGS to CSV, and download validation and update reports.
+* Inspect recorded outcomes and retained original WooCommerce cost of goods in History, with rollback review and confirmation.
 * Save reusable filter presets to your account and manage their names, rules, and deletion in the Presets tab.
-* Configure history retention and choose whether rollback overwrites later cost edits or skips changed products.
+* Configure history retention and choose whether rollback overwrites later WooCommerce COGS edits or skips changed products.
 * Recover a stuck editor operation through a confirmed force-clear action in Settings when normal cancellation does not work.
+* Review cached notices for published products and variations with missing COGS or costs above selling prices, with background refresh and configurable notice placement.
+* Bookmark or share the current editor tab using its URL, and move between tabs with browser Back and Forward.
+* View operation timestamps and rollback deadlines in your WordPress date format, time format, and site timezone.
+* See updated product counts and elapsed time after successful updates, with an optional review link and a dismissible review notice.
 
 = Performance for large catalogs =
 
-Bulk processing reduces repeated product searches and counts. It loads reusable product data in batches and groups cache cleanup to reduce repeated work.
+Bulk processing reduces repeated product searches and counts. It loads reusable product data in batches and groups cache cleanup to reduce repeated work. This makes managing WooCommerce COGS across thousands of products practical from the WordPress dashboard.
 
-The plugin saves progress checkpoints and each product's result to support recovery after interruptions. Costs are saved through WooCommerce's product APIs, preserving its hooks and cache handling.
+The plugin saves progress checkpoints and each product's result to support recovery after interruptions. WooCommerce cost of goods values are saved through WooCommerce's product APIs, preserving its hooks and cache handling.
 
-In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
+All updates can be started and monitored from the WordPress dashboard, including on shared hosting. WP-CLI is not required. For larger catalogs, such as more than 5,000 or 10,000 SKUs, an optional WP-CLI runner may help WooCommerce COGS updates finish sooner. See Installation for details; any speed improvement depends on your hosting and workload.
 
-The latest reported WP-CLI run updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
-
-The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
-
-Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
-
-= Import and export product costs with CSV or Excel =
+= Import and export WooCommerce cost of goods with CSV or Excel =
 
 ### CSV and XLSX import
 
@@ -98,7 +103,7 @@ XLSX requires PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
 
 Preview preparation runs in background batches without changing products. Progress is saved between batches, and you can close the page and return to check it. Preparation time varies with file size, product mix, hosting, and background worker availability.
 
-When ready, review products, download validation errors if needed, select products, review the selected changes, and confirm the update. Preparation can be cancelled separately from an applied update. Completed imports with no skipped, failed, or unprocessed products have no update error report to download.
+When ready, review products and download validation errors if needed. Use the pencil beside New COGS to correct a valid product's staged cost, then Save or Cancel. Saving changes only the preview; select products, review the selected changes, and confirm the update to change product costs. Preparation can be cancelled separately from an applied update. Completed imports with no skipped, failed, or unprocessed products have no update error report to download.
 
 Original uploads are deleted after preparation. Staged previews and reports expire after about 24 hours. Retention extends while an applied update is active.
 
@@ -108,11 +113,46 @@ Operation history and original cost records follow the retention period set in S
 
 The plugin also keeps records that prevent the same preview from being applied more than once, including simultaneous Apply requests. These records follow the configured retention period and are removed only when they are no longer needed.
 
-= Run background updates with WP-CLI =
+= Requirements =
 
-Use Action Scheduler's CLI runner for import preview preparation and confirmed updates while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
+* WordPress 6.7 or later
+* WooCommerce 10.3 or later
+* PHP 7.4 or later
+* WooCommerce Cost of Goods Sold feature enabled in WooCommerce settings
 
-Import preview workers must run on the upload server under the same operating-system account as PHP. This lets them read the private temporary uploads.
+If Cost of Goods Sold is unavailable or disabled, the editor is turned off and explains what is needed. When supported and permitted by your account, the availability notice offers Update Now for an older WooCommerce version or Enable Cost of Goods Sold for a disabled feature. Otherwise, ask an administrator to complete setup.
+
+= Privacy =
+
+Bulk COGS Editor for WooCommerce does not send product, customer, order, or store data to external services. All WooCommerce COGS calculations and WooCommerce cost of goods updates are performed locally on your WordPress/WooCommerce installation.
+
+= Developer resources =
+
+Bulk COGS Editor for WooCommerce is open-source software and is made to be extended. The source code is available in the [GitHub repository](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce).
+
+= Connect with the developer =
+
+* [Website: WP By Dinesh](https://wpbydinesh.wordpress.com/)
+* [LinkedIn](https://www.linkedin.com/in/dineshinau/)
+* [GitHub](https://github.com/dineshinau/)
+* [X](https://x.com/wpbydinesh)
+* [Facebook](https://www.facebook.com/wpbydinesh/)
+
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/bulk-cogs-editor-for-woocommerce` directory, or install the plugin through the WordPress Plugins screen.
+2. Activate the plugin through the Plugins screen in WordPress.
+3. Make sure the Cost of Goods Sold feature is enabled in WooCommerce settings.
+4. Go to Products > Bulk COGS Editor in the WordPress admin menu.
+5. Filter your products, choose an action, preview the changes, then confirm to apply them.
+
+= Optional: run large updates with WP-CLI =
+
+The plugin works from the WordPress dashboard on shared hosting without enabling or installing WP-CLI. WooCommerce's normal background runner handles the work.
+
+For larger catalogs, such as more than 5,000 or 10,000 SKUs, you can optionally use Action Scheduler's CLI runner for import preview preparation and confirmed updates while the editor continues to show progress and accept cancellations. See the [Action Scheduler documentation](https://actionscheduler.org/) for more information.
+
+If you choose to use WP-CLI, import preview workers must run on the upload server under the same operating-system account as PHP. This lets them read the private temporary uploads.
 
 If your shell uses a different account, ask your host to run the command under PHP's account. Ordinary product updates do not need the uploaded file.
 
@@ -140,38 +180,15 @@ Keep the normal background runner enabled for retries. If your host runs the com
 
 For performance checks, prefix the command with `time`. WooCommerce > Status > Logs under source `dkbce` records worker timing and runner details.
 
-= Requirements =
+= Reported performance for large catalogs =
 
-* WordPress 6.7 or later
-* WooCommerce 10.3 or later
-* PHP 7.4 or later
-* WooCommerce Cost of Goods Sold feature enabled in WooCommerce settings
+In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
 
-If Cost of Goods Sold is unavailable or disabled, the editor is turned off and explains what is needed.
+The [latest reported WP-CLI run](https://wpbydinesh.wordpress.com/bulk-cogs-editor-for-woocommerce-10000-product-costs-updated-in-15-minutes-24-seconds/) updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
 
-= Privacy =
+The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
 
-Bulk COGS Editor for WooCommerce does not send product, customer, order, or store data to external services. All WooCommerce COGS calculations and updates are performed locally on your WordPress/WooCommerce installation.
-
-= Developer resources =
-
-Bulk COGS Editor for WooCommerce is open-source software and is made to be extended. The source code is available in the [GitHub repository](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce).
-
-= Connect with the developer =
-
-* [Website](https://wpbydinesh.wordpress.com/)
-* [LinkedIn](https://www.linkedin.com/in/dineshinau/)
-* [GitHub](https://github.com/dineshinau/)
-* [X](https://x.com/wpbydinesh)
-* [Facebook](https://www.facebook.com/wpbydinesh/)
-
-== Installation ==
-
-1. Upload the plugin files to the `/wp-content/plugins/bulk-cogs-editor-for-woocommerce` directory, or install the plugin through the WordPress Plugins screen.
-2. Activate the plugin through the Plugins screen in WordPress.
-3. Make sure the Cost of Goods Sold feature is enabled in WooCommerce settings.
-4. Go to Products > Bulk COGS Editor in the WordPress admin menu.
-5. Filter your products, choose an action, preview the changes, then confirm to apply them.
+Actual performance depends on hosting, database speed, product types, installed extensions, and background worker availability. Repeated runs and larger catalogs still need benchmarking.
 
 == Frequently Asked Questions ==
 
@@ -181,48 +198,78 @@ Yes. Settings > Default rollback mode offers Keep rollback history (the initial 
 
 With history enabled, original costs and detailed product changes remain available for the configured retention period. With history disabled, the operation cannot be rolled back and detailed cost-change history is not retained. Operation results and retry protection remain available. Temporary retry journals are removed by background cleanup after completion, failure, or cancellation. Changing the default does not change existing operations.
 
-
 = How often does progress refresh, and how can I enable diagnostic logs? =
 
 Update progress refreshes every 10 seconds for fewer than 1,000 selected items, or every 25 seconds for 1,000 or more. While the total is unknown, polling uses 25 seconds. Use Refresh status for an immediate update. Bulk-update progress is checkpointed after 50 products or 10 seconds, and at chunk boundaries or worker exit. Workers continue checking for cancellation every second between products.
 
 Errors and operation completion summaries remain logged. Detailed worker timings and routine per-product diagnostics are disabled by default. To enable them temporarily for troubleshooting or benchmarking, add `define( 'DKBCE_DIAGNOSTICS', true );` to wp-config.php. This does not change Query Monitor or other site-wide profiling settings.
 
+= How do I bulk update WooCommerce COGS? =
 
-= How do I bulk update Cost of Goods Sold (COGS) in WooCommerce? =
-Use Bulk edit for one cost action across a selected group. Use CSV import when individual products need different values. The steps for both workflows appear above.
+Use Bulk edit for one WooCommerce cost of goods action across a selected group, with optional inline edits for individual products. Use CSV import for costs prepared in a spreadsheet. The steps for both workflows appear above.
 
-= Can I import WooCommerce product costs from CSV or Excel? =
-Yes. Both formats support product IDs or SKUs. See the import section above for required columns, file requirements, and validation steps.
+= Can I edit New COGS for one product before applying a bulk update? =
+
+Yes. Choose a cost action in Step 2, then use the pencil beside a product's New COGS in the bulk review table. Enter a non-negative cost using your store's decimal precision, then choose Save. Cancel leaves the saved preview unchanged; Reset to Step 2 removes that product's override. Enter 0 to clear COGS; WooCommerce stores this as Empty.
+
+In bulk previews, you can edit up to 500 individual costs. Saved edits are marked Edited, stay across pages, override Step 2 only for those products, and are counted for selected products in the confirmation summary. Saving an edit does not update the product; you must still select it and confirm the update. Save or cancel an open edit before continuing. CSV export previews and results browsed without a Step 2 action do not offer inline editing.
+
+Changing filters or the bulk action clears inline edits. The automatic refresh after completion preserves them when the action and filters are unchanged, so New COGS continues to show the edited value.
+
+Import previews also offer a pencil beside New COGS for valid products. Save replaces that product's staged import value; Cancel leaves its saved staged value unchanged. Saved values remain across preview pages and are used when you select products and confirm Apply. Products are not updated when you save an edit. The 500-edit limit and Reset to Step 2 control apply only to bulk previews.
+
+= How do COGS health notices work? =
+
+The plugin scans published products and variations in background batches and caches counts for one hour. It warns about missing COGS or costs above the current selling price. If both apply, the missing-COGS warning appears first. Counts reflect the last completed scan, so recent edits may not appear immediately.
+
+In Settings, choose whether the notice appears only in Bulk COGS Editor (the default) or across the site admin. Dismissing it hides it for your account for one hour. Refresh now starts a background recount, shows its progress, and updates or clears the notice when finished. Large catalogs or busy background queues can take several minutes. A scan does not change product costs.
+
+= Can I bookmark a specific editor tab? =
+
+Yes. Switch to Bulk edit, CSV, History, Presets, or Settings, then save or copy the browser URL. The selected tab is included in the URL; browser Back and Forward restore earlier tab selections.
+
+= Can I import WooCommerce cost of goods from CSV or Excel? =
+
+Yes. Both formats support product IDs or SKUs for importing WooCommerce COGS. See the import section above for required columns, file requirements, and validation steps.
 
 = Can I export product costs and import updated values? =
-Yes. Keep the exported product IDs or SKUs unchanged when preparing your updates. Export produces CSV even if a previous import used XLSX; see the sample CSV above.
+
+Yes. Keep the exported product IDs or SKUs unchanged when preparing your WooCommerce cost of goods updates. Export produces CSV even if a previous import used XLSX; see the sample CSV above.
 
 = Does this plugin work with WooCommerce's native Cost of Goods Sold feature? =
-Yes. It requires WooCommerce 10.3 or later with native COGS enabled. If the feature is disabled or unavailable, the editor explains what is required.
+
+Yes. It requires WooCommerce 10.3 or later with native WooCommerce COGS enabled. If the feature is disabled or unavailable, the editor explains what is required.
 
 = Can I increase all product costs by a percentage? =
-Yes. The percentage action applies to your selected products. Products without a saved cost are skipped; use Set exact cost to assign their initial values.
+
+Yes. The percentage action applies to your selected products and adjusts WooCommerce COGS values. Products without a saved WooCommerce cost of goods are skipped; use Set exact cost to assign their initial values.
 
 = Does preparing a preview change product costs? =
+
 No. Finding products or validating an import only prepares a preview. Product costs change after you explicitly confirm the update.
 
 = Do I need to read the documentation or watch the video before using the editor? =
+
 No. The editor includes task-specific Help and instructions, field guidance, and cost examples. Use the documentation or video when you need more detail.
 
 = Where can I see the result of my last update? =
+
 Expand Recent activity for the latest completed operation, including updated counts, completion time, elapsed time, and highlighted problems. Open History to inspect earlier operations.
 
 = Can I update the same products again? =
+
 When a bulk update finishes in the open editor, its product selection is reused with current costs for another preview, even if those costs no longer match the original filters. Edit filters to narrow that selection. Choose Reset filters to start a new selection.
 
 = Can I use other tabs while an update is running? =
+
 Yes. You can move between Bulk edit, CSV import / export, History, and Settings while a background operation runs. Controls that could conflict with it stay disabled until the operation finishes.
 
 = How do I stop an update or rollback? =
+
 Choose Stop remaining updates, or Cancel rollback for a rollback, and confirm in the editor dialog. Cancel or Escape closes the dialog without requesting cancellation. Saved cost changes remain, and the active worker may take a short time to stop. Import preview preparation has its own Cancel preparation control with a confirmation dialog. Cancelling preparation does not change product costs; upload the file again to prepare another preview.
 
 = What should I do if an operation is stuck? =
+
 Try normal cancellation first. If it does not work, a WooCommerce manager can open Settings, choose Force clear current operation, review the warning, and confirm.
 
 This resets the current user's editor operation and import preview references and requests cancellation. It does not restore costs or immediately stop an active worker. Saved changes, operation history, and retained rollback data are kept. Check History before starting another update.
@@ -246,30 +293,39 @@ Choose 30 days, 90 days, or a custom period of 1 to 36,500 days in Settings. The
 Shortening retention also affects existing history. Extending it cannot recover original costs already deleted by scheduled cleanup.
 
 = How does the plugin handle variable products and variations? =
-Variations are treated as individual product records. You can filter and update COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated.
+
+Variations are treated as individual product records. You can filter and update WooCommerce COGS on variations directly, and variable parent products will not be changed when only variations are selected and updated. This makes managing WooCommerce cost of goods precise at the variation level.
 
 = How does "Select all" work in the filter dropdowns? =
+
 Each category, product type, stock status, and available brand dropdown has a "Select all" checkbox. Check it to select every option, or uncheck it to clear the selection. You can still select individual options. An empty filter does not restrict the results.
 
 = Why can selecting all categories return fewer matches than leaving the category filter empty? =
+
 Selecting all categories requires products to have a category assignment. Variations match the categories assigned to their parent product. Products without categories, and variations whose parent has no categories, are excluded. Use the "All categories" link in the dropdown or clear the category selection to remove this restriction.
 
 = Are child categories included? =
+
 Yes. The dropdown lists both parent and child categories in a flat list. Selecting a parent category also matches products in its child categories and variations of those products.
 
 = Does the matching total include variations? =
+
 Yes. The result message shows the total followed by separate product and variation counts, for example: "950 matches: 300 products and 650 variations." The product count excludes variation records. The counts cover all matching results, not just the current preview page.
 
 = What happens to products without a COGS value during relative adjustments? =
-Percentage and fixed-amount adjustments skip products without a saved COGS value. Use Set exact cost to assign one. WooCommerce treats zero as empty; use Clear cost to remove a saved value.
+
+Percentage and fixed-amount adjustments skip products without a saved WooCommerce COGS value. Use Set exact cost to assign one. WooCommerce treats zero as empty; use Clear cost to remove a saved WooCommerce cost of goods value.
 
 = How are large catalogs processed? =
+
 Updates run in background batches, so you can close the browser and return to the editor for progress. Completion depends on hosting and background worker availability. Cancelling keeps changes already saved; it does not undo them.
 
 = Does this plugin modify product prices? =
-No. The plugin only modifies the WooCommerce Cost of Goods Sold value.
+
+No. The plugin only modifies the WooCommerce cost of goods (WooCommerce COGS) value. Product selling prices and order data are never altered.
 
 = Where can I give feedback? =
+
 If you have a suggestion to improve the plugin, please [open an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues/) on GitHub or use the support forum on WordPress.org.
 
 == Screenshots ==
@@ -305,13 +361,28 @@ If you have a suggestion to improve the plugin, please [open an issue](https://g
 29. **Plugin settings:** Configure default rollback history, custom retention days, and rollback behavior; access operation recovery controls.
 30. **Force clear confirmation:** Review the warning: clearing editor references does not restore costs or immediately stop active workers.
 
-
 == Upgrade Notice ==
 
 = 1.3.0 =
 Version 1.3.0 redesigns the editor workflow, improves selection, progress, import/export and rollback guidance, and adds account-based presets with a dedicated management tab. New presets use a custom database table; existing browser and user-meta presets are not migrated.
 
 == Changelog ==
+
+= 1.3.1 (2026-11-17) =
+
+* Fixed: Show a readable server-timeout message instead of a JSON parsing error when a request returns an HTML error page.
+* Fixed: Keep Find products disabled when native WooCommerce COGS is unavailable or disabled.
+* Fixed: Display operation timestamps and rollback deadlines using the WordPress date format, time format, and site timezone.
+* Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
+* Improved: Stack the three bulk editing steps at full width, align price and COGS filter fields, and place saved-filter loading and naming controls side by side.
+* Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
+* Added: Show cached notices for published products with missing COGS or COGS above the current selling price. Choose whether notices appear only in the editor or throughout the site admin, and dismiss them for one hour. Refresh now recalculates counts in background batches, shows refresh progress, and updates or clears the notice when finished, including scans delayed beyond an hour.
+* Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
+* Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
+* Added: Filter products by empty, explicit zero, positive, or empty-or-zero COGS, or find COGS greater than the current selling price or regular price. Show help for the selected option and use indexed cost-state queries for large catalogs.
+* Added: Browse matching products before choosing a cost update, with Selling price and Regular price columns available in Manage columns and visible by default.
+* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages and the completion refresh (including zero costs stored as Empty), and review their count before confirming the update. Coordinate preview edits and confirmation across simultaneous requests to preserve reviewed values.
+* Added: Edit New COGS inline for valid products in CSV/XLSX import previews before applying. Save replaces the staged value, including unchanged values; Cancel preserves the saved value. Keep edits across preview pages and coordinate edits with confirmation. The bulk preview's 500-edit limit and Reset to Step 2 control do not apply to imports.
 
 = 1.3.0 (2026-11-12) =
 

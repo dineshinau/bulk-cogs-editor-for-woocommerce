@@ -1,17 +1,17 @@
-# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-11)
+# Graph Report - bulk-cogs-editor-for-woocommerce  (2026-11-17)
 
 ## Corpus Check
-- 36 files · ~94,786 words
+- 39 files · ~104,198 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 18 file(s) not represented in the graph (top: .csv 13, (none) 3, .xml 1)
 
 ## Summary
-- 525 nodes · 1090 edges · 34 communities (21 shown, 13 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 112 edges (avg confidence: 0.85)
+- 574 nodes · 1223 edges · 36 communities (23 shown, 13 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 120 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7d730ce2`
+- Built from commit: `5381684f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -26,7 +26,7 @@
 - DKBCE_Autoloader
 - ref_anthropic_ai_sdk
 - scripts
-- DKBCE_History_Controller
+- DKBCE_COGS_Service
 - DKBCE_Admin_Functions
 - Frequently asked questions
 - global-setup.cjs
@@ -42,22 +42,23 @@
 - History and rollback
 - Features
 - Saved filter presets
-- Settings
-- DKBCE_COGS_Service
+- Background processing and recovery
+- v1.3.1.spec.cjs
+- DKBCE_Range_Query_Profiler
 - DKBCE_Bulk_Processor
 - DKBCE_Operation_Store
 
 ## God Nodes (most connected - your core abstractions)
-1. `DKBCE_Admin_Functions` - 41 edges
+1. `DKBCE_Admin_Functions` - 48 edges
 2. `DKBCE_Operation_Store` - 38 edges
-3. `DKBCE_Bulk_Processor` - 28 edges
-4. `DKBCE_History_Store` - 28 edges
-5. `DKBCE_COGS_Service` - 27 edges
-6. `renderOperation()` - 27 edges
-7. `DKBCE_Import_Store` - 25 edges
-8. `setNotice()` - 25 edges
-9. `loadHistoryDetails()` - 23 edges
-10. `request()` - 22 edges
+3. `DKBCE_COGS_Service` - 32 edges
+4. `DKBCE_Bulk_Processor` - 28 edges
+5. `DKBCE_History_Store` - 28 edges
+6. `renderOperation()` - 28 edges
+7. `DKBCE_Import_Store` - 27 edges
+8. `setNotice()` - 27 edges
+9. `loadHistoryDetails()` - 24 edges
+10. `request()` - 24 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `dkbce_load_plugin_files()` --calls--> `DKBCE_Admin_Hooks`  [INFERRED]
@@ -74,7 +75,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (34 total, 13 thin omitted)
+## Communities (36 total, 13 thin omitted)
 
 ### Community 0 - "php-quality.py"
 Cohesion: 0.09
@@ -85,7 +86,7 @@ Cohesion: 0.18
 Nodes (8): fs, getProducts(), os, path, preview(), setFilters(), stateDirectory, { test, expect }
 
 ### Community 6 - "DKBCE_Import_Store"
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (4): DKBCE_Import_Processor, DKBCE_Import_Store, {closure#1}(), dkbce_e2e_cleanup()
 
 ### Community 7 - "release-workflows.spec.cjs"
@@ -96,9 +97,13 @@ Nodes (12): ajax(), drive(), { execFileSync }, fixture(), fs, os, path, remember
 Cohesion: 0.06
 Nodes (34): dependencies, @woocommerce/dependency-extraction-webpack-plugin, @wordpress/scripts, devDependencies, @playwright/cli, @playwright/test, name, scripts (+26 more)
 
-### Community 11 - "DKBCE_History_Controller"
-Cohesion: 0.13
-Nodes (3): DKBCE_Admin_Hooks, DKBCE_History_Controller, DKBCE_Retention_Processor
+### Community 11 - "DKBCE_COGS_Service"
+Cohesion: 0.09
+Nodes (3): DKBCE_Admin_Hooks, DKBCE_COGS_Service, DKBCE_Health_Notice
+
+### Community 12 - "DKBCE_Admin_Functions"
+Cohesion: 0.09
+Nodes (3): DKBCE_Admin_Functions, DKBCE_Download_Processor, DKBCE_Preset_Store
 
 ### Community 13 - "Frequently asked questions"
 Cohesion: 0.18
@@ -109,16 +114,16 @@ Cohesion: 0.18
 Nodes (10): ref_node_crypto, { chromium }, crypto, { execFileSync }, fixtureScript, fs, os, path (+2 more)
 
 ### Community 15 - "DKBCE_History_Store"
-Cohesion: 0.14
-Nodes (3): DKBCE_Database_Installer, DKBCE_History_Store, DKBCE_Preset_Store
+Cohesion: 0.11
+Nodes (3): DKBCE_Database_Installer, DKBCE_History_Controller, DKBCE_History_Store
 
 ### Community 16 - "global-teardown.cjs"
 Cohesion: 0.29
 Nodes (6): ref_node_child_process, ref_node_fs, { execFileSync }, fs, os, path
 
 ### Community 17 - "bulk-cogs-editor.js"
-Cohesion: 0.09
-Nodes (88): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendProductCell(), appendProductLinkCell(), applyChanges(), applyPresetRules() (+80 more)
+Cohesion: 0.08
+Nodes (95): actionLabel(), addOperationHint(), appendCell(), appendChangeCell(), appendNewCostCell(), appendProductCell(), appendProductLinkCell(), appendReviewNotice() (+87 more)
 
 ### Community 18 - "playwright.config.cjs"
 Cohesion: 0.29
@@ -126,7 +131,7 @@ Nodes (6): ref_node_os, ref_node_path, { defineConfig }, os, path, stateDirector
 
 ### Community 23 - "Bulk COGS Editor for WooCommerce"
 Cohesion: 0.20
-Nodes (9): 1. Bulk edit overview, 2. Enable WooCommerce Cost of Goods Sold, Background processing and recovery, Bulk COGS Editor for WooCommerce, Contents, Development and support, Optional WP-CLI runner, Performance (+1 more)
+Nodes (9): 1. Bulk edit overview, 29. Configure history and rollback settings, 2. Enable WooCommerce Cost of Goods Sold, 30. Confirm force clearing a stuck operation, Bulk COGS Editor for WooCommerce, Contents, Development and support, Requirements and installation (+1 more)
 
 ### Community 24 - "Bulk editing workflow"
 Cohesion: 0.22
@@ -145,40 +150,44 @@ Cohesion: 0.33
 Nodes (6): 21. Find an operation in History, 22. Inspect recorded product changes, 23. Review and confirm a rollback, 24. Inspect a completed rollback, History and rollback, Rollback steps and retry behavior
 
 ### Community 28 - "Features"
-Cohesion: 0.33
-Nodes (6): Features, Find the products you need, Guidance and responsive controls, Preview and choose your update scope, Product and variation support, Set, adjust, or clear costs
+Cohesion: 0.29
+Nodes (7): Edit individual New COGS values, Features, Find the products you need, Guidance and responsive controls, Preview and choose your update scope, Product and variation support, Set, adjust, or clear costs
 
 ### Community 29 - "Saved filter presets"
 Cohesion: 0.40
 Nodes (5): 25. Manage saved filter presets, 26. Edit a preset, 27. Confirm deleting one preset, 28. Confirm bulk deletion of presets, Saved filter presets
 
-### Community 30 - "Settings"
+### Community 30 - "Background processing and recovery"
 Cohesion: 0.67
-Nodes (3): 29. Configure history and rollback settings, 30. Confirm force clearing a stuck operation, Settings
+Nodes (3): Background processing and recovery, Optional WP-CLI runner, Performance
+
+### Community 32 - "v1.3.1.spec.cjs"
+Cohesion: 0.17
+Nodes (16): ajax(), directory, edit(), { execFileSync }, find(), fixtureCode(), fs, os (+8 more)
 
 ### Community 135 - "DKBCE_Bulk_Processor"
-Cohesion: 0.16
-Nodes (4): DKBCE_Bulk_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_database(), dkbce_wc_log()
+Cohesion: 0.11
+Nodes (5): DKBCE_Bulk_Processor, DKBCE_Retention_Processor, dkbce_load_plugin_files(), dkbce_maybe_upgrade_database(), dkbce_wc_log()
 
 ## Knowledge Gaps
-- **106 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+101 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 204 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **114 isolated node(s):** `name`, `version`, `update`, `npm_install`, `start` (+109 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 219 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_History_Controller`, `DKBCE_COGS_Service`?**
-  _High betweenness centrality (0.059) - this node is a cross-community bridge._
-- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_History_Controller`, `DKBCE_COGS_Service`, `DKBCE_Import_Store`, `DKBCE_History_Store`?**
-  _High betweenness centrality (0.047) - this node is a cross-community bridge._
-- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_History_Controller`, `DKBCE_Operation_Store`, `DKBCE_Import_Store`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.summary()`) actually correct?**
-  _`DKBCE_Admin_Functions` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `DKBCE_Admin_Functions` connect `DKBCE_Admin_Functions` to `DKBCE_CSV_Service`, `DKBCE_COGS_Service`, `DKBCE_History_Store`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+- **Why does `DKBCE_COGS_Service` connect `DKBCE_COGS_Service` to `DKBCE_Range_Query_Profiler`, `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`, `DKBCE_Admin_Functions`, `DKBCE_History_Store`?**
+  _High betweenness centrality (0.050) - this node is a cross-community bridge._
+- **Why does `DKBCE_Operation_Store` connect `DKBCE_Operation_Store` to `DKBCE_Import_Store`, `DKBCE_Bulk_Processor`, `DKBCE_COGS_Service`, `DKBCE_Admin_Functions`, `DKBCE_History_Store`?**
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+- **Are the 3 inferred relationships involving `DKBCE_Admin_Functions` (e.g. with `.__construct()` and `.ajax_history_detail()`) actually correct?**
+  _`DKBCE_Admin_Functions` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 15 inferred relationships involving `DKBCE_Operation_Store` (e.g. with `.get_instance()` and `.cleanup()`) actually correct?**
   _`DKBCE_Operation_Store` has 15 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 12 inferred relationships involving `DKBCE_COGS_Service` (e.g. with `.get_instance()` and `.__construct()`) actually correct?**
+  _`DKBCE_COGS_Service` has 12 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 5 inferred relationships involving `DKBCE_Bulk_Processor` (e.g. with `.get_instance()` and `.ajax_history_detail()`) actually correct?**
   _`DKBCE_Bulk_Processor` has 5 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 12 inferred relationships involving `DKBCE_History_Store` (e.g. with `.ajax_apply()` and `.enqueue_assets()`) actually correct?**
-  _`DKBCE_History_Store` has 12 INFERRED edges - model-reasoned connections that need verification._

@@ -13,6 +13,7 @@ Apply repository `AGENTS.md` before generic workflow defaults.
 - Known small fix: locate the responsible method, state the intended behavior, edit, and run the permitted checks.
 - Uncertain failure: collect current evidence, distinguish measured behavior from hypotheses, identify the responsible path, then patch. Use `investigate-first` or the [Superpowers debugging reference](references/systematic-debugging.md) if deeper diagnosis is needed; do not load both routinely.
 - New behavior or several components: write a short plan with the goal, acceptance criteria, affected files, dependencies, implementation steps, and checks. Save a plan in `docs/superpowers/plans/` only when it will help continuation or review.
+- Changelog or release notes: follow [project changelog classification and order](../../../AGENTS.md#changelog-classification-and-order) before drafting entries; classify against published versions and consolidate unpublished feature iterations.
 - Completion: review the diff and report commands actually run. For an ambiguous completion claim, consult the [Superpowers verification reference](references/verification-before-completion.md).
 
 For a substantial plan that needs more structure, read the [Superpowers planning reference](references/writing-plans.md). Adapt its template to the task; do not copy implementation code into a second document.

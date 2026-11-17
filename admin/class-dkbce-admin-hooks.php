@@ -29,6 +29,8 @@ class DKBCE_Admin_Hooks {
 		add_filter( 'plugin_action_links_' . DKBCE_PLUGIN_BASENAME, array( $admin_functions, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $admin_functions, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $admin_functions, 'enqueue_assets' ) );
+		add_action( 'wp_ajax_dkbce_dismiss_review', array( $admin_functions, 'ajax_dismiss_review' ) );
+		add_action( 'wp_ajax_dkbce_enable_cogs', array( $admin_functions, 'ajax_enable_cogs' ) );
 		add_action( 'wp_ajax_dkbce_get_products', array( $admin_functions, 'ajax_get_products' ) );
 		add_action( 'wp_ajax_dkbce_import_status', array( $admin_functions, 'ajax_import_status' ) );
 		add_action( 'wp_ajax_dkbce_import_report', array( $admin_functions, 'ajax_import_report' ) );
@@ -38,6 +40,7 @@ class DKBCE_Admin_Hooks {
 		add_action( 'wp_ajax_dkbce_csv_preview', array( $admin_functions, 'ajax_csv_preview' ) );
 		add_action( 'wp_ajax_dkbce_csv_export', array( $admin_functions, 'ajax_csv_export' ) );
 		add_action( 'wp_ajax_dkbce_preview', array( $admin_functions, 'ajax_preview' ) );
+		add_action( 'wp_ajax_dkbce_preview_edit', array( $admin_functions, 'ajax_preview_edit' ) );
 		add_action( 'wp_ajax_dkbce_preview_page', array( $admin_functions, 'ajax_preview_page' ) );
 		add_action( 'wp_ajax_dkbce_select_range', array( $admin_functions, 'ajax_select_range' ) );
 		add_action( 'wp_ajax_dkbce_filter_presets', array( $admin_functions, 'ajax_filter_presets' ) );
@@ -52,6 +55,7 @@ class DKBCE_Admin_Hooks {
 		add_action( DKBCE_Download_Processor::HOOK, array( $downloads, 'process' ) );
 		add_action( DKBCE_Download_Processor::CLEANUP_HOOK, array( $downloads, 'cleanup' ) );
 		new DKBCE_Retention_Processor();
+		new DKBCE_Health_Notice();
 		new DKBCE_History_Controller();
 	}
 

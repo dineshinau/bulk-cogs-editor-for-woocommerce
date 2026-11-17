@@ -307,9 +307,9 @@ CLAUDE.md files are AI assistant documentation:
 
 ### Changelog Files
 
-- Follow Keep a Changelog format
-- Use consistent date formatting
-- Group changes by type (Added, Changed, Fixed, etc.)
+For Bulk COGS Editor, follow [project changelog classification and order](../../../../AGENTS.md#changelog-classification-and-order) when adding, consolidating, or reviewing entries. It defines the published-release baseline, classification of unpublished feature work, category order, and WordPress readme format.
+
+For other projects, follow their established changelog format, date style, and change categories.
 
 ## Troubleshooting
 

@@ -16,6 +16,7 @@ const webpackConfig = {
     mode: NODE_ENV,
     devtool: NODE_ENV != 'production' ? 'inline-source-map' : false,
     entry: {
+		'cogs-health-notice': './src/cogs-health-notice.js',
 		'bulk-cogs-editor': [ './src/bulk-cogs-editor.js', './src/bulk-cogs-editor.scss' ],
     },
     output: {

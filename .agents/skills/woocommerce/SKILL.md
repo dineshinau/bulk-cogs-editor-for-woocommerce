@@ -42,6 +42,9 @@ Standards for consistency in user-facing text.
 - [Sentence Case Guidelines](references/sentence-case.md)
 
 ### 5. Documentation & Markdown
+
+For this plugin's changelog or release notes, apply [project changelog classification and order](../../../AGENTS.md#changelog-classification-and-order).
+
 - [Markdown Linting & Standards](references/markdown-guide.md)
 - [Markdown Style Guide](references/markdown-linting.md)
 
