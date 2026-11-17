@@ -50,11 +50,15 @@ https://www.youtube.com/watch?v=Pxtvi0YbDRw
 * Browse matching products with images, selling prices, regular prices, and WooCommerce COGS before entering a new cost. Then preview proposed COGS and the exact difference, with pagination and product selection. The three bulk editing steps use full-width sections.
 * Process WooCommerce cost of goods updates through Action Scheduler, WooCommerce's background task system, with progress and cancellation controls.
 * Edit individual New COGS values with a pencil in bulk previews. Save, cancel, or reset each edit to Step 2; saved overrides stay across pages and are included in the confirmation summary.
-* Import CSV or XLSX costs using product IDs or SKUs, export matching WooCommerce COGS to CSV, and download validation and update reports.
+* Import CSV or XLSX costs using product IDs or SKUs, edit valid products' New COGS inline before applying, export matching WooCommerce COGS to CSV, and download validation and update reports.
 * Inspect recorded outcomes and retained original WooCommerce cost of goods in History, with rollback review and confirmation.
 * Save reusable filter presets to your account and manage their names, rules, and deletion in the Presets tab.
 * Configure history retention and choose whether rollback overwrites later WooCommerce COGS edits or skips changed products.
 * Recover a stuck editor operation through a confirmed force-clear action in Settings when normal cancellation does not work.
+* Review cached notices for published products and variations with missing COGS or costs above selling prices, with background refresh and configurable notice placement.
+* Bookmark or share the current editor tab using its URL, and move between tabs with browser Back and Forward.
+* View operation timestamps and rollback deadlines in your WordPress date format, time format, and site timezone.
+* See updated product counts and elapsed time after successful updates, with an optional review link and a dismissible review notice.
 
 = Performance for large catalogs =
 
@@ -99,7 +103,7 @@ XLSX requires PHP's ZIP, XMLReader and DOM extensions. Exports use CSV format.
 
 Preview preparation runs in background batches without changing products. Progress is saved between batches, and you can close the page and return to check it. Preparation time varies with file size, product mix, hosting, and background worker availability.
 
-When ready, review products, download validation errors if needed, select products, review the selected changes, and confirm the update. Preparation can be cancelled separately from an applied update. Completed imports with no skipped, failed, or unprocessed products have no update error report to download.
+When ready, review products and download validation errors if needed. Use the pencil beside New COGS to correct a valid product's staged cost, then Save or Cancel. Saving changes only the preview; select products, review the selected changes, and confirm the update to change product costs. Preparation can be cancelled separately from an applied update. Completed imports with no skipped, failed, or unprocessed products have no update error report to download.
 
 Original uploads are deleted after preparation. Staged previews and reports expire after about 24 hours. Retention extends while an applied update is active.
 
@@ -116,7 +120,7 @@ The plugin also keeps records that prevent the same preview from being applied m
 * PHP 7.4 or later
 * WooCommerce Cost of Goods Sold feature enabled in WooCommerce settings
 
-If Cost of Goods Sold is unavailable or disabled, the editor is turned off and explains what is needed.
+If Cost of Goods Sold is unavailable or disabled, the editor is turned off and explains what is needed. When supported and permitted by your account, the availability notice offers Update Now for an older WooCommerce version or Enable Cost of Goods Sold for a disabled feature. Otherwise, ask an administrator to complete setup.
 
 = Privacy =
 
@@ -213,6 +217,16 @@ In bulk previews, you can edit up to 500 individual costs. Saved edits are marke
 Changing filters or the bulk action clears inline edits. The automatic refresh after completion preserves them when the action and filters are unchanged, so New COGS continues to show the edited value.
 
 Import previews also offer a pencil beside New COGS for valid products. Save replaces that product's staged import value; Cancel leaves its saved staged value unchanged. Saved values remain across preview pages and are used when you select products and confirm Apply. Products are not updated when you save an edit. The 500-edit limit and Reset to Step 2 control apply only to bulk previews.
+
+= How do COGS health notices work? =
+
+The plugin scans published products and variations in background batches and caches counts for one hour. It warns about missing COGS or costs above the current selling price. If both apply, the missing-COGS warning appears first. Counts reflect the last completed scan, so recent edits may not appear immediately.
+
+In Settings, choose whether the notice appears only in Bulk COGS Editor (the default) or across the site admin. Dismissing it hides it for your account for one hour. Refresh now starts a background recount, shows its progress, and updates or clears the notice when finished. Large catalogs or busy background queues can take several minutes. A scan does not change product costs.
+
+= Can I bookmark a specific editor tab? =
+
+Yes. Switch to Bulk edit, CSV, History, Presets, or Settings, then save or copy the browser URL. The selected tab is included in the URL; browser Back and Forward restore earlier tab selections.
 
 = Can I import WooCommerce cost of goods from CSV or Excel? =
 
@@ -358,15 +372,17 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 * Fixed: Show a readable server-timeout message instead of a JSON parsing error when a request returns an HTML error page.
 * Fixed: Keep Find products disabled when native WooCommerce COGS is unavailable or disabled.
+* Fixed: Display operation timestamps and rollback deadlines using the WordPress date format, time format, and site timezone.
 * Improved: Wait 750 milliseconds after action-value edits before refreshing the preview, allowing time to enter decimal values.
 * Improved: Stack the three bulk editing steps at full width, align price and COGS filter fields, and place saved-filter loading and naming controls side by side.
 * Added: Provide setup actions for updating WooCommerce settings when needed and enabling supported COGS features from the availability notice.
-* Added: Show cached notices for published products with missing COGS or COGS above the current selling price. Refresh now recalculates counts in background batches and updates or clears the notice when finished.
+* Added: Show cached notices for published products with missing COGS or COGS above the current selling price. Choose whether notices appear only in the editor or throughout the site admin, and dismiss them for one hour. Refresh now recalculates counts in background batches, shows refresh progress, and updates or clears the notice when finished, including scans delayed beyond an hour.
 * Added: Show a dismissible review notice after successful cost updates with the updated product count, elapsed time, and an optional review link.
 * Added: Open editor tabs directly by URL, keep the URL in sync when switching tabs, and restore tab selection with browser Back and Forward navigation.
 * Added: Filter products by empty, explicit zero, positive, or empty-or-zero COGS, or find COGS greater than the current selling price or regular price. Show help for the selected option and use indexed cost-state queries for large catalogs.
 * Added: Browse matching products before choosing a cost update, with Selling price and Regular price columns available in Manage columns and visible by default.
-* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages and the completion refresh (including zero costs stored as Empty), and review their count before confirming the update.
+* Added: Edit up to 500 individual New COGS values with pencil controls in bulk previews. Save or cancel edits, reset to Step 2, retain saved overrides across pages and the completion refresh (including zero costs stored as Empty), and review their count before confirming the update. Coordinate preview edits and confirmation across simultaneous requests to preserve reviewed values.
+* Added: Edit New COGS inline for valid products in CSV/XLSX import previews before applying. Save replaces the staged value, including unchanged values; Cancel preserves the saved value. Keep edits across preview pages and coordinate edits with confirmation. The bulk preview's 500-edit limit and Reset to Step 2 control do not apply to imports.
 
 = 1.3.0 (2026-11-12) =
 
