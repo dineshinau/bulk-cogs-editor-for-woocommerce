@@ -1,6 +1,6 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
-Donate link: https://wpbydinesh.wordpress.com/contact/
+Donate link: https://wpbydinesh.com/contact/
 Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit cogs, product cost manager
 Requires at least: 6.7
 Tested up to: 7.1
@@ -17,7 +17,7 @@ Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, live pre
 
 Save reusable presets for recurring supplier cost adjustments, import WooCommerce cost of goods from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.wordpress.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.com/2026/10/11/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
@@ -132,7 +132,7 @@ Bulk COGS Editor for WooCommerce is open-source software and is made to be exten
 
 = Connect with the developer =
 
-* [Website: WP By Dinesh](https://wpbydinesh.wordpress.com/)
+* [Website: WP By Dinesh](https://wpbydinesh.com/)
 * [LinkedIn](https://www.linkedin.com/in/wpbydinesh/)
 * [GitHub](https://github.com/dineshinau/)
 * [X](https://x.com/wpbydinesh)
@@ -184,7 +184,7 @@ For performance checks, prefix the command with `time`. WooCommerce > Status > L
 
 In the developer's [reported benchmark results](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/discussions/12), processing approximately 10,000 products improved from 50–60 minutes initially to 40–42 minutes, then 25–28 minutes.
 
-The [latest reported WP-CLI run](https://wpbydinesh.wordpress.com/bulk-cogs-editor-for-woocommerce-10000-product-costs-updated-in-15-minutes-24-seconds/) updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
+The [latest reported WP-CLI run](https://wpbydinesh.com/bulk-cogs-editor-for-woocommerce-10000-product-costs-updated-in-15-minutes-24-seconds/) updated **10,000 products in 15 minutes 24 seconds, with zero skipped and zero failed** — about 69–74% less elapsed time than the initial implementation.
 
 The completion screenshot records the editor operation's elapsed time of **00:15:24**. End-to-end CLI runtime was not measured separately. This is a single benchmark run, not a guaranteed completion time.
 
