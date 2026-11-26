@@ -1,6 +1,8 @@
-= 1.3.2 (2026-11-18) =
+= 1.3.2 (2026-11-26) =
 
 * Fixed: Keep the no-products message visible below Find products and highlight it in red when no products match the selected filters.
+* Updated: Set the WordPress “Tested up to” field to 7.2 and revise the plugin directory tags to include COGS import and export.
+* Updated: Point documentation and developer website links to wpbydinesh.com and update the developer’s LinkedIn profile link.
 
 = 1.3.1 (2026-11-18) =
 

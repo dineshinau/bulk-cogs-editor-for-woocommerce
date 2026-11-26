@@ -1,9 +1,9 @@
 === Bulk COGS Editor for WooCommerce ===
 Contributors: dineshinau
 Donate link: https://wpbydinesh.com/contact/
-Tags: woocommerce cogs, cost of goods sold, woocommerce cost of goods, bulk edit cogs, product cost manager
+Tags: woocommerce cogs, cost of goods sold, bulk edit cogs, cogs import, cogs export
 Requires at least: 6.7
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.4
 Stable tag: 1.3.2
 License: GPLv3
@@ -368,9 +368,11 @@ Version 1.3.0 redesigns the editor workflow, improves selection, progress, impor
 
 == Changelog ==
 
-= 1.3.2 (2026-11-18) =
+= 1.3.2 (2026-11-26) =
 
 * Fixed: Keep the no-products message visible below Find products and highlight it in red when no products match the selected filters.
+* Updated: Set the WordPress “Tested up to” field to 7.2 and revise the plugin directory tags to include COGS import and export.
+* Updated: Point documentation and developer website links to wpbydinesh.com and update the developer’s LinkedIn profile link.
 
 = 1.3.1 (2026-11-18) =
 
