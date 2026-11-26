@@ -6,7 +6,7 @@ Bulk COGS Editor works with **WooCommerce’s native Cost of Goods Sold (COGS)**
 
 **Version:** 1.3.0 · **License:** GPLv3 · **HPOS compatible**
 
-[Documentation](https://wpbydinesh.com/2026/10/11/bulk-edit-woocommerce-cogs/) · [Video demonstration](https://youtu.be/K-zo4dw7og4) · [Report an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
+[Documentation](https://wpbydinesh.com/bulk-edit-woocommerce-cogs/) · [Video demonstration](https://youtu.be/K-zo4dw7og4) · [Report an issue](https://github.com/dineshinau/bulk-cogs-editor-for-woocommerce/issues)
 
 ## 1. Bulk edit overview
 

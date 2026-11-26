@@ -17,7 +17,7 @@ Fast WooCommerce COGS bulk editing with saved presets, CSV/XLSX import, live pre
 
 Save reusable presets for recurring supplier cost adjustments, import WooCommerce cost of goods from UTF-8 CSV or Excel (XLSX), export cost data, and track operation history with safe or overwrite rollback options while retaining original values. Product selling prices and order data are never altered.
 
-Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.com/2026/10/11/bulk-edit-woocommerce-cogs/).
+Use the editor to manage WooCommerce cost of goods for products and variations. There is nothing extra to configure beyond enabling Cost of Goods Sold in WooCommerce. For setup instructions and a step-by-step guide, see the [Bulk COGS Editor documentation](https://wpbydinesh.com/bulk-edit-woocommerce-cogs/).
 
 = Watch the plugin in action =
 
