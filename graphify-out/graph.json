@@ -2348,7 +2348,7 @@
       "file_type": "code",
       "norm_label": "actionlabel()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1691"
+      "source_location": "L1692"
     },
     {
       "id": "src_bulk_cogs_editor_addoperationhint",
@@ -2360,7 +2360,7 @@
       "file_type": "code",
       "norm_label": "addoperationhint()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1608"
+      "source_location": "L1609"
     },
     {
       "id": "src_bulk_cogs_editor_appendcell",
@@ -2372,7 +2372,7 @@
       "file_type": "code",
       "norm_label": "appendcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1734"
+      "source_location": "L1735"
     },
     {
       "id": "src_bulk_cogs_editor_appendchangecell",
@@ -2384,7 +2384,7 @@
       "file_type": "code",
       "norm_label": "appendchangecell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1878"
+      "source_location": "L1879"
     },
     {
       "id": "src_bulk_cogs_editor_appendnewcostcell",
@@ -2396,7 +2396,7 @@
       "file_type": "code",
       "norm_label": "appendnewcostcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1744"
+      "source_location": "L1745"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductcell",
@@ -2408,7 +2408,7 @@
       "file_type": "code",
       "norm_label": "appendproductcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1844"
+      "source_location": "L1845"
     },
     {
       "id": "src_bulk_cogs_editor_appendproductlinkcell",
@@ -2420,7 +2420,7 @@
       "file_type": "code",
       "norm_label": "appendproductlinkcell()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1831"
+      "source_location": "L1832"
     },
     {
       "id": "src_bulk_cogs_editor_appendreviewnotice",
@@ -2636,7 +2636,7 @@
       "file_type": "code",
       "norm_label": "fetchpreviewpage()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2178"
+      "source_location": "L2179"
     },
     {
       "id": "src_bulk_cogs_editor_filters",
@@ -2684,7 +2684,7 @@
       "file_type": "code",
       "norm_label": "getproducts()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2226"
+      "source_location": "L2227"
     },
     {
       "id": "src_bulk_cogs_editor_hascsvidentifiercolumn",
@@ -2708,7 +2708,7 @@
       "file_type": "code",
       "norm_label": "hasvalidactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1682"
+      "source_location": "L1683"
     },
     {
       "id": "src_bulk_cogs_editor_historyaction",
@@ -2912,7 +2912,7 @@
       "file_type": "code",
       "norm_label": "money()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1717"
+      "source_location": "L1718"
     },
     {
       "id": "src_bulk_cogs_editor_numericactionvalue",
@@ -2924,7 +2924,7 @@
       "file_type": "code",
       "norm_label": "numericactionvalue()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1674"
+      "source_location": "L1675"
     },
     {
       "id": "src_bulk_cogs_editor_opencancelconfirmation",
@@ -2960,7 +2960,7 @@
       "file_type": "code",
       "norm_label": "opencosteditor()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1759"
+      "source_location": "L1760"
     },
     {
       "id": "src_bulk_cogs_editor_openhistoryoperation",
@@ -3056,7 +3056,7 @@
       "file_type": "code",
       "norm_label": "productselected()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1945"
+      "source_location": "L1946"
     },
     {
       "id": "src_bulk_cogs_editor_renderfilterchips",
@@ -3104,7 +3104,7 @@
       "file_type": "code",
       "norm_label": "renderpreview()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1999"
+      "source_location": "L2000"
     },
     {
       "id": "src_bulk_cogs_editor_request",
@@ -3188,7 +3188,7 @@
       "file_type": "code",
       "norm_label": "selectioncount()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1941"
+      "source_location": "L1942"
     },
     {
       "id": "src_bulk_cogs_editor_setapplyspinner",
@@ -3212,7 +3212,7 @@
       "file_type": "code",
       "norm_label": "setbusy()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1651"
+      "source_location": "L1652"
     },
     {
       "id": "src_bulk_cogs_editor_setfileerror",
@@ -3248,7 +3248,7 @@
       "file_type": "code",
       "norm_label": "setpageselection()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1976"
+      "source_location": "L1977"
     },
     {
       "id": "src_bulk_cogs_editor_setproductselected",
@@ -3260,7 +3260,7 @@
       "file_type": "code",
       "norm_label": "setproductselected()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1950"
+      "source_location": "L1951"
     },
     {
       "id": "src_bulk_cogs_editor_showimportpreview",
@@ -3452,7 +3452,7 @@
       "file_type": "code",
       "norm_label": "updateoperationtooltips()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1581"
+      "source_location": "L1582"
     },
     {
       "id": "src_bulk_cogs_editor_updatepageselectioncontrols",
@@ -3464,7 +3464,7 @@
       "file_type": "code",
       "norm_label": "updatepageselectioncontrols()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1930"
+      "source_location": "L1931"
     },
     {
       "id": "src_bulk_cogs_editor_updatepresetcontrols",
@@ -3488,7 +3488,7 @@
       "file_type": "code",
       "norm_label": "updateselectionsummary()",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1961"
+      "source_location": "L1962"
     },
     {
       "id": "src_bulk_cogs_editor_waitfordownload",
@@ -9619,7 +9619,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1700",
+      "source_location": "L1701",
       "weight": 1.0
     },
     {
@@ -9631,7 +9631,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1707",
+      "source_location": "L1708",
       "weight": 1.0
     },
     {
@@ -9643,7 +9643,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1713",
+      "source_location": "L1714",
       "weight": 1.0
     },
     {
@@ -9655,7 +9655,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1714",
+      "source_location": "L1715",
       "weight": 1.0
     },
     {
@@ -9667,7 +9667,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1624",
+      "source_location": "L1625",
       "weight": 1.0
     },
     {
@@ -9679,7 +9679,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1905",
+      "source_location": "L1906",
       "weight": 1.0
     },
     {
@@ -9691,7 +9691,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1745",
+      "source_location": "L1746",
       "weight": 1.0
     },
     {
@@ -9703,7 +9703,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1746",
+      "source_location": "L1747",
       "weight": 1.0
     },
     {
@@ -9715,7 +9715,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1746",
+      "source_location": "L1747",
       "weight": 1.0
     },
     {
@@ -9727,7 +9727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1746",
+      "source_location": "L1747",
       "weight": 1.0
     },
     {
@@ -9739,7 +9739,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1747",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -9751,7 +9751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1747",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -9763,7 +9763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1752",
+      "source_location": "L1753",
       "weight": 1.0
     },
     {
@@ -10351,7 +10351,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2185",
+      "source_location": "L2186",
       "weight": 1.0
     },
     {
@@ -10363,7 +10363,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2186",
+      "source_location": "L2187",
       "weight": 1.0
     },
     {
@@ -10375,7 +10375,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2190",
+      "source_location": "L2191",
       "weight": 1.0
     },
     {
@@ -10387,7 +10387,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2192",
+      "source_location": "L2193",
       "weight": 1.0
     },
     {
@@ -10399,7 +10399,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2208",
+      "source_location": "L2209",
       "weight": 1.0
     },
     {
@@ -10459,7 +10459,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2227",
+      "source_location": "L2228",
       "weight": 1.0
     },
     {
@@ -10471,7 +10471,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2230",
+      "source_location": "L2231",
       "weight": 1.0
     },
     {
@@ -10483,7 +10483,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2231",
+      "source_location": "L2232",
       "weight": 1.0
     },
     {
@@ -10495,7 +10495,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2233",
+      "source_location": "L2234",
       "weight": 1.0
     },
     {
@@ -10507,7 +10507,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2236",
+      "source_location": "L2237",
       "weight": 1.0
     },
     {
@@ -10519,7 +10519,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2237",
+      "source_location": "L2238",
       "weight": 1.0
     },
     {
@@ -10531,7 +10531,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2239",
+      "source_location": "L2240",
       "weight": 1.0
     },
     {
@@ -10543,7 +10543,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2240",
+      "source_location": "L2241",
       "weight": 1.0
     },
     {
@@ -10567,7 +10567,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1683",
+      "source_location": "L1684",
       "weight": 1.0
     },
     {
@@ -10579,7 +10579,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1684",
+      "source_location": "L1685",
       "weight": 1.0
     },
     {
@@ -11227,7 +11227,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1675",
+      "source_location": "L1676",
       "weight": 1.0
     },
     {
@@ -11347,7 +11347,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1760",
+      "source_location": "L1761",
       "weight": 1.0
     },
     {
@@ -11359,7 +11359,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1761",
+      "source_location": "L1762",
       "weight": 1.0
     },
     {
@@ -11371,7 +11371,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1764",
+      "source_location": "L1765",
       "weight": 1.0
     },
     {
@@ -11383,7 +11383,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1779",
+      "source_location": "L1780",
       "weight": 1.0
     },
     {
@@ -11395,7 +11395,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1786",
+      "source_location": "L1787",
       "weight": 1.0
     },
     {
@@ -11407,7 +11407,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1787",
+      "source_location": "L1788",
       "weight": 1.0
     },
     {
@@ -11419,7 +11419,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1794",
+      "source_location": "L1795",
       "weight": 1.0
     },
     {
@@ -11431,7 +11431,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1797",
+      "source_location": "L1798",
       "weight": 1.0
     },
     {
@@ -11443,7 +11443,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1807",
+      "source_location": "L1808",
       "weight": 1.0
     },
     {
@@ -11455,7 +11455,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1811",
+      "source_location": "L1812",
       "weight": 1.0
     },
     {
@@ -12199,7 +12199,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2040",
+      "source_location": "L2041",
       "weight": 1.0
     },
     {
@@ -12211,7 +12211,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2043",
+      "source_location": "L2044",
       "weight": 1.0
     },
     {
@@ -12223,7 +12223,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2046",
+      "source_location": "L2047",
       "weight": 1.0
     },
     {
@@ -12235,7 +12235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2102",
+      "source_location": "L2103",
       "weight": 1.0
     },
     {
@@ -12247,7 +12247,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2109",
+      "source_location": "L2110",
       "weight": 1.0
     },
     {
@@ -12259,7 +12259,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2110",
+      "source_location": "L2111",
       "weight": 1.0
     },
     {
@@ -12271,7 +12271,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2111",
+      "source_location": "L2112",
       "weight": 1.0
     },
     {
@@ -12283,7 +12283,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2117",
+      "source_location": "L2118",
       "weight": 1.0
     },
     {
@@ -12295,7 +12295,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2126",
+      "source_location": "L2127",
       "weight": 1.0
     },
     {
@@ -12307,7 +12307,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2127",
+      "source_location": "L2128",
       "weight": 1.0
     },
     {
@@ -12319,7 +12319,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2166",
+      "source_location": "L2167",
       "weight": 1.0
     },
     {
@@ -12331,7 +12331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2169",
+      "source_location": "L2170",
       "weight": 1.0
     },
     {
@@ -12343,7 +12343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2173",
+      "source_location": "L2174",
       "weight": 1.0
     },
     {
@@ -12355,7 +12355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2175",
+      "source_location": "L2176",
       "weight": 1.0
     },
     {
@@ -12463,7 +12463,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1656",
+      "source_location": "L1657",
       "weight": 1.0
     },
     {
@@ -12475,7 +12475,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1658",
+      "source_location": "L1659",
       "weight": 1.0
     },
     {
@@ -12487,7 +12487,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1662",
+      "source_location": "L1663",
       "weight": 1.0
     },
     {
@@ -12499,24 +12499,12 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1977",
-      "weight": 1.0
-    },
-    {
-      "source": "src_bulk_cogs_editor_setpageselection",
-      "target": "src_bulk_cogs_editor_productselected",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/bulk-cogs-editor.js",
       "source_location": "L1978",
       "weight": 1.0
     },
     {
       "source": "src_bulk_cogs_editor_setpageselection",
-      "target": "src_bulk_cogs_editor_updatepageselectioncontrols",
+      "target": "src_bulk_cogs_editor_productselected",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -12528,7 +12516,7 @@
     },
     {
       "source": "src_bulk_cogs_editor_setpageselection",
-      "target": "src_bulk_cogs_editor_updateoperationcontrols",
+      "target": "src_bulk_cogs_editor_updatepageselectioncontrols",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -12536,6 +12524,18 @@
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
       "source_location": "L1980",
+      "weight": 1.0
+    },
+    {
+      "source": "src_bulk_cogs_editor_setpageselection",
+      "target": "src_bulk_cogs_editor_updateoperationcontrols",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/bulk-cogs-editor.js",
+      "source_location": "L1981",
       "weight": 1.0
     },
     {
@@ -12547,7 +12547,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1953",
+      "source_location": "L1954",
       "weight": 1.0
     },
     {
@@ -12559,7 +12559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1956",
+      "source_location": "L1957",
       "weight": 1.0
     },
     {
@@ -13051,7 +13051,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1501",
+      "source_location": "L1502",
       "weight": 1.0
     },
     {
@@ -13063,7 +13063,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1502",
+      "source_location": "L1503",
       "weight": 1.0
     },
     {
@@ -13075,7 +13075,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1504",
+      "source_location": "L1505",
       "weight": 1.0
     },
     {
@@ -13087,7 +13087,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1506",
+      "source_location": "L1507",
       "weight": 1.0
     },
     {
@@ -13099,7 +13099,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1539",
+      "source_location": "L1540",
       "weight": 1.0
     },
     {
@@ -13111,7 +13111,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1561",
+      "source_location": "L1562",
       "weight": 1.0
     },
     {
@@ -13123,7 +13123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1567",
+      "source_location": "L1568",
       "weight": 1.0
     },
     {
@@ -13135,7 +13135,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1578",
+      "source_location": "L1579",
       "weight": 1.0
     },
     {
@@ -13159,7 +13159,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1585",
+      "source_location": "L1586",
       "weight": 1.0
     },
     {
@@ -13171,7 +13171,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1962",
+      "source_location": "L1963",
       "weight": 1.0
     },
     {
@@ -13183,7 +13183,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1964",
+      "source_location": "L1965",
       "weight": 1.0
     },
     {
@@ -13195,7 +13195,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1967",
+      "source_location": "L1968",
       "weight": 1.0
     },
     {
@@ -13207,7 +13207,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1968",
+      "source_location": "L1969",
       "weight": 1.0
     },
     {
@@ -13591,7 +13591,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1651",
+      "source_location": "L1652",
       "weight": 1.0
     },
     {
@@ -13603,7 +13603,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1691",
+      "source_location": "L1692",
       "weight": 1.0
     },
     {
@@ -13651,7 +13651,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1930",
+      "source_location": "L1931",
       "weight": 1.0
     },
     {
@@ -13663,7 +13663,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1945",
+      "source_location": "L1946",
       "weight": 1.0
     },
     {
@@ -13675,7 +13675,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1950",
+      "source_location": "L1951",
       "weight": 1.0
     },
     {
@@ -13699,7 +13699,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1976",
+      "source_location": "L1977",
       "weight": 1.0
     },
     {
@@ -13711,7 +13711,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1999",
+      "source_location": "L2000",
       "weight": 1.0
     },
     {
@@ -13723,7 +13723,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2178",
+      "source_location": "L2179",
       "weight": 1.0
     },
     {
@@ -16201,7 +16201,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1581",
+      "source_location": "L1582",
       "weight": 1.0
     },
     {
@@ -16212,7 +16212,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1608",
+      "source_location": "L1609",
       "weight": 1.0
     },
     {
@@ -16223,7 +16223,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1674",
+      "source_location": "L1675",
       "weight": 1.0
     },
     {
@@ -16234,7 +16234,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1682",
+      "source_location": "L1683",
       "weight": 1.0
     },
     {
@@ -16245,7 +16245,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1717",
+      "source_location": "L1718",
       "weight": 1.0
     },
     {
@@ -16256,7 +16256,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1734",
+      "source_location": "L1735",
       "weight": 1.0
     },
     {
@@ -16267,7 +16267,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1744",
+      "source_location": "L1745",
       "weight": 1.0
     },
     {
@@ -16278,7 +16278,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1759",
+      "source_location": "L1760",
       "weight": 1.0
     },
     {
@@ -16289,7 +16289,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1831",
+      "source_location": "L1832",
       "weight": 1.0
     },
     {
@@ -16300,7 +16300,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1844",
+      "source_location": "L1845",
       "weight": 1.0
     },
     {
@@ -16311,7 +16311,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1878",
+      "source_location": "L1879",
       "weight": 1.0
     },
     {
@@ -16322,7 +16322,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1941",
+      "source_location": "L1942",
       "weight": 1.0
     },
     {
@@ -16333,7 +16333,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L1961",
+      "source_location": "L1962",
       "weight": 1.0
     },
     {
@@ -19780,7 +19780,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/bulk-cogs-editor.js",
-      "source_location": "L2169",
+      "source_location": "L2170",
       "weight": 1.0
     },
     {
@@ -21045,5 +21045,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5381684f1fb73dd1d57c31f895c519c64067050f"
+  "built_at_commit": "1880f2c93da1e186f116443b25071385ddd0eee0"
 }

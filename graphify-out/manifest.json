@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1794903198.3381567,
-    "seen": 1794903236.1876464,
-    "ast_hash": "f4956a00903ba476ae162b5be6271948",
+    "mtime": 1795553234.0852964,
+    "seen": 1795680539.0839586,
+    "ast_hash": "1e6d283e044dfa0b143bb2fe3352fba0",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1794902417.971866,
-    "seen": 1794902912.1988003,
-    "ast_hash": "f0b064aeeb8609f47e08863503dd29ae",
+    "mtime": 1795679244.340136,
+    "seen": 1795680539.0840428,
+    "ast_hash": "dd517850e95a4c6a85b65ed983a67362",
     "semantic_hash": ""
   },
   "index.php": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794902418.0145192,
-    "seen": 1794902912.1988058,
-    "ast_hash": "efb0b2460fb406ba0dd315e7637439be",
+    "mtime": 1795680534.752699,
+    "seen": 1795680539.0840487,
+    "ast_hash": "ade552b4365e3aac311ed4dc0cb0bec0",
     "semantic_hash": ""
   },
   "scripts/class-dkbce-range-query-profiler.php": {
@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794903198.3476505,
-    "seen": 1794903236.1880639,
-    "ast_hash": "5c75320eb8d3dc9fb1aee77064457644",
+    "mtime": 1795553204.4794834,
+    "seen": 1795680539.084061,
+    "ast_hash": "4d48f68328a663bd99756b67abf267f0",
     "semantic_hash": ""
   },
   "src/index.php": {
@@ -198,15 +198,15 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794902417.9597838,
-    "seen": 1794902912.198935,
-    "ast_hash": "e2cd6ad081244ad19435d5eb2b2ca378",
+    "mtime": 1795553233.0457354,
+    "seen": 1795680539.0842433,
+    "ast_hash": "49c724de4a0e5ac14a53d758a27779bc",
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1794903274.0905852,
-    "seen": 1794903304.058549,
-    "ast_hash": "6b1aa7e95ebcd25d1d7a11121a8e85f0",
+    "mtime": 1795680533.7682436,
+    "seen": 1795680539.0842462,
+    "ast_hash": "ad50c280eb95baa250fdcb6d48c58ce7",
     "semantic_hash": ""
   },
   "admin/class-dkbce-preset-list-table.php": {
