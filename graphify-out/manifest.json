@@ -1,8 +1,8 @@
 {
   "admin/class-dkbce-admin-functions.php": {
-    "mtime": 1794903641.079542,
-    "seen": 1794909376.9524398,
-    "ast_hash": "84c2dac73aa36a127a7897c3743b22a7",
+    "mtime": 1795553234.0852964,
+    "seen": 1795680539.0839586,
+    "ast_hash": "1e6d283e044dfa0b143bb2fe3352fba0",
     "semantic_hash": ""
   },
   "admin/class-dkbce-admin-hooks.php": {
@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "bulk-cogs-editor-for-woocommerce.php": {
-    "mtime": 1794909492.5510533,
-    "seen": 1794909514.323742,
-    "ast_hash": "9d3e98b2a66f6e4fab8c6b025deb819c",
+    "mtime": 1795679244.340136,
+    "seen": 1795680539.0840428,
+    "ast_hash": "dd517850e95a4c6a85b65ed983a67362",
     "semantic_hash": ""
   },
   "index.php": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794909492.5523849,
-    "seen": 1794909514.3237455,
-    "ast_hash": "2e4182daad41493dd07fb1c7e2661483",
+    "mtime": 1795680534.752699,
+    "seen": 1795680539.0840487,
+    "ast_hash": "ade552b4365e3aac311ed4dc0cb0bec0",
     "semantic_hash": ""
   },
   "scripts/class-dkbce-range-query-profiler.php": {
@@ -132,8 +132,8 @@
     "semantic_hash": ""
   },
   "src/bulk-cogs-editor.js": {
-    "mtime": 1794909348.3652802,
-    "seen": 1794909376.9524891,
+    "mtime": 1795553204.4794834,
+    "seen": 1795680539.084061,
     "ast_hash": "4d48f68328a663bd99756b67abf267f0",
     "semantic_hash": ""
   },
@@ -198,15 +198,15 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794902417.9597838,
-    "seen": 1794902912.198935,
-    "ast_hash": "e2cd6ad081244ad19435d5eb2b2ca378",
+    "mtime": 1795553233.0457354,
+    "seen": 1795680539.0842433,
+    "ast_hash": "49c724de4a0e5ac14a53d758a27779bc",
     "semantic_hash": ""
   },
   "changelog.txt": {
-    "mtime": 1794909492.5615704,
-    "seen": 1794909514.323814,
-    "ast_hash": "3cbcf57188a177c0ccb22ab689edb12e",
+    "mtime": 1795680533.7682436,
+    "seen": 1795680539.0842462,
+    "ast_hash": "ad50c280eb95baa250fdcb6d48c58ce7",
     "semantic_hash": ""
   },
   "admin/class-dkbce-preset-list-table.php": {
